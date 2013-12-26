@@ -10,7 +10,7 @@
     <script type="text/javascript">
 
       // Load the Visualization API and the piechart package.
-      google.load('visualization', '1.0', {'packages':['corechart','table']});
+      google.load('visualization', '1.0');//, {'packages':['corechart','table']});
 
       jQuery.noConflict();
 
@@ -42,7 +42,7 @@
 
           var data = google.visualization.dataTableToCsv(dataTable);
           data = parseData(data);
-          //console.log(data);
+          console.log(data);
 
           //var table = new google.visualization.Table(document.getElementById('columnchart'));
           //table.draw(dataTable, null);
@@ -97,7 +97,7 @@
           for (var i in lines) {
             var line = lines[i].split(",");
             data.endDates.push(line[0]);
-            data.leadTimes.push(line[1]);
+            data.leadTimes.push(parseInt(line[1]));
           }
           return data;
         };

@@ -17,15 +17,24 @@
       jQuery(document).ready(function($) {
 
         // Set a callback to run when the Google Visualization API is loaded.
-        google.setOnLoadCallback(drawChart);
+        google.setOnLoadCallback(drawCharts);
+
+        // global variables
+        var allData = {};
 
         // Callback that creates and populates a data table,
         // instantiates the pie chart, passes in the data and
         // draws it.
-        function drawChart() {
-          var query = new google.visualization.Query("https://docs.google.com/spreadsheet/ccc?key=0AqWHu14u074CdExaZ21PMDNtdVJQbHJncWk3c1c2SlE&usp=drive_web&sheet=Data");//&headers=1&range=A1:I1");
-          query.setQuery('select D, E where D is not null AND F = "Feature"');
-          query.send(handleQueryResponse);
+        function drawCharts() {
+          var sheet = "https://docs.google.com/spreadsheet/ccc?key=0AqWHu14u074CdExaZ21PMDNtdVJQbHJncWk3c1c2SlE&usp=drive_web&sheet=Data";
+          var query = "select D, E, A, B where D is not null AND F = ";
+          var gQuery = new google.visualization.Query(sheet);
+          
+          gQuery.setQuery(query + '"Feature"');
+          gQuery.send(handleQueryResponse);
+
+          //gQuery.setQuery(query + '"Defect"');
+          //gQuery.send(handleQueryResponse);
         }
 
         function handleQueryResponse(response) {
@@ -57,12 +66,6 @@
             title: {
               text: 'Feature Control Chart'
             },
-            plotOptions: {
-              series: {
-                anaimation: false,
-                enableMouseTracking: false
-              }
-            },
             xAxis: {
               title: {
                 text: 'End Dates'
@@ -73,6 +76,14 @@
               title: {
                 text: 'Lead Time'
               }
+              // ,
+              // plotLines: {
+              //   color: 'red',
+              //   label: {
+              //     text: 'Average Lead Time'
+              //   },
+              //   value: data.avgLeadTime
+              // }
             },
             series: [{
               name: 'Lead Time',
@@ -96,9 +107,13 @@
           var str = "";
           for (var i in lines) {
             var line = lines[i].split(",");
+            var obj = {};
+            obj.y = parseInt(line[1]);
+            obj.name = line[2] + ' - ' + line[3];
             data.endDates.push(line[0]);
-            data.leadTimes.push(parseInt(line[1]));
+            data.leadTimes.push(obj);
           }
+          // data.avgLeadTime = line[4];
           return data;
         };
 

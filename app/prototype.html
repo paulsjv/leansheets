@@ -24,6 +24,8 @@
 
         // global variables
         var allData = {};
+        var chartTitle = '';
+        var renderToDiv = '';
 
         // Callback that creates and populates a data table,
         // instantiates the pie chart, passes in the data and
@@ -31,43 +33,91 @@
         function drawCharts() {
           var sheet = "https://docs.google.com/spreadsheet/ccc?key=0AqWHu14u074CdExaZ21PMDNtdVJQbHJncWk3c1c2SlE&usp=drive_web&sheet=Data";
           var query = "select D, E, A, B where D is not null AND F = ";
-          var gQuery = new google.visualization.Query(sheet);
+          var gQuery1 = new google.visualization.Query(sheet);
           
-          gQuery.setQuery(query + '"Feature"');
-          gQuery.send(handleQueryResponse);
+          chartTitle = "Feature";
+          renderToDiv = 'feature';
+          gQuery1.setQuery(query + '"' + chartTitle +'"');
+          gQuery1.send(chartFeatureResponse);
 
-          //gQuery.setQuery(query + '"Defect"');
-          //gQuery.send(handleQueryResponse);
+          var gQuery2 = new google.visualization.Query(sheet);
+          chartTitle = "Defect";
+          renderToDiv = 'defect';
+          gQuery2.setQuery(query + '"' + chartTitle + '"');
+          gQuery2.send(chartDefectResponse);
         }
 
-        function handleQueryResponse(response) {
-          if (response.isError()) {
-            alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
-            return;
-          }
-
+        function getDataFromResponse(response) {
           var dataTable = response.getDataTable();
           //console.log(JSON.stringify(data));
 
-          var headers = getSheetHeadersAsCsv(dataTable);
+          //var headers = getSheetHeadersAsCsv(dataTable);
           //console.log(headers);
 
           var data = google.visualization.dataTableToCsv(dataTable);
           data = parseData(data);
           console.log(data);
+          return data;
+        }
+
+        function isResponseError(response) {
+          if (response.isError()) {
+            alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+            return true;
+          }
+          return false;
+        }
+
+        function chartFeatureResponse(response) {
+          if (isResponseError(response)) {
+            return;
+          }
+
+          var chartInfo = {
+            qResponse: response,
+            cTitle: 'Feature',
+            cDiv: 'feature'
+          };
+
+          drawChart(chartInfo);
+
+          // var data = getDataFromResponse(response);
 
           //var table = new google.visualization.Table(document.getElementById('columnchart'));
           //table.draw(dataTable, null);
 
-          var dataCsv = headers + "\n" + data;
+          //var dataCsv = headers + "\n" + data;
 
-          var options = {
+          // var options = getOptionsForChart('Feature', 'feature', data);
+          // var chart = new Highcharts.Chart(options);
+        }
+
+        function chartDefectResponse(response) {
+          if (isResponseError(response)) {
+            return;
+          }
+
+          var chartInfo = {
+            qResponse: response,
+            cTitle: 'Defect',
+            cDiv: 'defect'
+          };
+
+          drawChart(chartInfo);
+        }
+
+        function drawChart(chartInfo) {
+          var chart = new Highcharts.Chart(getOptionsForChart(chartInfo.cTitle, chartInfo.cDiv, getDataFromResponse(chartInfo.qResponse)));
+        }
+
+        function getOptionsForChart(title, div, data) {
+          return {
             chart: {
-              renderTo: 'container',
+              renderTo: div,
               type: 'line'
             },
             title: {
-              text: 'Feature Control Chart'
+              text: title + ' Control Chart'
             },
             xAxis: {
               title: {
@@ -94,9 +144,6 @@
             }]
 
           };
-
-          var chart = new Highcharts.Chart(options);
-          
         }
 
         function parseData(csv) {
@@ -149,6 +196,7 @@
 
   <body>
     <!--Div that will hold the chart-->
-    <div id="container"></div>
+    <div id="feature"></div>
+    <div id="defect"></div>
   </body>
 </html>

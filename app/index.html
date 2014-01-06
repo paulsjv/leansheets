@@ -1,5 +1,11 @@
 <!doctype html>
-<html lang="en" ng-app="leanSheetsApp">
+<!-- 
+    No ng-app needed here due to loading Angular with google-sheets.js.
+    If there is no need for google sheets replace with this in the 
+    <html lang="en" ng-app="leanSheetsApp"> and remove google-sheets.js
+    script line.
+  -->
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <title>My AngularJS App</title>
@@ -9,10 +15,13 @@
   -->
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular.js"></script>
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular-route.js"></script>
-  
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
   <script type="text/javascript" src="js/app.js"></script>
   <script type="text/javascript" src="js/controllers/controlChartCtrl.js"></script>
+  <script type="text/javascript" src="js/google-sheets.js"></script>
+  <script type="text/javascript" src="js/providers/google-config.js"></script>
+  <script type="text/javascript" src="js/services/google-service.js"></script>
 
   <link rel="stylesheet" href="css/app.css"/>
 </head>

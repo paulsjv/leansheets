@@ -2,14 +2,60 @@
 
 angular.module('controlChartCtrl', []).
   controller('ControlChartCtrl', ['$scope', 'GoogleService', function($scope, GoogleService) {
-  	var data = GoogleService.getData('Feature', 'feature');
-  	$scope.helloworld = "hello world!";
-  	data.then(function (success) {
-  		$scope.sheetdata = success;
+  	var featuresPromise = GoogleService.getData('Feature', 'feature');
+  	featuresPromise.then(function (success) {
+  		// create charts here
+  		var options = getOptionsForChart('Feature', 'feature', success);
+  		var chart = new Highcharts.Chart(options);
   	}, function (error) {
   		$scope.sheetdata = error;
   	});
-  	console.log(GoogleService.getUrl());
-  	console.log(GoogleService.getData('Feature', 'feature'));
-  	console.log($scope.sheetdata);
-  }]);
+
+  	var defectsPromise = GoogleService.getData('Defect', 'defect');
+  	defectsPromise.then(function (success) {
+  		// create charts here
+  		$scope.sheetdata = success;
+  		var options = getOptionsForChart('Defect', 'defect', success);
+  		var chart = new Highcharts.Chart(options);
+  	}, function (error) {
+  		$scope.sheetdata = error;
+  	});
+
+	var getOptionsForChart = function (title, div, data) {
+		return {
+		    chart: {
+		      	renderTo: div,
+		      	type: 'line'
+		    },
+		    title: {
+		    	text: title + ' Control Chart'
+		    },
+		    xAxis: {
+		      	title: {
+		        	text: 'End Dates'
+		      	},
+		    	categories: data.endDates
+		    },
+		    yAxis: {
+		      	title: {
+		        	text: 'Lead Time'
+		      	}
+			    // ,
+			    // plotLines: {
+			    //   color: 'red',
+			    //   label: {
+			    //     text: 'Average Lead Time'
+			    //   },
+			    //   value: data.avgLeadTime
+			    // }
+		    	},
+		    	series: [{
+		      		name: 'Lead Time',
+		      		data: data.leadTimes
+		    		}]
+
+		  		};
+			} 
+
+
+	}]);

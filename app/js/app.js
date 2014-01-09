@@ -6,7 +6,8 @@ angular.module('leanSheetsApp', [
   'ngRoute',
   'controlChartCtrl',
   'googleService',
-  'googleConfig'
+  'googleConfig',
+  'highcharts'
 ]).
 config(['$routeProvider','GoogleConfigProvider', function($routeProvider, GoogleConfigProvider) {
   $routeProvider.when('/view1', {templateUrl: 'partials/controlChart.html', controller: 'ControlChartCtrl'});

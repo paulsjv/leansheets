@@ -2,13 +2,22 @@
 
 angular.module('controlChartCtrl', []).
   controller('ControlChartCtrl', ['$scope', 'GoogleService', function($scope, GoogleService) {
+  	var directivePromise = GoogleService.getData('Feature', 'feature');
+  	directivePromise.then(function (success){
+  		$scope.chartConfig = getOptionsForChart('Feature', 'directive1', success);
+  	}, function (error) {
+  		alert(error);
+  	});
+
+
+
   	var featuresPromise = GoogleService.getData('Feature', 'feature');
   	featuresPromise.then(function (success) {
   		// create charts here
   		var options = getOptionsForChart('Feature', 'feature', success);
   		var chart = new Highcharts.Chart(options);
   	}, function (error) {
-  		$scope.sheetdata = error;
+  		alert(error);
   	});
 
   	var defectsPromise = GoogleService.getData('Defect', 'defect');
@@ -18,7 +27,7 @@ angular.module('controlChartCtrl', []).
   		var options = getOptionsForChart('Defect', 'defect', success);
   		var chart = new Highcharts.Chart(options);
   	}, function (error) {
-  		$scope.sheetdata = error;
+  		alert(error);
   	});
 
 	var getOptionsForChart = function (title, div, data) {

@@ -13,5 +13,5 @@ git update-index --assume-unchanged path/to/server.js
 ```
 When you want to start keeping track again
 ```
-git update-index --no-assume-unchanged path/to/file
+git update-index --no-assume-unchanged path/to/server.js
 ```

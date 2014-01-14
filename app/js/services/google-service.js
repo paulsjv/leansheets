@@ -11,7 +11,7 @@ angular.module('googleService', []).
 			console.log("$q" + $q);
 			return GoogleConfig.gUrl; 
 		};
-		this.getData = function(title, div) {
+		this.getData = function(type) {
 			var deferred = $q.defer();
 			var promise = deferred.promise;
 
@@ -60,7 +60,7 @@ angular.module('googleService', []).
 			};
 
           	var query = new google.visualization.Query(GoogleConfig.gUrl);
-			query.setQuery(GoogleConfig.gQuery + '"' + title +'"');
+			query.setQuery(GoogleConfig.gQuery + '"' + type +'"');
 	        query.send(handleResponse);
 
 			return promise;

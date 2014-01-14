@@ -24,7 +24,7 @@ describe('controlChartCtrl Tests', function(){
 		// mock service that calls google spread sheets!
 		GoogleServiceMock = {
 			getUrl: function() {},
-			getData: function(title, div) {
+			getData: function(title) {
 				var deferred = $q.defer();
 				var promise = deferred.promise;
 
@@ -52,7 +52,6 @@ describe('controlChartCtrl Tests', function(){
 			var controller = createController();
 			$scope.$digest();
 			expect($scope.sheetdata).toEqual('Success!');
-	    	expect('hello world!').toEqual('hello world!');
 		}));
 
 	});

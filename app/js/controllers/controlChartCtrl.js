@@ -2,71 +2,42 @@
 
 angular.module('controlChartCtrl', []).
   controller('ControlChartCtrl', ['$scope', 'GoogleService', function($scope, GoogleService) {
-  	var directivePromise = GoogleService.getData('Feature', 'feature');
+  	console.log('scope.type ' + $scope.type);
+  	var directivePromise = GoogleService.getData('Feature');
   	directivePromise.then(function (success){
-  		$scope.sheetdata = success;
-  		$scope.chartConfig = getOptionsForChart('Feature', 'directive1', success);
+  		$scope.featureConfig = getOptionsForChart('Feature', success);
   	}, function (error) {
   		alert(error);
   	});
 
-
-
-  	var featuresPromise = GoogleService.getData('Feature', 'feature');
-  	featuresPromise.then(function (success) {
-  		// create charts here
-  		$scope.sheetdata = success;
-  		var options = getOptionsForChart('Feature', 'feature', success);
-  		// var chart = new Highcharts.Chart(options);
-  	}, function (error) {
-  		alert(error);
-  	});
-
-  	var defectsPromise = GoogleService.getData('Defect', 'defect');
+  	var defectsPromise = GoogleService.getData('Defect');
   	defectsPromise.then(function (success) {
-  		// create charts here
-  		$scope.sheetdata = success;
-  		var options = getOptionsForChart('Defect', 'defect', success);
-  		// var chart = new Highcharts.Chart(options);
+  		$scope.defectConfig = getOptionsForChart('Defect', success);
   	}, function (error) {
   		alert(error);
   	});
 
-	var getOptionsForChart = function (title, div, data) {
+	var getOptionsForChart = function (title, data) {
 		return {
-		    chart: {
-		      	renderTo: div,
-		      	type: 'line'
-		    },
-		    title: {
-		    	text: title + ' Control Chart'
-		    },
-		    xAxis: {
-		      	title: {
-		        	text: 'End Dates'
-		      	},
-		    	categories: data.endDates
-		    },
-		    yAxis: {
-		      	title: {
-		        	text: 'Lead Time'
-		      	}
-			    // ,
-			    // plotLines: {
-			    //   color: 'red',
-			    //   label: {
-			    //     text: 'Average Lead Time'
-			    //   },
-			    //   value: data.avgLeadTime
-			    // }
-		    	},
-		    	series: [{
-		      		name: 'Lead Time',
-		      		data: data.leadTimes
-		    		}]
+			options: {
+				chart: {
+					type: 'line'
+				},
+				xAxis: {
+	              	title: {
+	                	text: 'End Dates'
+	              	},
+	            	categories: data.endDates
+	            }
+			},
+			series: [{
+				name: 'Lead Time',
+				data: data.leadTimes
+			}],
+			title: {
+				text: title + ' Control Chart'
+			}
+		}
+	};
 
-		  		};
-			} 
-
-
-	}]);
+}]);

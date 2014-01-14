@@ -21,34 +21,6 @@ angular.module('googleService', []).
 	          }
 	          return false;
 	        };
-
-	        var parseData = function (csv) {
-        		var data = {};
-          		data.endDates = [];
-          		data.leadTimes = [];
-
-          		var lines = csv.split("\n");
-          		lines = popLastIndexOfArrayIfEmpty(lines);
-
-          		var str = "";
-          		for (var i in lines) {
-            		var line = lines[i].split(",");
-            		var obj = {};
-            		obj.y = parseInt(line[1]);
-            		obj.name = line[2] + ' - ' + line[3];
-            		data.endDates.push(line[0]);
-            		data.leadTimes.push(obj);
-          		}
-          		// data.avgLeadTime = line[4];
-          		return data;
-        	};
-
-        	var popLastIndexOfArrayIfEmpty = function (arry) {
-	          	if (arry[arry.length] == "" || arry[arry.length] == null) {
-    	        	arry.pop();
-        	  	}
-          		return arry;
-        	};
 			
 			var handleResponse = function(response) {
 				if (isResponseError(response)) {
@@ -56,7 +28,7 @@ angular.module('googleService', []).
 				}
 				var dataTable = response.getDataTable();
 				var csvData = google.visualization.dataTableToCsv(dataTable);
-	        	deferred.resolve(parseData(csvData));
+	        	deferred.resolve(csvData);
 			};
 
           	var query = new google.visualization.Query(GoogleConfig.gUrl);

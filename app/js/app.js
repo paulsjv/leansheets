@@ -5,12 +5,13 @@
 angular.module('leanSheetsApp', [
   'ngRoute',
   'controlChartCtrl',
+  'histogramChartCtrl',
   'googleService',
   'googleConfig',
   'highcharts-ng'
 ]).
 config(['$routeProvider','GoogleConfigProvider', function($routeProvider, GoogleConfigProvider) {
-  $routeProvider.when('/view1', {templateUrl: 'partials/controlChart.html', controller: 'ControlChartCtrl'});
+  $routeProvider.when('/view1', {templateUrl: 'partials/charts.html', controller: 'ControlChartCtrl'});
   $routeProvider.otherwise({redirectTo: '/view1'});
 
   GoogleConfigProvider.setUrl("https://docs.google.com/spreadsheet/ccc?key=0AqWHu14u074CdExaZ21PMDNtdVJQbHJncWk3c1c2SlE&usp=drive_web&sheet=Data");

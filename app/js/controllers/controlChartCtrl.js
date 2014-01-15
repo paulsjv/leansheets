@@ -2,7 +2,6 @@
 
 angular.module('controlChartCtrl', []).
   controller('ControlChartCtrl', ['$scope', 'GoogleService', function($scope, GoogleService) {
-  	console.log('scope.type ' + $scope.type);
   	var directivePromise = GoogleService.getData('Feature');
   	directivePromise.then(function (success){
   		$scope.featureConfig = getOptionsForChart('Feature', parseData(success));

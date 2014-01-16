@@ -14,7 +14,7 @@ describe('controlChartCtrl Tests', function(){
 	});
 
 	// add global variables
-	var $scope, $rootScope, $q, GoogleServiceMock, createController;
+	var $scope, $rootScope, $q, DataServiceMock, createController;
 
 	// load the controller's module
 	beforeEach(module('leanSheetsApp'));
@@ -22,7 +22,7 @@ describe('controlChartCtrl Tests', function(){
 	beforeEach(inject(function($injector) {
 		$q = $injector.get('$q');
 		// mock service that calls google spread sheets!
-		GoogleServiceMock = {
+		DataServiceMock = {
 			getUrl: function() {},
 			getData: function(title) {
 				var deferred = $q.defer();
@@ -44,7 +44,7 @@ describe('controlChartCtrl Tests', function(){
 
 			$scope = $rootScope.$new();
 			createController = function() { 
-				return $controller('ControlChartCtrl', { '$scope': $scope, GoogleService: GoogleServiceMock }); 
+				return $controller('ControlChartCtrl', { '$scope': $scope, DataService: DataServiceMock }); 
 			};
 		}));
 

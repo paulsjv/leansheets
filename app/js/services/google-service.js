@@ -5,11 +5,11 @@
 
 // Demonstrate how to register services
 // In this case it is a simple value service.
-angular.module('googleService', []).
-	service("GoogleService", ['GoogleConfig', '$q', function(GoogleConfig, $q) {
+angular.module('dataService', []).
+	service("DataService", ['DataServiceConfig', '$q', function(DataServiceConfig, $q) {
 		this.getUrl = function () { 
 			console.log("$q" + $q);
-			return GoogleConfig.gUrl; 
+			return DataServiceConfig.gUrl; 
 		};
 		this.getData = function(type) {
 			var deferred = $q.defer();
@@ -31,8 +31,8 @@ angular.module('googleService', []).
 	        	deferred.resolve(csvData);
 			};
 
-          	var query = new google.visualization.Query(GoogleConfig.gUrl);
-			query.setQuery(GoogleConfig.gQuery + '"' + type +'"');
+          	var query = new google.visualization.Query(DataServiceConfig.gUrl);
+			query.setQuery(DataServiceConfig.gQuery + '"' + type +'"');
 	        query.send(handleResponse);
 
 			return promise;

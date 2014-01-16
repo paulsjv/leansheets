@@ -1,15 +1,15 @@
 'use strict';
 
 angular.module('controlChartCtrl', []).
-  controller('ControlChartCtrl', ['$scope', 'GoogleService', function($scope, GoogleService) {
-  	var directivePromise = GoogleService.getData('Feature');
+  controller('ControlChartCtrl', ['$scope', 'DataService', function($scope, DataService) {
+  	var directivePromise = DataService.getData('Feature');
   	directivePromise.then(function (success){
   		$scope.featureConfig = getOptionsForChart('Feature', parseData(success));
   	}, function (error) {
   		alert(error);
   	});
 
-  	var defectsPromise = GoogleService.getData('Defect');
+  	var defectsPromise = DataService.getData('Defect');
   	defectsPromise.then(function (success) {
   		$scope.defectConfig = getOptionsForChart('Defect', parseData(success));
   	}, function (error) {
@@ -56,7 +56,6 @@ angular.module('controlChartCtrl', []).
     		data.endDates.push(line[0]);
     		data.leadTimes.push(obj);
   		}
-  		// data.avgLeadTime = line[4];
   		return data;
 	};
 

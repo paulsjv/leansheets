@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('googleConfig', []).
-  provider('GoogleConfig', function() {
+angular.module('dataServiceConfig', []).
+  provider('DataServiceConfig', function() {
   		var url;
   		var query;
   		return {

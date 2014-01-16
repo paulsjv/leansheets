@@ -1,15 +1,15 @@
 'use strict';
 
 angular.module('histogramChartCtrl', []).
-  controller('HistogramChartCtrl', ['$scope', 'GoogleService', function($scope, GoogleService) {
-  	var directivePromise = GoogleService.getData('Feature');
+  controller('HistogramChartCtrl', ['$scope', 'DataService', function($scope, DataService) {
+  	var directivePromise = DataService.getData('Feature');
   	directivePromise.then(function (success){
   		$scope.featureConfig = $scope.getOptionsForChart('Feature', $scope.parseData(success));
   	}, function (error) {
   		alert(error);
   	});
 
-  	var defectsPromise = GoogleService.getData('Defect');
+  	var defectsPromise = DataService.getData('Defect');
   	defectsPromise.then(function (success) {
   		$scope.defectConfig = $scope.getOptionsForChart('Defect', $scope.parseData(success));
   	}, function (error) {

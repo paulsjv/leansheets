@@ -11,8 +11,8 @@ angular.module('leanSheetsApp', [
   'highcharts-ng'
 ]).
 config(['$routeProvider','GoogleConfigProvider', function($routeProvider, GoogleConfigProvider) {
-  $routeProvider.when('/view1', {templateUrl: 'partials/charts.html', controller: 'ControlChartCtrl'});
-  $routeProvider.otherwise({redirectTo: '/view1'});
+  $routeProvider.when('/charts', {templateUrl: 'partials/charts.html'});
+  $routeProvider.otherwise({redirectTo: '/charts'});
 
   GoogleConfigProvider.setUrl("https://docs.google.com/spreadsheet/ccc?key=0AqWHu14u074CdExaZ21PMDNtdVJQbHJncWk3c1c2SlE&usp=drive_web&sheet=Data");
   GoogleConfigProvider.setQuery("select D, E, A, B where D is not null AND F = ");

@@ -30,6 +30,9 @@ angular.module('controlChartCtrl', []).
 	            	categories: data.endDates
 	            },
 	            yAxis: {
+	            	title : {
+	            		text: 'Lead Time'
+	            	},
 	            	plotLines: [{
 		              		color: 'red',
 		              		value: data.leadTimeStDevation.mean,

@@ -67,6 +67,7 @@ angular.module('controlChartCtrl', []).
 		r.deviation = $window.Math.sqrt(r.variance = s / t);
 		r.high = $window.Math.round(r.mean + r.deviation);
 		r.low = $window.Math.round(r.mean - r.deviation);
+		r.mean = $window.Math.round(r.mean);
 		return r;
 	};
 

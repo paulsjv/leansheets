@@ -2,7 +2,6 @@
 
 angular.module('controlChartCtrl', []).
   controller('ControlChartCtrl', ['$scope', 'DataService', '$window', function($scope, DataService, $window) {
-  	console.log($window);
   	var directivePromise = DataService.getData('Feature');
   	directivePromise.then(function (success){
   		$scope.featureConfig = getOptionsForChart('Feature', parseData(success));

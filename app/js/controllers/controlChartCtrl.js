@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('controlChartCtrl', []).
-  controller('ControlChartCtrl', ['$scope', 'DataService', function($scope, DataService) {
+  controller('ControlChartCtrl', ['$scope', 'DataService', '$window', function($scope, DataService, $window) {
+  	console.log($window);
   	var directivePromise = DataService.getData('Feature');
   	directivePromise.then(function (success){
   		$scope.featureConfig = getOptionsForChart('Feature', parseData(success));
@@ -27,6 +28,26 @@ angular.module('controlChartCtrl', []).
 	                	text: 'End Dates'
 	              	},
 	            	categories: data.endDates
+	            },
+	            yAxis: {
+	            	plotLines: [{
+		              		color: 'red',
+		              		value: data.leadTimeStDevation.mean,
+		              		width: 2,
+		              		label: { text: 'Average Lead Time - ' + data.leadTimeStDevation.mean }
+	              		}, 
+	              		{
+		              		color: 'green',
+		              		value: data.leadTimeStDevation.high,
+		              		width: 2,
+		              		label: { text: 'Upper Control Limit - ' + data.leadTimeStDevation.high }
+	              		},
+	              		{
+		              		color: 'green',
+		              		value: data.leadTimeStDevation.low,
+		              		width: 2,
+		              		label : { text: 'Lower Control Limit - ' + data.leadTimeStDevation.low }
+	              		}],
 	            }
 			},
 			series: [{
@@ -39,6 +60,16 @@ angular.module('controlChartCtrl', []).
 		}
 	};
 
+	var average = function(a) {
+		var r = {mean: 0, variance: 0, deviation: 0, high: 0, low: 0}, t = a.length;
+		for(var m, s = 0, l = t; l--; s += a[l]);
+		for(m = r.mean = s / t, l = t, s = 0; l--; s += $window.Math.pow(a[l] - m, 2));
+		r.deviation = $window.Math.sqrt(r.variance = s / t);
+		r.high = $window.Math.round(r.mean + r.deviation);
+		r.low = $window.Math.round(r.mean - r.deviation);
+		return r;
+	};
+
 	var parseData = function (csv) {
 		var data = {};
   		data.endDates = [];
@@ -48,6 +79,7 @@ angular.module('controlChartCtrl', []).
   		lines = popLastIndexOfArrayIfEmpty(lines);
 
   		var str = "";
+  		var leadTimeSum = [];
   		for (var i in lines) {
     		var line = lines[i].split(",");
     		var obj = {};
@@ -55,7 +87,9 @@ angular.module('controlChartCtrl', []).
     		obj.name = line[2] + ' - ' + line[3];
     		data.endDates.push(line[0]);
     		data.leadTimes.push(obj);
+    		leadTimeSum.push( obj.y);
   		}
+  		data.leadTimeStDevation = average(leadTimeSum);
   		return data;
 	};
 

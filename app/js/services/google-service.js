@@ -32,7 +32,7 @@ angular.module('dataService', []).
 			};
 
           	var query = new google.visualization.Query(DataServiceConfig.gUrl);
-			query.setQuery(DataServiceConfig.gQuery + '"' + type +'"');
+			query.setQuery(DataServiceConfig.gQuery + '"' + type +'" order by D');
 	        query.send(handleResponse);
 
 			return promise;

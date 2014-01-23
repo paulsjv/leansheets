@@ -49,8 +49,13 @@ angular.module('controlChartCtrl', []).
 		              		value: data.leadTimeStDevation.low,
 		              		width: 2,
 		              		label : { text: 'Lower Control Limit - ' + data.leadTimeStDevation.low }
-	              		}],
-	            }
+	              		}]
+	            },
+	            exporting: {
+	            	sourceWidth: 600,
+	            	sourceHeight: 400
+			        
+			    }
 			},
 			series: [{
 				name: 'Lead Time',
@@ -90,7 +95,7 @@ angular.module('controlChartCtrl', []).
     		obj.name = line[2] + ' - ' + line[3];
     		data.endDates.push(line[0]);
     		data.leadTimes.push(obj);
-    		leadTimeSum.push( obj.y);
+    		leadTimeSum.push(obj.y);
   		}
   		data.leadTimeStDevation = average(leadTimeSum);
   		return data;

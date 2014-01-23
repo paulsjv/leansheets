@@ -46,7 +46,7 @@ angular.module('histogramChartCtrl', []).
         data: data.frequency
 			}],
 			title: {
-				text: title + ' Historgam'
+				text: title + ' Histogram'
 			}
 		}
 	};

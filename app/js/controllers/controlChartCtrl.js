@@ -16,6 +16,13 @@ angular.module('controlChartCtrl', []).
   		alert(error);
   	});
 
+  	var defectsPromise = DataService.getData('Intangable');
+  	defectsPromise.then(function (success) {
+  		$scope.intangableConfig = getOptionsForChart('Intangable', parseData(success));
+  	}, function (error) {
+  		alert(error);
+  	});
+
 	var getOptionsForChart = function (title, data) {
 		return {
 			options: {

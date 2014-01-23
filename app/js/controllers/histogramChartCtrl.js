@@ -16,6 +16,13 @@ angular.module('histogramChartCtrl', []).
   		alert(error);
   	});
 
+    var defectsPromise = DataService.getData('Intangable');
+    defectsPromise.then(function (success) {
+      $scope.intangableConfig = $scope.getOptionsForChart('Intangable', $scope.parseData(success));
+    }, function (error) {
+      alert(error);
+    });
+
 	$scope.getOptionsForChart = function (title, data) {
 		return {
 			options: {

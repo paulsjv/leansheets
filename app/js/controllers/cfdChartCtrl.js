@@ -66,10 +66,12 @@ angular.module('cfdChartCtrl', []).
 			        
 			    }
 			},
-			series: [{
-				name: 'Backlog',
-				data: data.backlogCount
-			}, {
+			series: [
+			// {
+			// 	name: 'Backlog',
+			// 	data: data.backlog
+			// }, 
+			{
 				name: 'WIP',
 				data: data.wipCount
 			},{
@@ -89,10 +91,11 @@ angular.module('cfdChartCtrl', []).
 
 
 		var data = {};
-  		data.backlogCount = [];
+  		// data.backlogCount = [];
   		data.wipCount = [];
   		data.doneCount = [];
   		data.categories = [];
+
 
   		var startDates = $scope.popLastIndexOfArrayIfEmpty(startDatesCsv.split("\n"));
   		var endDates = $scope.popLastIndexOfArrayIfEmpty(endDatesCsv.split("\n"));
@@ -101,15 +104,21 @@ angular.module('cfdChartCtrl', []).
   		var i = 0;
   		var x = 0;
   			
-		while (i < startDates.length || j < endDates.length && x < 100) {
+		while (i < startDates.length || j < endDates.length) {
 	  		var sDateArray = getDates(startDates[i]);
 			var eDateArray = getDates(endDates[j]);
 
 			var sTimestamp = getTimestamp(getDateFromArray(sDateArray));
 			var eTimestamp = getTimestamp(getDateFromArray(eDateArray));
 
+			var tomorrow = moment(sTimestamp).add('days', 1).unix() * 1000;//.calendar();
+			var today = moment(sTimestamp).subtract('days', 1).unix() * 1000;
+			var start = moment(sTimestamp).unix() * 1000;
+
+
+
 			if (x == 0) {
-				data.backlogCount.push(parseInt(sDateArray[1]));
+				// data.backlogCount.push(parseInt(sDateArray[1]));
 				// if sTimestamp and eTimestamp !=== NULL
 				if (isStartDateEqEndDate(sTimestamp, eTimestamp)) {
 					data.doneCount.push(parseInt(sDateArray[1]) + parseInt(eDateArray[1]));
@@ -121,50 +130,41 @@ angular.module('cfdChartCtrl', []).
 					data.doneCount.push(0);
 					data.wipCount.push(parseInt(sDateArray[1]));
 				}
-				i++;
-				x++;
 				data.categories = addCategory(data.categories, sDateArray[0]);
+				i++;
+				x++;				
 			} else {
-				// if sTimestamp and eTimestamp !== NULL
-				if (isEndDateGtStartDate(sTimestamp, eTimestamp)) {
-					data.backlogCount.push(data.backlogCount[x-1] + parseInt(sDateArray[1]));
+				// if sTimestamp and eTimestamp !== NULL 
+				if (isEndDateGtStartDate(sTimestamp, eTimestamp) || (eTimestamp === null && sTimestamp !== null)) {
+					x = addDatesBetweenCategories(data, x, sTimestamp);
+
+					// data.backlogCount.push(data.backlogCount[x-1] + parseInt(sDateArray[1]));
 					data.wipCount.push(data.wipCount[x-1] + parseInt(sDateArray[1]));
 					data.doneCount.push(data.doneCount[x-1]);
 					data.categories = addCategory(data.categories, sDateArray[0]);
 					i++;
+				}
+				// else eTimestamp < sTimestamp 
+				else if (isEndDateLtStartDate(sTimestamp, eTimestamp) || (eTimestamp !== null && sTimestamp === null)) {
+					x = addDatesBetweenCategories(data, x, eTimestamp);
+					
+					// data.backlogCount.push(data.backlogCount[x-1]);
+					data.wipCount.push(data.wipCount[x-1] - parseInt(eDateArray[1]));
+					data.doneCount.push(data.doneCount[x-1] + parseInt(eDateArray[1]));
+					j++;
+					data.categories = addCategory(data.categories, eDateArray[0]);
+
 				} 
 				// if sTimestamp and eTimestamp !== NULL && equal
 				else if (isStartDateEqEndDate(sTimestamp, eTimestamp)) {
-					data.backlogCount.push(data.backlogCount[x-1] + parseInt(sDateArray[1]));
+					x = addDatesBetweenCategories(data, x, sTimestamp);
+
+					// data.backlogCount.push(data.backlogCount[x-1] + parseInt(sDateArray[1]));
 					data.wipCount.push(data.wipCount[x-1] + parseInt(sDateArray[1] - parseInt(eDateArray[1])));
 					data.doneCount.push(data.doneCount[x-1] + parseInt(eDateArray[1]));
 					data.categories = addCategory(data.categories, sDateArray[0]);
 					j++;
 					i++;
-				}
-				// else if eTimestamp === NULL
-				else if (eTimestamp === null && sTimestamp !== null) {
-					data.backlogCount.push(data.backlogCount[x-1] + parseInt(sDateArray[1]));
-					data.wipCount.push(data.wipCount[x-1] + parseInt(sDateArray[1]));
-					data.doneCount.push(data.doneCount[x-1]);
-					data.categories = addCategory(data.categories, sDateArray[0]);
-					i++;
-				}
-				// else sTimestamp === NULL
-				else if (eTimestamp !== null && sTimestamp === null) {
-					data.backlogCount.push(data.backlogCount[x-1]);
-					data.wipCount.push(data.wipCount[x-1] - parseInt(eDateArray[1]));
-					data.doneCount.push(data.doneCount[x-1] + parseInt(eDateArray[1]));
-					j++;
-					data.categories = addCategory(data.categories, eDateArray[0]);
-				}
-				// else eTimestamp < sTimestamp
-				else if (isEndDateLtStartDate(sTimestamp, eTimestamp)) {
-					data.backlogCount.push(data.backlogCount[x-1]);
-					data.wipCount.push(data.wipCount[x-1] - parseInt(eDateArray[1]));
-					data.doneCount.push(data.doneCount[x-1] + parseInt(eDateArray[1]));
-					j++;
-					data.categories = addCategory(data.categories, eDateArray[0]);
 				}
 				x++;
 			}
@@ -172,6 +172,28 @@ angular.module('cfdChartCtrl', []).
 		
   		console.log(data);
   		return data;
+	};
+
+	var addDatesBetweenCategories = function (data, x, dateTimestamp) {
+		// get last date in categories[x-1]?
+		var catDate = data.categories[x-1];
+		var date = moment(dateTimestamp).format("MMM DD, YYYY");
+		var catDateTimestamp = getTimestamp(catDate);
+		var numDatesBetweenDates = moment.duration(dateTimestamp - catDateTimestamp).asDays();
+
+		// loop through day between catDate and date adding to data.categories, doneCount, and wipCount
+		for (var i=1; i < numDatesBetweenDates; i++) {
+			var newDate = moment(getTimestamp(catDate)).add('days', i).format("MMM DD, YYYY");
+			data.wipCount.push(data.wipCount[x-1]);
+			data.doneCount.push(data.doneCount[x-1]);
+			data.categories.push(newDate);
+		}
+		x = x + i - 1;
+		var obj = {
+			data: data,
+			x: x
+		};
+		return x;
 	};
 
 	var addCategory = function (categories, date) {

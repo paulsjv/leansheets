@@ -61,8 +61,8 @@ angular.module('cfdChartCtrl', []).
 	                }
 	            },
 	            exporting: {
-	            	sourceWidth: 600,
-	            	sourceHeight: 400
+	            	sourceWidth: 1600,
+	            	sourceHeight: 1200
 			        
 			    }
 			},
@@ -177,7 +177,6 @@ angular.module('cfdChartCtrl', []).
 	var addDatesBetweenCategories = function (data, x, dateTimestamp) {
 		// get last date in categories[x-1]?
 		var catDate = data.categories[x-1];
-		var date = moment(dateTimestamp).format("MMM DD, YYYY");
 		var catDateTimestamp = getTimestamp(catDate);
 		var numDatesBetweenDates = moment.duration(dateTimestamp - catDateTimestamp).asDays();
 
@@ -189,10 +188,6 @@ angular.module('cfdChartCtrl', []).
 			data.categories.push(newDate);
 		}
 		x = x + i - 1;
-		var obj = {
-			data: data,
-			x: x
-		};
 		return x;
 	};
 

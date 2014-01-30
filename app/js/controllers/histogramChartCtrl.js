@@ -40,6 +40,11 @@ angular.module('histogramChartCtrl', []).
           title: {
             text: 'Fequency'
           }
+        },
+        exporting: {
+              sourceWidth: 1600,
+              sourceHeight: 1200
+            
         }
 			},
 			series: [{

@@ -59,8 +59,8 @@ angular.module('controlChartCtrl', []).
 	              		}]
 	            },
 	            exporting: {
-	            	sourceWidth: 600,
-	            	sourceHeight: 400
+	            	sourceWidth: 1600,
+	            	sourceHeight: 1200
 			        
 			    }
 			},

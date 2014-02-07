@@ -166,7 +166,6 @@ angular.module('cfdChartCtrl', []).
 			}
 		}
 		
-  		console.log(data);
   		return data;
 	};
 

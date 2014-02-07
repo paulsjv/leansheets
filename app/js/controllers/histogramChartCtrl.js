@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('histogramChartCtrl', []).
-  controller('HistogramChartCtrl', ['$scope', 'DataService', function($scope, DataService) {
+  controller('HistogramChartCtrl', ['$scope', 'DataService', '$window', function($scope, DataService, $window) {
   	var directivePromise = DataService.getData('Feature');
   	directivePromise.then(function (success){
   		$scope.featureConfig = $scope.getOptionsForChart('Feature', $scope.parseData(success));
@@ -27,7 +27,7 @@ angular.module('histogramChartCtrl', []).
 		return {
 			options: {
 				chart: {
-					type: 'column'
+					zoomType: 'xy'
 				},
 				xAxis: {
           	title: {
@@ -35,12 +35,17 @@ angular.module('histogramChartCtrl', []).
           	},
         	categories: data.categories
         },
-        yAxis: {
+        yAxis: [{
           min: 0,
           title: {
             text: 'Fequency'
           }
-        },
+        },{
+          gridLineWidth: 0,
+          title: {
+            text: 'Percentage of Total'
+          }
+        }],
         exporting: {
               sourceWidth: 1600,
               sourceHeight: 1200
@@ -48,8 +53,13 @@ angular.module('histogramChartCtrl', []).
         }
 			},
 			series: [{
-        data: data.frequency
-			}],
+        data: data.frequency,
+        yAxis: 1,
+        type: 'column'
+			},{
+        data: data.percentOfTotal,
+        type: 'spline'
+      }],
 			title: {
 				text: title + ' Histogram'
 			}
@@ -62,12 +72,16 @@ $scope.parseData = function (csv) {
     var data = new Array();
     var obj = {
       categories: new Array(),
-      frequency: new Array()
+      frequency: new Array(),
+      percentOfTotal: new Array()
     };
 
     var lines = csv.split("\n");
     lines = $scope.popLastIndexOfArrayIfEmpty(lines);   
-    
+    console.log(csv);
+    console.log(lines);
+    var total = 0;
+
     for (var i in lines) {
       var line = lines[i].split(",");
       if (!data[line[1]]) {
@@ -75,15 +89,20 @@ $scope.parseData = function (csv) {
       } else {
           data[line[1]]++;
       }
+      total = total +1;
     }
-
+    console.log(total);
+    console.log(data);
+    var cumTotal = 0;
     $.each(data, function(key, value) {
       if (value !== undefined && value !== null && value != "") {
         obj.categories.push(key);
         obj.frequency.push(value);
+        cumTotal = cumTotal + value;
+        obj.percentOfTotal.push($window.Math.round((cumTotal/total) * 100));
       }
     });
-
+    console.log(obj);
     return obj;
   };
 

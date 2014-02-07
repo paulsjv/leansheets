@@ -85,10 +85,6 @@ angular.module('cfdChartCtrl', []).
 	};
 
 	var parseData = function (startDatesCsv, endDatesCsv) {
-		console.log(startDatesCsv);
-		console.log(endDatesCsv);
-		console.log($window);
-
 
 		var data = {};
   		// data.backlogCount = [];

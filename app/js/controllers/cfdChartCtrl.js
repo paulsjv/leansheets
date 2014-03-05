@@ -26,7 +26,7 @@ angular.module('cfdChartCtrl', []).
 
   	var handleSuccess = function () {
   		if (promiseDone == 2) {
-  			var data = parseData(startDates, endDates);
+  			var data = $scope.parseData(startDates, endDates);
   			var options = getOptionsForChart('Feature', data);
   			$scope.featureConfig = options;
   		}
@@ -84,7 +84,7 @@ angular.module('cfdChartCtrl', []).
 		}
 	};
 
-	var parseData = function (startDatesCsv, endDatesCsv) {
+	$scope.parseData = function (startDatesCsv, endDatesCsv) {
 
 		var data = {};
   		// data.backlogCount = [];

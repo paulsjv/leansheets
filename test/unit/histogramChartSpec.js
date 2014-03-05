@@ -64,9 +64,7 @@ describe('histogramChartCtrl Tests', function(){
 
 
 			var data = $scope.parseData(csv);
-			console.log(data);
-			console.log(data.categories);
-			console.log(data.frequency);
+
 			expect(data.categories.length).toEqual(8);
 			expect(data.categories[0]).toEqual(1);
 			expect(data.categories[1]).toEqual(3);

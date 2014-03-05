@@ -6,6 +6,7 @@ module.exports = function(config){
       'app/lib/jquery-1.10.2/jquery-1.10.2.min.js',
       'app/lib/angular/angular.js',
       'app/lib/angular/angular-*.js',
+      'app/lib/moment-2.5.1/moment.min.js',
       'test/lib/angular/angular-mocks.js',
       'app/js/**/*.js',
       'test/unit/**/*.js'

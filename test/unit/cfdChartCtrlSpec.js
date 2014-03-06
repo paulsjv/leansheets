@@ -65,7 +65,7 @@ describe('cfdChartCtrl Tests', function(){
 			};
 		}));
 
-		it('should ....', inject(function() {
+		it('should parseData correctly', inject(function() {
 			var controller = createController();
 			var startDatesCsv = "\"Dec 9, 2013\",9\n"+
 								"\"Dec 12, 2013\",1\n"+
@@ -99,10 +99,10 @@ describe('cfdChartCtrl Tests', function(){
 
 
 			var data = $scope.parseData(startDatesCsv, endDatesCsv);
-			console.log(data);
-			console.log(data.wipCount);
-			console.log(data.doneCount);
-			console.log(data.categories);
+			// console.log(data);
+			// console.log(data.wipCount);
+			// console.log(data.doneCount);
+			// console.log(data.categories);
 			
 			expect(data.categories.length).toEqual(64);			
 			expect(data.categories[0]).toEqual("Dec 9, 2013");
@@ -133,6 +133,22 @@ describe('cfdChartCtrl Tests', function(){
 			expect(data.doneCount[5]).toEqual(1);
 			expect(data.doneCount[62]).toEqual(19);
 			expect(data.doneCount[63]).toEqual(19);
+		}));
+
+		it('should getTimeStamp correctly', inject(function() {
+			var controller = createController();
+			var date = "Dec 9, 2013";
+			var actual = $scope.getTimestamp(date);
+			expect(actual).toEqual(1386568800000);
+		}));
+
+		it('should getTimeStamp return null', inject(function() {
+			var controller = createController();
+			var actual = $scope.getTimestamp(null);
+			expect(actual).toEqual(null);
+
+			actual = $scope.getTimestamp("");
+			expect(actual).toEqual(null);
 		}));
 
 	});

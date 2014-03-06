@@ -104,8 +104,8 @@ angular.module('cfdChartCtrl', []).
 	  		var sDateArray = getDates(startDates[i]);
 			var eDateArray = getDates(endDates[j]);
 
-			var sTimestamp = getTimestamp(getDateFromArray(sDateArray));
-			var eTimestamp = getTimestamp(getDateFromArray(eDateArray));
+			var sTimestamp = $scope.getTimestamp(getDateFromArray(sDateArray));
+			var eTimestamp = $scope.getTimestamp(getDateFromArray(eDateArray));
 
 			var tomorrow = moment(sTimestamp).add('days', 1).unix() * 1000;//.calendar();
 			var today = moment(sTimestamp).subtract('days', 1).unix() * 1000;
@@ -172,12 +172,12 @@ angular.module('cfdChartCtrl', []).
 	var addDatesBetweenCategories = function (data, x, dateTimestamp) {
 		// get last date in categories[x-1]?
 		var catDate = data.categories[x-1];
-		var catDateTimestamp = getTimestamp(catDate);
+		var catDateTimestamp = $scope.getTimestamp(catDate);
 		var numDatesBetweenDates = moment.duration(dateTimestamp - catDateTimestamp).asDays();
 
 		// loop through day between catDate and date adding to data.categories, doneCount, and wipCount
 		for (var i=1; i < numDatesBetweenDates; i++) {
-			var newDate = moment(getTimestamp(catDate)).add('days', i).format("MMM DD, YYYY");
+			var newDate = moment($scope.getTimestamp(catDate)).add('days', i).format("MMM DD, YYYY");
 			data.wipCount.push(data.wipCount[x-1]);
 			data.doneCount.push(data.doneCount[x-1]);
 			data.categories.push(newDate);
@@ -187,8 +187,8 @@ angular.module('cfdChartCtrl', []).
 	};
 
 	var addCategory = function (categories, date) {
-		var dateTimestamp = getTimestamp(date);
-		var lastDateTimestamp = getTimestamp(categories[categories.lastIndexOf()]);
+		var dateTimestamp = $scope.getTimestamp(date);
+		var lastDateTimestamp = $scope.getTimestamp(categories[categories.lastIndexOf()]);
 		if (isNaN(lastDateTimestamp)) {
 			categories.push(date);
 		} else if (dateTimestamp > lastDateTimestamp) {
@@ -241,23 +241,11 @@ angular.module('cfdChartCtrl', []).
 		return null;
 	};
 
-	var getTimestamp = function (date) {
-		if (date !== null) {
+	$scope.getTimestamp = function (date) {
+		if (date !== null && date !== "") {
 			return $window.Date.parse(date);
 		}
 		return null;
-	};
-
-	var processDates = function (i, j, data, startDateLine, endDateLine) {
-		var sDateArray = startDateLine.split(",");
-		var eDateArray = endDateLine.split(",");
-
-		var sTimestamp = $window.Date.parse(sDateArray[0]);
-		var eTimestamp = $window.Date.parse(eDateArray[0]);
-
-		if (i == 0) {
-			data.backlogCount.push()
-		}
 	};
 
 	$scope.popLastIndexOfArrayIfEmpty = function (arry) {

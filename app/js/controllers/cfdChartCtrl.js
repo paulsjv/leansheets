@@ -132,7 +132,7 @@ angular.module('cfdChartCtrl', []).
 			} else {
 				// if sTimestamp and eTimestamp !== NULL 
 				if ($scope.isEndDateGtStartDate(sTimestamp, eTimestamp) || (eTimestamp === null && sTimestamp !== null)) {
-					x = addDatesBetweenCategories(data, x, sTimestamp);
+					x = $scope.addDatesBetweenCategories(data, x, sTimestamp);
 
 					// data.backlogCount.push(data.backlogCount[x-1] + parseInt(sDateArray[1]));
 					data.wipCount.push(data.wipCount[x-1] + parseInt(sDateArray[1]));
@@ -142,7 +142,7 @@ angular.module('cfdChartCtrl', []).
 				}
 				// else eTimestamp < sTimestamp 
 				else if ($scope.isEndDateLtStartDate(sTimestamp, eTimestamp) || (eTimestamp !== null && sTimestamp === null)) {
-					x = addDatesBetweenCategories(data, x, eTimestamp);
+					x = $scope.addDatesBetweenCategories(data, x, eTimestamp);
 					
 					// data.backlogCount.push(data.backlogCount[x-1]);
 					data.wipCount.push(data.wipCount[x-1] - parseInt(eDateArray[1]));
@@ -153,7 +153,7 @@ angular.module('cfdChartCtrl', []).
 				} 
 				// if sTimestamp and eTimestamp !== NULL && equal
 				else if ($scope.isStartDateEqEndDate(sTimestamp, eTimestamp)) {
-					x = addDatesBetweenCategories(data, x, sTimestamp);
+					x = $scope.addDatesBetweenCategories(data, x, sTimestamp);
 
 					// data.backlogCount.push(data.backlogCount[x-1] + parseInt(sDateArray[1]));
 					data.wipCount.push(data.wipCount[x-1] + parseInt(sDateArray[1] - parseInt(eDateArray[1])));
@@ -169,7 +169,7 @@ angular.module('cfdChartCtrl', []).
   		return data;
 	};
 
-	var addDatesBetweenCategories = function (data, x, dateTimestamp) {
+	$scope.addDatesBetweenCategories = function (data, x, dateTimestamp) {
 		// get last date in categories[x-1]?
 		var catDate = data.categories[x-1];
 		var catDateTimestamp = $scope.getTimestamp(catDate);

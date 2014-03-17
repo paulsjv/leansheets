@@ -369,6 +369,23 @@ describe('cfdChartCtrl Tests', function(){
 			expect(actual.length).toEqual(4);
 		}));
 
+		it('should addDatesBetweenCategories return x', inject(function() {
+			var controller = createController();
+			var data = {
+				categories: ["Dec 9, 2013","Dec 10, 2013","Dec 11, 2013","Dec 12, 2013","Dec 13, 2013",],
+				doneCount: [0,0,1,1,1],
+				wipCount: [9,9,8,9,11]
+			};
+			var x = 5;
+			var dateTimestamp = 1387260000000;
+
+			var actual = $scope.addDatesBetweenCategories(data, x, dateTimestamp);
+			expect(actual).toEqual(8);
+			expect(data.categories.length).toEqual(8);
+			expect(data.doneCount.length).toEqual(8);
+			expect(data.wipCount.length).toEqual(8);
+		}));
+
 	});
 
 });

@@ -198,31 +198,39 @@ angular.module('cfdChartCtrl', []).
 	};
 
 	var isEndDateLtStartDate = function (start, end) {
-		if ((isStartAndEndNotNull(start, end)) && end < start) {
+		if (($scope.isStartAndEndNotNull(start, end)) && end < start) {
 			return true;
 		}
 		return false;
 	};
 
 	var isEndDateGtStartDate = function (start, end) {
-		if ((isStartAndEndNotNull(start, end)) && end > start) {
+		if (($scope.isStartAndEndNotNull(start, end)) && end > start) {
 			return true;
 		}
 		return false;
 	};
 
 	var isStartDateEqEndDate = function (start, end) {
-		if ((isStartAndEndNotNull(start, end)) && (start == end)) {
+		if (($scope.isStartAndEndNotNull(start, end)) && (start == end)) {
 			return true;
 		} 
 		return false;
 	};
 
-	var isStartAndEndNotNull = function (start, end) {
-		if ((start !== null && end !== null)) {
+	$scope.isStartAndEndNotNull = function (start, end) {
+		if (($scope.nullEmptyOrUndefined(start) !== null && 
+			$scope.nullEmptyOrUndefined(end) !== null)) {
 			return true;
 		} 
 		return false;
+	};
+
+	$scope.nullEmptyOrUndefined = function(toNull) {
+		if (toNull === "" || toNull === undefined) {
+			return null;
+		}
+		return toNull;
 	};
 
 	$scope.getDateFromArray = function (dates) {

@@ -192,6 +192,55 @@ describe('cfdChartCtrl Tests', function(){
 			expect(actual).toEqual("\"Dec 9, 2013\",9");
 		}));
 
+		it('should isStartAndEndNotNull return false', inject(function() {
+			var controller = createController();
+			var actual = $scope.isStartAndEndNotNull(null, null);
+			expect(actual).toEqual(false);
+
+			actual = $scope.isStartAndEndNotNull("", "");
+			expect(actual).toEqual(false);
+
+			actual = $scope.isStartAndEndNotNull(undefined, undefined);
+			expect(actual).toEqual(false);
+
+			actual = $scope.isStartAndEndNotNull(null, 1393912800000);
+			expect(actual).toEqual(false);
+
+			actual = $scope.isStartAndEndNotNull(1393912800000, null);
+			expect(actual).toEqual(false);
+
+			actual = $scope.isStartAndEndNotNull("", 1393912800000);
+			expect(actual).toEqual(false);
+
+			actual = $scope.isStartAndEndNotNull(1393912800000, "");
+			expect(actual).toEqual(false);
+
+			actual = $scope.isStartAndEndNotNull(undefined, 1393912800000);
+			expect(actual).toEqual(false);
+
+			actual = $scope.isStartAndEndNotNull(1393912800000, undefined);
+			expect(actual).toEqual(false);
+		}));
+
+		it('should isStartAndEndNotNull return false', inject(function() {
+			var controller = createController();
+			var actual = $scope.isStartAndEndNotNull(1393912800000, 1393912800000);
+			expect(actual).toEqual(true);
+		}));
+
+		it('should nullEmptyOrUndefined return null', inject(function() {
+			var controller = createController();
+
+			var actual = $scope.nullEmptyOrUndefined("");
+			expect(actual).toEqual(null);
+
+			actual = $scope.nullEmptyOrUndefined(undefined);
+			expect(actual).toEqual(null);
+
+			actual = $scope.nullEmptyOrUndefined("toNull");
+			expect(actual).toEqual("toNull");
+		}));
+
 	});
 
 });

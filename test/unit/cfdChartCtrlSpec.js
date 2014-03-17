@@ -241,6 +241,36 @@ describe('cfdChartCtrl Tests', function(){
 			expect(actual).toEqual("toNull");
 		}));
 
+		it('should isStartDateEqEndDate return ture', inject(function() {
+			var controller = createController();
+			var actual = $scope.isStartDateEqEndDate(1393912800000, 1393912800000);
+			expect(actual).toEqual(true);
+		}));
+
+		it('should isStartDateEqEndDate return false', inject(function() {
+			var controller = createController();
+			var actual = $scope.isStartDateEqEndDate(1393912800001, 1393912800000);
+			expect(actual).toEqual(false);
+
+			actual = $scope.isStartDateEqEndDate(null, 1393912800000);
+			expect(actual).toEqual(false);
+
+			actual = $scope.isStartDateEqEndDate(1393912800001, null);
+			expect(actual).toEqual(false);
+
+			actual = $scope.isStartDateEqEndDate("", 1393912800000);
+			expect(actual).toEqual(false);
+
+			actual = $scope.isStartDateEqEndDate(1393912800001, "");
+			expect(actual).toEqual(false);
+
+			actual = $scope.isStartDateEqEndDate(undefined, 1393912800000);
+			expect(actual).toEqual(false);
+
+			actual = $scope.isStartDateEqEndDate(1393912800001, undefined);
+			expect(actual).toEqual(false);
+		}));
+
 	});
 
 });

@@ -141,7 +141,7 @@ angular.module('cfdChartCtrl', []).
 					i++;
 				}
 				// else eTimestamp < sTimestamp 
-				else if (isEndDateLtStartDate(sTimestamp, eTimestamp) || (eTimestamp !== null && sTimestamp === null)) {
+				else if ($scope.isEndDateLtStartDate(sTimestamp, eTimestamp) || (eTimestamp !== null && sTimestamp === null)) {
 					x = addDatesBetweenCategories(data, x, eTimestamp);
 					
 					// data.backlogCount.push(data.backlogCount[x-1]);
@@ -197,7 +197,7 @@ angular.module('cfdChartCtrl', []).
 		return categories;
 	};
 
-	var isEndDateLtStartDate = function (start, end) {
+	$scope.isEndDateLtStartDate = function (start, end) {
 		if (($scope.isStartAndEndNotNull(start, end)) && end < start) {
 			return true;
 		}

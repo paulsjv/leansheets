@@ -224,7 +224,9 @@ describe('cfdChartCtrl Tests', function(){
 
 		it('should isStartAndEndNotNull return false', inject(function() {
 			var controller = createController();
-			var actual = $scope.isStartAndEndNotNull(1, 1);
+			var start = 1;
+			var end = 1;
+			var actual = $scope.isStartAndEndNotNull(start, end);
 			expect(actual).toEqual(true);
 		}));
 
@@ -243,61 +245,103 @@ describe('cfdChartCtrl Tests', function(){
 
 		it('should isStartDateEqEndDate return ture', inject(function() {
 			var controller = createController();
-			var actual = $scope.isStartDateEqEndDate(1, 1);
+			var start = 1;
+			var end = 1;
+			var actual = $scope.isStartDateEqEndDate(start, end);
 			expect(actual).toEqual(true);
 		}));
 
 		it('should isStartDateEqEndDate return false', inject(function() {
 			var controller = createController();
-			var actual = $scope.isStartDateEqEndDate(2, 1);
+			var start = 2;
+			var end = 1;
+			var actual = $scope.isStartDateEqEndDate(start, end);
 			expect(actual).toEqual(false);
 
-			actual = $scope.isStartDateEqEndDate(null, 1);
+			actual = $scope.isStartDateEqEndDate(null, end);
 			expect(actual).toEqual(false);
 
-			actual = $scope.isStartDateEqEndDate(1, null);
+			actual = $scope.isStartDateEqEndDate(start, null);
 			expect(actual).toEqual(false);
 
-			actual = $scope.isStartDateEqEndDate("", 1);
+			actual = $scope.isStartDateEqEndDate("", end);
 			expect(actual).toEqual(false);
 
-			actual = $scope.isStartDateEqEndDate(1, "");
+			actual = $scope.isStartDateEqEndDate(start, "");
 			expect(actual).toEqual(false);
 
-			actual = $scope.isStartDateEqEndDate(undefined, 1);
+			actual = $scope.isStartDateEqEndDate(undefined, end);
 			expect(actual).toEqual(false);
 
-			actual = $scope.isStartDateEqEndDate(1, undefined);
+			actual = $scope.isStartDateEqEndDate(start, undefined);
 			expect(actual).toEqual(false);
 		}));
 
 		it('should isEndDateGtStartDate return ture', inject(function() {
 			var controller = createController();
-			var actual = $scope.isEndDateGtStartDate(1, 2);
+			var start = 1;
+			var end = 2;
+			var actual = $scope.isEndDateGtStartDate(start, end);
 			expect(actual).toEqual(true);
 		}));
 
 		it('should isEndDateGtStartDate return false', inject(function() {
 			var controller = createController();
-			var actual = $scope.isEndDateGtStartDate(2, 1);
+			var start = 2;
+			var end = 1;
+			var actual = $scope.isEndDateGtStartDate(start, end);
 			expect(actual).toEqual(false);
 
-			actual = $scope.isEndDateGtStartDate(2, null);
+			actual = $scope.isEndDateGtStartDate(start, null);
 			expect(actual).toEqual(false);
 
-			actual = $scope.isEndDateGtStartDate(null, 2);
+			actual = $scope.isEndDateGtStartDate(null, end);
 			expect(actual).toEqual(false);
 
-			actual = $scope.isEndDateGtStartDate(2, "");
+			actual = $scope.isEndDateGtStartDate(start, "");
 			expect(actual).toEqual(false);
 
-			actual = $scope.isEndDateGtStartDate("", 2);
+			actual = $scope.isEndDateGtStartDate("", end);
 			expect(actual).toEqual(false);
 
-			actual = $scope.isEndDateGtStartDate(2, undefined);
+			actual = $scope.isEndDateGtStartDate(start, undefined);
 			expect(actual).toEqual(false);
 
-			actual = $scope.isEndDateGtStartDate(undefined, 2);
+			actual = $scope.isEndDateGtStartDate(undefined, end);
+			expect(actual).toEqual(false);
+		}));
+
+		it('should isEndDateLtStartDate return ture', inject(function() {
+			var controller = createController();
+			var start = 2;
+			var end = 1;
+			var actual = $scope.isEndDateLtStartDate(start, end);
+			expect(actual).toEqual(true);
+		}));
+
+		it('should isEndDateLtStartDate return false', inject(function() {
+			var controller = createController();
+			var start = 1;
+			var end = 2;
+			var actual = $scope.isEndDateLtStartDate(start, end);
+			expect(actual).toEqual(false);
+
+			actual = $scope.isEndDateLtStartDate(start, null);
+			expect(actual).toEqual(false);
+
+			actual = $scope.isEndDateLtStartDate(null, end);
+			expect(actual).toEqual(false);
+
+			actual = $scope.isEndDateLtStartDate(start, "");
+			expect(actual).toEqual(false);
+
+			actual = $scope.isEndDateLtStartDate("", end);
+			expect(actual).toEqual(false);
+
+			actual = $scope.isEndDateLtStartDate(start, undefined);
+			expect(actual).toEqual(false);
+
+			actual = $scope.isEndDateLtStartDate(undefined, end);
 			expect(actual).toEqual(false);
 		}));
 

@@ -126,7 +126,7 @@ angular.module('cfdChartCtrl', []).
 					data.doneCount.push(0);
 					data.wipCount.push(parseInt(sDateArray[1]));
 				}
-				data.categories = addCategory(data.categories, sDateArray[0]);
+				data.categories = $scope.addCategory(data.categories, sDateArray[0]);
 				i++;
 				x++;				
 			} else {
@@ -137,7 +137,7 @@ angular.module('cfdChartCtrl', []).
 					// data.backlogCount.push(data.backlogCount[x-1] + parseInt(sDateArray[1]));
 					data.wipCount.push(data.wipCount[x-1] + parseInt(sDateArray[1]));
 					data.doneCount.push(data.doneCount[x-1]);
-					data.categories = addCategory(data.categories, sDateArray[0]);
+					data.categories = $scope.addCategory(data.categories, sDateArray[0]);
 					i++;
 				}
 				// else eTimestamp < sTimestamp 
@@ -148,7 +148,7 @@ angular.module('cfdChartCtrl', []).
 					data.wipCount.push(data.wipCount[x-1] - parseInt(eDateArray[1]));
 					data.doneCount.push(data.doneCount[x-1] + parseInt(eDateArray[1]));
 					j++;
-					data.categories = addCategory(data.categories, eDateArray[0]);
+					data.categories = $scope.addCategory(data.categories, eDateArray[0]);
 
 				} 
 				// if sTimestamp and eTimestamp !== NULL && equal
@@ -158,7 +158,7 @@ angular.module('cfdChartCtrl', []).
 					// data.backlogCount.push(data.backlogCount[x-1] + parseInt(sDateArray[1]));
 					data.wipCount.push(data.wipCount[x-1] + parseInt(sDateArray[1] - parseInt(eDateArray[1])));
 					data.doneCount.push(data.doneCount[x-1] + parseInt(eDateArray[1]));
-					data.categories = addCategory(data.categories, sDateArray[0]);
+					data.categories = $scope.addCategory(data.categories, sDateArray[0]);
 					j++;
 					i++;
 				}
@@ -186,9 +186,9 @@ angular.module('cfdChartCtrl', []).
 		return x;
 	};
 
-	var addCategory = function (categories, date) {
+	$scope.addCategory = function (categories, date) {
 		var dateTimestamp = $scope.getTimestamp(date);
-		var lastDateTimestamp = $scope.getTimestamp(categories[categories.lastIndexOf()]);
+		var lastDateTimestamp = $scope.getTimestamp(categories[categories.length-1]);
 		if (isNaN(lastDateTimestamp)) {
 			categories.push(date);
 		} else if (dateTimestamp > lastDateTimestamp) {

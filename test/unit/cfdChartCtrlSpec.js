@@ -345,6 +345,30 @@ describe('cfdChartCtrl Tests', function(){
 			expect(actual).toEqual(false);
 		}));
 
+		it('should addCategory return array length 3', inject(function() {
+			var controller = createController();
+			var categories = ["Dec 9, 2013","Dec 10, 2013"];
+			var date = "Dec 11, 2013";
+			var actual = $scope.addCategory(categories, date);
+			expect(actual.length).toEqual(3);
+		}));
+
+		it('should addCategory return array length 2', inject(function() {
+			var controller = createController();
+			var categories = ["Dec 9, 2013","Dec 10, 2013"];
+			var date = "Dec 10, 2013";
+			var actual = $scope.addCategory(categories, date);
+			expect(actual.length).toEqual(2);
+		}));
+
+		it('should addCategory return array length 4', inject(function() {
+			var controller = createController();
+			var categories = ["Dec 9, 2013","Dec 10, 2013",null];
+			var date = "Dec 10, 2013";
+			var actual = $scope.addCategory(categories, date);
+			expect(actual.length).toEqual(4);
+		}));
+
 	});
 
 });

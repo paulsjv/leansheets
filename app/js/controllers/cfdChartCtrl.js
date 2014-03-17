@@ -104,8 +104,8 @@ angular.module('cfdChartCtrl', []).
 	  		var sDateArray = $scope.getDates(startDates[i]);
 			var eDateArray = $scope.getDates(endDates[j]);
 
-			var sTimestamp = $scope.getTimestamp(getDateFromArray(sDateArray));
-			var eTimestamp = $scope.getTimestamp(getDateFromArray(eDateArray));
+			var sTimestamp = $scope.getTimestamp($scope.getDateFromArray(sDateArray));
+			var eTimestamp = $scope.getTimestamp($scope.getDateFromArray(eDateArray));
 
 			var tomorrow = moment(sTimestamp).add('days', 1).unix() * 1000;//.calendar();
 			var today = moment(sTimestamp).subtract('days', 1).unix() * 1000;
@@ -225,8 +225,8 @@ angular.module('cfdChartCtrl', []).
 		return false;
 	};
 
-	var getDateFromArray = function (dates) {
-		if (dates !== null && dates !== undefined) {
+	$scope.getDateFromArray = function (dates) {
+		if (dates !== null && dates !== undefined && dates !== "") {
 			return dates[0];
 		}
 		return null;
@@ -235,7 +235,7 @@ angular.module('cfdChartCtrl', []).
 	$scope.getDates = function (dates) {
 		if (dates !== null && dates !== undefined && dates != "") {
 			var dateArray = dates.split("\",");
-			dateArray[0] = getDateFromArray(dateArray).replace("\"","");
+			dateArray[0] = $scope.getDateFromArray(dateArray).replace("\"","");
 			return dateArray;
 		}
 		return null;

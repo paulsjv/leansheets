@@ -173,6 +173,25 @@ describe('cfdChartCtrl Tests', function(){
 			expect(actual[0]).toEqual("Dec 9, 2013");
 		}));
 
+		it('should getDateFromArray return null', inject(function() {
+			var controller = createController();
+			var actual = $scope.getDateFromArray(null);
+			expect(actual).toEqual(null);
+
+			actual = $scope.getDateFromArray("");
+			expect(actual).toEqual(null);
+
+			actual = $scope.getDateFromArray(undefined);
+			expect(actual).toEqual(null);
+		}));
+
+		it('should getDateFromArray correctly', inject(function() {
+			var controller = createController();
+			var date = ["\"Dec 9, 2013\",9"];
+			var actual = $scope.getDateFromArray(date);
+			expect(actual).toEqual("\"Dec 9, 2013\",9");
+		}));
+
 	});
 
 });

@@ -6,23 +6,27 @@ angular.module('cfdChartCtrl', []).
   	var startDates;
   	var endDates;
 
-  	var cfdStartPromise = DataService.getCfdStartData('Feature');
-  	cfdStartPromise.then(function (success) {
-  		promiseDone++;
-  		startDates = success;
-  		handleSuccess();
-  	}, function (error) {
-  		alert(error);
-  	});
+	$scope.getWorkType = function(workType) {
+		var cfdStartPromise = DataService.getCfdStartData('Feature');
+	  	cfdStartPromise.then(function (success) {
+	  		promiseDone++;
+	  		startDates = success;
+	  		handleSuccess();
+	  	}, function (error) {
+	  		alert(error);
+	  	});
 
-  	var cfdEndPromise = DataService.getCfdEndData('Feature');
-  	cfdEndPromise.then(function (success) {
-  		promiseDone++;
-  		endDates = success;
-  		handleSuccess();
-  	}, function (error) {
-  		alert(error);
-  	});
+	  	var cfdEndPromise = DataService.getCfdEndData('Feature');
+	  	cfdEndPromise.then(function (success) {
+	  		promiseDone++;
+	  		endDates = success;
+	  		handleSuccess();
+	  	}, function (error) {
+	  		alert(error);
+	  	});
+  	};
+
+  	$scope.getWorkType('Feature');
 
   	var handleSuccess = function () {
   		if (promiseDone == 2) {

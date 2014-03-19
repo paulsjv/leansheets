@@ -1,10 +1,6 @@
 <div ng-controller="CfdChartCtrl">
-	<input type="">
-		<option value="Feature">Feature</option>
-		<option value="Defect">Defect</option>
-		<option value="Intangable">Intangable</option>
-		<option value="Fixed Date">Fixed Date</option>
-	</input>
+	<select ng-model="workType" ng-change="getWorkType(workType)" ng-options="t for t in workTypes"></select><br>
+	Work Type: {{workType}}
 	<highchart id="featureCfd" config="featureConfig"></highchart>
 </div>
 

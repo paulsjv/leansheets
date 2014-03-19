@@ -6,8 +6,11 @@ angular.module('cfdChartCtrl', []).
   	var startDates;
   	var endDates;
 
+  	$scope.workTypes = ["Feature","Defect","Intangable","Fixed Date"];
+  	$scope.workType = "Feature";
+
 	$scope.getWorkType = function(workType) {
-		var cfdStartPromise = DataService.getCfdStartData('Feature');
+		var cfdStartPromise = DataService.getCfdStartData($scope.workType);
 	  	cfdStartPromise.then(function (success) {
 	  		promiseDone++;
 	  		startDates = success;
@@ -16,7 +19,7 @@ angular.module('cfdChartCtrl', []).
 	  		alert(error);
 	  	});
 
-	  	var cfdEndPromise = DataService.getCfdEndData('Feature');
+	  	var cfdEndPromise = DataService.getCfdEndData($scope.workType);
 	  	cfdEndPromise.then(function (success) {
 	  		promiseDone++;
 	  		endDates = success;
@@ -26,13 +29,14 @@ angular.module('cfdChartCtrl', []).
 	  	});
   	};
 
-  	$scope.getWorkType('Feature');
+  	$scope.getWorkType($scope.workType);
 
   	var handleSuccess = function () {
   		if (promiseDone == 2) {
   			var data = $scope.parseData(startDates, endDates);
-  			var options = getOptionsForChart('Feature', data);
+  			var options = getOptionsForChart($scope.workType, data);
   			$scope.featureConfig = options;
+  			promiseDone = 0;
   		}
   	}
 

@@ -4,7 +4,7 @@ angular.module('controlChartCtrl', []).
   controller('ControlChartCtrl', ['$scope', 'DataService', '$window', function($scope, DataService, $window) {
 
   	$scope.workTypes = ["Feature","Defect","Intangable","Fixed Date"];
-  	$scope.workType = "Feature";
+  	$scope.workType = $scope.workTypes[0];
 
   	$scope.getWorkType = function(workType) {
 		var directivePromise = DataService.getData(workType);

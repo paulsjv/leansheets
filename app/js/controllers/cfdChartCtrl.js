@@ -7,7 +7,7 @@ angular.module('cfdChartCtrl', []).
   	var endDates;
 
   	$scope.workTypes = ["Feature","Defect","Intangable","Fixed Date"];
-  	$scope.workType = "Feature";
+  	$scope.workType = $scope.workTypes[0];
 
 	$scope.getWorkType = function(workType) {
 		var cfdStartPromise = DataService.getCfdStartData(workType);

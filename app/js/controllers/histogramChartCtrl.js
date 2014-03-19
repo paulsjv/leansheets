@@ -9,7 +9,7 @@ angular.module('histogramChartCtrl', []).
     $scope.getWorkType = function(workType) {
         var directivePromise = DataService.getData(workType);
         directivePromise.then(function (success){
-  		      $scope.featureConfig = $scope.getOptionsForChart('Feature', $scope.parseData(success));
+  		      $scope.featureConfig = $scope.getOptionsForChart(workType, $scope.parseData(success));
         }, function (error) {
             alert(error);
         });

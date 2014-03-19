@@ -2,26 +2,20 @@
 
 angular.module('controlChartCtrl', []).
   controller('ControlChartCtrl', ['$scope', 'DataService', '$window', function($scope, DataService, $window) {
-  	var directivePromise = DataService.getData('Feature');
-  	directivePromise.then(function (success){
-  		$scope.featureConfig = getOptionsForChart('Feature', parseData(success));
-  	}, function (error) {
-  		alert(error);
-  	});
 
-  	var defectsPromise = DataService.getData('Defect');
-  	defectsPromise.then(function (success) {
-  		$scope.defectConfig = getOptionsForChart('Defect', parseData(success));
-  	}, function (error) {
-  		alert(error);
-  	});
+  	$scope.workTypes = ["Feature","Defect","Intangable","Fixed Date"];
+  	$scope.workType = "Feature";
 
-  	var defectsPromise = DataService.getData('Intangable');
-  	defectsPromise.then(function (success) {
-  		$scope.intangableConfig = getOptionsForChart('Intangable', parseData(success));
-  	}, function (error) {
-  		alert(error);
-  	});
+  	$scope.getWorkType = function(workType) {
+		var directivePromise = DataService.getData(workType);
+	  	directivePromise.then(function (success){
+	  		$scope.featureConfig = getOptionsForChart(workType, parseData(success));
+	  	}, function (error) {
+	  		alert(error);
+	  	});
+  	};
+
+  	$scope.getWorkType($scope.workType);
 
 	var getOptionsForChart = function (title, data) {
 		return {

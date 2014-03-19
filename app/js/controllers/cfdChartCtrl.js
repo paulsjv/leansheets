@@ -10,7 +10,7 @@ angular.module('cfdChartCtrl', []).
   	$scope.workType = "Feature";
 
 	$scope.getWorkType = function(workType) {
-		var cfdStartPromise = DataService.getCfdStartData($scope.workType);
+		var cfdStartPromise = DataService.getCfdStartData(workType);
 	  	cfdStartPromise.then(function (success) {
 	  		promiseDone++;
 	  		startDates = success;
@@ -19,7 +19,7 @@ angular.module('cfdChartCtrl', []).
 	  		alert(error);
 	  	});
 
-	  	var cfdEndPromise = DataService.getCfdEndData($scope.workType);
+	  	var cfdEndPromise = DataService.getCfdEndData(workType);
 	  	cfdEndPromise.then(function (success) {
 	  		promiseDone++;
 	  		endDates = success;

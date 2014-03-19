@@ -11,9 +11,7 @@
 </div>
 
 <div ng-controller="HistogramChartCtrl">
+	<select ng-model="workType" ng-change="getWorkType(workType)" ng-options="t for t in workTypes"></select><br>
+	Work Type: {{workType}}
 	<highchart id="featureHistogram" config="featureConfig"></highchart>
-
-	<highchart id="defectHistogram" config="defectConfig"></highchart>
-
-	<highchart id="intangableHistogram" config="intangableConfig"></highchart>
 </div>

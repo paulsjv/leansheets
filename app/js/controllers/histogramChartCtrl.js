@@ -2,26 +2,20 @@
 
 angular.module('histogramChartCtrl', []).
     controller('HistogramChartCtrl', ['$scope', 'DataService', '$window', function($scope, DataService, $window) {
-        var directivePromise = DataService.getData('Feature');
+    
+    $scope.workTypes = ["Feature","Defect","Intangable","Fixed Date"];
+    $scope.workType = "Feature";
+
+    $scope.getWorkType = function(workType) {
+        var directivePromise = DataService.getData(workType);
         directivePromise.then(function (success){
   		      $scope.featureConfig = $scope.getOptionsForChart('Feature', $scope.parseData(success));
         }, function (error) {
             alert(error);
         });
+    };
 
-        var defectsPromise = DataService.getData('Defect');
-        defectsPromise.then(function (success) {
-            $scope.defectConfig = $scope.getOptionsForChart('Defect', $scope.parseData(success));
-        }, function (error) {
-            alert(error);
-        });
-
-        var defectsPromise = DataService.getData('Intangable');
-        defectsPromise.then(function (success) {
-            $scope.intangableConfig = $scope.getOptionsForChart('Intangable', $scope.parseData(success));
-        }, function (error) {
-            alert(error);
-        });
+    $scope.getWorkType($scope.workType);
 
     $scope.getOptionsForChart = function (title, data) {
 		    return {

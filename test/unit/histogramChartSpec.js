@@ -86,6 +86,38 @@ describe('histogramChartCtrl Tests', function(){
 			expect(data.frequency[7]).toEqual(3);
 		}));
 
+		it('should ....', inject(function() {
+			console.log("in histogram test");
+			var x = 0;
+			function doSomething() {
+				x = x +1;
+
+				var func = function () {
+					return x;
+				}
+
+				return func;
+			};
+
+			console.log(x);
+			expect(x).toEqual(0);
+
+			var func1 = doSomething();
+			console.log(x);
+			expect(x).toEqual(1);
+
+			console.log(x);
+			expect(func1()).toEqual(1);
+
+			doSomething();
+
+			console.log(x);
+			expect(x).toEqual(2);
+
+			expect(func1()).toEqual(2);
+
+		}));
+
 	});
 
 });

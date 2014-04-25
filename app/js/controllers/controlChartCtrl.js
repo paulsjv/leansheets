@@ -25,7 +25,7 @@ angular.module('controlChartCtrl', []).
 				},
 				xAxis: {
 	              	title: {
-	                	text: 'End Dates'
+	                	text: 'Stories'
 	              	},
 	            	categories: data.endDates
 	            },
@@ -94,7 +94,7 @@ angular.module('controlChartCtrl', []).
     		var obj = {};
     		obj.y = parseInt(line[1]);
     		obj.name = line[2] + ' - ' + line[3];
-    		data.endDates.push(line[0]);
+    		data.endDates.push(i);
     		data.leadTimes.push(obj);
     		leadTimeSum.push(obj.y);
   		}

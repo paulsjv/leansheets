@@ -1,3 +1,9 @@
+<div ng-controller="D3ControlChartCtrl">
+	<select ng-model="workType" ng-change="getWorkType(workType)" ng-options="t for t in workTypes"></select><br>
+	Work Type: {{workType}}
+	<highchart id="featureHistogram" config="featureConfig"></highchart>
+</div>
+
 <div ng-controller="HistogramChartCtrl">
 	<select ng-model="workType" ng-change="getWorkType(workType)" ng-options="t for t in workTypes"></select><br>
 	Work Type: {{workType}}

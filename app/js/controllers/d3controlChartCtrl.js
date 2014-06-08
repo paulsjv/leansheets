@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('controlChartCtrl', []).
-  controller('ControlChartCtrl', ['$scope', 'DataService', '$window', function($scope, DataService, $window) {
+angular.module('d3controlChartCtrl', []).
+  controller('D3ControlChartCtrl', ['$scope', 'DataService', '$window', function($scope, DataService, $window) {
 
   	// $scope.workTypes = ["Display","Defect","CMS","Platform","Expedite"];
   	$scope.workTypes = ["Standard","Intangable","Fixed Date","Expedite"];

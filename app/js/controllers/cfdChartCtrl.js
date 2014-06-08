@@ -6,7 +6,8 @@ angular.module('cfdChartCtrl', []).
   	var startDates;
   	var endDates;
 
-  	$scope.workTypes = ["Display","Defect","CMS","Platform","Expedite"];
+  	// $scope.workTypes = ["Display","Defect","CMS","Platform","Expedite"];
+  	$scope.workTypes = ["Standard","Intangable","Fixed Date","Expedite"];
   	$scope.workType = $scope.workTypes[0];
 
 	$scope.getWorkType = function(workType) {
@@ -93,7 +94,7 @@ angular.module('cfdChartCtrl', []).
 	};
 
 	$scope.parseData = function (startDatesCsv, endDatesCsv) {
-
+		console.log("in parseData");
 		var data = {};
   		// data.backlogCount = [];
   		data.wipCount = [];
@@ -170,10 +171,10 @@ angular.module('cfdChartCtrl', []).
 					j++;
 					i++;
 				}
-				x++;
+				x++; // do we need to be adding one to x?  should this be the length of the category?
 			}
 		}
-		
+
   		return data;
 	};
 

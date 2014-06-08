@@ -1,7 +1,15 @@
 <div ng-controller="D3ControlChartCtrl">
-	<select ng-model="workType" ng-change="getWorkType(workType)" ng-options="t for t in workTypes"></select><br>
+	<nvd3-line-chart
+        data="exampleData"
+        showXAxis="true"
+        showYAxis="true"
+        tooltips="true"
+        interactive="true">
+    </nvd3-line-chart>
+
+	<!--<select ng-model="workType" ng-change="getWorkType(workType)" ng-options="t for t in workTypes"></select><br>
 	Work Type: {{workType}}
-	<highchart id="featureHistogram" config="featureConfig"></highchart>
+	<highchart id="featureHistogram" config="featureConfig"></highchart>-->
 </div>
 
 <div ng-controller="HistogramChartCtrl">

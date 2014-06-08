@@ -10,7 +10,8 @@ angular.module('leanSheetsApp', [
   'dataService',
   'dataServiceConfig',
   'highcharts-ng',
-  'd3controlChartCtrl'
+  'd3controlChartCtrl',
+  'nvd3ChartDirectives'
 ]).
 config(['$routeProvider','DataServiceConfigProvider', function($routeProvider, DataServiceConfigProvider) {
   $routeProvider.when('/charts', {templateUrl: 'partials/charts.html'});

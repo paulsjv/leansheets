@@ -19,6 +19,7 @@ router.get('/', function(req, res) {
 	res.sendfile('./app/index.html');	
 });
 
+app.use(express.static(__dirname + '/app'));
 app.use('/', router);
 
 app.listen(port);

@@ -1,7 +1,7 @@
 {
-  "name": "angularjs-seed",
-  "description": "A starter project for AngularJS",
-  "repository": "https://github.com/angular/angular-seed",
+  "name": "Leansheets",
+  "description": "A tool to trak team performance.",
+  "repository": "https://github.com/paulsjv/leansheets",
   "devDependencies": {
     "phantomjs": "~1.9",
     "karma": "~0.10",

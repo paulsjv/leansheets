@@ -1,7 +1,19 @@
 {
   "name": "Leansheets",
   "description": "A tool to trak team performance.",
-  "repository": "https://github.com/paulsjv/leansheets",
+  "version": "0.0.5",
+  "author": "Jay Paulson",
+  "main": "web.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jane-doe/node-example.git"
+  },
+  "bugs": {
+    "url": "ihttps://github.com/paulsjv/leansheets/issues"
+  },
   "devDependencies": {
     "phantomjs": "~1.9",
     "karma": "~0.10",
@@ -16,5 +28,8 @@
     "grunt-contrib-watch": "^0.6.1",
     "load-grunt-tasks": "^0.4.0",
     "time-grunt": "^0.3.1"
+  },
+  "dependencies": {
+    "express": "^4.4.4"
   }
 }

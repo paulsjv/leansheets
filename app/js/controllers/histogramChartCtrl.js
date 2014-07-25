@@ -4,7 +4,7 @@ angular.module('histogramChartCtrl', []).
     controller('HistogramChartCtrl', ['$scope', 'DataService', '$window', function($scope, DataService, $window) {
     
     // $scope.workTypes = ["Display","Defect","CMS","Platform","Expedite"];
-    $scope.workTypes = ["Standard","Intangable","Fixed Date","Expedite"];
+    $scope.workTypes = ["Standard","Intangable","Fixed Date","Expedite","Engineering Support"];
     $scope.workType = $scope.workTypes[0];
 
     $scope.getWorkType = function(workType) {

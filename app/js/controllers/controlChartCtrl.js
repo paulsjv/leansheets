@@ -94,7 +94,7 @@ angular.module('controlChartCtrl', []).
     		var line = lines[i].split(",");
     		var obj = {};
     		obj.y = parseInt(line[1]);
-    		obj.name = line[2] + ' - ' + line[3];
+    		obj.name = line[2] + ' - ' + line[3] + '<br/>Start Date: ' + line[4] + '<br/>End Date: ' + line[0];
     		data.endDates.push(i);
     		data.leadTimes.push(obj);
     		leadTimeSum.push(obj.y);

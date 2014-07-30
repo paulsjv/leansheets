@@ -6,7 +6,7 @@ module.exports = function(grunt) {
 	// Time how long tasks take. Can help when optimizing build times.
 	require('time-grunt')(grunt);
 
-	var httpPort 		= 8080; // default http port
+	var httpPort 		= 8081; // default http port
 	var livereloadPort	= 35729; // default port livereload listens
 
 	// Define the configuration for all the tasks.

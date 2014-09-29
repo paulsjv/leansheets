@@ -6,6 +6,8 @@ When you want to start keeping track again
 git update-index --no-assume-unchanged path/to/file
 ************************************/
 var connect = require('connect');
-connect.createServer(
-    connect.static("/Users/paulsjv/git/leansheets/app")
-).listen(8080);
+var serveStatic = require('serve-static');
+var app = connect()
+app.use(serveStatic("app"));
+app.listen(8080);
+console.log("Navigate to http://localhost:8080");

@@ -7,7 +7,7 @@ angular.module('cfdChartCtrl', []).
   	var endDates;
 
   	// $scope.workTypes = ["Display","Defect","CMS","Platform","Expedite"];
-  	$scope.workTypes = ["Austin","Ukraine"];
+  	$scope.workTypes = ["Austin","Ukraine","CM"];
   	$scope.workType = $scope.workTypes[0];
 
 	$scope.getWorkType = function(workType) {

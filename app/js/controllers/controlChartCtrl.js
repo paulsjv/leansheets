@@ -4,7 +4,7 @@ angular.module('controlChartCtrl', []).
   controller('ControlChartCtrl', ['$scope', 'DataService', '$window', function($scope, DataService, $window) {
 
   	// $scope.workTypes = ["Display","Defect","CMS","Platform","Expedite"];
-  	$scope.workTypes = ["Standard"];
+	$scope.workTypes = ["Standard","Intangible"];
   	$scope.workType = $scope.workTypes[0];
 
   	$scope.getWorkType = function(workType) {

@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('histogramChartCtrl', []).
-    controller('HistogramChartCtrl', ['$scope', 'DataService', '$window', function($scope, DataService, $window) {
+    controller('HistogramChartCtrl', ['$scope', 'DataService', '$window','TypesService', function($scope, DataService, $window, TypesService) {
     
     // $scope.workTypes = ["Display","Defect","CMS","Platform","Expedite"];
-    $scope.workTypes = ["Standard"];
+    $scope.workTypes = TypesService.getWorkTypes();
     $scope.workType = $scope.workTypes[0];
 
     $scope.getWorkType = function(workType) {

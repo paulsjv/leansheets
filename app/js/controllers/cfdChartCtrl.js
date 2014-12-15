@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('cfdChartCtrl', []).
-  controller('CfdChartCtrl', ['$scope', 'DataService', '$window', function($scope, DataService, $window) {
+  controller('CfdChartCtrl', ['$scope', 'DataService', '$window', 'TypesService', function($scope, DataService, $window, TypesService) {
   	var promiseDone = 0;
   	var startDates;
   	var endDates;
 
   	// $scope.workTypes = ["Display","Defect","CMS","Platform","Expedite"];
-  	$scope.workTypes = ["Standard"];
+  	$scope.workTypes = TypesService.getWorkTypes(); 
   	$scope.workType = $scope.workTypes[0];
 
 	$scope.getWorkType = function(workType) {

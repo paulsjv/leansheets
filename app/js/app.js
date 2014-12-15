@@ -7,6 +7,7 @@ angular.module('leanSheetsApp', [
   'controlChartCtrl',
   'histogramChartCtrl',
   'cfdChartCtrl',
+  'typesService',
   'dataService',
   'dataServiceConfig',
   'highcharts-ng',

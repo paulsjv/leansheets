@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('controlChartCtrl', []).
-  controller('ControlChartCtrl', ['$scope', 'DataService', '$window', function($scope, DataService, $window) {
+  controller('ControlChartCtrl', ['$scope', 'DataService', '$window', 'TypesService', function($scope, DataService, $window, TypesService) {
 
   	// $scope.workTypes = ["Display","Defect","CMS","Platform","Expedite"];
-	$scope.workTypes = ["Standard","Intangible"];
+	$scope.workTypes = TypesService.getWorkTypes();
   	$scope.workType = $scope.workTypes[0];
 
   	$scope.getWorkType = function(workType) {

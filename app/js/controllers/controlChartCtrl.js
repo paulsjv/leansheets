@@ -4,7 +4,7 @@ angular.module('controlChartCtrl', []).
   controller('ControlChartCtrl', ['$scope', 'DataService', '$window', function($scope, DataService, $window) {
 
   	// $scope.workTypes = ["Display","Defect","CMS","Platform","Expedite"];
-  	$scope.workTypes = ["Standard","Intangable","Fixed Date","Expedite","Engineering Support"];
+  	$scope.workTypes = ["Feature","Standard","Intangable","Fixed Date","Expedite","Engineering Support"];
   	$scope.workType = $scope.workTypes[0];
 
   	$scope.getWorkType = function(workType) {
@@ -39,7 +39,7 @@ angular.module('controlChartCtrl', []).
 		              		value: data.leadTimeStDevation.mean,
 		              		width: 2,
 		              		label: { text: 'Average Lead Time - ' + data.leadTimeStDevation.mean }
-	              		}, 
+	              		},
 	              		{
 		              		color: 'green',
 		              		value: data.leadTimeStDevation.high,
@@ -56,7 +56,7 @@ angular.module('controlChartCtrl', []).
 	            exporting: {
 	            	sourceWidth: 1600,
 	            	sourceHeight: 1200
-			        
+
 			    }
 			},
 			series: [{

@@ -2,9 +2,9 @@
 
 angular.module('histogramChartCtrl', []).
     controller('HistogramChartCtrl', ['$scope', 'DataService', '$window', function($scope, DataService, $window) {
-    
+
     // $scope.workTypes = ["Display","Defect","CMS","Platform","Expedite"];
-    $scope.workTypes = ["Standard","Intangable","Fixed Date","Expedite","Engineering Support"];
+    $scope.workTypes = ["Feature","Standard","Intangable","Fixed Date","Expedite","Engineering Support"];
     $scope.workType = $scope.workTypes[0];
 
     $scope.getWorkType = function(workType) {
@@ -74,7 +74,7 @@ angular.module('histogramChartCtrl', []).
 
     $scope.parseData = function (csv) {
         // key of data array is the lead time
-        // value of data array is the number of times lead time shows in data set 
+        // value of data array is the number of times lead time shows in data set
         var data = new Array();
         var obj = {
             categories: new Array(),
@@ -83,7 +83,7 @@ angular.module('histogramChartCtrl', []).
         };
 
         var lines = csv.split("\n");
-        lines = $scope.popLastIndexOfArrayIfEmpty(lines);   
+        lines = $scope.popLastIndexOfArrayIfEmpty(lines);
         var total = 0;
 
         for (var i in lines) {

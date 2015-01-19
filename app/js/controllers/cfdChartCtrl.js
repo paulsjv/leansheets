@@ -7,7 +7,7 @@ angular.module('cfdChartCtrl', []).
   	var endDates;
 
   	// $scope.workTypes = ["Display","Defect","CMS","Platform","Expedite"];
-	$scope.workTypes = TypesService.getWorkTypes();
+  	$scope.workTypes = TypesService.getWorkTypes();
   	$scope.workType = $scope.workTypes[0];
 
 	$scope.getWorkType = function(workType) {
@@ -72,14 +72,14 @@ angular.module('cfdChartCtrl', []).
 	            exporting: {
 	            	sourceWidth: 1600,
 	            	sourceHeight: 1200
-			        
+
 			    }
 			},
 			series: [
 			// {
 			// 	name: 'Backlog',
 			// 	data: data.backlog
-			// }, 
+			// },
 			{
 				name: 'WIP',
 				data: data.wipCount
@@ -104,11 +104,11 @@ angular.module('cfdChartCtrl', []).
 
   		var startDates = $scope.popLastIndexOfArrayIfEmpty(startDatesCsv.split("\n"));
   		var endDates = $scope.popLastIndexOfArrayIfEmpty(endDatesCsv.split("\n"));
-	    
+
   		var j = 0;
   		var i = 0;
   		var x = 0;
-  			
+
 		while (i < startDates.length || j < endDates.length) {
 	  		var sDateArray = $scope.getDates(startDates[i]);
 			var eDateArray = $scope.getDates(endDates[j]);
@@ -129,7 +129,7 @@ angular.module('cfdChartCtrl', []).
 					data.doneCount.push(parseInt(sDateArray[1]) + parseInt(eDateArray[1]));
 					data.wipCount.push(parseInt(sDateArray[1]) - parseInt(eDateArray[1]));
 					j++;
-				} 
+				}
 				// if eTimestamp === NULL
 				else {
 					data.doneCount.push(0);
@@ -137,9 +137,9 @@ angular.module('cfdChartCtrl', []).
 				}
 				data.categories = $scope.addCategory(data.categories, sDateArray[0]);
 				i++;
-				x++;				
+				x++;
 			} else {
-				// if sTimestamp and eTimestamp !== NULL 
+				// if sTimestamp and eTimestamp !== NULL
 				if ($scope.isEndDateGtStartDate(sTimestamp, eTimestamp) || (eTimestamp === null && sTimestamp !== null)) {
 					x = $scope.addDatesBetweenCategories(data, x, sTimestamp);
 
@@ -149,17 +149,17 @@ angular.module('cfdChartCtrl', []).
 					data.categories = $scope.addCategory(data.categories, sDateArray[0]);
 					i++;
 				}
-				// else eTimestamp < sTimestamp 
+				// else eTimestamp < sTimestamp
 				else if ($scope.isEndDateLtStartDate(sTimestamp, eTimestamp) || (eTimestamp !== null && sTimestamp === null)) {
 					x = $scope.addDatesBetweenCategories(data, x, eTimestamp);
-					
+
 					// data.backlogCount.push(data.backlogCount[x-1]);
 					data.wipCount.push(data.wipCount[x-1] - parseInt(eDateArray[1]));
 					data.doneCount.push(data.doneCount[x-1] + parseInt(eDateArray[1]));
 					j++;
 					data.categories = $scope.addCategory(data.categories, eDateArray[0]);
 
-				} 
+				}
 				// if sTimestamp and eTimestamp !== NULL && equal
 				else if ($scope.isStartDateEqEndDate(sTimestamp, eTimestamp)) {
 					x = $scope.addDatesBetweenCategories(data, x, sTimestamp);
@@ -223,15 +223,15 @@ angular.module('cfdChartCtrl', []).
 	$scope.isStartDateEqEndDate = function (start, end) {
 		if (($scope.isStartAndEndNotNull(start, end)) && (start == end)) {
 			return true;
-		} 
+		}
 		return false;
 	};
 
 	$scope.isStartAndEndNotNull = function (start, end) {
-		if (($scope.nullEmptyOrUndefined(start) !== null && 
+		if (($scope.nullEmptyOrUndefined(start) !== null &&
 			$scope.nullEmptyOrUndefined(end) !== null)) {
 			return true;
-		} 
+		}
 		return false;
 	};
 

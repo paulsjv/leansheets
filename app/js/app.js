@@ -17,10 +17,11 @@ config(['$routeProvider','DataServiceConfigProvider', function($routeProvider, D
   $routeProvider.when('/charts', {templateUrl: 'partials/charts.html'});
   $routeProvider.otherwise({redirectTo: '/charts'});
 
-  var now = moment("2014-07-02");
+//  var now = moment("2014-07-02");
+    var now = moment("2014-06-18");
 //    var now = moment("2013-04-01");
-//  var d = moment.duration(90, 'days');
-//  now.subtract(d);
+//  var d = moment.duration(30, 'days');
+//    now.subtract(d);
   // Old CMS data
 //   DataServiceConfigProvider.setUrl("https://docs.google.com/spreadsheet/ccc?key=0AqWHu14u074CdGc1WFVOU0l4V1Y2Z0xaSzEtUXQ4Nnc&usp=drive_web&sheet=out-CMS");
   // Old Display data
@@ -28,7 +29,7 @@ config(['$routeProvider','DataServiceConfigProvider', function($routeProvider, D
 
   // DataServiceConfigProvider.setUrl("https://docs.google.com/a/comparemetrics.com/spreadsheet/ccc?key=0AsuzaPifn0kvdERsclpja0ZwSll2ZjJIV2VmYU5iZnc&usp=drive_web&sheet=Data");
    DataServiceConfigProvider.setUrl("https://docs.google.com/spreadsheet/ccc?key=0AqWHu14u074CdGc1WFVOU0l4V1Y2Z0xaSzEtUXQ4Nnc&usp=drive_web&sheet=Data");
-  DataServiceConfigProvider.setQuery("select D, E, A, B, C where D is not null AND toDate(D) > toDate(date '"+now.format('YYYY-MM-DD')+"')  AND F = ");
+  DataServiceConfigProvider.setQuery("select D, E, A, B, C where D is not null AND toDate(D) > toDate(date '"+now.format('YYYY-MM-DD')+"') AND F = ");
   // DataServiceConfigProvider.setCfdStartDateQuery("select C, count(A) where F = '%s' and C is not null group by C");
   // DataServiceConfigProvider.setCfdEndDateQuery("select D, count(A) where F = '%s' and D is not null group by D");
   DataServiceConfigProvider.setCfdStartDateQuery("select C, count(A) where F = '%s' and C is not null and toDate(C) > date '"+ now.format('YYYY-MM-YY') +"' group by C");

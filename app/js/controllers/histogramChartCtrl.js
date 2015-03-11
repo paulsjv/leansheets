@@ -3,20 +3,26 @@
 angular.module('histogramChartCtrl', []).
     controller('HistogramChartCtrl', ['$scope', 'DataService', '$window','TypesService', function($scope, DataService, $window, TypesService) {
     
-    // $scope.workTypes = ["Display","Defect","CMS","Platform","Expedite"];
-    $scope.workTypes = TypesService.getWorkTypes();
-    $scope.workType = $scope.workTypes[0];
+    $scope.workTypes;
+    $scope.workType;
+
+    TypesService.getWorkTypes().then(
+        function(success) {
+            $scope.workTypes = success;
+            $scope.workType = $scope.workTypes[0].column != "" ? $scope.workTypes[0] : $scope.workTypes[1];
+            $scope.getWorkType($scope.workType);
+        });
 
     $scope.getWorkType = function(workType) {
+        if (workType.column != "") {
         var directivePromise = DataService.getData(workType);
         directivePromise.then(function (success){
-  		      $scope.featureConfig = $scope.getOptionsForChart(workType, $scope.parseData(success));
+  		      $scope.featureConfig = $scope.getOptionsForChart(workType.name, $scope.parseData(success));
         }, function (error) {
             alert(error);
         });
+        } else { alert(workType.name + " is not a selectable value!"); }
     };
-
-    $scope.getWorkType($scope.workType);
 
     $scope.getOptionsForChart = function (title, data) {
 		    return {

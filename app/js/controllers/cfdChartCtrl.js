@@ -10,6 +10,16 @@ angular.module('cfdChartCtrl', []).
   	$scope.workTypes = TypesService.getWorkTypes();
   	$scope.workType = $scope.workTypes[0];
 
+    $scope.workTypes;
+    $scope.workType;
+
+    TypesService.getWorkTypes().then(
+        function(success) {
+            $scope.workTypes = success;
+            $scope.workType = $scope.workTypes[0].column != "" ? $scope.workTypes[0] : $scope.workTypes[1];
+            $scope.getWorkType($scope.workType);
+        });
+
 	$scope.getWorkType = function(workType) {
 		var cfdStartPromise = DataService.getCfdStartData(workType);
 	  	cfdStartPromise.then(function (success) {
@@ -30,12 +40,10 @@ angular.module('cfdChartCtrl', []).
 	  	});
   	};
 
-  	$scope.getWorkType($scope.workType);
-
   	var handleSuccess = function () {
   		if (promiseDone == 2) {
   			var data = $scope.parseData(startDates, endDates);
-  			var options = getOptionsForChart($scope.workType, data);
+  			var options = getOptionsForChart($scope.workType.name, data);
   			$scope.featureConfig = options;
   			promiseDone = 0;
   		}
@@ -94,7 +102,7 @@ angular.module('cfdChartCtrl', []).
 	};
 
 	$scope.parseData = function (startDatesCsv, endDatesCsv) {
-		console.log("in parseData");
+		//console.log("in parseData");
 		var data = {};
   		// data.backlogCount = [];
   		data.wipCount = [];

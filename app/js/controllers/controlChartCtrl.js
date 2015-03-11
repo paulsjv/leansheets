@@ -3,20 +3,24 @@
 angular.module('controlChartCtrl', []).
   controller('ControlChartCtrl', ['$scope', 'DataService', '$window', 'TypesService', function($scope, DataService, $window, TypesService) {
 
-  	// $scope.workTypes = ["Display","Defect","CMS","Platform","Expedite"];
-  	$scope.workTypes = TypesService.getWorkTypes();
-  	$scope.workType = $scope.workTypes[0];
+    $scope.workTypes;
+    $scope.workType;
+
+    TypesService.getWorkTypes().then(
+        function(success) {
+            $scope.workTypes = success;
+            $scope.workType = $scope.workTypes[0].column != "" ? $scope.workTypes[0] : $scope.workTypes[1];
+            $scope.getWorkType($scope.workType);
+        });
 
   	$scope.getWorkType = function(workType) {
 		var directivePromise = DataService.getData(workType);
 	  	directivePromise.then(function (success){
-	  		$scope.featureConfig = getOptionsForChart(workType, parseData(success));
+	  		$scope.featureConfig = getOptionsForChart(workType.name, parseData(success));
 	  	}, function (error) {
 	  		alert(error);
 	  	});
   	};
-
-  	$scope.getWorkType($scope.workType);
 
 	var getOptionsForChart = function (title, data) {
 		return {
@@ -39,7 +43,7 @@ angular.module('controlChartCtrl', []).
 		              		value: data.leadTimeStDevation.mean,
 		              		width: 2,
 		              		label: { text: 'Average Lead Time - ' + data.leadTimeStDevation.mean }
-	              		}, 
+	              		},
 	              		{
 		              		color: 'green',
 		              		value: data.leadTimeStDevation.high,
@@ -56,7 +60,7 @@ angular.module('controlChartCtrl', []).
 	            exporting: {
 	            	sourceWidth: 1600,
 	            	sourceHeight: 1200
-			        
+
 			    }
 			},
 			series: [{
@@ -100,7 +104,7 @@ angular.module('controlChartCtrl', []).
     		leadTimeSum.push(obj.y);
   		}
   		data.leadTimeStDevation = average(leadTimeSum);
-  		console.log(data);
+  		//console.log(data);
   		return data;
 	};
 

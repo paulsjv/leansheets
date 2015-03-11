@@ -7,20 +7,34 @@
 // In this case it is a simple value service.
 angular.module('dataService', []).
 	service("DataService", ['DataServiceConfig', '$q', function(DataServiceConfig, $q) {
-		this.getUrl = function () { 
+		this.getUrl = function () {
 			console.log("$q" + $q);
-			return DataServiceConfig.gUrl; 
+			return DataServiceConfig.gUrl;
 		};
+        this.getConfig = function() {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            var handleResponse = function(response) {
+                setDataOnPromise(response, deferred);
+            };
+
+            var query = new google.visualization.Query(DataServiceConfig.gConfigUrl);
+            query.setQuery(DataServiceConfig.gConfigQuery);
+            query.send(handleResponse);
+
+            return promise;
+        };
 		this.getData = function(type) {
 			var deferred = $q.defer();
 			var promise = deferred.promise;
-			
+
 			var handleResponse = function(response) {
 				setDataOnPromise(response, deferred);
 			};
 
           	var query = new google.visualization.Query(DataServiceConfig.gUrl);
-			query.setQuery(DataServiceConfig.gQuery + '"' + type +'" order by D');
+			query.setQuery(DataServiceConfig.gQuery + ' AND ' + type.column + ' = "' + type.name +'" order by D');
 	        query.send(handleResponse);
 
 			return promise;
@@ -34,7 +48,7 @@ angular.module('dataService', []).
 			}
 
 			var query = new google.visualization.Query(DataServiceConfig.gUrl);
-			query.setQuery(DataServiceConfig.gCfdStartDateQuery.replace("%s", type));
+			query.setQuery(DataServiceConfig.gCfdStartDateQuery.replace("%s", type.column + " = '" + type.name + "'"));
 			query.send(handleResponse);
 
 			return promise;
@@ -48,7 +62,7 @@ angular.module('dataService', []).
 			}
 
 			var query = new google.visualization.Query(DataServiceConfig.gUrl);
-			query.setQuery(DataServiceConfig.gCfdEndDateQuery.replace("%s", type));
+			query.setQuery(DataServiceConfig.gCfdEndDateQuery.replace("%s", type.column + " = '" + type.name + "'"));
 			query.send(handleResponse);
 
 			return promise;
@@ -70,4 +84,4 @@ angular.module('dataService', []).
 	    };
 
 	}]);
-  
+

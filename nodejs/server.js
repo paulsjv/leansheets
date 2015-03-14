@@ -7,7 +7,7 @@ git update-index --no-assume-unchanged path/to/file
 ************************************/
 var connect = require('connect');
 connect.createServer(
-    connect.static("/Users/paulsjv/git/leansheets/app")
+    connect.static("/Users/paulsjv/git/leansheets/src")
 ).listen(8180);
 
 // var connect = require("connect");

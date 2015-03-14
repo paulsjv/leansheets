@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+    <head>
+
+        <title>DI Web Template</title>
+
+        <!-- build:style thirdParty -->
+        <!-- /build -->
+
+        <!-- build:style app -->
+        <!-- /build -->
+
+        <!-- build:remove -->
+        <link rel="stylesheet/less" type="text/css" href="less/main.less" />
+
+        <script src="bower_components/less/dist/less.min.js" type="text/javascript"></script>
+        <!-- /build -->
+
+    </head>
+    <body data-ng-cloak data-ng-csp>
+
+        <!-- build:section partials._header -->
+        <!-- /build -->
+
+        <div class="container-fluid di-flex-box" data-ng-controller="di-applicationController">
+            <div data-ng-bind="helloWorld"></div>
+            <div data-ng-bind="serviceHello"></div>
+            <div data-ng-bind="factorySupportHello"></div>
+            <div data-custom-directive></div>
+        </div>
+
+        <!-- build:section partials._footer -->
+        <!-- /build -->
+
+        <!-- build:script app -->
+        <!-- /build -->
+
+        <!-- build:remove -->
+        <script type="text/javascript" src="bower_components/requirejs/require.js"></script>
+        <script type="text/javascript" src="js/config.js"></script>
+        <script type="text/javascript">
+            (function(require) {
+                'use strict';
+
+                require.config({
+                    baseUrl: 'js'
+                });
+
+                require(['jquery'], function($) {
+
+                    // enables includes in dev mode
+                    var includePattern = /build:section[\s]+(.+)/,
+                        match,
+                        includeUrl,
+                        $include;
+
+                    $("*").contents().filter(function(){
+                        return this.nodeType == 8;
+                    }).each(function(index, elem){
+                        if (includePattern.test(elem.nodeValue)) {
+
+                            match = elem.nodeValue.match(includePattern)[1];
+                            includeUrl = match.replace(/\./g, '/').trim() + '.html';
+
+                            $include = $('<div></div>').load(includeUrl, function () {
+                                $(this).children().unwrap();
+                            });
+
+                            $include.insertAfter(elem);
+
+                        }
+                    });
+
+                    // simulate almond require main
+                    require(['main'], function() {});
+
+                });
+
+            }(require));
+
+        </script>
+        <!-- /build -->
+
+    </body>
+</html>

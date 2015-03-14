@@ -1,58 +1,49 @@
 module.exports = function(grunt) {
+    'use strict';
+    
+    var httpPort = 8081,
+        locations = {
 
-	// Load grunt tasks automatically
-	require('load-grunt-tasks')(grunt);
+            // Destination directory for compiled output. Relative to Gruntfile.js.
+            // dest: 'dist',
 
-	// Time how long tasks take. Can help when optimizing build times.
-	require('time-grunt')(grunt);
+            // Temporary work directory. Relative to Gruntfile.js.
+            // work: 'target',
 
-	var httpPort 		= 8081; // default http port
-	var livereloadPort	= 35729; // default port livereload listens
+            // Raw sources root. Assumes child folder /js Relative to Gruntfile.js.
+            srcRoot: 'src',
 
+            // JS test root. Assumes child folder /js Relative to Gruntfile.js.
+            // testRoot: 'test',
+
+            // Bower root. Relative to Gruntfile.js.
+            bowerRoot: grunt.file.readJSON('.bowerrc').directory
+
+        };
+        
 	// Define the configuration for all the tasks.
 	grunt.initConfig({
-		// Connect web server
-		connect: {
-			options: {
-				port: httpPort,
-				hostname: 'localhost',
-				livereload: livereloadPort
-			},
-			livereload: {
-				options: {
-					open: {
-						target: 'http://localhost:'+httpPort
-					},
-					base: [
-						'./app' // path to www.root from dir where run
-					]
-				}
-			}
-		},
-		// Set up watch so that web server started from
-		// the connect options (above) will keep the server
-		// running and not stop the task bc if the task
-		// stops then the sever will stop.
-		watch: {
-			options: {
-				nospawn: true
-			},
-			livereload: {
-				options: {
-					livereload: livereloadPort
-				},
-				files: [
-					'app/*.js',
-					'app/*.html'
-				]
-			}
-		}
-	});
+        locations: locations,
+        httpPort: httpPort,
+        connect: {
+            dev: {
+                options: {
+                    port: '<%= httpPort %>',
+                    protocol: 'http',
+                    hostname: '*',
+                    base: '<%= locations.srcRoot %>',
+                    keepalive: true,
+                    open: false,
+                    useAvailablePort: true
+                    // middleware: function(connect, options, middlewares) {
+                    //    middlewares.unshift(require('grunt-connect-proxy/lib/utils').proxyRequest);
+                    //    return middlewares;
+                    }
+                }
+            }
+	    });
 
-	grunt.registerTask('default', []);
-
-	grunt.registerTask('server',[
-			'connect',
-			'watch'
-		]);
+    require('load-grunt-tasks')(grunt, { pattern: ['grunt-*'] }); //, '!grunt-template-*'] });
+	
+    grunt.registerTask('run', [ 'connect' ]);
 };

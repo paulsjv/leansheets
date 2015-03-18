@@ -64,7 +64,7 @@ angular.module('controlChartCtrl', []).
 				data: data.leadTimes
 			}],
 			title: {
-				text: title + ' Control Chart'
+				text: 'Control Chart'
 			}
 		}
 	};

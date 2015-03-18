@@ -7,20 +7,21 @@
 // In this case it is a simple value service.
 angular.module('dataService', []).
 	service("DataService", ['DataServiceConfig', '$q', function(DataServiceConfig, $q) {
-		this.getUrl = function () { 
+		this.getUrl = function () {
 			console.log("$q" + $q);
-			return DataServiceConfig.gUrl; 
+			return DataServiceConfig.gUrl;
 		};
 		this.getData = function(type) {
 			var deferred = $q.defer();
 			var promise = deferred.promise;
-			
+
 			var handleResponse = function(response) {
 				setDataOnPromise(response, deferred);
 			};
 
           	var query = new google.visualization.Query(DataServiceConfig.gUrl);
 			query.setQuery(DataServiceConfig.gQuery + '"' + type +'" order by D');
+            //query.setQuery(DataServiceConfig.gQuery + ' order by D');
 	        query.send(handleResponse);
 
 			return promise;
@@ -70,4 +71,4 @@ angular.module('dataService', []).
 	    };
 
 	}]);
-  
+

@@ -67,7 +67,7 @@ angular.module('histogramChartCtrl', []).
                 }
             }],
       			title: {
-				        text: title + ' Histogram'
+				        text: 'Histogram'
 			      }
     	}
     };

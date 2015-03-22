@@ -7,7 +7,10 @@ require.config({
         'ie-console-poly': '../lib/ie-console-poly',
         angular: '../bower_components/angularjs/angular',
         bootstrap: '../bower_components/bootstrap/dist/js/bootstrap',
-        jquery: '../bower_components/jquery/dist/jquery'
+        jquery: '../bower_components/jquery/dist/jquery',
+        moment: '../bower_components/moment/moment',
+        highcharts: '../bower_components/highcharts/highcharts',
+        highchartsng: '../bower_components/highcharts-ng/dist/highcharts-ng'
     },
 
     shim: {
@@ -26,6 +29,17 @@ require.config({
             deps: ['angular']
         },
         'angular-resource': {
+            deps: ['angular']
+        },
+        moment: {
+            exports: 'moment'
+        },
+        highcharts: {
+            exports: 'highcharts',
+            deps: ['angular']
+        },
+        highchartsng: {
+            exports: 'highchartsng',
             deps: ['angular']
         }
     }

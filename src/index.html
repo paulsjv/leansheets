@@ -2,7 +2,7 @@
 <html>
     <head>
 
-        <title>DI Web Template</title>
+        <title>LeanSheets</title>
 
         <!-- build:style thirdParty -->
         <!-- /build -->
@@ -17,12 +17,20 @@
         <!-- /build -->
 
     </head>
-    <body data-ng-cloak data-ng-csp>
+    <body data-ng-csp data-ng-controller="ls-applicationController">
 
         <!-- build:section partials._header -->
         <!-- /build -->
+        <div data-ng-if="initialLoad">
+            <p>Loading Application....</p>
+        </div>
+        <div class="container-fluid di-flex-box" data-ng-cloak> 
 
-        <div class="container-fluid di-flex-box" data-ng-controller="di-applicationController">
+            <div id="histogramChart">
+                Class of Service: <select ng-model="workType" ng-change="getWorkType(workType)" ng-options="workType.name for workType in workTypes"></select><br>
+                <highchart id="featureHistogram" config="featureConfig"></highchart>
+            </div>
+
             <div data-ng-bind="helloWorld"></div>
             <div data-ng-bind="serviceHello"></div>
             <div data-ng-bind="factorySupportHello"></div>

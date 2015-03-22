@@ -13,7 +13,7 @@ define([
 ], function($, ng ) {
     'use strict';
 
-    var initInjector = angular.injector(['ng']),
+    var initInjector = ng.injector(['ng']),
         $http = initInjector.get('$http'),
         $log = initInjector.get('$log'),
         configFile = '/config.json';

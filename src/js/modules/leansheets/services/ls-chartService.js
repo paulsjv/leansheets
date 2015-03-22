@@ -12,7 +12,7 @@
 define(['angular'], function (ng) {
     'use strict';
 
-    return ['$log','$q','ls-histogramService', function ($log, $q, histogramService) {
+    return ['$log','$q','ls-histogramService','ls-controlService', function ($log, $q, histogramService, controlService) {
 
         this.getHistogram = function(workType) {
             var deferred = $q.defer(),
@@ -29,11 +29,31 @@ define(['angular'], function (ng) {
                     });
             } else {
                 deferred.reject();
-                alert(workType.name + " is not a selectable value!");
+                alert(workType.name + ' is not a selectable value!');
             }
 
             return promise;
         };
 
+        this.getControl = function(workType) {
+            var deferred = $q.defer(),
+                promise = deferred.promise;
+
+            if (workType !== "") {
+                controlService.getChart(workType).then(
+                    function(success) {
+                        deferred.resolve(success);
+                    },
+                    function(error) {
+                        deferred.reject(error);
+                        alert('Error getting data from Google Sheets! ' + error);
+                    });
+            } else {
+                deferred.reject();
+                alert(workType.name + ' is not a selectable value!');
+            }
+
+            return promise;
+        };
     }];
 });

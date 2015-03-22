@@ -12,14 +12,16 @@
 define([
     'angular',
     './controllers/ls-applicationController',
+    './controllers/ls-histogramController',
+    './controllers/ls-controlController',
 //    './directives/customDirective',
 //    './factories/di-customFactory',
     './services/ls-googleConfigService',
     './services/ls-googleService',
     './services/ls-typeService',
-    './services/ls-chartService',
+    './services/ls-controlService',
     './services/ls-histogramService'
-], function (ng, applicationController, googleConfigService, googleService, typeService, chartService, histogramService) {
+], function (ng, applicationController, histogramController, controlController, googleConfigService, googleService, typeService, controlService, histogramService) {
     'use strict';
 
     // Define a new angular module. The given name should ALWAYS match the filename.
@@ -30,6 +32,8 @@ define([
 
     // Add controllers to the module. The given name should ALWAYS match the filename.
     applicationModule.controller('ls-applicationController', applicationController);
+    applicationModule.controller('ls-histogramController', histogramController);
+    applicationModule.controller('ls-controlController', controlController);
 
     // Add directives to the module. The given name should ALWAYS match the filename.
     // applicationModule.directive('customDirective', customDirective);
@@ -41,7 +45,7 @@ define([
     applicationModule.service('ls-googleConfigService', googleConfigService);
     applicationModule.service('ls-googleService', googleService);
     applicationModule.service('ls-typeService', typeService);
-    applicationModule.service('ls-chartService', chartService);
+    applicationModule.service('ls-controlService', controlService);
     applicationModule.service('ls-histogramService', histogramService);
     
     return applicationModule;

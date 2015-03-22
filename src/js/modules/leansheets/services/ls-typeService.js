@@ -7,7 +7,7 @@
  * 2. instanceStyleCamelCasing
  * 3. Always include `Service` suffix
  *
- * i.e. configService.js
+ * i.e. ls-typeService.js
  */
 define(['angular'], function (ng) {
     'use strict';
@@ -26,8 +26,7 @@ define(['angular'], function (ng) {
                         deferred.resolve(config);
                     } else { deferred.resolve(config); }
                 }, function(error) {
-                    $log.error(error);
-                    alert(error);
+                    $log.error('TypeService: Error getting work types! ' + error);
                     deferred.resolve(error);
                 });
             } else {

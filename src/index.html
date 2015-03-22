@@ -26,15 +26,15 @@
         </div>
         <div class="container-fluid di-flex-box" data-ng-cloak> 
 
-            <div id="histogramChart">
-                Class of Service: <select ng-model="workType" ng-change="getWorkType(workType)" ng-options="workType.name for workType in workTypes"></select><br>
-                <highchart id="featureHistogram" config="featureConfig"></highchart>
+            <div id="histogramChart" data-ng-controller="ls-histogramController">
+                Class of Service: <select ng-model="workType" ng-change="changeType(workType)" ng-options="workType.name for workType in workTypes"></select><br>
+                <highchart id="histogramHighChart" config="config"></highchart>
             </div>
 
-            <div data-ng-bind="helloWorld"></div>
-            <div data-ng-bind="serviceHello"></div>
-            <div data-ng-bind="factorySupportHello"></div>
-            <div data-custom-directive></div>
+            <div id="controlChart" data-ng-controller="ls-controlController">
+                Class of Service: <select ng-model="workType" ng-change="changeType(workType)" ng-options="workType.name for workType in workTypes"></select><br>
+                <highchart id="controlHighChart" config="config"></highchart>
+            </div>
         </div>
 
         <!-- build:section partials._footer -->

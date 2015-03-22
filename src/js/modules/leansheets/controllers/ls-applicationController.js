@@ -19,42 +19,39 @@ define(['angular'], function (ng) {
      * Parameter options include all standard angular services, plus any provided by
      * module-level dependencies.
      */
-    return ['$log', '$scope', 'ls-typeService','ls-chartService','ls-googleService', 
-        function ($log, $scope, typeService, chartService, googleService) {
+    return ['$log', '$scope', 'ls-typeService',
+        function ($log, $scope, typeService ) {
 
-        $scope.helloWorld = 'Hello World';
-        $scope.workType;
-        $scope.workTypes;
+            $scope.workType;
+            $scope.workTypes;
 
-        typeService.getWorkTypes().then(
-            function(success) {
-                $log.log('got work types!', success);
-                $scope.workTypes = success;
-                $scope.workType = $scope.workTypes[0].column != "" ? $scope.workTypes[0] : $scope.workTypes[1];
-                $scope.getWorkType($scope.workType);
-            }, function(error) {
-                $log.log('error getting work types!', error);
-            });
+            typeService.getWorkTypes().then(
+                function(success) {
+                    $log.log('Got work types: ls-applicationController', success);
+                    $scope.workTypes = success;
+                    $scope.workType = $scope.workTypes[0].column != "" ? $scope.workTypes[0] : $scope.workTypes[1];
+    
+                    // broadcast event to all child contorllers so they will draw their charts
+                    $log.debug('Firing "types:loaded" event: ls-applicationController');
+                    $scope.$broadcast('types:loaded', $scope.workType);
+                }, function(error) {
+                    $log.log('Error getting work types: ls-applicationController!', error);
+                    alert('Error getting work types! ' + error);
+                });
 
-        /*
-        googleService.getData({column: "F", name: "Backend"}).then(
-            function(success) {
-                $log.log('got data from google!', success);
-            }, function(error) {
-                $log.log('error getting data from google!', error);
-            });
-        */
-
-         
-        $scope.getWorkType = function(workType) {
-                chartService.getHistogram(workType).then(
+            $scope.updateChart = function(workType, chart, chartName) {
+                $log.debug('updateChart: ls-applicationController');
+                if (workType.column !== "") {
+                    chart.getChart(workType).then(
                         function(success) {
-                            $scope.featureConfig = success;   
-                            $log.debug('featureConfig: ', $scope.featureConfig);
+                            $log.debug('Firing "chart:' + chartName + '" event: ls-applicationController!');
+                            $scope.$broadcast('chart:' + chartName, success);
+                        }, function(error) {
+                             alert('Error getting data from Google Sheets! ' + error);
                         });
+                } else { alert(workType.name + " is not a selectable value!"); }
+
             };
 
-        //$scope.getWorkType($scope.workType);
-        
     }];
 });

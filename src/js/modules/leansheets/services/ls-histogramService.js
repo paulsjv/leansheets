@@ -24,7 +24,7 @@ define(['angular'], function (ng) {
                     $log.debug('Got the data for the histogram!');
       	            deferred.resolve(getOptionsForChart(workType.name, parseData(success)));
                 }, function (error) {
-                    $log.error('Error getting data for histogram!', error);
+                    $log.error('HistogramService: Error getting data for histogram! ' + error);
                     deferred.reject(error);
                 });
             return promise;

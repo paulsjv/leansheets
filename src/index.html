@@ -35,6 +35,11 @@
                 Class of Service: <select ng-model="workType" ng-change="changeType(workType)" ng-options="workType.name for workType in workTypes"></select><br>
                 <highchart id="controlHighChart" config="config"></highchart>
             </div>
+
+            <div id="cfdChart" data-ng-controller="ls-cfdController">
+                Class of Service: <select ng-model="workType" ng-change="changeType(workType)" ng-options="workType.name for workType in workTypes"></select><br>
+                <highchart id="cfdHighChart" config="config"></highchart>
+            </div>
         </div>
 
         <!-- build:section partials._footer -->

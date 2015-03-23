@@ -14,14 +14,18 @@ define([
     './controllers/ls-applicationController',
     './controllers/ls-histogramController',
     './controllers/ls-controlController',
+    './controllers/ls-cfdController',
 //    './directives/customDirective',
 //    './factories/di-customFactory',
     './services/ls-googleConfigService',
     './services/ls-googleService',
     './services/ls-typeService',
     './services/ls-controlService',
-    './services/ls-histogramService'
-], function (ng, applicationController, histogramController, controlController, googleConfigService, googleService, typeService, controlService, histogramService) {
+    './services/ls-histogramService',
+    './services/ls-cfdService'
+], function (ng, 
+        applicationController, histogramController, controlController, cfdController, 
+        googleConfigService, googleService, typeService, controlService, histogramService, cfdService) {
     'use strict';
 
     // Define a new angular module. The given name should ALWAYS match the filename.
@@ -34,6 +38,7 @@ define([
     applicationModule.controller('ls-applicationController', applicationController);
     applicationModule.controller('ls-histogramController', histogramController);
     applicationModule.controller('ls-controlController', controlController);
+    applicationModule.controller('ls-cfdController', cfdController);
 
     // Add directives to the module. The given name should ALWAYS match the filename.
     // applicationModule.directive('customDirective', customDirective);
@@ -47,6 +52,7 @@ define([
     applicationModule.service('ls-typeService', typeService);
     applicationModule.service('ls-controlService', controlService);
     applicationModule.service('ls-histogramService', histogramService);
+    applicationModule.service('ls-cfdService', cfdService);
     
     return applicationModule;
 

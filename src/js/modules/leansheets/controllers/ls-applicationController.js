@@ -47,6 +47,7 @@ define(['angular'], function (ng) {
                             $log.debug('Firing "chart:' + chartName + '" event: ls-applicationController!');
                             $scope.$broadcast('chart:' + chartName, success);
                         }, function(error) {
+                            $log.debug('Error getting data from Google Sheets!', error);
                              alert('Error getting data from Google Sheets! ' + error);
                         });
                 } else { alert(workType.name + " is not a selectable value!"); }

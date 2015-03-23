@@ -16,7 +16,9 @@ define(['angular'], function (ng) {
             function ($log, $http, $q, $moment, $google, googleConfigService) {
 
         var dataSheetQuery = "select D, E, A, B, C where D is not null AND toDate(D) > toDate(date '" + getDateSixMonthsAgo() + "') ",
-            configSheetQuery = 'select *';
+            configSheetQuery = 'select *',
+            cfdStartDateSheetQuery = "select C, count(A) where %s and C is not null and toDate(C) > date '" + getDateSixMonthsAgo() + "' group by C",
+            cfdEndDateSheetQuery = "select D, count(A) where %s and D is not null and toDate(C) > date '" + getDateSixMonthsAgo() + "' group by D";
 
         function getDateSixMonthsAgo() {
             var date = $moment();
@@ -57,36 +59,41 @@ define(['angular'], function (ng) {
 
 			return promise;
 		};
-        /*
+        
 		this.getCfdStartData = function(type) {
-			var deferred = $q.defer();
-			var promise = deferred.promise;
+			var deferred = $q.defer(),
+			    promise = deferred.promise,
+                handleResponse = function(response) {
+				    setDataOnPromise(response, deferred);
+			    },
+                dataQuery = cfdStartDateSheetQuery.replace("%s", type.column + " = '" + type.name + "'"),
+                query = new google.visualization.Query(googleConfigService.getDataUrl());
 
-			var handleResponse = function(response) {
-				setDataOnPromise(response, deferred);
-			}
-
-			var query = new google.visualization.Query(DataServiceConfig.gUrl);
-			query.setQuery(DataServiceConfig.gCfdStartDateQuery.replace("%s", type.column + " = '" + type.name + "'"));
+            $log.debug('Query for start dates CFD Chart');
+            $log.debug(dataQuery);
+			query.setQuery(dataQuery);
 			query.send(handleResponse);
 
 			return promise;
 		};
+
 		this.getCfdEndData = function(type) {
-			var deferred = $q.defer();
-			var promise = deferred.promise;
-
-			var handleResponse = function(response) {
-				setDataOnPromise(response, deferred);
-			}
-
-			var query = new google.visualization.Query(DataServiceConfig.gUrl);
-			query.setQuery(DataServiceConfig.gCfdEndDateQuery.replace("%s", type.column + " = '" + type.name + "'"));
+			var deferred = $q.defer(),
+			    promise = deferred.promise,
+                handleResponse = function(response) {
+				    setDataOnPromise(response, deferred);
+			    },
+                dataQuery = cfdEndDateSheetQuery.replace("%s", type.column + " = '" + type.name + "'"),
+                query = new google.visualization.Query(googleConfigService.getDataUrl());
+                
+            $log.debug('Query for end dates CFD Chart');
+            $log.debug(dataQuery);    
+			query.setQuery(dataQuery);
 			query.send(handleResponse);
 
 			return promise;
 		};
-        */
+        
 		var isResponseError = function (response) {
 	       	if (response.isError()) {
 	          	return true;

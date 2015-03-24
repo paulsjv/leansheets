@@ -28,17 +28,19 @@ define([
     }
 
     function fetchConfig() {
-        $log.debug('fetchConfig');
+        $log.debug('Fetching Configuration');
         return $http.get(configFile).then(
                 function (response) {
+                    $log.debug('Loaded configuration file!', response.data);
                     ng.module('config',[]).constant('CONFIG', response.data);
                 }, function (error) {
+                    $log.error('There was an error loading the configuration file!', error);
                     alert('There was an error loading the configuration file!  Please reload page.');
                 });
     }
 
     function bootstrapApplication() {
-        $log.debug('bootstrapApplication');
+        $log.debug('Bootstraping Application');
         ng.module('google',[]).constant('$google', google);
         ng.module('moment',[]).constant('$moment', moment);
         ng.bootstrap(document, ['ls-leansheetsApplication']); 

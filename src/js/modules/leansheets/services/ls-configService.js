@@ -12,13 +12,29 @@
 define(['angular'], function (ng) {
     'use strict';
 
-    return ['$log','CONFIG','$google', function ($log, config, $google) {
+    return ['$log','CONFIG', function ($log, config) {
         this.getDataUrl = function() {
             return config.dataUrl;
         };
 
         this.getConfigUrl = function() {
             return config.configUrl;
+        };
+
+        this.getQueryStartDate = function() {
+            return config.queryStartDate;
+        };
+
+        this.getQueryEndDate = function() {
+            return config.queryEndDate;
+        };
+
+        this.getQueryNoEndDate = function() {
+            return config.queryNoEndDate;
+        };
+
+        this.getDefaultColumn = function() {
+            return config.defaultColumn;
         };
     }];
 });

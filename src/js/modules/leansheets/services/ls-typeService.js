@@ -16,6 +16,7 @@ define(['angular'], function (ng) {
         var config = [];
 
         this.getWorkTypes = function() {
+            $log.debug('ls-typeService: getWorkTypes');
             var deferred = $q.defer();
             var promise = deferred.promise;
 

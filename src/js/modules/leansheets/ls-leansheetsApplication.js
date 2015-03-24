@@ -17,15 +17,16 @@ define([
     './controllers/ls-cfdController',
 //    './directives/customDirective',
 //    './factories/di-customFactory',
-    './services/ls-googleConfigService',
+    './services/ls-configService',
     './services/ls-googleService',
     './services/ls-typeService',
     './services/ls-controlService',
     './services/ls-histogramService',
-    './services/ls-cfdService'
+    './services/ls-cfdService',
+    './services/ls-queryService'
 ], function (ng, 
         applicationController, histogramController, controlController, cfdController, 
-        googleConfigService, googleService, typeService, controlService, histogramService, cfdService) {
+        configService, googleService, typeService, controlService, histogramService, cfdService, queryService) {
     'use strict';
 
     // Define a new angular module. The given name should ALWAYS match the filename.
@@ -47,12 +48,13 @@ define([
     // applicationModule.factory('di-customFactory', customFactory);
 
     // Add services to the module. The given name should ALWAYS match the filename.
-    applicationModule.service('ls-googleConfigService', googleConfigService);
+    applicationModule.service('ls-configService', configService);
     applicationModule.service('ls-googleService', googleService);
     applicationModule.service('ls-typeService', typeService);
     applicationModule.service('ls-controlService', controlService);
     applicationModule.service('ls-histogramService', histogramService);
     applicationModule.service('ls-cfdService', cfdService);
+    applicationModule.service('ls-queryService', queryService);
     
     return applicationModule;
 

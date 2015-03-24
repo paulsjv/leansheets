@@ -15,8 +15,8 @@ define(['angular'], function (ng) {
     return ['$log','ls-configService', function ($log, configService) {
 
         var dataQuery = "select D, E, A, B, C where D is not null AND toDate(D) >= toDate(date '%sd') AND toDate(D) <= toDate(date '%ed') AND %t order by D",
-            cfdStartQuery = "select C, count(A) where %t and C is not null and toDate(C) >= toDate(date '%sd') AND toDate(C) <= toDate(date '%ed') group by C",
-            cfdEndQuery = "select D, count(A) where %t and D is not null and toDate(C) >= toDate(date '%sd') AND toDate(C) <= toDate(date '%ed') group by D",
+            cfdStartQuery = "select C, count(A) where %t AND C is not null AND toDate(C) >= toDate(date '%sd') AND toDate(C) <= toDate(date '%ed') group by C",
+            cfdEndQuery = "select D, count(A) where %t AND D is not null AND toDate(C) >= toDate(date '%sd') AND toDate(C) <= toDate(date '%ed') group by D",
             configQuery = 'select *';
 
         this.getDataQuery = function(type) {

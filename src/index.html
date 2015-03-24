@@ -24,8 +24,8 @@
         <div data-ng-if="initialLoad">
             <p>Loading Application....</p>
         </div>
-        <div class="container-fluid di-flex-box" data-ng-cloak> 
-
+        <div class="container-fluid di-flex-box" data-ng-cloak>
+            <div><h2>Showing data between {{startDate}} through {{endDate}}.</h2></div>
             <div id="histogramChart" data-ng-controller="ls-histogramController">
                 Class of Service: <select ng-model="workType" ng-change="changeType(workType)" ng-options="workType.name for workType in workTypes"></select><br>
                 <highchart id="histogramHighChart" config="config"></highchart>

@@ -15,8 +15,6 @@ define([
     './controllers/ls-histogramController',
     './controllers/ls-controlController',
     './controllers/ls-cfdController',
-//    './directives/customDirective',
-//    './factories/di-customFactory',
     './services/ls-configService',
     './services/ls-googleService',
     './services/ls-typeService',
@@ -40,12 +38,6 @@ define([
     applicationModule.controller('ls-histogramController', histogramController);
     applicationModule.controller('ls-controlController', controlController);
     applicationModule.controller('ls-cfdController', cfdController);
-
-    // Add directives to the module. The given name should ALWAYS match the filename.
-    // applicationModule.directive('customDirective', customDirective);
-
-    // Add factories to the module. The given name should ALWAYS match the filename.
-    // applicationModule.factory('di-customFactory', customFactory);
 
     // Add services to the module. The given name should ALWAYS match the filename.
     applicationModule.service('ls-configService', configService);

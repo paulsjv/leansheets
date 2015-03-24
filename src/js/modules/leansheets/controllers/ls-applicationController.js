@@ -19,9 +19,11 @@ define(['angular'], function (ng) {
      * Parameter options include all standard angular services, plus any provided by
      * module-level dependencies.
      */
-    return ['$log', '$scope', 'ls-typeService',
-        function ($log, $scope, typeService ) {
+    return ['$log','$scope','ls-typeService','ls-configService',
+        function ($log, $scope, typeService, configService) {
 
+            $scope.startDate = configService.getQueryStartDate();
+            $scope.endDate = configService.getQueryEndDate();
             $scope.workType;
             $scope.workTypes;
 

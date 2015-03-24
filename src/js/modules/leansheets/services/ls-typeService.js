@@ -57,7 +57,7 @@ define(['angular'], function (ng) {
                 column = column + 2;
             }
 
-            if (configService.getShowAllWork() === true) {
+            if (configService.getShowAllWork()) {
                 config.unshift({ name: "Show All Work Types", column: "showAllWork" });
             }
         };

@@ -33,8 +33,8 @@ define(['angular'], function (ng) {
             return config.queryNoEndDate;
         };
 
-        this.getDefaultColumn = function() {
-            return config.defaultColumn;
+        this.getShowAllWork = function() {
+            return config.showAllWork;
         };
     }];
 });

@@ -12,7 +12,7 @@
 define(['angular'], function (ng) {
     'use strict';
 
-    return ['$log','$q','ls-googleService', function ($log, $q, googleService) {
+    return ['$log','$q','ls-googleService','ls-configService', function ($log, $q, googleService, configService) {
         var config = [];
 
         this.getWorkTypes = function() {
@@ -55,6 +55,10 @@ define(['angular'], function (ng) {
                     }
                 }
                 column = column + 2;
+            }
+
+            if (configService.getShowAllWork() === true) {
+                config.unshift({ name: "Show All Work Types", column: "showAllWork" });
             }
         };
 

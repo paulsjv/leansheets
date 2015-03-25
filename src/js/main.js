@@ -4,13 +4,14 @@
 define([
     'jquery',
     'angular',
-    'goog!visualization,1',
     'moment',
+    'jssha',
+    'goog!visualization,1',
     'bootstrap',
     'modules/leansheets/ls-leansheetsApplication',
     'highcharts',
     'highchartsng'
-], function($, ng ) {
+], function($, ng, moment, jssha ) {
     'use strict';
 
     var initInjector = ng.injector(['ng']),
@@ -43,6 +44,7 @@ define([
         $log.debug('Bootstraping Application');
         ng.module('google',[]).constant('$google', google);
         ng.module('moment',[]).constant('$moment', moment);
+        ng.module('jssha',[]).constant('$jssha', jssha);
         ng.bootstrap(document, ['ls-leansheetsApplication']); 
     }
 });

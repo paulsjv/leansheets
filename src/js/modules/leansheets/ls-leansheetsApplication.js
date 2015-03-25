@@ -21,14 +21,15 @@ define([
     './services/ls-controlService',
     './services/ls-histogramService',
     './services/ls-cfdService',
-    './services/ls-queryService'
+    './services/ls-queryService',
+    './services/ls-cacheService'
 ], function (ng, 
         applicationController, histogramController, controlController, cfdController, 
-        configService, googleService, typeService, controlService, histogramService, cfdService, queryService) {
+        configService, googleService, typeService, controlService, histogramService, cfdService, queryService, cacheService) {
     'use strict';
 
     // Define a new angular module. The given name should ALWAYS match the filename.
-    var applicationModule = ng.module('ls-leansheetsApplication', ['config','google','moment','highcharts-ng']);
+    var applicationModule = ng.module('ls-leansheetsApplication', ['config','google','moment','highcharts-ng','jssha']);
     applicationModule.config(['$logProvider','CONFIG', function($logProvider, config) {
             $logProvider.debugEnabled(config.debugEnabled);
         }]);
@@ -47,7 +48,8 @@ define([
     applicationModule.service('ls-histogramService', histogramService);
     applicationModule.service('ls-cfdService', cfdService);
     applicationModule.service('ls-queryService', queryService);
-    
+    applicationModule.service('ls-cacheService', cacheService)   
+
     return applicationModule;
 
 });

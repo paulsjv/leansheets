@@ -2,7 +2,8 @@
     "configUrl": "https://docs.google.com/a/drillinginfo.com/spreadsheet/ccc?key=0AonIdzD-Ya1EdHdlRWNXcmVrMlRGRlZ4bXVwb1B5T2c&usp=drive_web&gid=5#",
     "dataUrl": "https://docs.google.com/a/drillinginfo.com/spreadsheet/ccc?key=0AonIdzD-Ya1EdHdlRWNXcmVrMlRGRlZ4bXVwb1B5T2c&gid=2&usp=drive_web#",
     "queryStartDate": "2015-03-01",
-    "queryEndDate": "2015-03-28", 
+    "queryEndDate": "2015-03-31", 
     "debugEnabled": true,
-    "showAllWork": true 
+    "showAllWork": true,
+    "cacheTtl": 300 
 }

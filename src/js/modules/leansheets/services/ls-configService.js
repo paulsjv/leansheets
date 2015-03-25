@@ -36,5 +36,9 @@ define(['angular'], function (ng) {
         this.getShowAllWork = function() {
             return config.showAllWork;
         };
+
+        this.getCacheTtl = function() {
+            return config.cacheTtl;
+        };
     }];
 });

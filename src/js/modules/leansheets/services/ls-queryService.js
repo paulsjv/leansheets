@@ -27,6 +27,7 @@ define(['angular'], function (ng) {
             };
 
         this.getDataQuery = function(type) {
+            $log.debug('ls-queryService: getDataQuery');
             return showAllWork(type.column, 
                                dataQuery.replace('%sd', configService.getQueryStartDate())
                                         .replace('%ed', configService.getQueryEndDate()),

@@ -10,7 +10,8 @@ require.config({
         jquery: '../bower_components/jquery/dist/jquery',
         moment: '../bower_components/moment/moment',
         highcharts: '../bower_components/highcharts/highcharts',
-        highchartsng: '../bower_components/highcharts-ng/dist/highcharts-ng'
+        highchartsng: '../bower_components/highcharts-ng/dist/highcharts-ng',
+        jssha: '../bower_components/jssha/src/sha256'
     },
 
     shim: {
@@ -31,9 +32,6 @@ require.config({
         'angular-resource': {
             deps: ['angular']
         },
-        moment: {
-            exports: 'moment'
-        },
         highcharts: {
             exports: 'highcharts',
             deps: ['angular']
@@ -41,6 +39,9 @@ require.config({
         highchartsng: {
             exports: 'highchartsng',
             deps: ['angular']
+        },
+        moment: {
+            exports: 'moment'
         }
     }
 

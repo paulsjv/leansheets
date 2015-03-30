@@ -33,8 +33,19 @@ config(['$routeProvider','DataServiceConfigProvider', function($routeProvider, D
 
     // Figure 1 - Legacy Work Items:
     // (standard work end date 2014-05-07 and end date 2014-06-11 and completed by new engineering team)
-    DataServiceConfigProvider.setQuery("select D, E, A, B, C where D is not null AND toDate(D) < toDate(date '"+now.format('YYYY-MM-DD')+"') AND toDate(D) > toDate(date '2014-05-07') AND F = ");// AND toDate(D) < toDate(date '2014-06-18') ");
-  // DataServiceConfigProvider.setCfdStartDateQuery("select C, count(A) where F = '%s' and C is not null group by C");
+    // DataServiceConfigProvider.setQuery("select D, E, A, B, C where D is not null AND toDate(D) < toDate(date '2014-06-11') AND toDate(D) > toDate(date '2014-05-07') AND F = ");
+
+    // Figure 2 - Steep Drop off with new work items entering the system:
+    // DataServiceConfigProvider.setQuery("select D, E, A, B, C where D is not null AND toDate(D) >= toDate(date '2014-05-21') AND F = ");
+
+    //Figure 3 - All work completed with new upstream options development by Jay’s engineering team
+    // (work started after April 14th and end date is greater than June 18th) Must delete data point DSPL-1340 as it was started before April 14th 
+     DataServiceConfigProvider.setQuery("select D, E, A, B, C where D is not null AND toDate(D) > toDate(date '2014-06-18') ");
+
+
+    // Old Queries
+ // DataServiceConfigProvider.setCfdStartDateQuery("select C, count(A) where F = '%s' and C is not null group by C");
+//  DataServiceConfigProvider.setQuery("select D, E, A, B, C where D is not null AND toDate(D) < toDate(date '"+now.format('YYYY-MM-DD')+"') AND toDate(D) > toDate(date '2014-05-07') AND F = ");// AND toDate(D) < toDate(date '2014-06-18') "); // DataServiceConfigProvider.setCfdStartDateQuery("select C, count(A) where F = '%s' and C is not null group by C");
   // DataServiceConfigProvider.setCfdEndDateQuery("select D, count(A) where F = '%s' and D is not null group by D");
   DataServiceConfigProvider.setCfdStartDateQuery("select C, count(A) where F = '%s' and C is not null and toDate(C) > date '"+ now.format('YYYY-MM-YY') +"' group by C");
   DataServiceConfigProvider.setCfdEndDateQuery("select D, count(A) where F = '%s' and D is not null and toDate(C) > date '"+ now.format('YYYY-MM-YY') +"' group by D");

@@ -41,10 +41,10 @@ define(['angular'], function (ng) {
                     alert('Error getting work types! ' + error);
                 });
 
-            $scope.updateChart = function(workType, chart, chartName) {
+            $scope.updateChart = function(workTypes, chart, chartName) {
                 $log.debug('updateChart: ls-applicationController');
-                if (workType.column !== "") {
-                    chart.getChart(workType).then(
+                if (areWorkTypesValid(workTypes)) {
+                    chart.getChart(workTypes).then(
                         function(success) {
                             $log.debug('Firing "chart:' + chartName + '" event: ls-applicationController!');
                             $scope.$broadcast('chart:' + chartName, success);
@@ -54,6 +54,16 @@ define(['angular'], function (ng) {
                         });
                 } else { alert(workType.name + " is not a selectable value!"); }
 
+            };
+
+            var areWorkTypesValid = function(workTypes) {
+                var valid = true;
+                workTypes.forEach(function(type) {
+                    if (type.column === "") {
+                        valid = false;
+                    }
+                });
+                return valid;
             };
 
     }];

@@ -42,11 +42,11 @@ define(['angular'], function (ng) {
             return promise;
         };
 
-		this.getData = function(type) {
-            $log.debug('googleService.getData');
+		this.getData = function(types) {
+            $log.debug('ls-googleService: getData');
 			var deferred = $q.defer(),
 			    promise = deferred.promise,
-                dataQuery = queryService.getDataQuery(type),
+                dataQuery = queryService.getDataQuery(types),
                 cachedData = cacheService.get(dataQuery),
     			handleResponse = function(response) {
 	    			var data = setDataOnPromise(response, deferred);
@@ -78,7 +78,7 @@ define(['angular'], function (ng) {
 				    var data = setDataOnPromise(response, deferred);
                     cacheService.put(dataQuery, data);
 			    },
-                query; 
+                query;
 
             $log.debug('Query for start dates CFD Chart');
             $log.debug(dataQuery);
@@ -105,8 +105,8 @@ define(['angular'], function (ng) {
 				    var data = setDataOnPromise(response, deferred);
                     cacheService.put(dataQuery, data);
 			    },
-                query; 
-                
+                query;
+
             $log.debug('Query for end dates CFD Chart');
             $log.debug(dataQuery);
             if (cachedData === undefined) {

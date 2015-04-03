@@ -26,12 +26,22 @@ define(['angular'], function (ng) {
                 return query.replace('%t', string);
             };
 
-        this.getDataQuery = function(type) {
+        this.getDataQuery = function(types) {
             $log.debug('ls-queryService: getDataQuery');
-            return showAllWork(type.column, 
+            if (types.length === 1) {
+                return showAllWork(types[0].column,
                                dataQuery.replace('%sd', configService.getQueryStartDate())
                                         .replace('%ed', configService.getQueryEndDate()),
-                               "AND " + type.column + " = '" + type.name + "'");
+                               "AND " + types[0].column + " = '" + types[0].name + "'");
+            } else {
+                var where = '';
+                types.forEach(function(type) {
+                    where += ' AND ' + type.column + " = '" + type.name + "'";
+                });
+                return dataQuery.replace('%sd', configService.getQueryStartDate())
+                                .replace('%ed', configService.getQueryEndDate())
+                                .replace('%t', where);
+            }
         };
 
         this.getCfdStartQuery = function(type) {

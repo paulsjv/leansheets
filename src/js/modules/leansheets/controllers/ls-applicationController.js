@@ -52,17 +52,22 @@ define(['angular'], function (ng) {
                             $log.debug('Error getting data from Google Sheets!', error);
                              alert('Error getting data from Google Sheets! ' + error);
                         });
-                } else { alert(workType.name + " is not a selectable value!"); }
+                }
 
             };
 
             var areWorkTypesValid = function(workTypes) {
-                var valid = true;
+                var valid = true,
+                    message = '';
                 workTypes.forEach(function(type) {
                     if (type.column === "") {
                         valid = false;
+                        message += type.name + "\n";
                     }
                 });
+                if (valid === false) {
+                    alert(message + 'These selections are not selectable value(s)!');
+                }
                 return valid;
             };
 

@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+    <head>
+
+        <title>LeanSheets</title>
+
+        <!-- build:style thirdParty -->
+        <!-- /build -->
+
+        <!-- build:style app -->
+        <!-- /build -->
+
+        <!-- build:remove -->
+        <link rel="stylesheet/less" type="text/css" href="less/main.less" />
+
+        <script src="bower_components/less/dist/less.min.js" type="text/javascript"></script>
+        <!-- /build -->
+
+    </head>
+    <body data-ng-csp data-ng-controller="ls-applicationController">
+
+        <!-- build:section partials._header -->
+        <!-- /build -->
+        <div data-ng-if="initialLoad">
+            <p>Loading Application....</p>
+        </div>
+        <div class="container-fluid di-flex-box" data-ng-cloak>
+            <div><h2>Showing data between {{startDate}} through {{endDate}}.</h2></div>
+            <div id="histogramChart" data-ng-controller="ls-histogramController">
+                Class of Service: <select ng-model="workType" ng-change="changeType(workType)" ng-options="workType.name for workType in workTypes"></select><br>
+                <highchart id="histogramHighChart" config="config"></highchart>
+            </div>
+
+            <div id="controlChart" data-ng-controller="ls-controlController">
+                Class of Service: <select ng-model="workType" ng-change="changeType(workType)" ng-options="workType.name for workType in workTypes"></select><br>
+                <highchart id="controlHighChart" config="config"></highchart>
+            </div>
+
+            <div id="cfdChart" data-ng-controller="ls-cfdController">
+                Class of Service: <select ng-model="workType" ng-change="changeType(workType)" ng-options="workType.name for workType in workTypes"></select><br>
+                <highchart id="cfdHighChart" config="config"></highchart>
+            </div>
+        </div>
+
+        <!-- build:section partials._footer -->
+        <!-- /build -->
+
+        <!-- build:script app -->
+        <!-- /build -->
+
+        <!-- build:remove -->
+        <script type="text/javascript" src="bower_components/requirejs/require.js"></script>
+        <script type="text/javascript" src="js/config.js"></script>
+        <script type="text/javascript">
+            (function(require) {
+                'use strict';
+
+                require.config({
+                    baseUrl: 'js'
+                });
+
+                require(['jquery'], function($) {
+
+                    // enables includes in dev mode
+                    var includePattern = /build:section[\s]+(.+)/,
+                        match,
+                        includeUrl,
+                        $include;
+
+                    $("*").contents().filter(function(){
+                        return this.nodeType == 8;
+                    }).each(function(index, elem){
+                        if (includePattern.test(elem.nodeValue)) {
+
+                            match = elem.nodeValue.match(includePattern)[1];
+                            includeUrl = match.replace(/\./g, '/').trim() + '.html';
+
+                            $include = $('<div></div>').load(includeUrl, function () {
+                                $(this).children().unwrap();
+                            });
+
+                            $include.insertAfter(elem);
+
+                        }
+                    });
+
+                    // simulate almond require main
+                    require(['main'], function() {});
+
+                });
+
+            }(require));
+
+        </script>
+        <!-- /build -->
+
+    </body>
+</html>

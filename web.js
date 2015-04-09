@@ -11,15 +11,15 @@ router.use(function(req, res, next) {
 	console.log(req.method, req.url);
 
 	// continue doing what we were doing and go to the route
-	next();	
+	next();
 });
 
 // home page route (http://localhost:8080)
 router.get('/', function(req, res) {
-	res.sendfile('./app/index.html');	
+	res.sendfile('./src/index.html');
 });
 
-app.use(express.static(__dirname + '/app'));
+app.use(express.static(__dirname + '/src'));
 app.use('/', router);
 
 app.listen(port);

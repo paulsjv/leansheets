@@ -22,7 +22,7 @@ define(['angular'], function (ng) {
             directivePromise.then(
                 function (success){
                     $log.debug('Got the data for the control chart: ls-controlService!');
-      	            deferred.resolve(getOptionsForChart(workType.name, parseData(success)));
+	            deferred.resolve(getOptionsForChart('', parseData(success)));
                 }, function (error) {
                     $log.error('ls-controlService: Error getting data for control chart!', error);
                     deferred.reject(error);

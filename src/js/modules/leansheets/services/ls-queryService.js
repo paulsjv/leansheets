@@ -28,20 +28,16 @@ define(['angular'], function (ng) {
 
         this.getDataQuery = function(types) {
             $log.debug('ls-queryService: getDataQuery');
-            if (types.length === 1) {
-                return showAllWork(types[0].column,
-                               dataQuery.replace('%sd', configService.getQueryStartDate())
-                                        .replace('%ed', configService.getQueryEndDate()),
-                               "AND " + types[0].column + " = '" + types[0].name + "'");
-            } else {
-                var where = '';
-                types.forEach(function(type) {
-                    where += ' AND ' + type.column + " = '" + type.name + "'";
-                });
-                return dataQuery.replace('%sd', configService.getQueryStartDate())
-                                .replace('%ed', configService.getQueryEndDate())
-                                .replace('%t', where);
-            }
+            var where = '';
+
+            types.forEach(function(type) {
+                where += ' AND ' + type.column + " = '" + type.name + "'";
+            });
+
+            return showAllWork(types[0].column,
+                           dataQuery.replace('%sd', configService.getQueryStartDate())
+                                    .replace('%ed', configService.getQueryEndDate()),
+                            where);
         };
 
         this.getCfdStartQuery = function(type) {

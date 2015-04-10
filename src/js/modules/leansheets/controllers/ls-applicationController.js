@@ -56,6 +56,26 @@ define(['angular'], function (ng) {
 
             };
 
+            $scope.addDropdownParent = function(dropdowns, defaultWorkType, key) {
+                $log.debug('ls-applicationController: addDropdownParent()');
+                dropdowns[key] = defaultWorkType;
+                return dropdowns;
+            };
+
+            $scope.removeDropdownParent = function(dropdowns, key) {
+                $log.debug('ls-applicationController: removeDropdownParent()');
+                $log.debug('key:',key);
+                $log.debug('dropdowns:',dropdowns);
+                if (key === 0) {
+                    dropdowns.shift();
+                } else if ((key+1) === dropdowns.length) {
+                    dropdowns.pop();
+                } else {
+                    dropdowns.splice(key,1);
+                }
+                return dropdowns;
+            };
+
             var areWorkTypesValid = function(workTypes) {
                 var valid = true,
                     message = '';
@@ -65,7 +85,10 @@ define(['angular'], function (ng) {
                         message += type.name + "\n";
                     }
                 });
-                if (valid === false) {
+                if (workTypes.length === 0) {
+                    valid = false;
+                    alert('Please add a Class of Service');
+                } else if (valid === false) {
                     alert(message + 'These selections are not selectable value(s)!');
                 }
                 return valid;

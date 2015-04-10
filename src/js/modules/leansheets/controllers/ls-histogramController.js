@@ -29,12 +29,27 @@ define(['angular'], function (ng) {
             $scope.dropdowns = [];  // array of work type objects
 
             $scope.addDropdown = function() {
+                key = $scope.dropdowns.length;
                 $log.debug('ls-histogramController: adding dropdown');
                 $log.debug('defaultWorkType:', defaultWorkType);
                 $log.debug('key:', key);
                 $scope.dropdowns[key] = defaultWorkType;
                 $log.debug('dropdowns:', $scope.dropdowns);
-                key++;
+                key = $scope.dropdowns.length;
+            };
+
+            $scope.removeDropdown = function(key) {
+                $log.debug('ls-histogramController: removing dropdown');
+                $log.debug('key:', key);
+                if (key === 0) {
+                    $scope.dropdowns.shift();
+                } else if ((key+1) === $scope.dropdowns.length) {
+                    $scope.dropdowns.pop();
+                } else {
+                    $scope.dropdowns.splice(key,1);
+                }
+                $log.debug('scope.dropdowns:',$scope.dropdowns);
+                key = $scope.dropdowns.length;
             };
 
             $scope.query = function() {

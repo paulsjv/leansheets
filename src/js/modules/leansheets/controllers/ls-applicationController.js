@@ -60,7 +60,7 @@ define(['angular'], function (ng) {
                 var valid = true,
                     message = '';
                 workTypes.forEach(function(type) {
-                    if (type.column === "") {
+                    if (type.column === "" || (type.column === "showAllWork" && workTypes.length > 1)) {
                         valid = false;
                         message += type.name + "\n";
                     }

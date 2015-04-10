@@ -52,7 +52,7 @@ define(['angular'], function (ng) {
                             $log.debug('Error getting data from Google Sheets!', error);
                              alert('Error getting data from Google Sheets! ' + error);
                         });
-                }
+                } 
 
             };
 
@@ -87,7 +87,7 @@ define(['angular'], function (ng) {
                 });
                 if (workTypes.length === 0) {
                     valid = false;
-                    alert('Please add a Class of Service');
+                    alert('Please add a Class of Service'); 
                 } else if (valid === false) {
                     alert(message + 'These selections are not selectable value(s)!');
                 }

@@ -22,7 +22,7 @@ define(['angular'], function (ng) {
             directivePromise.then(
                 function (success){
                     $log.debug('Got the data for the histogram!');
-	            deferred.resolve(getOptionsForChart('', parseData(success)));
+      	            deferred.resolve(getOptionsForChart('', parseData(success)));
                 }, function (error) {
                     $log.error('HistogramService: Error getting data for histogram! ' + error);
                     deferred.reject(error);
@@ -126,6 +126,6 @@ define(['angular'], function (ng) {
               	arry.pop();
   	  	    }
         		return arry;
-	};
+     	};
     }];
 });

@@ -22,26 +22,53 @@ define(['angular'], function (ng) {
     return ['$log', '$scope', 'ls-cfdService',
         function ($log, $scope, cfdService ) {
 
-            var chartName = 'cfd';
+            var chartName = 'cfd',
+                defaultWorkType,
+                key = 0;
+
+            $scope.dropdowns = [];  // array of work type objects
+
+            $scope.addDropdown = function() {
+                $log.debug('ls-cfdController: adding dropdown');
+                $scope.dropdowns = $scope.addDropdownParent($scope.dropdowns, defaultWorkType, $scope.dropdowns.length);
+                key = $scope.dropdowns.length;
+            };
+
+            $scope.removeDropdown = function(key) {
+                $log.debug('ls-cfdController: removing dropdown');
+                $scope.dropdowns = $scope.removeDropdownParent($scope.dropdowns, key);
+                key = $scope.dropdowns.length;
+            };
+
+            $scope.query = function() {
+                $log.debug('ls-cfdController: Calling parent controller to update control chart!');
+                $log.debug('ls-cfdController: work types sending to query', $scope.dropdowns);
+                updateChart();
+            };
 
             $scope.$on('types:loaded',
                 function(event, workType) {
-                    $log.debug('Caught "types:loaded" event in ls-cfdController!');
-                    $log.debug('Calling parent controller to update cfd');
-                    $scope.updateChart(workType, cfdService, chartName);
+                    $log.debug('ls-cfdController: Caught "types:loaded" event!');
+                    defaultWorkType = workType;
+                    $scope.addDropdown();
+                    updateChart();
                 });
 
             $scope.$on('chart:' + chartName,
                 function(event, config) {
-                    $log.debug('Caught "chart:' + chartName + '" event in ls-cfdController!');
+                    $log.debug('ls-cfdController: Caught "chart:' + chartName + '" event!');
+                    $log.debug('ls-cfdController: config', config);
                     $scope.config = config;
                 });
 
-            $scope.changeType = function(workType) {
-                    $log.debug('changeType: ls-cfdController');
-                    $log.debug('Calling parent controller to update cfd!');
-                    $scope.updateChart(workType, cfdService, chartName);
+            $scope.changeType = function(workType, key) {
+                    $log.debug('ls-cfdController: changeType');
+                    $scope.dropdowns[key] = workType;
                 };
 
+            var updateChart = function() {
+               $log.debug('Calling parent controller to update control chart');
+               $scope.updateChart($scope.dropdowns, cfdService, chartName);
+            };
         }];
 });

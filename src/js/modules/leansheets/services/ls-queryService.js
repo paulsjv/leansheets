@@ -26,26 +26,44 @@ define(['angular'], function (ng) {
                 return query.replace('%t', string);
             };
 
-        this.getDataQuery = function(type) {
+        this.getDataQuery = function(types) {
             $log.debug('ls-queryService: getDataQuery');
-            return showAllWork(type.column, 
-                               dataQuery.replace('%sd', configService.getQueryStartDate())
-                                        .replace('%ed', configService.getQueryEndDate()),
-                               "AND " + type.column + " = '" + type.name + "'");
+            var where = '';
+
+            types.forEach(function(type) {
+                where += ' AND ' + type.column + " = '" + type.name + "'";
+            });
+
+            return showAllWork(types[0].column,
+                           dataQuery.replace('%sd', configService.getQueryStartDate())
+                                    .replace('%ed', configService.getQueryEndDate()),
+                            where);
         };
 
-        this.getCfdStartQuery = function(type) {
-            return showAllWork(type.column,
+        this.getCfdStartQuery = function(types) {
+            var where = '';
+
+            types.forEach(function(type) {
+                where += type.column + " = '" + type.name + "' AND ";
+            });
+
+            return showAllWork(types[0].column,
                                cfdStartQuery.replace('%sd', configService.getQueryStartDate())
                                             .replace('%ed', configService.getQueryEndDate()),
-                               type.column + " = '" + type.name + "' AND");
+                               where);
         };
 
-        this.getCfdEndQuery = function(type) {
-            return showAllWork(type.column,
+        this.getCfdEndQuery = function(types) {
+            var where = '';
+
+            types.forEach(function(type) {
+                where += type.column + " = '" + type.name + "' AND ";
+            });
+
+            return showAllWork(types[0].column,
                                cfdEndQuery.replace('%sd', configService.getQueryStartDate())
                                           .replace('%ed', configService.getQueryEndDate()),
-                               type.column + " = '" + type.name + "' AND");
+                               where);
         };
 
         this.getConfigQuery = function() {

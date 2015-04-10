@@ -14,15 +14,15 @@ define(['angular'], function (ng) {
 
     return ['$log','$q','$window','ls-googleService', function ($log, $q, $window, googleService) {
 
-        this.getChart = function (workType) {
+        this.getChart = function (workTypes) {
             var deferred = $q.defer(),
                 promise = deferred.promise,
-                directivePromise = googleService.getData(workType);
-                
+                directivePromise = googleService.getData(workTypes);
+
             directivePromise.then(
                 function (success){
                     $log.debug('Got the data for the histogram!');
-      	            deferred.resolve(getOptionsForChart(workType.name, parseData(success)));
+      	            deferred.resolve(getOptionsForChart('', parseData(success)));
                 }, function (error) {
                     $log.error('HistogramService: Error getting data for histogram! ' + error);
                     deferred.reject(error);
@@ -86,7 +86,7 @@ define(['angular'], function (ng) {
 
        var parseData = function (csv) {
             // key of data array is the lead time
-            // value of data array is the number of times lead time shows in data set 
+            // value of data array is the number of times lead time shows in data set
             var data = new Array();
             var obj = {
                 categories: new Array(),
@@ -95,7 +95,7 @@ define(['angular'], function (ng) {
             };
 
             var lines = csv.split("\n");
-            lines = popLastIndexOfArrayIfEmpty(lines);   
+            lines = popLastIndexOfArrayIfEmpty(lines);
             var total = 0;
 
             for (var i in lines) {
@@ -126,6 +126,6 @@ define(['angular'], function (ng) {
               	arry.pop();
   	  	    }
         		return arry;
-     	}; 
+     	};
     }];
 });

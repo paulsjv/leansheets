@@ -35,12 +35,17 @@
                 </div>
                 <highchart id="histogramHighChart" config="config"></highchart>
             </div>
-            <!--
+  
             <div id="controlChart" data-ng-controller="ls-controlController">
-                Class of Service: <select ng-model="workType" ng-change="changeType(workType)" ng-options="workType.name for workType in workTypes"></select><br>
+                <button ng-model="workTypes" ng-click="addDropdown()">Add</button> | <button ng-click="query()">Query</button>
+                <div>Class of Service(s):</div>  
+                <div ng-repeat="(key, value) in dropdowns track by $index">
+                    <select ng-model="value" ng-change="changeType(value, key)" ng-options="workType.name for workType in workTypes"></select>
+                    <button ng-click="removeDropdown(key)">Remove</button>
+                </div>
                 <highchart id="controlHighChart" config="config"></highchart>
             </div>
-
+<!--
             <div id="cfdChart" data-ng-controller="ls-cfdController">
                 Class of Service: <select ng-model="workType" ng-change="changeType(workType)" ng-options="workType.name for workType in workTypes"></select><br>
                 <highchart id="cfdHighChart" config="config"></highchart>

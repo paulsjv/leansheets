@@ -13,42 +13,6 @@ define(['angular'], function (ng) {
     'use strict';
 
     return ['$log','$q','$window','ls-googleService', function ($log, $q, $window, googleService) {
-        /*
-  	    var promiseDone = 0,
-            errorDone = 0,
-      	    startDates,
-     	    endDates;
-
-        this.getChart = function (workType) {
-            var deferred = $q.defer(),
-                promise = deferred.promise,
-	    	  	cfdEndPromise = googleService.getCfdEndData(workType),
-                cfdStartPromise = googleService.getCfdStartData(workType);
-                deferred = $q.defer(),
-                promise = deferred.promise;
-
-    	  	cfdStartPromise.then(function (success) {
-                $log.debug('Got the data for start dates cfd: ls-cfdService!', success);
-	  		    promiseDone++;
-	  	    	startDates = success;
-	      		handleResponse();
-    	  	}, function (error) {
-                $log.error('ls-cfdService: Error getting data for start dates cfd!', error);
-                errorDone++;
-                handleResponse(error);
-	      	});
-
-	  	    cfdEndPromise.then(function (success) {
-                $log.debug('Got the data for end dates cfd: ls-cfdService!', success);
-	      		promiseDone++;
-    	  		endDates = success;
-	  		    handleResponse();
-	  	    }, function (error) {
-                $log.error('ls-cfdService: Error getting data for end dates cdf!', error);
-                errorDone++;
-                handleResponse(error);
-    	  	});
-            */
         this.getChart = function (workType) {
            var startDatePromise = googleService.getCfdStartData(workType),
                 endDatePromise = googleService.getCfdEndData(workType),
@@ -58,7 +22,7 @@ define(['angular'], function (ng) {
             $q.all([startDatePromise, endDatePromise]).then(
                     function(data) {
                         $log.debug('Got the data for the CFD: ls-cfdService!')
-                        deferred.resolve(getOptionsForChart(workType.name, parseData(data[0], data[1])));
+                        deferred.resolve(getOptionsForChart('', parseData(data[0], data[1])));
                     }, function(error) {
                         $log.error('ls-cfdService: Error getting data for CFD!', error);
                         deferred.reject(error);

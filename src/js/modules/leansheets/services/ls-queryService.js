@@ -40,18 +40,30 @@ define(['angular'], function (ng) {
                             where);
         };
 
-        this.getCfdStartQuery = function(type) {
-            return showAllWork(type.column,
+        this.getCfdStartQuery = function(types) {
+            var where = '';
+
+            types.forEach(function(type) {
+                where += type.column + " = '" + type.name + "' AND ";
+            });
+
+            return showAllWork(types[0].column,
                                cfdStartQuery.replace('%sd', configService.getQueryStartDate())
                                             .replace('%ed', configService.getQueryEndDate()),
-                               type.column + " = '" + type.name + "' AND");
+                               where);
         };
 
-        this.getCfdEndQuery = function(type) {
-            return showAllWork(type.column,
+        this.getCfdEndQuery = function(types) {
+            var where = '';
+
+            types.forEach(function(type) {
+                where += type.column + " = '" + type.name + "' AND ";
+            });
+
+            return showAllWork(types[0].column,
                                cfdEndQuery.replace('%sd', configService.getQueryStartDate())
                                           .replace('%ed', configService.getQueryEndDate()),
-                               type.column + " = '" + type.name + "' AND");
+                               where);
         };
 
         this.getConfigQuery = function() {

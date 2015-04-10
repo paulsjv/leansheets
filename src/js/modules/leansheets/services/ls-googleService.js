@@ -69,10 +69,10 @@ define(['angular'], function (ng) {
 			return promise;
 		};
 
-		this.getCfdStartData = function(type) {
+		this.getCfdStartData = function(types) {
 			var deferred = $q.defer(),
 			    promise = deferred.promise,
-                dataQuery = queryService.getCfdStartQuery(type),
+                dataQuery = queryService.getCfdStartQuery(types),
                 cachedData = cacheService.get(dataQuery),
                 handleResponse = function(response) {
 				    var data = setDataOnPromise(response, deferred);
@@ -96,10 +96,10 @@ define(['angular'], function (ng) {
 			return promise;
 		};
 
-		this.getCfdEndData = function(type) {
+		this.getCfdEndData = function(types) {
 			var deferred = $q.defer(),
 			    promise = deferred.promise,
-                dataQuery = queryService.getCfdEndQuery(type),
+                dataQuery = queryService.getCfdEndQuery(types),
                 cachedData = cacheService.get(dataQuery),
                 handleResponse = function(response) {
 				    var data = setDataOnPromise(response, deferred);

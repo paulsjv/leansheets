@@ -13,9 +13,9 @@ define(['angular'], function (ng) {
     'use strict';
 
     return ['$log','$q','$window','ls-googleService', function ($log, $q, $window, googleService) {
-        this.getChart = function (workType) {
-           var startDatePromise = googleService.getCfdStartData(workType),
-                endDatePromise = googleService.getCfdEndData(workType),
+        this.getChart = function (workTypes) {
+           var startDatePromise = googleService.getCfdStartData(workTypes),
+                endDatePromise = googleService.getCfdEndData(workTypes),
                 deferred = $q.defer(),
                 promise = deferred.promise;
 
@@ -34,7 +34,7 @@ define(['angular'], function (ng) {
       	var handleResponse = function (error) {
   		    if (promiseDone == 2) {
   	    		var data = parseData(startDates, endDates);
-      			var options = getOptionsForChart(workType.name, data);
+      			var options = getOptionsForChart('', data);
   			    config = options;
   		    	promiseDone = 0;
                 deferred.resolve(config);

@@ -31,7 +31,7 @@
                 <div>Class of Service(s):</div>  
                 <div ng-repeat="(key, value) in dropdowns track by $index">
                     <select ng-model="value" ng-change="changeType(value, key)" ng-options="workType.name for workType in workTypes"></select>
-                    <button ng-click="removeDropdown(key)">Remove</button>
+                    <button class="btn btn-danger btn-small" ng-click="removeDropdown(key)"><i class="fa fa-trash-o fa-lg"></i> Delete</button>
                 </div>
                 <highchart id="histogramHighChart" config="config"></highchart>
             </div>

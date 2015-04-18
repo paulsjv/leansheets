@@ -26,7 +26,8 @@
     "highcharts": "3.0.10",
     "requirejs-plugins": "~1.0.3",
     "highcharts-ng": "~0.0.8",
-    "jssha": "~1.6.0"
+    "jssha": "~1.6.0",
+    "font-awesome": "~4.3.0"
   },
   "devDependencies": {
     "requirejs": "~2.1.16",

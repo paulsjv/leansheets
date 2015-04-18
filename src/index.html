@@ -27,7 +27,14 @@
         <div class="container-fluid di-flex-box" data-ng-cloak>
             <div><h2>Showing data between {{startDate}} through {{endDate}}.</h2></div>
             <div id="histogramChart" data-ng-controller="ls-histogramController">
-                <button ng-model="workTypes" ng-click="addDropdown()">Add</button> | <button ng-click="query()">Query</button>
+                <div class="btn-group" role="group" aria-label="Query Buttons">
+                    <button ng-model="workTypes" ng-click="addDropdown()"
+                            type="button" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-plus-sign" style="padding-right: 5px"></span>Add</button>
+                    <button ng-click="query()"
+                            type="button" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-search" style="padding-right: 5px"></span>Query</button>
+                </div>
                 <div>Class of Service(s):</div>  
                 <div ng-repeat="(key, value) in dropdowns track by $index">
                     <select ng-model="value" ng-change="changeType(value, key)" ng-options="workType.name for workType in workTypes"></select>
@@ -37,7 +44,14 @@
             </div>
   
             <div id="controlChart" data-ng-controller="ls-controlController">
-                <button ng-model="workTypes" ng-click="addDropdown()">Add</button> | <button ng-click="query()">Query</button>
+                <div class="btn-group" role="group" aria-label="Query Buttons">
+                    <button ng-model="workTypes" ng-click="addDropdown()"
+                            type="button" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-plus-sign" style="padding-right: 5px"></span>Add</button>
+                    <button ng-click="query()"
+                            type="button" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-search" style="padding-right: 5px"></span>Query</button>
+                </div>
                 <div>Class of Service(s):</div>  
                 <div ng-repeat="(key, value) in dropdowns track by $index">
                     <select ng-model="value" ng-change="changeType(value, key)" ng-options="workType.name for workType in workTypes"></select>
@@ -47,7 +61,14 @@
             </div>
 
             <div id="cfdChart" data-ng-controller="ls-cfdController">
-                <button ng-model="workTypes" ng-click="addDropdown()">Add</button> | <button ng-click="query()">Query</button>
+                <div class="btn-group" role="group" aria-label="Query Buttons">
+                    <button ng-model="workTypes" ng-click="addDropdown()"
+                            type="button" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-plus-sign" style="padding-right: 5px"></span>Add</button>
+                    <button ng-click="query()"
+                            type="button" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-search" style="padding-right: 5px"></span>Query</button>
+                </div>
                 <div>Class of Service(s):</div>
                 <div ng-repeat="(key, value) in dropdowns track by $index">
                     <select ng-model="value" ng-change="changeType(value, key)" ng-options="workType.name for workType in workTypes"></select>

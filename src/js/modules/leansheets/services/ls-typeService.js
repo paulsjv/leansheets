@@ -51,7 +51,7 @@ define(['angular'], function (ng) {
                         config.push({ name: line[column], column: line[column+1] });
                         //console.log("\tconfig: ", config);
                     } else if (line[column+1] === "" && line[column] != "") {
-                        config.push({ name: "****" + line[column] + "****", column: line[column+1] });
+                        config.push({ name: line[column], column: line[column+1] });
                     }
                 }
                 column = column + 2;

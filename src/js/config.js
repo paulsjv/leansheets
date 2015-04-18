@@ -11,9 +11,7 @@ require.config({
         moment: '../bower_components/moment/moment',
         highcharts: '../bower_components/highcharts/highcharts',
         highchartsng: '../bower_components/highcharts-ng/dist/highcharts-ng',
-        jssha: '../bower_components/jssha/src/sha256',
-        bootstrapdaterangepicker: '../bower_components/bootstrap-daterangepicker/daterangepicker',
-        daterangepicker: '../bower_components/angular-daterangepicker/js/angular-daterangepicker'
+        jssha: '../bower_components/jssha/src/sha256'
     },
 
     shim: {

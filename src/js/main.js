@@ -45,6 +45,6 @@ define([
         ng.module('google',[]).constant('$google', google);
         ng.module('moment',[]).constant('$moment', moment);
         ng.module('jssha',[]).constant('$jssha', jssha);
-        ng.bootstrap(document, ['ls-leansheetsApplication']); 
+        ng.bootstrap(document, ['ls-leansheetsApplication']);
     }
 });

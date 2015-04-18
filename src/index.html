@@ -46,13 +46,9 @@
                             <span class="caret"></span>
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li ng-model="value" ng-click="changeType(workType, key)" ng-repeat="workType in workTypes"><a>{{workType.name}}</a></li>
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li class="divider"></li>
-                            <li><a href="#">Separated link</a></li>
+                        <ul class="dropdown-menu scrollable-menu" role="menu">
+                            <li ng-class="{'dropdown-header disabled' : workType.column == ''}"
+                                ng-model="value" ng-click="changeType(workType, key)" ng-repeat="workType in workTypes"><a>{{workType.name}}</a></li>
                         </ul>
                 </div>
                 <highchart id="histogramHighChart" config="config"></highchart>
@@ -77,13 +73,9 @@
                             <span class="caret"></span>
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li ng-model="value" ng-click="changeType(workType, key)" ng-repeat="workType in workTypes"><a>{{workType.name}}</a></li>
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li class="divider"></li>
-                            <li><a href="#">Separated link</a></li>
+                        <ul class="dropdown-menu scrollable-menu" role="menu">
+                            <li class="{'dropdown-header disabled' : workType.column == ''}"
+                                ng-model="value" ng-click="changeType(workType, key)" ng-repeat="workType in workTypes"><a>{{workType.name}}</a></li>
                         </ul>
                 </div>
                 <highchart id="controlHighChart" config="config"></highchart>
@@ -108,13 +100,9 @@
                             <span class="caret"></span>
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li ng-model="value" ng-click="changeType(workType, key)" ng-repeat="workType in workTypes"><a>{{workType.name}}</a></li>
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li class="divider"></li>
-                            <li><a href="#">Separated link</a></li>
+                        <ul class="dropdown-menu scrollable-menu" role="menu">
+                            <li class="{'dropdown-header disabled' : workType.column == ''}"
+                                ng-model="value" ng-click="changeType(workType, key)" ng-repeat="workType in workTypes"><a>{{workType.name}}</a></li>
                         </ul>
                 </div>
                 <highchart id="cfdHighChart" config="config"></highchart>

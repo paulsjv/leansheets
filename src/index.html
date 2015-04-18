@@ -35,10 +35,25 @@
                             type="button" class="btn btn-default">
                             <span class="glyphicon glyphicon-search" style="padding-right: 5px"></span>Query</button>
                 </div>
-                <div>Class of Service(s):</div>
-                <div ng-repeat="(key, value) in dropdowns track by $index">
-                    <select ng-model="value" ng-change="changeType(value, key)" ng-options="workType.name for workType in workTypes"></select>
-                    <button class="btn btn-danger btn-small" ng-click="removeDropdown(key)"><i class="fa fa-trash-o fa-lg"></i> Delete</button>
+
+                <div class="btn-group" role="work" aria-label="Work Selections" style="padding-right:5px"
+                     ng-repeat="(key, value) in dropdowns track by $index">
+                        <button ng-click="removeDropdown(key)" type="button" class="btn btn-danger">
+                            <span class="glyphicon glyphicon-remove-sign"></span>
+                        </button>
+                        <button type="button" class="btn btn-default">{{dropdowns[key].name}}</button>
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li ng-model="value" ng-click="changeType(workType, key)" ng-repeat="workType in workTypes"><a>{{workType.name}}</a></li>
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                        </ul>
                 </div>
                 <highchart id="histogramHighChart" config="config"></highchart>
             </div>
@@ -52,10 +67,24 @@
                             type="button" class="btn btn-default">
                             <span class="glyphicon glyphicon-search" style="padding-right: 5px"></span>Query</button>
                 </div>
-                <div>Class of Service(s):</div>
-                <div ng-repeat="(key, value) in dropdowns track by $index">
-                    <select ng-model="value" ng-change="changeType(value, key)" ng-options="workType.name for workType in workTypes"></select>
-                    <button ng-click="removeDropdown(key)">Remove</button>
+                <div class="btn-group" role="work" aria-label="Work Selections" style="padding-right:5px"
+                     ng-repeat="(key, value) in dropdowns track by $index">
+                        <button ng-click="removeDropdown(key)" type="button" class="btn btn-danger">
+                            <span class="glyphicon glyphicon-remove-sign"></span>
+                        </button>
+                        <button type="button" class="btn btn-default">{{dropdowns[key].name}}</button>
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li ng-model="value" ng-click="changeType(workType, key)" ng-repeat="workType in workTypes"><a>{{workType.name}}</a></li>
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                        </ul>
                 </div>
                 <highchart id="controlHighChart" config="config"></highchart>
             </div>
@@ -69,13 +98,26 @@
                             type="button" class="btn btn-default">
                             <span class="glyphicon glyphicon-search" style="padding-right: 5px"></span>Query</button>
                 </div>
-                <div>Class of Service(s):</div>
-                <div ng-repeat="(key, value) in dropdowns track by $index">
-                    <select ng-model="value" ng-change="changeType(value, key)" ng-options="workType.name for workType in workTypes"></select>
-                    <button ng-click="removeDropdown(key)">Remove</button>
+                <div class="btn-group" role="work" aria-label="Work Selections" style="padding-right:5px"
+                     ng-repeat="(key, value) in dropdowns track by $index">
+                        <button ng-click="removeDropdown(key)" type="button" class="btn btn-danger">
+                            <span class="glyphicon glyphicon-remove-sign"></span>
+                        </button>
+                        <button type="button" class="btn btn-default">{{dropdowns[key].name}}</button>
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li ng-model="value" ng-click="changeType(workType, key)" ng-repeat="workType in workTypes"><a>{{workType.name}}</a></li>
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                        </ul>
                 </div>
                 <highchart id="cfdHighChart" config="config"></highchart>
-            </div>
         </div>
 
         <!-- build:section partials._footer -->

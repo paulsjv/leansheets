@@ -1,4 +1,4 @@
-node_modules/
+node_modules/**/*
 nodejs/server.js
 .DS_Store
 bower_components/

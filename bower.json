@@ -1,0 +1,37 @@
+{
+  "name": "leansheets",
+  "version": "0.0.7",
+  "homepage": "https://github.com/paulsjv/leansheets",
+  "authors": [
+    "Jay Paulson <paulsjv@gmail.com>"
+  ],
+  "description": "Tool to graph team performance",
+  "main": "src/js/main.js",
+  "keywords": [
+    "kanban",
+    "lean"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "node_modules",
+    "src/bower_components",
+    "test"
+  ],
+  "dependencies": {
+    "angularjs": "~1.3.14",
+    "jquery": "~2.1.3",
+    "bootstrap": "~3.3.2",
+    "moment": "~2.9.0",
+    "highcharts": "3.0.10",
+    "requirejs-plugins": "~1.0.3",
+    "highcharts-ng": "~0.0.8",
+    "jssha": "~1.6.0",
+    "font-awesome": "~4.3.0"
+  },
+  "devDependencies": {
+    "requirejs": "~2.1.16",
+    "almond": "~0.3.1",
+    "less": "~2.4.0"
+  }
+}

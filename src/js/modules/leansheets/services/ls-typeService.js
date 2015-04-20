@@ -28,7 +28,7 @@ define(['angular'], function (ng) {
                     } else { deferred.resolve(config); }
                 }, function(error) {
                     $log.error('TypeService: Error getting work types! ' + error);
-                    deferred.resolve(error);
+                    deferred.reject(error);
                 });
             } else {
                 deferred.resolve(config);

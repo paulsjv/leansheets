@@ -34,23 +34,8 @@ Currently there is no home for LeanSheets so you will have to clone the repo and
       "cacheTtl": 300
   }
   ```
-  
+
 NOTE: The configUrl and dataUrl must be of the form https:https://docs.google.com/spreadsheet/ccc?key=<key>&gid=<id>. If the url is of the form https://docs.google.com/spreadsheets/d/<key>/edit#gid=<id> then translate it into the above expected format.
-
-
-
-Cloning/Forking the Repo
--------------------------
-If you decide to fork this Repo please see the following if you wish to ignore changes to any files if you choose to pull/rebase from the main repo.
-
-This will tell git you want to start ignoring the changes to the file
-```
-git update-index --assume-unchanged path/to/server.js
-```
-When you want to start keeping track again
-```
-git update-index --no-assume-unchanged path/to/server.js
-```
 
 Running Tests
 -------------------------

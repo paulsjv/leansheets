@@ -15,14 +15,14 @@ Currently there is no home for LeanSheets so you will have to clone the repo and
 
 1. Clone the following repo: https://github.com/paulsjv/leansheets
   * The master branch is what you want.  It's the latest version.
-2. Make sure you have Nodejs installed on your system.  Next run the following commands to install everything. 
+2. Make sure you have Nodejs installed on your system.  Next run the following commands to install everything.
 
   ```
   $> npm install
   $> bower install
   ```
 3. Update the ./src/config.json file to be like below (Google Sheet is the demo I'm currently working on):
-  
+
   ```json
   {
       "configUrl": "https://docs.google.com/a/google.com/spreadsheet/ccc?key=12cvMUMnWEKynGTsyXQywvJ9drpjYAyyo0-2cnTUJSFw&usp=drive_web&gid=44020743#",
@@ -34,6 +34,10 @@ Currently there is no home for LeanSheets so you will have to clone the repo and
       "cacheTtl": 300
   }
   ```
+  
+NOTE: The configUrl and dataUrl must be of the form https:https://docs.google.com/spreadsheet/ccc?key=<key>&gid=<id>. If the url is of the form https://docs.google.com/spreadsheets/d/<key>/edit#gid=<id> then translate it into the above expected format.
+
+
 
 Cloning/Forking the Repo
 -------------------------

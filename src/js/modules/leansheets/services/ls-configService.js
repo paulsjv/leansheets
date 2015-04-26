@@ -40,5 +40,21 @@ define(['angular'], function (ng) {
         this.getCacheTtl = function() {
             return config.cacheTtl;
         };
+
+        this.getDatePickerFormat = function() {
+            return config.datePickerFormat;
+        };
+
+        this.getQueryDateFormat = function() {
+            return config.queryDateFormat;
+        };
+
+        this.getDefaultHistoricalNumberOfDays = function() {
+            return config.defaultHistoricalNumberOfDays;
+        };
+
+        this.getDatePickerMomentFormat = function() {
+            return config.datePickerMomentFormat;
+        };
     }];
 });

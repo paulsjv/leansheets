@@ -1,9 +1,13 @@
 {
     "configUrl": "https://docs.google.com/a/drillinginfo.com/spreadsheet/ccc?key=0AonIdzD-Ya1EdHdlRWNXcmVrMlRGRlZ4bXVwb1B5T2c&usp=drive_web&gid=5#",
     "dataUrl": "https://docs.google.com/a/drillinginfo.com/spreadsheet/ccc?key=0AonIdzD-Ya1EdHdlRWNXcmVrMlRGRlZ4bXVwb1B5T2c&gid=2&usp=drive_web#",
-    "queryStartDate": "2015-02-01",
-    "queryEndDate": "2015-03-31", 
+    "queryStartDate": "2015-03-01",
+    "queryEndDate": "2015-04-30",
     "debugEnabled": true,
     "showAllWork": true,
-    "cacheTtl": 300 
+    "cacheTtl": 300,
+    "datePickerFormat": "mm/dd/yyyy",
+    "datePickerMomentFormat": "MM/DD/YYYY",
+    "queryDateFormat": "YYYY-MM-DD",
+    "defaultHistoricalNumberOfDays": 60
 }

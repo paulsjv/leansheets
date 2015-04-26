@@ -12,7 +12,7 @@
 define(['angular'], function (ng) {
     'use strict';
 
-    return ['$log','ls-configService', function ($log, configService) {
+    return ['$log','ls-configService', '$moment', function ($log, configService, $moment) {
 
         var dataQuery = "select D, E, A, B, C where D is not null AND toDate(D) >= toDate(date '%sd') AND toDate(D) <= toDate(date '%ed') %t order by D",
             cfdStartQuery = "select C, count(A) where %t C is not null AND toDate(C) >= toDate(date '%sd') AND toDate(C) <= toDate(date '%ed') group by C",
@@ -26,18 +26,30 @@ define(['angular'], function (ng) {
                 return query.replace('%t', string);
             };
 
-        this.getDataQuery = function(types) {
+        this.getDataQuery = function(obj) {
             $log.debug('ls-queryService: getDataQuery');
-            var where = '';
+            $log.debug('ls-queryService: obj', obj);
+            var where = '',
+                query;
 
-            types.forEach(function(type) {
+            obj.workTypes.forEach(function(type) {
                 where += ' AND ' + type.column + " = '" + type.name + "'";
             });
 
-            return showAllWork(types[0].column,
-                           dataQuery.replace('%sd', configService.getQueryStartDate())
-                                    .replace('%ed', configService.getQueryEndDate()),
+            query = showAllWork(obj.workTypes[0].column,
+                           dataQuery.replace('%sd', getDate(obj.startDate)) 
+                                    .replace('%ed', getDate(obj.endDate)), 
                             where);
+            $log.debug('ls-queryService: query', query);
+            return query;
+        };
+
+        var getDate = function(date) {
+            $log.debug('getDate:',date);
+            var newDate = $moment(date, configService.getDatePickerMomentFormat())
+                    .format(configService.getQueryDateFormat());
+            $log.debug('newDate:', newDate);
+            return newDate;
         };
 
         this.getCfdStartQuery = function(types) {

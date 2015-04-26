@@ -19,11 +19,11 @@ define(['angular'], function (ng) {
      * Parameter options include all standard angular services, plus any provided by
      * module-level dependencies.
      */
-    return ['$log','$scope','ls-typeService','ls-configService',
-        function ($log, $scope, typeService, configService) {
+    return ['$log','$scope','ls-typeService','ls-configService','$moment',
+        function ($log, $scope, typeService, configService, $moment) {
 
-            $scope.startDate = configService.getQueryStartDate();
-            $scope.endDate = configService.getQueryEndDate();
+//            $scope.startDate = configService.getQueryStartDate();
+//            $scope.endDate = configService.getQueryEndDate();
             $scope.workType;
             $scope.workTypes;
 
@@ -32,7 +32,7 @@ define(['angular'], function (ng) {
                     $log.log('Got work types: ls-applicationController', success);
                     $scope.workTypes = success;
                     $scope.workType = $scope.workTypes[0].column != "" ? $scope.workTypes[0] : $scope.workTypes[1];
-    
+
                     // broadcast event to all child contorllers so they will draw their charts
                     $log.debug('Firing "types:loaded" event: ls-applicationController');
                     $scope.$broadcast('types:loaded', $scope.workType);
@@ -41,10 +41,11 @@ define(['angular'], function (ng) {
                     alert('Error getting work types! ' + error);
                 });
 
-            $scope.updateChart = function(workTypes, chart, chartName) {
+            $scope.updateChart = function(obj, chart, chartName) {
                 $log.debug('updateChart: ls-applicationController');
-                if (areWorkTypesValid(workTypes)) {
-                    chart.getChart(workTypes).then(
+                if (areWorkTypesValid(obj.workTypes) &&
+                        areDatesValid(obj.startDate, obj.endDate)) {
+                    chart.getChart(obj).then(
                         function(success) {
                             $log.debug('Firing "chart:' + chartName + '" event: ls-applicationController!');
                             $scope.$broadcast('chart:' + chartName, success);
@@ -52,7 +53,7 @@ define(['angular'], function (ng) {
                             $log.debug('Error getting data from Google Sheets!', error);
                              alert('Error getting data from Google Sheets! ' + error);
                         });
-                } 
+                }
 
             };
 
@@ -76,6 +77,38 @@ define(['angular'], function (ng) {
                 return dropdowns;
             };
 
+            $scope.getDefaultStartDate = function() {
+                return $moment().subtract(
+                                    configService.getDefaultHistoricalNumberOfDays(),'days')
+                                .format(configService.getDatePickerMomentFormat());
+            };
+
+            // returns current date
+            $scope.getDefaultEndDate = function() {
+                $log.debug('moment:', $moment());
+                $log.debug('date picker format:',configService.getDatePickerMomentFormat());
+                var date = $moment().format(configService.getDatePickerMomentFormat());
+                $log.debug('ls-applicationController: default end date', date);
+                return date;
+            };
+
+            var areDatesValid = function(startDate, endDate) {
+                if (!ng.isDefined(startDate) || 
+                    !ng.isDefined(endDate) ||
+                    !isDateValid(startDate) ||
+                    !isDateValid(endDate)) {
+                        alert("Invalid dates choosen!\nStart Date: " + startDate + "\nEnd Date: " + endDate);
+                        return false;
+                }
+                return true;
+            };
+
+            var isDateValid = function(date) {
+                $log.debug('ls-applicationController: date', date);
+                $log.debug('ls-applicationController: format', configService.getDatePickerMomentFormat());
+                return $moment(date, configService.getDatePickerMomentFormat(), true).isValid();
+            };
+
             var areWorkTypesValid = function(workTypes) {
                 var valid = true,
                     message = '';
@@ -87,7 +120,7 @@ define(['angular'], function (ng) {
                 });
                 if (workTypes.length === 0) {
                     valid = false;
-                    alert('Please add a Class of Service'); 
+                    alert('Please add a Class of Service');
                 } else if (valid === false) {
                     alert(message + 'These selections are not selectable value(s)!');
                 }

@@ -27,6 +27,12 @@
         <div class="container-fluid di-flex-box" data-ng-cloak>
             <div><h2>Showing data between {{startDate}} through {{endDate}}.</h2></div>
             <div id="histogramChart" data-ng-controller="ls-histogramController">
+                <div class="btn-group" role="date-picker" aira-label="Date Picker">
+                    <div class="datepicker-box">
+                        <div data-date-picker-directive data-date-range-start-date="startDate" data-date-range-end-date="endDate"></div>
+                    </div>
+                </div>
+
                 <div class="btn-group" role="group" aria-label="Query Buttons">
                     <button ng-model="workTypes" ng-click="addDropdown()"
                             type="button" class="btn btn-default">
@@ -53,7 +59,7 @@
                 </div>
                 <highchart id="histogramHighChart" config="config"></highchart>
             </div>
-  
+<!--
             <div id="controlChart" data-ng-controller="ls-controlController">
                 <div class="btn-group" role="group" aria-label="Query Buttons">
                     <button ng-model="workTypes" ng-click="addDropdown()"
@@ -107,7 +113,7 @@
                 </div>
                 <highchart id="cfdHighChart" config="config"></highchart>
         </div>
-
+-->
         <!-- build:section partials._footer -->
         <!-- /build -->
 

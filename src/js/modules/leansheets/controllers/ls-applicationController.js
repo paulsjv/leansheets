@@ -22,8 +22,6 @@ define(['angular'], function (ng) {
     return ['$log','$scope','ls-typeService','ls-configService','$moment',
         function ($log, $scope, typeService, configService, $moment) {
 
-//            $scope.startDate = configService.getQueryStartDate();
-//            $scope.endDate = configService.getQueryEndDate();
             $scope.workType;
             $scope.workTypes;
 

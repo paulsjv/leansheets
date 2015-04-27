@@ -21,18 +21,6 @@ define(['angular'], function (ng) {
             return config.configUrl;
         };
 
-        this.getQueryStartDate = function() {
-            return config.queryStartDate;
-        };
-
-        this.getQueryEndDate = function() {
-            return config.queryEndDate;
-        };
-
-        this.getQueryNoEndDate = function() {
-            return config.queryNoEndDate;
-        };
-
         this.getShowAllWork = function() {
             return config.showAllWork;
         };

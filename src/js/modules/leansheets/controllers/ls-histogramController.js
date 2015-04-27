@@ -50,8 +50,6 @@ define(['angular'], function (ng) {
             $scope.query = function() {
                 $log.debug('ls-histogramController: Calling parent controller to update histogram!');
                 $log.debug('ls-histogramController: work types sending to query', $scope.dropdowns);
-                $log.debug('ls-histogramController: start date:', $scope.startDate);
-                $log.debug('ls-histogramController: end date:', $scope.endDate);
                 updateChart();
             };
 
@@ -79,6 +77,8 @@ define(['angular'], function (ng) {
 
             var updateChart = function() {
                 $log.debug('ls-histogramController: Calling parent controller to update histogram');
+                $log.debug('ls-histogramController: start date:', $scope.startDate);
+                $log.debug('ls-histogramController: end date:', $scope.endDate);
                 var obj = {
                     workTypes: $scope.dropdowns,
                     startDate: $scope.startDate,

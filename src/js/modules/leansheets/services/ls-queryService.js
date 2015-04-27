@@ -45,36 +45,36 @@ define(['angular'], function (ng) {
         };
 
         var getDate = function(date) {
-            $log.debug('getDate:',date);
+            $log.debug('ls-queryService: getDate:',date);
             var newDate = $moment(date, configService.getDatePickerMomentFormat())
-                    .format(configService.getQueryDateFormat());
-            $log.debug('newDate:', newDate);
+                    .format(configService.getQueryDateMomentFormat());
+            $log.debug('ls-queryService: newDate:', newDate);
             return newDate;
         };
 
-        this.getCfdStartQuery = function(types) {
+        this.getCfdStartQuery = function(obj) {
             var where = '';
 
-            types.forEach(function(type) {
+            obj.workTypes.forEach(function(type) {
                 where += type.column + " = '" + type.name + "' AND ";
             });
 
-            return showAllWork(types[0].column,
-                               cfdStartQuery.replace('%sd', configService.getQueryStartDate())
-                                            .replace('%ed', configService.getQueryEndDate()),
+            return showAllWork(obj.workTypes[0].column,
+                               cfdStartQuery.replace('%sd', getDate(obj.startDate))
+                                            .replace('%ed', getDate(obj.endDate)),
                                where);
         };
 
-        this.getCfdEndQuery = function(types) {
+        this.getCfdEndQuery = function(obj) {
             var where = '';
 
-            types.forEach(function(type) {
+            obj.workTypes.forEach(function(type) {
                 where += type.column + " = '" + type.name + "' AND ";
             });
 
-            return showAllWork(types[0].column,
-                               cfdEndQuery.replace('%sd', configService.getQueryStartDate())
-                                          .replace('%ed', configService.getQueryEndDate()),
+            return showAllWork(obj.workTypes[0].column,
+                               cfdEndQuery.replace('%sd', getDate(obj.startDate))
+                                          .replace('%ed', getDate(obj.endDate)),
                                where);
         };
 

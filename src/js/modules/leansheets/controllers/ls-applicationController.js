@@ -65,8 +65,6 @@ define(['angular'], function (ng) {
 
             $scope.removeDropdownParent = function(dropdowns, key) {
                 $log.debug('ls-applicationController: removeDropdownParent()');
-                $log.debug('key:',key);
-                $log.debug('dropdowns:',dropdowns);
                 if (key === 0) {
                     dropdowns.shift();
                 } else if ((key+1) === dropdowns.length) {
@@ -77,19 +75,17 @@ define(['angular'], function (ng) {
                 return dropdowns;
             };
 
+            // returns current date minus number of days to subtract 
+            // from current date that is supplied in the config.json
             $scope.getDefaultStartDate = function() {
-                return $moment().subtract(
-                                    configService.getDefaultHistoricalNumberOfDays(),'days')
-                                .format(configService.getDatePickerMomentFormat());
+                return $moment()
+                            .subtract(configService.getDefaultHistoricalNumberOfDays(),'days')
+                            .format(configService.getDatePickerMomentFormat());
             };
 
             // returns current date
             $scope.getDefaultEndDate = function() {
-                $log.debug('moment:', $moment());
-                $log.debug('date picker format:',configService.getDatePickerMomentFormat());
-                var date = $moment().format(configService.getDatePickerMomentFormat());
-                $log.debug('ls-applicationController: default end date', date);
-                return date;
+                return $moment().format(configService.getDatePickerMomentFormat());
             };
 
             var areDatesValid = function(startDate, endDate) {

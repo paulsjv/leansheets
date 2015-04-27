@@ -45,8 +45,8 @@ define(['angular'], function (ng) {
             return config.datePickerFormat;
         };
 
-        this.getQueryDateFormat = function() {
-            return config.queryDateFormat;
+        this.getQueryDateMomentFormat = function() {
+            return config.queryDateMomentFormat;
         };
 
         this.getDefaultHistoricalNumberOfDays = function() {

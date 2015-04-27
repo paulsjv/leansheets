@@ -62,7 +62,6 @@ define(['angular'], function (ng) {
              */
             controller: ['$scope', function ($scope) {
 
-                $scope.helloWorld = "Hello World from the Directive";
 
             }]
 

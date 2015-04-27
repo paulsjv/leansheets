@@ -27,11 +27,13 @@ Currently there is no home for LeanSheets so you will have to clone the repo and
   {
       "configUrl": "https://docs.google.com/a/google.com/spreadsheet/ccc?key=12cvMUMnWEKynGTsyXQywvJ9drpjYAyyo0-2cnTUJSFw&usp=drive_web&gid=44020743#",
       "dataUrl": "https://docs.google.com/a/google.com/spreadsheet/ccc?key=12cvMUMnWEKynGTsyXQywvJ9drpjYAyyo0-2cnTUJSFw&usp=drive_web&gid=497466409#",
-      "queryStartDate": "2015-03-01",
-      "queryEndDate": "2015-03-31",
       "debugEnabled": true,
       "showAllWork": true,
       "cacheTtl": 300
+      "datePickerFormat": "mm/dd/yyyy",
+      "datePickerMomentFormat": "MM/DD/YYYY",
+      "queryDateMomentFormat": "YYYY-MM-DD",
+      "defaultHistoricalNumberOfDays": 60
   }
   ```
 

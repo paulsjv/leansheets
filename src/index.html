@@ -25,8 +25,13 @@
             <p>Loading Application....</p>
         </div>
         <div class="container-fluid di-flex-box" data-ng-cloak>
-            <div><h2>Showing data between {{startDate}} through {{endDate}}.</h2></div>
             <div id="histogramChart" data-ng-controller="ls-histogramController">
+                <div class="btn-group" role="date-picker" aira-label="Date Picker">
+                    <div class="datepicker-box">
+                        <div data-date-picker-directive data-date-range-start-date="startDate" data-date-range-end-date="endDate"></div>
+                    </div>
+                </div>
+
                 <div class="btn-group" role="group" aria-label="Query Buttons">
                     <button ng-model="workTypes" ng-click="addDropdown()"
                             type="button" class="btn btn-default">
@@ -53,8 +58,14 @@
                 </div>
                 <highchart id="histogramHighChart" config="config"></highchart>
             </div>
-  
+
             <div id="controlChart" data-ng-controller="ls-controlController">
+                <div class="btn-group" role="date-picker" aira-label="Date Picker">
+                    <div class="datepicker-box">
+                        <div data-date-picker-directive data-date-range-start-date="startDate" data-date-range-end-date="endDate"></div>
+                    </div>
+                </div>
+
                 <div class="btn-group" role="group" aria-label="Query Buttons">
                     <button ng-model="workTypes" ng-click="addDropdown()"
                             type="button" class="btn btn-default">
@@ -74,14 +85,20 @@
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
                         <ul class="dropdown-menu scrollable-menu" role="menu">
-                            <li class="{'dropdown-header disabled' : workType.column == ''}"
+                            <li ng-class="{'dropdown-header disabled' : workType.column == ''}"
                                 ng-model="value" ng-click="changeType(workType, key)" ng-repeat="workType in workTypes"><a>{{workType.name}}</a></li>
                         </ul>
                 </div>
                 <highchart id="controlHighChart" config="config"></highchart>
             </div>
-
+            
             <div id="cfdChart" data-ng-controller="ls-cfdController">
+                <div class="btn-group" role="date-picker" aira-label="Date Picker">
+                    <div class="datepicker-box">
+                        <div data-date-picker-directive data-date-range-start-date="startDate" data-date-range-end-date="endDate"></div>
+                    </div>
+                </div>
+
                 <div class="btn-group" role="group" aria-label="Query Buttons">
                     <button ng-model="workTypes" ng-click="addDropdown()"
                             type="button" class="btn btn-default">
@@ -101,7 +118,7 @@
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
                         <ul class="dropdown-menu scrollable-menu" role="menu">
-                            <li class="{'dropdown-header disabled' : workType.column == ''}"
+                            <li ng-class="{'dropdown-header disabled' : workType.column == ''}"
                                 ng-model="value" ng-click="changeType(workType, key)" ng-repeat="workType in workTypes"><a>{{workType.name}}</a></li>
                         </ul>
                 </div>

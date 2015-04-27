@@ -21,24 +21,28 @@ define(['angular'], function (ng) {
             return config.configUrl;
         };
 
-        this.getQueryStartDate = function() {
-            return config.queryStartDate;
-        };
-
-        this.getQueryEndDate = function() {
-            return config.queryEndDate;
-        };
-
-        this.getQueryNoEndDate = function() {
-            return config.queryNoEndDate;
-        };
-
         this.getShowAllWork = function() {
             return config.showAllWork;
         };
 
         this.getCacheTtl = function() {
             return config.cacheTtl;
+        };
+
+        this.getDatePickerFormat = function() {
+            return config.datePickerFormat;
+        };
+
+        this.getQueryDateMomentFormat = function() {
+            return config.queryDateMomentFormat;
+        };
+
+        this.getDefaultHistoricalNumberOfDays = function() {
+            return config.defaultHistoricalNumberOfDays;
+        };
+
+        this.getDatePickerMomentFormat = function() {
+            return config.datePickerMomentFormat;
         };
     }];
 });

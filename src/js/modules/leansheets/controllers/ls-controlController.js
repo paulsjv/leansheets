@@ -26,7 +26,14 @@ define(['angular'], function (ng) {
                 defaultWorkType,
                 key = 0;
 
-            $scope.dropdowns = [];  // array of work type objects
+            // array of work type objects
+            $scope.dropdowns = [];
+
+            // used for directive date range picker
+            // two attributs are two way bound so if it changes in the UI
+            // it will change in the controller and directive
+            $scope.startDate;
+            $scope.endDate;
 
             $scope.addDropdown = function() {
                 $log.debug('ls-controlController: adding dropdown');
@@ -51,6 +58,8 @@ define(['angular'], function (ng) {
                     $log.debug('ls-controlController: Caught "types:loaded" event!');
                     defaultWorkType = workType;
                     $scope.addDropdown();
+                    $scope.startDate = $scope.getDefaultStartDate();
+                    $scope.endDate = $scope.getDefaultEndDate();
                     updateChart();
                 });
 
@@ -67,8 +76,16 @@ define(['angular'], function (ng) {
                 };
 
             var updateChart = function() {
-               $log.debug('Calling parent controller to update control chart');
-               $scope.updateChart($scope.dropdowns, controlService, chartName);
+                $log.debug('ls-controlController: Calling parent controller to update control chart');
+                $log.debug('ls-controlController: start date:', $scope.startDate);
+                $log.debug('ls-controlController: end date:', $scope.endDate);
+                var obj = {
+                    workTypes: $scope.dropdowns,
+                    startDate: $scope.startDate,
+                    endDate: $scope.endDate
+                };
+                $log.debug('ls-controlController: obj:', obj);
+                $scope.updateChart(obj, controlService, chartName);
             };
 
         }];

@@ -22,10 +22,12 @@ define([
     './services/ls-histogramService',
     './services/ls-cfdService',
     './services/ls-queryService',
-    './services/ls-cacheService'
-], function (ng, 
-        applicationController, histogramController, controlController, cfdController, 
-        configService, googleService, typeService, controlService, histogramService, cfdService, queryService, cacheService) {
+    './services/ls-cacheService',
+    './directives/datePickerDirective'
+], function (ng,
+        applicationController, histogramController, controlController, cfdController,
+        configService, googleService, typeService, controlService, histogramService, cfdService, queryService, cacheService,
+        datePickerDirective) {
     'use strict';
 
     // Define a new angular module. The given name should ALWAYS match the filename.
@@ -48,7 +50,10 @@ define([
     applicationModule.service('ls-histogramService', histogramService);
     applicationModule.service('ls-cfdService', cfdService);
     applicationModule.service('ls-queryService', queryService);
-    applicationModule.service('ls-cacheService', cacheService)   
+    applicationModule.service('ls-cacheService', cacheService)
+
+    // Add directives to the module. The given name should ALWAYS match the filename.
+    applicationModule.directive('datePickerDirective', datePickerDirective);
 
     return applicationModule;
 

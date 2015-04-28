@@ -25,6 +25,7 @@
             <p>Loading Application....</p>
         </div>
         <div class="container-fluid di-flex-box" data-ng-cloak>
+            <a id="nav-histogram"></a>
             <div id="histogramChart" data-ng-controller="ls-histogramController">
                 <div class="btn-group" role="date-picker" aira-label="Date Picker">
                     <div class="datepicker-box">
@@ -59,6 +60,7 @@
                 <highchart id="histogramHighChart" config="config"></highchart>
             </div>
 
+            <a id="nav-leadtimerun"></a>
             <div id="controlChart" data-ng-controller="ls-controlController">
                 <div class="btn-group" role="date-picker" aira-label="Date Picker">
                     <div class="datepicker-box">
@@ -91,7 +93,8 @@
                 </div>
                 <highchart id="controlHighChart" config="config"></highchart>
             </div>
-            
+
+            <a id="nav-cfd"></a>
             <div id="cfdChart" data-ng-controller="ls-cfdController">
                 <div class="btn-group" role="date-picker" aira-label="Date Picker">
                     <div class="datepicker-box">

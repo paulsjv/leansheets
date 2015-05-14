@@ -1,108 +1,101 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="A tool that creates charts for Lean and Kanban based off of a Google Spread Sheet.">
+    <meta name="author" content="LeanSheets">
 
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <title>LeanSheets</title>
 
-    <title>Leansheets by paulsjv</title>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+    <style>
+        /* Move down content because we have a fixed navbar that is 50px tall */
+        body {
+          padding-top: 50px;
+          padding-bottom: 20px;
+        }
+    </style>
+
   </head>
 
   <body>
-    <header>
-      <div class="inner">
-        <h1>Leansheets</h1>
-        <h2>A tool that creates charts for Lean and Kanban based off of a Google Spread Sheet.</h2>
-        <a href="https://github.com/paulsjv/leansheets" class="button"><small>View project on</small> GitHub</a>
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="http://www.leansheets.org">LeanSheets</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="#">Quick Start</a></li>
+            <li><a href="https://github.com/paulsjv/leansheets/issues">Report an Issue</a></li>
+         </ul>
+         <ul class="nav navbar-nav navbar-right">
+            <li><a href="https://github.com/paulsjv/leansheets"><i class="fa fa-github-square"></i> github.com</a></li>
+        </ul>
+        </div>
       </div>
-    </header>
+    </nav>
 
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
-          <h1>
-<a id="leansheets" class="anchor" href="#leansheets" aria-hidden="true"><span class="octicon octicon-link"></span></a>LeanSheets</h1>
-
-<p>A tool that creates Cumulative Flow, Histogram, and Control charts for Kanban systems based off of a Google Spread Sheet.</p>
-
-<h2>
-<a id="life-cycle" class="anchor" href="#life-cycle" aria-hidden="true"><span class="octicon octicon-link"></span></a>Life Cycle</h2>
-
-<ol>
-<li>Loads /config.json</li>
-<li>Loads the Configuration from your Google Spread Sheet that you have defined</li>
-<li>Fires a $broadcast event to other chart's controllers for them to draw their chart</li>
-</ol>
-
-<h2>
-<a id="installing--running" class="anchor" href="#installing--running" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installing &amp; Running</h2>
-
-<p>Currently there is no home for LeanSheets so you will have to clone the repo and run it locally.  You'll also need a Google Spread Sheet that you can link to for LeanSheets to work.  If you would like an example sheet please open an issue as I'm in the process of making one that can be the example/demo sheet.</p>
-
-<ol>
-<li>Clone the following repo: <a href="https://github.com/paulsjv/leansheets">https://github.com/paulsjv/leansheets</a>
-
-<ul>
-<li>The master branch is what you want.  It's the latest version.</li>
-</ul>
-</li>
-<li>
-<p>Make sure you have Nodejs installed on your system.  Next run the following commands to install everything.</p>
-
-<pre><code>$&gt; npm install
-$&gt; bower install
-</code></pre>
-</li>
-<li>
-<p>Update the ./src/config.json file to be like below (Google Sheet is the demo I'm currently working on):</p>
-
-<div class="highlight highlight-json"><pre>{
-    <span class="pl-s"><span class="pl-pds">"</span>configUrl<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>https://docs.google.com/a/google.com/spreadsheet/ccc?key=12cvMUMnWEKynGTsyXQywvJ9drpjYAyyo0-2cnTUJSFw&amp;usp=drive_web&amp;gid=44020743#<span class="pl-pds">"</span></span>,
-    <span class="pl-s"><span class="pl-pds">"</span>dataUrl<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>https://docs.google.com/a/google.com/spreadsheet/ccc?key=12cvMUMnWEKynGTsyXQywvJ9drpjYAyyo0-2cnTUJSFw&amp;usp=drive_web&amp;gid=497466409#<span class="pl-pds">"</span></span>,
-    <span class="pl-s"><span class="pl-pds">"</span>debugEnabled<span class="pl-pds">"</span></span>: <span class="pl-c1">true</span>,
-    <span class="pl-s"><span class="pl-pds">"</span>showAllWork<span class="pl-pds">"</span></span>: <span class="pl-c1">true</span>,
-    <span class="pl-s"><span class="pl-pds">"</span>cacheTtl<span class="pl-pds">"</span></span>: <span class="pl-c1">300</span>
-    <span class="pl-s"><span class="pl-pds">"</span>datePickerFormat<span class="pl-pds">"</span></span><span class="pl-ii">:</span> <span class="pl-s"><span class="pl-pds">"</span>mm/dd/yyyy<span class="pl-pds">"</span></span>,
-    <span class="pl-s"><span class="pl-pds">"</span>datePickerMomentFormat<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>MM/DD/YYYY<span class="pl-pds">"</span></span>,
-    <span class="pl-s"><span class="pl-pds">"</span>queryDateMomentFormat<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>YYYY-MM-DD<span class="pl-pds">"</span></span>,
-    <span class="pl-s"><span class="pl-pds">"</span>defaultHistoricalNumberOfDays<span class="pl-pds">"</span></span>: <span class="pl-c1">60</span>
-}</pre></div>
-</li>
-</ol>
-
-<p>NOTE: The configUrl and dataUrl must be of the form https:<a href="https://docs.google.com/spreadsheet/ccc?key=">https://docs.google.com/spreadsheet/ccc?key=</a>&amp;gid=. If the url is of the form <a href="https://docs.google.com/spreadsheets/d/">https://docs.google.com/spreadsheets/d/</a>/edit#gid= then translate it into the above expected format.</p>
-
-<h2>
-<a id="running-tests" class="anchor" href="#running-tests" aria-hidden="true"><span class="octicon octicon-link"></span></a>Running Tests</h2>
-
-<p>Coming Soon</p>
-        </section>
-
-        <aside id="sidebar">
-          <a href="https://github.com/paulsjv/leansheets/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/paulsjv/leansheets/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
-
-          <p class="repo-owner"><a href="https://github.com/paulsjv/leansheets"></a> is maintained by <a href="https://github.com/paulsjv">paulsjv</a>.</p>
-
-          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
-        </aside>
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+      <div class="container">
+          <h1><i class="fa fa-bar-chart"></i> LeanSheets</h1>
+          <p>A tool that creates charts for Lean and Kanban based off of a Google Spread Sheet.</p>
+        <p><a class="btn btn-primary btn-lg" href="https://github.com/paulsjv/leansheets/blob/master/README.md" role="button">Learn more &raquo;</a></p>
       </div>
     </div>
 
-  
+    <div class="container">
+      <!-- Example row of columns -->
+      <div class="row">
+        <div class="col-md-4">
+          <h2>Download Zip</h2>
+          <p><a href="https://github.com/paulsjv/leansheets/zipball/master" class="btn btn-primary">
+            <i class="fa fa-3x fa-file-archive-o"></i> Download .zip file
+          </a> </p>
+        </div>
+        <div class="col-md-4">
+          <h2>Download Tar</h2>
+          <p> <a href="https://github.com/paulsjv/leansheets/tarball/master" class="btn btn-primary">
+            <i class="fa fa-3x fa-file-archive-o"></i> Download .tar.gz file
+          </a></p>
+       </div>
+        <div class="col-md-4">
+          <h2>Report Issue</h2>
+          <p> <a href="https://github.com/paulsjv/leansheets/issues" class="btn btn-danger">
+            <i class="fa fa-3x fa-exclamation-circle"></i> Report an Issue
+          </a></p>
+        </div>
+      </div>
+
+    </div> <!-- /container -->
+
+  <hr>
+
+  <footer class="footer">
+    <div class="container">
+        <p class="text-muted"><span class="copyright">&copy;</span> 2015 LeanSheets All rights reserved</p>
+    </div>
+  </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
   </body>
 </html>
+

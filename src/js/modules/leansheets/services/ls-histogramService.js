@@ -56,7 +56,7 @@ define(['angular'], function (ng) {
                     },{
                         gridLineWidth: 0,
                         title: {
-                            text: 'Fequency'
+                            text: 'Frequency'
                         },
                         opposite: false
                     }],

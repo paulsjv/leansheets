@@ -11,7 +11,8 @@ require.config({
         moment: '../bower_components/moment/moment',
         highcharts: '../bower_components/highcharts/highcharts',
         highchartsng: '../bower_components/highcharts-ng/dist/highcharts-ng',
-        jssha: '../bower_components/jssha/src/sha256'
+        jssha: '../bower_components/jssha/src/sha256',
+        'bootstrap-datepicker': '../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker'
     },
 
     shim: {
@@ -20,7 +21,11 @@ require.config({
             deps: ['ie-console-poly']
         },
         bootstrap: {
+            exports: 'bootstrap',
             deps: ['jquery']
+        },
+        'bootstrap-datepicker': {
+            exports: 'bootstrap-datepicker'
         },
         angular: {
             exports: 'angular',

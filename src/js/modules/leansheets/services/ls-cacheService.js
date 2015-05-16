@@ -20,15 +20,21 @@ define(['angular'], function (ng) {
 
         this.get = function(key) {
             $log.debug('ls-cacheService: in get');
+            $log.debug('ls-cacheService: key', key);
+            var data = undefined;
             if (inCache(key)) {
-                $log.debug('ls-cacheService: returning cached data', key);
-                return cache.get(key).data;
+                data = cache.get(key).data;
+                $log.debug('ls-cacheService: returning cached data', data);
+                return data;
             }
-            return undefined;
+            $log.debug('ls-cacheService: returning cached data', data);
+            return data;
         };
 
         this.put = function(key, data) {
-            $log.debug('ls-cacheService: in put', key, data);
+            $log.debug('ls-cacheService: in put');
+            $log.debug('ls-cacheService: key', key);
+            $log.debug('ls-cacheService: data', data);
             // insert hash of data due to possible changing date range
             var save = {
                     hash: getHash(key),

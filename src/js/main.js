@@ -8,6 +8,7 @@ define([
     'jssha',
     'goog!visualization,1',
     'bootstrap',
+    'bootstrap-datepicker',
     'modules/leansheets/ls-leansheetsApplication',
     'highcharts',
     'highchartsng'

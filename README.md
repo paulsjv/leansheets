@@ -29,7 +29,7 @@ Currently there is no home for LeanSheets so you will have to clone the repo and
       "dataUrl": "https://docs.google.com/a/google.com/spreadsheet/ccc?key=12cvMUMnWEKynGTsyXQywvJ9drpjYAyyo0-2cnTUJSFw&usp=drive_web&gid=497466409#",
       "debugEnabled": true,
       "showAllWork": true,
-      "cacheTtl": 300
+      "cacheTtl": 300,
       "datePickerFormat": "mm/dd/yyyy",
       "datePickerMomentFormat": "MM/DD/YYYY",
       "queryDateMomentFormat": "YYYY-MM-DD",
@@ -38,6 +38,15 @@ Currently there is no home for LeanSheets so you will have to clone the repo and
   ```
 
 NOTE: The configUrl and dataUrl must be of the form https:https://docs.google.com/spreadsheet/ccc?key=<key>&gid=<id>. If the url is of the form https://docs.google.com/spreadsheets/d/<key>/edit#gid=<id> then translate it into the above expected format.
+
+4. Run the following command to install grunt-cli if you have not done so already.
+    ```
+    $> npm install -g grunt-cli
+    ```
+5. Run the following command to start the server.
+    ```
+    $> grunt run
+    ```
 
 Running Tests
 -------------------------

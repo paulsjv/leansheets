@@ -1,6 +1,6 @@
 {
-    "configUrl": "https://docs.google.com/a/drillinginfo.com/spreadsheet/ccc?key=0AonIdzD-Ya1EdHdlRWNXcmVrMlRGRlZ4bXVwb1B5T2c&usp=drive_web&gid=5#",
-    "dataUrl": "https://docs.google.com/a/drillinginfo.com/spreadsheet/ccc?key=0AonIdzD-Ya1EdHdlRWNXcmVrMlRGRlZ4bXVwb1B5T2c&gid=2&usp=drive_web#",
+    "configUrl": "https://docs.google.com/a/drillinginfo.com/spreadsheet/ccc?key=0AonIdzD-Ya1EdHhvZFRYYnlkQk1peXZta2w1UzBFcEE&usp=drive_web&gid=5#",
+    "dataUrl": "https://docs.google.com/a/drillinginfo.com/spreadsheet/ccc?key=0AonIdzD-Ya1EdHhvZFRYYnlkQk1peXZta2w1UzBFcEE&gid=2&usp=drive_web#",
     "debugEnabled": true,
     "showAllWork": true,
     "cacheTtl": 300,

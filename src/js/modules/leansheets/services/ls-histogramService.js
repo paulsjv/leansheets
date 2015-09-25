@@ -71,7 +71,7 @@ define(['angular'], function (ng) {
                     yAxis: 1,
                     type: 'column'
    	    		},{
-                    name: 'Percetange of Total',
+                    name: 'Percentage of Total',
                     data: data.percentOfTotal,
                     type: 'spline',
                     tooltip: {

@@ -68,13 +68,6 @@ https://docs.google.com/spreadsheets/d/[key]/edit?gid=[gid]
 }
   ```
 
-NOTE: The configUrl and dataUrl must be of the form https:https://docs.google.com/spreadsheet/ccc?key=<key>&gid=<id>. If the url is of the form https://docs.google.com/spreadsheets/d/<key>/edit#gid=<id> then translate it into the above expected format.
-
-Run the following command to start the server.
-```
-$> grunt run
-```
-
 Running Tests
 -------------------------
 Coming Soon

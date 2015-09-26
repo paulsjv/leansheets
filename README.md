@@ -12,6 +12,7 @@ Life Cycle
 Installing & Running
 -------------------------
 You have two options to run LeanSheets:
+
 1. Download either the [.zip](https://github.com/paulsjv/leansheets/zipball/master) or the [tar.gz](https://github.com/paulsjv/leansheets/tarball/master)
     * If you choose this option you can skip the steps of installing Git and running "git clone" in the below instructions.
 2. Clone the Git repo.

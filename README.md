@@ -11,17 +11,45 @@ Life Cycle
 
 Installing & Running
 -------------------------
-Currently there is no home for LeanSheets so you will have to clone the repo and run it locally.  You'll also need a Google Spread Sheet that you can link to for LeanSheets to work.  If you would like an example sheet please open an issue as I'm in the process of making one that can be the example/demo sheet.
+You have two options to run LeanSheets:
+1. Download either the [.zip](https://github.com/paulsjv/leansheets/zipball/master) or the [tar.gz](https://github.com/paulsjv/leansheets/tarball/master)
+    * If you choose this option you can skip the steps of installing Git and running "git clone" in the below instructions.
+2. Clone the Git repo.
+    * If you choose this step follow all the below instructions.
 
-1. Clone the following repo: https://github.com/paulsjv/leansheets
-  * The master branch is what you want.  It's the latest version.
-2. Make sure you have Nodejs installed on your system.  Next run the following commands to install everything.
+Installation instructions:
+See the video here:
+http://www.screencast.com/t/q0aWDzuQGn
 
-  ```
-  $> npm install
-  $> bower install
-  ```
-3. Update the ./src/config.json file to be like below (Google Sheet is the demo I'm currently working on):
+Download and Install the following
+Nodejs - http://www.nodejs.org
+Click the “Install” button on the page
+
+Git - https://git-scm.com/downloads
+Click on the OS you use
+
+Once these two programs are installed do the following steps:
+If you are running Windows make sure to run the "GIT Bash" program from your Start menu.  This will get you the command prompt you will need to run the below commands.
+
+If you are running Mac you will want to run the following commands from your "Terminal."
+
+```
+cmd> git clone https://github.com/paulsjv/leansheets.git
+cmd> cd leansheets
+cmd> npm install bower
+cmd> npm install -g grunt-cli <may have to run as root>
+cmd> npm install grunt
+cmd> bower install
+cmd> npm install
+cmd> grunt run
+```
+
+Open the link in your browser:
+http://localhost:8081
+
+Update to use your own Google Sheet
+-------------------------
+Update the ./src/config.json file to be like below (Google Sheet is the demo when you first run and lauch LeanSheets in your browser)
 
   ```json
   {
@@ -39,14 +67,10 @@ Currently there is no home for LeanSheets so you will have to clone the repo and
 
 NOTE: The configUrl and dataUrl must be of the form https:https://docs.google.com/spreadsheet/ccc?key=<key>&gid=<id>. If the url is of the form https://docs.google.com/spreadsheets/d/<key>/edit#gid=<id> then translate it into the above expected format.
 
-4. Run the following command to install grunt-cli if you have not done so already.
-    ```
-    $> npm install -g grunt-cli
-    ```
-5. Run the following command to start the server.
-    ```
-    $> grunt run
-    ```
+Run the following command to start the server.
+```
+$> grunt run
+```
 
 Running Tests
 -------------------------

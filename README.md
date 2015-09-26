@@ -52,7 +52,7 @@ Update to use your own Google Sheet
 -------------------------
 Update the ./src/config.json file to be like below (Google Sheet is the demo when you first run and lauch LeanSheets in your browser).  Make sure you change the key and the gid in the URL.  Also, depending on what version of Google Sheets you are running the URL might be slightly different.  If you can not figure it out please open an issue on the github page.
 
-https://docs.google.com/spreadsheets/d/<key>/edit?gid=<gid>
+https://docs.google.com/spreadsheets/d/&lt;key&gt;/edit?gid=&lt;gid&gt;>
 
   ```json
  {

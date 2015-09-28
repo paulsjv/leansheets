@@ -19,17 +19,23 @@ You have two options to run LeanSheets:
     * If you choose this step follow all the below instructions.
 
 Installation instructions:
+
 See the video here:
+
 http://www.screencast.com/t/q0aWDzuQGn
 
 Download and Install the following
+
 Nodejs - http://www.nodejs.org
+
 Click the “Install” button on the page
 
 Git - https://git-scm.com/downloads
+
 Click on the OS you use
 
 Once these two programs are installed do the following steps:
+
 If you are running Windows make sure to run the "GIT Bash" program from your Start menu.  This will get you the command prompt you will need to run the below commands.
 
 If you are running Mac you will want to run the following commands from your "Terminal."
@@ -46,7 +52,12 @@ cmd> grunt run
 ```
 
 Open the link in your browser:
+
 http://localhost:8081
+
+Choose a date between 11/1/2014 and 4/31/2015.  See the Google Sheet here for the data your local instance is currently running.
+
+https://docs.google.com/spreadsheets/d/12cvMUMnWEKynGTsyXQywvJ9drpjYAyyo0-2cnTUJSFw/edit?gid=44020743#gid=497466409
 
 Update to use your own Google Sheet
 -------------------------

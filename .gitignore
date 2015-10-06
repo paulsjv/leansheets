@@ -7,3 +7,4 @@ target/
 coverage/
 build/reports/
 *.map
+dist/

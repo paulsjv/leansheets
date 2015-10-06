@@ -61,4 +61,4 @@ let replaceTask = (done) => {
 };
 
 gulp.task('replace', ['assets', 'bundle'], replaceTask);
-gulp.task('replace:dev', ['assets', 'bundle:dev'], replaceTask);
+gulp.task('replace:dev', ['assets:dev', 'bundle:dev'], replaceTask);

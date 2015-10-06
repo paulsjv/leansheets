@@ -33,4 +33,4 @@ gulp.task('assets', ['clean:work'], () => {
 
 });
 
-gulp.task('assets:dev', ['assets']);
+gulp.task('assets:dev', ['assets']); // alias for consistency

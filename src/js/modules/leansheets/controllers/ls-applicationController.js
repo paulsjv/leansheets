@@ -26,16 +26,23 @@ define(['angular'], function (ng) {
             $scope.workTypes;
 
             var configSheets = {
-                "team1": {
+                "team 1": {
                     "dataUrl":"",
                     "configUrl":""
                 },
-                "team2": {
+                "team 2": {
                     "dataUrl":"",
                     "configUrl":""
                 }
             };
             
+            // in configSercice there needs to be a function to get the sheets keys
+            // example: configService.getConfigKeys()
+            // the keys populate the dropdowns for teams and that key should be passed
+            // to the getWorkTypes function this in turn should pass the key for the data
+            // and config keys to get the google urls for each.  I'm hoping that since the
+            // typeService.getWorkTypes success functions broadcase an event down to all of
+            // the charting controllers they should redraw accordingly.
             $scope.sheetsKeys = Object.keys(configSheets);
             $scope.sheet = $scope.sheetsKeys[0];
             $scope.sheets = configSheets;
@@ -44,10 +51,11 @@ define(['angular'], function (ng) {
                 // refresh workTypes
                 $log.debug("changing sheet");
                 $scope.sheet = sheet;
+                getWorkTypes(sheet);
             };
 
-            var getWorkTypes = function() {
-                typeService.getWorkTypes().then(
+            var getWorkTypes = function(sheet) {
+                typeService.getWorkTypes(sheet).then(
                     function(success) {
                         $log.log('Got work types: ls-applicationController', success);
                         $scope.workTypes = success;
@@ -62,7 +70,7 @@ define(['angular'], function (ng) {
                     });
             };
 
-            getWorkTypes();
+            getWorkTypes($scope.sheet);
 
             $scope.updateChart = function(obj, chart, chartName) {
                 $log.debug('updateChart: ls-applicationController');

@@ -47,6 +47,14 @@ define(['angular'], function (ng) {
                 key = $scope.dropdowns.length;
             };
 
+            var removeAllDropdowns = function() {
+                // loop through $scope.dropdowns and remove one at a time calling
+                // $scope.removeDropdown() the key is just a running $index that starts at 0
+                for (var i = 0; i < $scope.dropdowns.length; i++) {
+                    $scope.removeDropdown(i);
+                }
+            };
+
             $scope.query = function() {
                 $log.debug('ls-cfdController: Calling parent controller to update control chart!');
                 $log.debug('ls-cfdController: work types sending to query', $scope.dropdowns);
@@ -57,6 +65,7 @@ define(['angular'], function (ng) {
                 function(event, workType) {
                     $log.debug('ls-cfdController: Caught "types:loaded" event!');
                     defaultWorkType = workType;
+                    removeAllDropdowns();
                     $scope.addDropdown();
                     $scope.startDate = $scope.getDefaultStartDate();
                     $scope.endDate = $scope.getDefaultEndDate();

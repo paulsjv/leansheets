@@ -14,14 +14,17 @@ define(['angular'], function (ng) {
 
     return ['$log','$q','ls-googleService','ls-configService', function ($log, $q, googleService, configService) {
         var config = [];
+        var sheetKey;
 
-        this.getWorkTypes = function() {
+        this.getWorkTypes = function(sheet) {
             $log.debug('ls-typeService: getWorkTypes');
             var deferred = $q.defer();
             var promise = deferred.promise;
 
-            if (config.length <= 0) {
-                googleService.getConfig().then(function(success) {
+            if (config.length <= 0
+                    || sheetKey != sheet) {
+                sheetKey = sheet;
+                googleService.getConfig(sheetKey).then(function(success) {
                     if (config.length <= 0) {
                         bootstrap(success);
                         deferred.resolve(config);

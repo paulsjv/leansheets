@@ -53,10 +53,19 @@ define(['angular'], function (ng) {
                 updateChart();
             };
 
+            var removeAllDropdowns = function() {
+                // loop through $scope.dropdowns and remove one at a time calling
+                // $scope.removeDropdown() the key is just a running $index that starts at 0
+                for (var i = 0; i < $scope.dropdowns.length; i++) {
+                    $scope.removeDropdown(i); 
+                }
+            };
+
             $scope.$on('types:loaded',
                 function(event, workType) {
                     $log.debug('ls-histogramController: Caught "types:loaded" event!');
                     defaultWorkType = workType;
+                    removeAllDropdowns();
                     $scope.addDropdown();
                     $scope.startDate = $scope.getDefaultStartDate();
                     $scope.endDate = $scope.getDefaultEndDate();

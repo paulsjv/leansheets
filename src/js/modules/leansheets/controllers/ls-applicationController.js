@@ -25,31 +25,15 @@ define(['angular'], function (ng) {
             $scope.workType;
             $scope.workTypes;
 
-            var configSheets = {
-                "team 1": {
-                    "dataUrl":"",
-                    "configUrl":""
-                },
-                "team 2": {
-                    "dataUrl":"",
-                    "configUrl":""
-                }
-            };
-            
-            // in configSercice there needs to be a function to get the sheets keys
-            // example: configService.getConfigKeys()
-            // the keys populate the dropdowns for teams and that key should be passed
-            // to the getWorkTypes function this in turn should pass the key for the data
-            // and config keys to get the google urls for each.  I'm hoping that since the
-            // typeService.getWorkTypes success functions broadcase an event down to all of
-            // the charting controllers they should redraw accordingly.
-            $scope.sheetsKeys = Object.keys(configSheets);
+            // need to update the cacheService so that it takes into account the 
+            // sheet that the user is currently using.  Maybe make that a part of
+            // the key that it stores the cache on?  Need to experiment.
+            $scope.sheetsKeys = Object.keys(configService.getSheets());
             $scope.sheet = $scope.sheetsKeys[0];
-            $scope.sheets = configSheets;
+            $scope.sheets = configService.getSheets();
 
             $scope.changeSheet = function(sheet) {
-                // refresh workTypes
-                $log.debug("changing sheet");
+                $log.debug("ls-applicationController: Changing sheet");
                 $scope.sheet = sheet;
                 getWorkTypes(sheet);
             };

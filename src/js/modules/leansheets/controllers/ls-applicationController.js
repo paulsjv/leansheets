@@ -25,19 +25,44 @@ define(['angular'], function (ng) {
             $scope.workType;
             $scope.workTypes;
 
-            typeService.getWorkTypes().then(
-                function(success) {
-                    $log.log('Got work types: ls-applicationController', success);
-                    $scope.workTypes = success;
-                    $scope.workType = $scope.workTypes[0].column != "" ? $scope.workTypes[0] : $scope.workTypes[1];
+            var configSheets = {
+                "team1": {
+                    "dataUrl":"",
+                    "configUrl":""
+                },
+                "team2": {
+                    "dataUrl":"",
+                    "configUrl":""
+                }
+            };
+            
+            $scope.sheetsKeys = Object.keys(configSheets);
+            $scope.sheet = $scope.sheetsKeys[0];
+            $scope.sheets = configSheets;
 
-                    // broadcast event to all child contorllers so they will draw their charts
-                    $log.debug('Firing "types:loaded" event: ls-applicationController');
-                    $scope.$broadcast('types:loaded', $scope.workType);
-                }, function(error) {
-                    $log.log('Error getting work types: ls-applicationController!', error);
-                    alert('Error getting work types! ' + error);
-                });
+            $scope.changeSheet = function(sheet) {
+                // refresh workTypes
+                $log.debug("changing sheet");
+                $scope.sheet = sheet;
+            };
+
+            var getWorkTypes = function() {
+                typeService.getWorkTypes().then(
+                    function(success) {
+                        $log.log('Got work types: ls-applicationController', success);
+                        $scope.workTypes = success;
+                        $scope.workType = $scope.workTypes[0].column != "" ? $scope.workTypes[0] : $scope.workTypes[1];
+
+                        // broadcast event to all child contorllers so they will draw their charts
+                        $log.debug('Firing "types:loaded" event: ls-applicationController');
+                        $scope.$broadcast('types:loaded', $scope.workType);
+                    }, function(error) {
+                        $log.log('Error getting work types: ls-applicationController!', error);
+                        alert('Error getting work types! ' + error);
+                    });
+            };
+
+            getWorkTypes();
 
             $scope.updateChart = function(obj, chart, chartName) {
                 $log.debug('updateChart: ls-applicationController');

@@ -24,8 +24,21 @@
         <div data-ng-if="initialLoad">
             <p>Loading Application....</p>
         </div>
-        <div class="container-fluid di-flex-box" data-ng-cloak>
-            <a id="nav-histogram"></a>
+       <div class="container-fluid di-flex-box" data-ng-cloak>
+           <a id="nav-histogram"></a>
+            <!-- Sheets Drop Down -->
+            <div class="btn-group" role="sheets" aria-label="Sheet Selections" style="padding-right:5px">
+                        <button type="button" class="btn btn-default">{{sheet}}</button>
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu scrollable-menu" role="menu">
+                            <li ng-model="value" ng-click="changeSheet(key)" ng-repeat="(key, value) in sheets"><a>{{key}}</a></li>
+                        </ul>
+            </div>
+            <!-- /Sheets Drop Down -->
+
             <div id="histogramChart" data-ng-controller="ls-histogramController">
                 <div class="btn-group" role="date-picker" aira-label="Date Picker">
                     <div class="datepicker-box">

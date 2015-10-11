@@ -43,7 +43,7 @@ If you are running Mac you will want to run the following commands from your "Te
 ```
 cmd> git clone https://github.com/paulsjv/leansheets.git
 cmd> cd leansheets
-cmd> npm install bower
+cmd> npm install -g bower <may have to run as root>
 cmd> npm install -g grunt-cli <may have to run as root>
 cmd> npm install grunt
 cmd> bower install

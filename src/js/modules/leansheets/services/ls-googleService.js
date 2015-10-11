@@ -16,9 +16,10 @@ define(['angular'], function (ng) {
             function ($log, $http, $q, $moment, $google, configService, queryService, cacheService) {
 
         /** 
-         * this.sheetKey gets set when the application controller calls the typeService.getWorkTypes
-         * In the getConfig method it is set so that in the getData<ChartType> method it is used.  This works 
-         * because everytime that the sheet changes the getConfig is called and updates the sheetKey.
+         * sheetKey is passed in via the getConfig method.  The getConfig method is called 
+         * any time the typeService gets the workTypes from a specific sheet.  The sheetKey
+         * member variable is saved when the getConfig is called so that the rest of the 
+         * class can use it to pass as part of the cache key and to get the sheet URL.
          * @member {string} 
          */
         var sheetKey;
@@ -28,10 +29,10 @@ define(['angular'], function (ng) {
             var deferred = $q.defer(),
                 promise = deferred.promise,
                 configQuery = queryService.getConfigQuery(),
-                cachedData = cacheService.get(configQuery),
+                cachedData = cacheService.get(configQuery + sheetKey),
                 handleResponse = function(response) {
                     var data = setDataOnPromise(response, deferred);
-                    cacheService.put(configQuery, data);
+                    cacheService.put(configQuery + sheetKey, data);
                 },
                 query;
 
@@ -56,10 +57,10 @@ define(['angular'], function (ng) {
 			var deferred = $q.defer(),
 			    promise = deferred.promise,
                 dataQuery = queryService.getDataQuery(types),
-                cachedData = cacheService.get(dataQuery),
+                cachedData = cacheService.get(dataQuery + sheetKey),
     			handleResponse = function(response) {
 	    			var data = setDataOnPromise(response, deferred);
-                    cacheService.put(dataQuery, data);
+                    cacheService.put(dataQuery + sheetKey, data);
 		    	},
                 query;
 
@@ -82,10 +83,10 @@ define(['angular'], function (ng) {
 			var deferred = $q.defer(),
 			    promise = deferred.promise,
                 dataQuery = queryService.getCfdStartQuery(types),
-                cachedData = cacheService.get(dataQuery),
+                cachedData = cacheService.get(dataQuery + sheetKey),
                 handleResponse = function(response) {
 				    var data = setDataOnPromise(response, deferred);
-                    cacheService.put(dataQuery, data);
+                    cacheService.put(dataQuery + sheetKey, data);
 			    },
                 query;
 
@@ -109,10 +110,10 @@ define(['angular'], function (ng) {
 			var deferred = $q.defer(),
 			    promise = deferred.promise,
                 dataQuery = queryService.getCfdEndQuery(types),
-                cachedData = cacheService.get(dataQuery),
+                cachedData = cacheService.get(dataQuery + sheetKey),
                 handleResponse = function(response) {
 				    var data = setDataOnPromise(response, deferred);
-                    cacheService.put(dataQuery, data);
+                    cacheService.put(dataQuery + sheetKey, data);
 			    },
                 query;
 

@@ -23,9 +23,11 @@ define(['angular'], function (ng) {
 
             if (config.length <= 0
                     || sheetKey != sheet) {
-                sheetKey = sheet;
-                googleService.getConfig(sheetKey).then(function(success) {
-                    if (config.length <= 0) {
+                googleService.getConfig(sheet).then(function(success) {
+                    if (config.length <= 0
+                            || sheetKey != sheet) {
+                        sheetKey = sheet;
+                        config = [];
                         bootstrap(success);
                         deferred.resolve(config);
                     } else { deferred.resolve(config); }

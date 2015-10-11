@@ -11,6 +11,10 @@
         "Team: UXUI": {
             "configUrl": "https://docs.google.com/a/drillinginfo.com/spreadsheet/ccc?key=0ArGm-Q33WjxPdEY0WlBNUHBCdnRZWm5UYUdwR0s1UkE&usp=drive_web&gid=5#",
             "dataUrl": "https://docs.google.com/a/drillinginfo.com/spreadsheet/ccc?key=0ArGm-Q33WjxPdEY0WlBNUHBCdnRZWm5UYUdwR0s1UkE&gid=2&usp=drive_web#"
+        },
+        "Team: Mos Eisley": {
+            "configUrl": "https://docs.google.com/a/drillinginfo.com/spreadsheet/ccc?key=0ArGm-Q33WjxPdDJibmpYQ1NfVms4MmdTWXE3UjFSRWc&usp=drive_web&gid=5#",
+            "dataUrl": "https://docs.google.com/a/drillinginfo.com/spreadsheet/ccc?key=0ArGm-Q33WjxPdDJibmpYQ1NfVms4MmdTWXE3UjFSRWc&gid=2&usp=drive_web#"
         }
     },
     "debugEnabled": true,

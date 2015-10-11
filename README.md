@@ -67,9 +67,13 @@ https://docs.google.com/spreadsheets/d/[key]/edit?gid=[gid]
 
   ```json
  {
-    "configUrl": "https://docs.google.com/spreadsheets/d/12cvMUMnWEKynGTsyXQywvJ9drpjYAyyo0-2cnTUJSFw/edit?gid=44020743",
-    "dataUrl": "https://docs.google.com/spreadsheets/d/12cvMUMnWEKynGTsyXQywvJ9drpjYAyyo0-2cnTUJSFw/edit?gid=497466409",
-    "debugEnabled": true,
+    "sheets": {
+        "Sheet: Demo Team": {
+            "configUrl": "https://docs.google.com/spreadsheets/d/12cvMUMnWEKynGTsyXQywvJ9drpjYAyyo0-2cnTUJSFw/edit?gid=44020743",
+            "dataUrl": "https://docs.google.com/spreadsheets/d/12cvMUMnWEKynGTsyXQywvJ9drpjYAyyo0-2cnTUJSFw/edit?gid=497466409"
+        }
+    },
+   "debugEnabled": true,
     "showAllWork": true,
     "cacheTtl": 300,
     "datePickerFormat": "mm/dd/yyyy",

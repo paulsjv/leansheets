@@ -25,19 +25,33 @@ define(['angular'], function (ng) {
             $scope.workType;
             $scope.workTypes;
 
-            typeService.getWorkTypes().then(
-                function(success) {
-                    $log.log('Got work types: ls-applicationController', success);
-                    $scope.workTypes = success;
-                    $scope.workType = $scope.workTypes[0].column != "" ? $scope.workTypes[0] : $scope.workTypes[1];
+            $scope.sheetsKeys = Object.keys(configService.getSheets());
+            $scope.sheet = $scope.sheetsKeys[0];
+            $scope.sheets = configService.getSheets();
 
-                    // broadcast event to all child contorllers so they will draw their charts
-                    $log.debug('Firing "types:loaded" event: ls-applicationController');
-                    $scope.$broadcast('types:loaded', $scope.workType);
-                }, function(error) {
-                    $log.log('Error getting work types: ls-applicationController!', error);
-                    alert('Error getting work types! ' + error);
-                });
+            $scope.changeSheet = function(sheet) {
+                $log.debug("ls-applicationController: Changing sheet");
+                $scope.sheet = sheet;
+                getWorkTypes(sheet);
+            };
+
+            var getWorkTypes = function(sheet) {
+                typeService.getWorkTypes(sheet).then(
+                    function(success) {
+                        $log.log('Got work types: ls-applicationController', success);
+                        $scope.workTypes = success;
+                        $scope.workType = $scope.workTypes[0].column != "" ? $scope.workTypes[0] : $scope.workTypes[1];
+
+                        // broadcast event to all child contorllers so they will draw their charts
+                        $log.debug('Firing "types:loaded" event: ls-applicationController');
+                        $scope.$broadcast('types:loaded', $scope.workType);
+                    }, function(error) {
+                        $log.log('Error getting work types: ls-applicationController!', error);
+                        alert('Error getting work types! ' + error);
+                    });
+            };
+
+            getWorkTypes($scope.sheet);
 
             $scope.updateChart = function(obj, chart, chartName) {
                 $log.debug('updateChart: ls-applicationController');
@@ -52,7 +66,6 @@ define(['angular'], function (ng) {
                              alert('Error getting data from Google Sheets! ' + error);
                         });
                 }
-
             };
 
             $scope.addDropdownParent = function(dropdowns, defaultWorkType, key) {

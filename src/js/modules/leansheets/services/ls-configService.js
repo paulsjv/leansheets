@@ -13,12 +13,22 @@ define(['angular'], function (ng) {
     'use strict';
 
     return ['$log','CONFIG', function ($log, config) {
-        this.getDataUrl = function() {
-            return config.dataUrl;
+        this.getSheets = function() {
+            return config.sheets;
         };
 
-        this.getConfigUrl = function() {
-            return config.configUrl;
+        this.getDataUrl = function(key) {
+            if (config.sheets.hasOwnProperty(key)) {
+                return config.sheets[key].dataUrl;
+            }
+            return null;
+        };
+
+        this.getConfigUrl = function(key) {
+            if (config.sheets.hasOwnProperty(key)){
+                return config.sheets[key].configUrl;
+            }
+            return null;
         };
 
         this.getShowAllWork = function() {

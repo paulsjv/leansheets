@@ -41,6 +41,12 @@ define(['angular'], function (ng) {
                 key = $scope.dropdowns.length;
             };
 
+             /**
+             * @function removeDropdown
+             * @param {integer} key
+             * Removes one of the dropdowns in the dropdown Array. The key is passed as a parameter.
+             * This parameter is set from using the $index in the HTML.
+             */
             $scope.removeDropdown = function(key) {
                 $log.debug('ls-histogramController: removing dropdown');
                 $scope.dropdowns = $scope.removeDropdownParent($scope.dropdowns, key);
@@ -53,9 +59,12 @@ define(['angular'], function (ng) {
                 updateChart();
             };
 
+             /**
+             * @function removeAllDropdowns
+             * Loops through all $scope.dropdowns and removes one at a time calling 
+             * $scope.removeDropdown().
+             */
             var removeAllDropdowns = function() {
-                // loop through $scope.dropdowns and remove one at a time calling
-                // $scope.removeDropdown() the key is just a running $index that starts at 0
                 for (var i = 0; i < $scope.dropdowns.length; i++) {
                     $scope.removeDropdown(i); 
                 }

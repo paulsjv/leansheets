@@ -18,16 +18,13 @@ define(['angular'], function (ng) {
 
         this.getWorkTypes = function(sheet) {
             $log.debug('ls-typeService: getWorkTypes');
-            var deferred = $q.defer();
-            var promise = deferred.promise;
+            var deferred = $q.defer(),
+                promise = deferred.promise;
 
-            if (config.length <= 0
-                    || sheetKey != sheet) {
+            if (isConfigAndSheetSet(sheet)) {
                 googleService.getConfig(sheet).then(function(success) {
-                    if (config.length <= 0
-                            || sheetKey != sheet) {
-                        sheetKey = sheet;
-                        config = [];
+                    if (isConfigAndSheetSet(sheet)) {
+                        resetConfig(sheet);
                         bootstrap(success);
                         deferred.resolve(config);
                     } else { deferred.resolve(config); }
@@ -41,6 +38,15 @@ define(['angular'], function (ng) {
 
             return promise;
     	};
+
+        var isConfigAndSheetSet = function(sheet) {
+            return (config.length <= 0 || sheetKey != sheet);
+        };
+
+        var resetConfig = function(sheet) {
+            sheetKey = sheet;
+            config = [];
+        };
 
         var bootstrap = function (configCsv) {
             var lines = configCsv.split("\n");

@@ -25,9 +25,6 @@ define(['angular'], function (ng) {
             $scope.workType;
             $scope.workTypes;
 
-            // need to update the cacheService so that it takes into account the 
-            // sheet that the user is currently using.  Maybe make that a part of
-            // the key that it stores the cache on?  Need to experiment.
             $scope.sheetsKeys = Object.keys(configService.getSheets());
             $scope.sheet = $scope.sheetsKeys[0];
             $scope.sheets = configService.getSheets();
@@ -69,7 +66,6 @@ define(['angular'], function (ng) {
                              alert('Error getting data from Google Sheets! ' + error);
                         });
                 }
-
             };
 
             $scope.addDropdownParent = function(dropdowns, defaultWorkType, key) {

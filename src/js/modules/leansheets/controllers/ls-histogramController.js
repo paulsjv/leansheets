@@ -27,7 +27,7 @@ define(['angular'], function (ng) {
                 key = 0;
 
             // array of work type objects
-            $scope.dropdowns = [];  
+            $scope.dropdowns = [];
 
             // used for directive date range picker
             // two attributs are two way bound so if it changes in the UI
@@ -61,13 +61,11 @@ define(['angular'], function (ng) {
 
              /**
              * @function removeAllDropdowns
-             * Loops through all $scope.dropdowns and removes one at a time calling 
+             * Resets the dropdown array to an empty array. 
              * $scope.removeDropdown().
              */
             var removeAllDropdowns = function() {
-                for (var i = 0; i < $scope.dropdowns.length; i++) {
-                    $scope.removeDropdown(i); 
-                }
+                $scope.dropdowns = [];
             };
 
             $scope.$on('types:loaded',

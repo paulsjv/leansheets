@@ -55,13 +55,11 @@ define(['angular'], function (ng) {
 
              /**
              * @function removeAllDropdowns
-             * Loops through all $scope.dropdowns and removes one at a time calling 
+             * Resets the dropdowns array to an empty arrray.
              * $scope.removeDropdown().
              */
            var removeAllDropdowns = function() {
-                for (var i = 0; i < $scope.dropdowns.length; i++) {
-                    $scope.removeDropdown(i);
-                }
+                $scope.dropdowns = [];
             };
 
             $scope.query = function() {

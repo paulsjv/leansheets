@@ -12,6 +12,13 @@ Key Features:
 - Protractor + Jasmine
 - LiveReload
 
+## Getting Started
+
+This project uses `npm` and `jspm`, as such, you'll need to install their respective dependencies by running the
+the following command.
+
+- `npm install && jspm install`
+
 ## Convention > Configuration
 
 - `build/project.conf.js`

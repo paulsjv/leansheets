@@ -14,10 +14,22 @@ Key Features:
 
 ## Getting Started
 
-This project uses `npm` and `jspm`, as such, you'll need to install their respective dependencies by running the
-the following command.
+Run once per machine to install `jspm` and `gulp` (if not installed already):
+
+- `npm install -g jspm`
+- `npm install -g gulp`
+
+Install `npm` and `jspm` dependencies.
 
 - `npm install && jspm install`
+
+Note: If you run into the following error, you may need to adjsut your ulimit settings.
+
+> Error: EMFILE, too many open files
+ 
+To adjust your ulimit (on Macs):
+
+- `ulimit -n 2560`
 
 ## Convention > Configuration
 

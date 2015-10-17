@@ -1,4 +1,12 @@
-node_modules/**/*
 nodejs/server.js
 .DS_Store
+.idea/
+*.iml
+node_modules/
 bower_components/
+jspm_packages/
+target/
+coverage/
+build/reports/
+*.map
+dist/

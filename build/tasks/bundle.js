@@ -1,9 +1,9 @@
 import gulp from 'gulp';
-import jspm from 'gulp-jspm';
 import sass from 'gulp-sass';
 import rename from 'gulp-rename';
 import sourcemaps from 'gulp-sourcemaps';
-import uglify from 'gulp-uglify';
+
+import jspm from 'jspm';
 
 import {APP_NAME, entryPoint, paths} from '../project.conf';
 
@@ -11,17 +11,13 @@ gulp.task('bundle', ['bundle:js', 'bundle:sass'], (done) => {
     done();
 });
 
-gulp.task('bundle:js', ['clean:work'], () => {
+gulp.task('bundle:js', ['clean:work'], (done) => {
 
-    return gulp.src(paths.src.js(entryPoint.js))
-        .pipe(jspm({
-            selfExecutingBundle: true
-        }))
-        .pipe(uglify({
-            preserveComments: 'license'
-        }))
-        .pipe(rename(`${APP_NAME}.js`))
-        .pipe(gulp.dest(paths.work.js()));
+    jspm.bundleSFX(paths.src.js(entryPoint.js), paths.work.js(`${APP_NAME}.js`), {
+        minify: true
+    })
+    .then(done)
+    .catch(done);
 
 });
 
@@ -38,19 +34,19 @@ gulp.task('bundle:sass', ['clean:work'], () => {
 
 gulp.task('bundle:dev', ['bundle:dev:js', 'bundle:dev:sass']);
 
-gulp.task('bundle:dev:js', ['clean:work'], () => {
+gulp.task('bundle:dev:js', ['clean:work'], (done) => {
 
-    return gulp.src(paths.src.js(entryPoint.js))
-        .pipe(sourcemaps.init())
-        .pipe(jspm({
-            selfExecutingBundle: true
-        }))
-        .pipe(rename(`${APP_NAME}.js`))
-        .pipe(sourcemaps.write('.', {
-            defaultSourceRoot: '/source/js/'
-        }))
-        .pipe(gulp.dest(paths.work.js()));
-
+    jspm.bundleSFX(paths.src.js(entryPoint.js), paths.work.js(`${APP_NAME}.js`), {
+        mangle: false,
+        sourceMaps: "inline",
+        lowResSourceMaps: false,
+        sourceMapContents: true,
+        config: {
+            sourceMapContents: true
+        }
+    })
+    .then(done)
+    .catch(done);
 
 });
 

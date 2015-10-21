@@ -1,8 +1,9 @@
 # Web-Build Project Template
 
-Known Issue: `gulp bundle` tasks don't work on Windows. See: https://github.com/brillout/gulp-jspm/issues/8.
-Workaround:
+**Known Issue:** `gulp bundle` tasks don't work on Windows.
+See: https://github.com/brillout/gulp-jspm/issues/8.
 
+**Workaround:**
 Modify `build/bundle.js`:
 
 ```javascript
@@ -21,13 +22,7 @@ gulp.task('bundle:js', ['clean:work'], (done) => {
 gulp.task('bundle:dev:js', ['clean:work'], (done) => {
 
     jspm.bundleSFX(paths.src.js(entryPoint.js), paths.work.js(`${APP_NAME}.js`), {
-        mangle: false,
-        sourceMaps: "inline",
-        lowResSourceMaps: false,
-        sourceMapContents: true,
-        config: {
-            sourceMapContents: true
-        }
+        mangle: false
     })
     .then(done)
     .catch(done);

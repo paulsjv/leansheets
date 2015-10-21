@@ -14,7 +14,7 @@ define(['angular'], function (ng) {
 
     return ['$log','ls-configService', '$moment', function ($log, configService, $moment) {
 
-        var dataQuery = "select D, E, A, B, C where D is not null AND toDate(D) >= toDate(date '%sd') AND toDate(D) <= toDate(date '%ed') %t order by D",
+        var dataQuery = "select D, E, A, B, C where D is not null AND toDate(D) >= toDate(date '%sd') AND toDate(D) <= toDate(date '%ed') %t order by D asc",
             cfdStartQuery = "select C, count(A) where %t C is not null AND toDate(C) >= toDate(date '%sd') AND toDate(C) <= toDate(date '%ed') group by C",
             cfdEndQuery = "select D, count(A) where %t D is not null AND toDate(C) >= toDate(date '%sd') AND toDate(C) <= toDate(date '%ed') group by D",
             configQuery = 'select *',
@@ -37,8 +37,8 @@ define(['angular'], function (ng) {
             });
 
             query = showAllWork(obj.workTypes[0].column,
-                           dataQuery.replace('%sd', getDate(obj.startDate)) 
-                                    .replace('%ed', getDate(obj.endDate)), 
+                           dataQuery.replace('%sd', getDate(obj.startDate))
+                                    .replace('%ed', getDate(obj.endDate)),
                             where);
             $log.debug('ls-queryService: query', query);
             return query;

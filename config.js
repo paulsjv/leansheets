@@ -8,6 +8,9 @@ System.config({
       "optimisation.modules.system"
     ]
   },
+  packages: {
+    "https://www.google.com/": { defaultExtension: false }
+  },
   paths: {
     "github:*": "jspm_packages/github/*",
     "npm:*": "jspm_packages/npm/*"

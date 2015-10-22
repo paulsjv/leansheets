@@ -1,66 +1,74 @@
 {
-  "name": "web-build",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "babel": "^5.8.23",
-    "babel-core": "^5.8.25",
-    "connect-livereload": "^0.5.3",
-    "del": "^2.0.2",
-    "express": "^4.13.3",
-    "glob": "^5.0.15",
-    "gulp": "^3.9.0",
-    "gulp-jshint": "^1.11.2",
-    "gulp-jspm": "^0.4.1",
-    "gulp-livereload": "^3.8.1",
-    "gulp-open": "^1.0.0",
-    "gulp-rename": "^1.2.2",
-    "gulp-replace": "^0.5.4",
-    "gulp-rev-all": "^0.8.21",
-    "gulp-sass": "^2.0.4",
-    "gulp-sourcemaps": "tniswong/gulp-sourcemaps",
-    "gulp-uglify": "^1.4.1",
-    "gulp-webp": "^2.3.0",
-    "isparta": "^3.0.4",
-    "istanbul": "gotwarlost/istanbul#source-map",
-    "jasmine": "^2.3.2",
-    "jasmine-core": "^2.3.4",
-    "jshint-stylish": "^2.0.1",
-    "jspm": "^0.16.11",
-    "karma": "^0.13.10",
-    "karma-babel-preprocessor": "^5.2.2",
-    "karma-chrome-launcher": "^0.2.0",
-    "karma-coverage": "douglasduteil/karma-coverage#next",
-    "karma-jasmine": "^0.3.6",
-    "karma-jasmine-html-reporter": "^0.1.8",
-    "karma-jspm": "^2.0.1",
-    "karma-phantomjs-launcher": "^0.2.1",
-    "karma-sourcemap-loader": "^0.3.5",
-    "merge-stream": "^1.0.0",
-    "phantomjs": "^1.9.18",
-    "plato": "deedubs/es6-plato",
-    "protractor": "^2.4.0",
-    "require-dir": "^0.3.0",
-    "underscore": "^1.8.3"
-  },
-  "jspm": {
-    "dependencies": {
-      "angular": "github:angular/bower-angular@^1.4.6",
-      "angular-mocks": "github:angular/bower-angular-mocks@^1.4.6",
-      "bootstrap": "github:twbs/bootstrap@^3.3.5",
-      "bootstrap-sass": "github:twbs/bootstrap-sass@^3.3.5",
-      "font-awesome": "npm:font-awesome@^4.4.0"
+    "name": "Leansheets",
+    "description": "A tool to trak team performance.",
+    "version": "0.1.2",
+    "author": "Jay Paulson paulsjv@gmail.com",
+    "homepage": "http://www.leansheets.org",
+    "license": "CC-BY-NC-ND-3.0",
+    "main": "main.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/paulsjv/leansheets.git"
+    },
+    "bugs": {
+        "url": "https://github.com/paulsjv/leansheets/issues"
     },
     "devDependencies": {
-      "babel": "npm:babel-core@^5.8.24",
-      "babel-runtime": "npm:babel-runtime@^5.8.24",
-      "core-js": "npm:core-js@^1.1.4"
+        "babel": "^5.8.23",
+        "babel-core": "^5.8.25",
+        "connect-livereload": "^0.5.3",
+        "del": "^2.0.2",
+        "express": "^4.13.3",
+        "glob": "^5.0.15",
+        "gulp": "^3.9.0",
+        "gulp-jshint": "^1.11.2",
+        "gulp-jspm": "^0.4.1",
+        "gulp-livereload": "^3.8.1",
+        "gulp-open": "^1.0.0",
+        "gulp-rename": "^1.2.2",
+        "gulp-replace": "^0.5.4",
+        "gulp-rev-all": "^0.8.21",
+        "gulp-sass": "^2.0.4",
+        "gulp-sourcemaps": "tniswong/gulp-sourcemaps",
+        "gulp-uglify": "^1.4.1",
+        "gulp-webp": "^2.3.0",
+        "isparta": "^3.0.4",
+        "istanbul": "gotwarlost/istanbul#source-map",
+        "jasmine": "^2.3.2",
+        "jasmine-core": "^2.3.4",
+        "jshint-stylish": "^2.0.1",
+        "jspm": "^0.16.11",
+        "karma": "^0.13.10",
+        "karma-babel-preprocessor": "^5.2.2",
+        "karma-chrome-launcher": "^0.2.0",
+        "karma-coverage": "douglasduteil/karma-coverage#next",
+        "karma-jasmine": "^0.3.6",
+        "karma-jasmine-html-reporter": "^0.1.8",
+        "karma-jspm": "^2.0.1",
+        "karma-phantomjs-launcher": "^0.2.1",
+        "karma-sourcemap-loader": "^0.3.5",
+        "merge-stream": "^1.0.0",
+        "phantomjs": "^1.9.18",
+        "plato": "deedubs/es6-plato",
+        "protractor": "^2.4.0",
+        "require-dir": "^0.3.0",
+        "underscore": "^1.8.3"
+    },
+    "jspm": {
+        "dependencies": {
+            "angular": "github:angular/bower-angular@^1.4.6",
+            "angular-mocks": "github:angular/bower-angular-mocks@^1.4.6",
+            "bootstrap": "github:twbs/bootstrap@^3.3.5",
+            "bootstrap-sass": "github:twbs/bootstrap-sass@^3.3.5",
+            "font-awesome": "npm:font-awesome@^4.4.0"
+        },
+        "devDependencies": {
+            "babel": "npm:babel-core@^5.8.24",
+            "babel-runtime": "npm:babel-runtime@^5.8.24",
+            "core-js": "npm:core-js@^1.1.4"
+        }
     }
-  }
 }

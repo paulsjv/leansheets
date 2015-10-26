@@ -3,7 +3,7 @@
   "description": "A tool to trak team performance.",
   "version": "0.1.2",
   "author": "Jay Paulson paulsjv@gmail.com",
-  "homepage": "http:\/\/www.leansheets.org",
+  "homepage": "http://www.leansheets.org",
   "license": "CC-BY-NC-ND-3.0",
   "main": "main.js",
   "scripts": {
@@ -11,10 +11,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https:\/\/github.com/paulsjv/leansheets.git"
+    "url": "https://github.com/paulsjv/leansheets.git"
   },
   "bugs": {
-    "url": "https:\/\/github.com/paulsjv/leansheets/issues"
+    "url": "https://github.com/paulsjv/leansheets/issues"
   },
   "devDependencies": {
     "babel": "^5.8.23",

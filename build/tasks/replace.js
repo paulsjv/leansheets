@@ -7,6 +7,8 @@ import path from 'path';
 import regExcape from '../support/regExcape';
 import {paths, entryPoint, APP_NAME} from '../project.conf';
 
+let posix = path.posix;
+
 let replaceTask = (done) => {
 
     let replacements = {
@@ -24,12 +26,12 @@ let replaceTask = (done) => {
 
             files.forEach((file) => {
 
-                var dir = path.dirname(path.relative(paths.src(), file)),
-                    ext = path.extname(file),
-                    name = path.basename(file, ext);
+                var dir = posix.dirname(posix.relative(paths.src(), file)),
+                    ext = posix.extname(file),
+                    name = posix.basename(file, ext);
 
-                replacements[path.join(dir, name + webpExt)] =
-                    new RegExp(regExcape(path.join(dir, name + ext)).replace(spaceRegex, spaceRegexReplacement), 'g');
+                replacements[posix.join(dir, name + webpExt)] =
+                    new RegExp(regExcape(posix.join(dir, name + ext)).replace(spaceRegex, spaceRegexReplacement), 'g');
 
             });
 

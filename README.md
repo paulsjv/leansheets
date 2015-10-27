@@ -1,35 +1,5 @@
 # Web-Build Project Template
 
-**Known Issue:** `gulp bundle` tasks don't work on Windows.
-See: https://github.com/brillout/gulp-jspm/issues/8.
-
-**Workaround:**
-Modify `build/bundle.js`:
-
-```javascript
-import jspm from 'jspm';
-
-gulp.task('bundle:js', ['clean:work'], (done) => {
-
-    jspm.bundleSFX(paths.src.js(entryPoint.js), paths.work.js(`${APP_NAME}.js`), {
-        minify: true
-    })
-    .then(done)
-    .catch(done);
-
-});
-
-gulp.task('bundle:dev:js', ['clean:work'], (done) => {
-
-    jspm.bundleSFX(paths.src.js(entryPoint.js), paths.work.js(`${APP_NAME}.js`), {
-        mangle: false
-    })
-    .then(done)
-    .catch(done);
-
-});
-```
-
 Key Features: 
 
 - Gulp

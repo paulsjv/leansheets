@@ -17,7 +17,7 @@
     "glob": "^5.0.15",
     "gulp": "^3.9.0",
     "gulp-jshint": "^1.11.2",
-    "gulp-jspm": "^0.4.1",
+    "gulp-jspm": "tniswong/gulp-jspm",
     "gulp-livereload": "^3.8.1",
     "gulp-open": "^1.0.0",
     "gulp-rename": "^1.2.2",

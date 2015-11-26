@@ -21,10 +21,10 @@
 
         <!-- build:section partials._header -->
         <!-- /build -->
-        <div data-ng-if="initialLoad">
-            <p>Loading Application....</p>
-        </div>
-       <div class="container-fluid di-flex-box" data-ng-cloak>
+
+        <div class="loading" data-ng-class="{hide: true}"></div>
+
+        <div class="container-fluid di-flex-box" style="display: none;" data-ng-style="{display: 'block'}">
            <a id="nav-sheets"></a>
             <!-- Sheets Drop Down -->
             <div id="sheets-dropdown">
@@ -141,6 +141,7 @@
                         </ul>
                 </div>
                 <highchart id="cfdHighChart" config="config"></highchart>
+            </div>
         </div>
 
         <!-- build:section partials._footer -->

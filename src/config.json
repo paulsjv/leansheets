@@ -27,7 +27,7 @@
         "Team: Sentinels": {
             "configUrl": "https://docs.google.com/a/drillinginfo.com/spreadsheet/ccc?key=1y8gZ6ckqUpzeY5YrSjaOFERIPnEnUPE9_POyyJR5BFE&usp=drive_web&gid=5#",
             "dataUrl": "https://docs.google.com/a/drillinginfo.com/spreadsheet/ccc?key=1y8gZ6ckqUpzeY5YrSjaOFERIPnEnUPE9_POyyJR5BFE&gid=2&usp=drive_web#"
-        }
+       }
 
     },
     "debugEnabled": true,

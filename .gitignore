@@ -2,3 +2,4 @@ node_modules/**/*
 nodejs/server.js
 .DS_Store
 bower_components/
+.idea/

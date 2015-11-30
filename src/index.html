@@ -72,7 +72,11 @@
                                 ng-model="value" ng-click="changeType(workType, key)" ng-repeat="workType in workTypes"><a>{{workType.name}}</a></li>
                         </ul>
                 </div>
-                <highchart id="histogramHighChart" config="config"></highchart>
+
+                <div class="chart-container">
+                    <div class="no-chart-data" data-ng-if="!dataStatus.histogram">{{errorMessage}}</div>
+                    <highchart id="histogramHighChart" data-ng-if="dataStatus.histogram" config="config"></highchart>
+                </div>
             </div>
 
             <a id="nav-leadtimerun"></a>
@@ -106,7 +110,10 @@
                                 ng-model="value" ng-click="changeType(workType, key)" ng-repeat="workType in workTypes"><a>{{workType.name}}</a></li>
                         </ul>
                 </div>
-                <highchart id="controlHighChart" config="config"></highchart>
+                <div class="chart-container">
+                    <div class="no-chart-data" data-ng-if="!dataStatus.control">{{errorMessage}}</div>
+                    <highchart id="controlHighChart" data-ng-if="dataStatus.control" config="config"></highchart>
+                </div>
             </div>
 
             <a id="nav-cfd"></a>
@@ -140,7 +147,12 @@
                                 ng-model="value" ng-click="changeType(workType, key)" ng-repeat="workType in workTypes"><a>{{workType.name}}</a></li>
                         </ul>
                 </div>
-                <highchart id="cfdHighChart" config="config"></highchart>
+                <div class="chart-container">
+                    <div class="no-chart-data" data-ng-if="!dataStatus.cfd">{{errorMessage}}</div>
+                    <highchart id="cfdHighChart" data-ng-if="dataStatus.cfd" config="config"></highchart>
+                </div>
+
+
             </div>
         </div>
 

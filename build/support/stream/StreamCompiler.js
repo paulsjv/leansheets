@@ -26,6 +26,16 @@ let posix = path.posix,
 
 export default class StreamCompiler {
 
+    /**
+     * Creates a new Stream Compiler with sensible defaults.
+     *
+     * @param assetTypes Multiple asset types configured by arbitrary key names, valued by an Object containing a filter and
+     * a stream handler.
+     * @param preCompileHandler a stream handler executed on the unfiltered stream, prior to asset compilation.
+     * @param postCompileHandler a stream handler executed on the unfiltered resulting stream, post asset compilation.
+     *
+     * @constructor
+     */
     constructor(assetTypes = {}, preCompileHandler, postCompileHandler) {
 
         var replacer;
@@ -200,6 +210,14 @@ export default class StreamCompiler {
 
     };
 
+    /**
+     * Helper for working with streams.
+     *
+     * @param handler stream handler
+     *
+     * @returns {through2}
+     * @private
+     */
     _withStream(handler) {
 
         var files = [],
@@ -248,7 +266,7 @@ export default class StreamCompiler {
 
             return stream.pipe(manifold(
                 _.map(this.assetTypes, (assetType) => manifold.duct(assetType.filter, assetType.handler(opts))),
-                (bypass) => bypass.pipe(manifold.exhaust())
+                (bypass) => bypass.pipe(manifold.exhaust()) // ignore unfiltered items (js source, sass, etc).
             ));
 
         });
@@ -259,6 +277,13 @@ export default class StreamCompiler {
         return this._withStream((stream) => this.postCompileHandler(opts)(stream));
     };
 
+    /**
+     * Compile the stream assets according to configuration specified in constructor.
+     *
+     * @param opts Compile opts, ex: {minify: true, sourceMaps: true}
+     *
+     * @returns {through2}
+     */
     compile(opts) {
 
         return this._withStream((stream) => {

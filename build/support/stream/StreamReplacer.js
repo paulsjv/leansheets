@@ -8,13 +8,23 @@ import regExcape from '../util/regExcape';
 
 let posix = path.posix;
 
-export default class Replacer {
+export default class StreamReplacer {
 
     constructor(replacements = {}) {
         this.replacements = replacements;
     }
 
-    push(replaceWithFn) {
+    /**
+     * Add a transform to the replacer. A transform is a function that takes a vinyl file from the stream as a
+     * parameter and returns the path to be used as a replacement for that file.
+     *
+     * This function is called for each file present in the stream.
+     *
+     * @param transformFn(file)
+     *
+     * @returns {through2}
+     */
+    push(transformFn) {
 
         var that = this;
 
@@ -24,7 +34,7 @@ export default class Replacer {
                 ext = posix.extname(file.path),
                 name = posix.basename(file.path, ext);
 
-            that.replacements[replaceWithFn(file)] =
+            that.replacements[transformFn(file)] =
                 new RegExp(regExcape(posix.join(dir, name + ext)).replace(/ /g, '(?: |%20)'), 'g');
 
             this.push(file);
@@ -35,6 +45,11 @@ export default class Replacer {
 
     }
 
+    /**
+     * Search and replace all files in the stream with values according to the transforms configured via `push()`.
+     *
+     * @returns {through2}
+     */
     replace() {
 
         var that = this;

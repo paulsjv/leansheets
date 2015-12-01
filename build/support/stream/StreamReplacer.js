@@ -26,11 +26,11 @@ export default class StreamReplacer {
      */
     push(transformFn) {
 
-        var that = this;
+        let that = this;
 
         return through2.obj(function (file, enc, flush) {
 
-            var dir = posix.dirname(posix.relative(paths.src(), file.path)),
+            let dir = posix.dirname(posix.relative(paths.src(), file.path)),
                 ext = posix.extname(file.path),
                 name = posix.basename(file.path, ext);
 
@@ -52,7 +52,7 @@ export default class StreamReplacer {
      */
     replace() {
 
-        var that = this;
+        let that = this;
 
         return through2.obj(function (file, enc, flush) {
 

@@ -38,7 +38,7 @@ export default class StreamCompiler {
      */
     constructor(assetTypes = {}, preCompileHandler, postCompileHandler) {
 
-        var replacer;
+        let replacer;
 
         this.assetTypes = _.defaultsDeep(assetTypes, {
 
@@ -85,7 +85,7 @@ export default class StreamCompiler {
 
                 handler: (opts) => (stream) => {
 
-                    var resultStream = stream;
+                    let resultStream = stream;
 
                     if (opts.sourceMaps) {
                         resultStream = resultStream.pipe(sourcemaps.init())
@@ -149,7 +149,7 @@ export default class StreamCompiler {
 
                             (stream) => stream.pipe(replacer.push((file) => {
 
-                                var dir = posix.dirname(posix.relative(paths.src(), file.path)),
+                                let dir = posix.dirname(posix.relative(paths.src(), file.path)),
                                     ext = posix.extname(file.path);
 
                                 return posix.join((dir == 'sass' ? 'css' : dir), APP_NAME + (ext === '.scss' ? '.css' : `${ext}`));
@@ -165,7 +165,7 @@ export default class StreamCompiler {
 
                             (stream) => stream.pipe(replacer.push((file) => {
 
-                                var dir = posix.dirname(posix.relative(paths.src(), file.path)),
+                                let dir = posix.dirname(posix.relative(paths.src(), file.path)),
                                     ext = posix.extname(file.path),
                                     name = posix.basename(file.path, ext);
 
@@ -220,7 +220,7 @@ export default class StreamCompiler {
      */
     _withStream(handler) {
 
-        var files = [],
+        let files = [],
             handlerStream = new stream.Readable({
 
                 objectMode: true,

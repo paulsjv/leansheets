@@ -42,7 +42,7 @@ To adjust your ulimit (on Macs):
 - `default`
  
   Lints JS, Executes unit tests, generates coverage and complexity reports, bundles Sass and Javascript, converts
-  images to webp and replaces all references appropriately, serves up a preview from the work directory with sourcemaps
+  images to webp and replaces all references appropriately, serves up a preview from memory with sourcemaps
   and LiveReload enabled at [http://localhost:3000](http://localhost:3000/), and auto-opens Chrome by default.
    
   This task is an alias for the `preview` task.

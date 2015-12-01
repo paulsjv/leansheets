@@ -1,4 +1,4 @@
-import _ from 'underscore';
+import _ from 'lodash';
 
 // NAME for API Debugging
 const NAME = Symbol();

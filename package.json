@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "postinstall": "jspm install",
+    "test": "gulp test"
   },
   "author": "",
   "license": "ISC",
@@ -17,8 +18,9 @@
     "glob": "^5.0.15",
     "gulp": "^3.9.0",
     "gulp-jshint": "^1.11.2",
-    "gulp-jspm": "tniswong/gulp-jspm",
+    "gulp-jspm": "tniswong/gulp-jspm#1.0",
     "gulp-livereload": "^3.8.1",
+    "gulp-manifold": "tniswong/gulp-manifold",
     "gulp-open": "^1.0.0",
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.4",
@@ -42,12 +44,14 @@
     "karma-jspm": "^2.0.1",
     "karma-phantomjs-launcher": "^0.2.1",
     "karma-sourcemap-loader": "^0.3.5",
+    "lodash": "^3.10.1",
     "merge-stream": "^1.0.0",
     "phantomjs": "^1.9.18",
     "plato": "deedubs/es6-plato",
     "protractor": "^2.4.0",
+    "readable-stream": "^2.0.4",
     "require-dir": "^0.3.0",
-    "underscore": "^1.8.3"
+    "through2": "^2.0.0"
   },
   "jspm": {
     "dependencies": {

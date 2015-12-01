@@ -8,3 +8,4 @@ coverage/
 build/reports/
 *.map
 dist/
+npm-debug.log

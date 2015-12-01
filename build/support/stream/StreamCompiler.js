@@ -108,9 +108,7 @@ export default class StreamCompiler {
 
                     if (opts.sourceMaps) {
 
-                        resultStream = resultStream.pipe(sourcemaps.write('.', {
-                            defaultSourceRoot: '/source/sass/'
-                        }));
+                        resultStream = resultStream.pipe(sourcemaps.write('.'));
 
                     }
 
@@ -265,7 +263,7 @@ export default class StreamCompiler {
         return this._withStream((stream) => {
 
             return stream.pipe(manifold(
-                _.map(this.assetTypes, (assetType) => manifold.duct(assetType.filter, assetType.handler(opts))),
+                _.map(this.assetTypes, (assetType) => manifold.duct(assetType.filter, assetType.handler(opts))), // [ manifold.duct(filter, handler), ... ]
                 (bypass) => bypass.pipe(manifold.exhaust()) // ignore unfiltered items (js source, sass, etc).
             ));
 

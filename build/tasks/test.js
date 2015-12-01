@@ -83,7 +83,7 @@ gulp.task('test:unit:debug', ['jshint'], () => {
 
 });
 
-gulp.task('test:functional', ['assets', 'bundle', 'replace', 'revision'], (done) => {
+gulp.task('test:functional', ['dist'], (done) => {
 
     new Promise((resolve) => { // Download/Update webdriver
 

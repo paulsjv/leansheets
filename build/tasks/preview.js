@@ -2,83 +2,64 @@ import gulp from 'gulp';
 import livereload from 'gulp-livereload';
 import open from 'gulp-open';
 
-import express from 'express';
-import livereloadMiddleware from 'connect-livereload';
-
 import os from 'os';
 
 import {paths, EXPRESS_PORT, LIVERELOAD_PORT} from '../project.conf';
+import regExcape from '../support/util/regExcape';
+import StreamCompiler from '../support/stream/StreamCompiler';
+import StreamServer from '../support/stream/StreamServer';
 
-const BROWSER = os.platform() === 'linux' ? 'google-chrome' : (
-    os.platform() === 'darwin' ? 'google chrome' : (
-        os.platform() === 'win32' ? 'chrome' : 'firefox'
-    )
-);
+let streamCompiler = new StreamCompiler(),
+    streamServer = new StreamServer(),
 
-gulp.task('preview', ['test:unit', 'reports', 'assets:dev', 'bundle:dev', 'replace:dev'], () => {
+    compilerOpts = {
+        sourceMaps: 'inline'
+    };
 
-    let app = express();
-
-    gulp.watch(paths.src.img('**/*.{png,jpeg,jpg,tiff,webp}'), ['preview:dev:reload']);
-    gulp.watch(paths.src.js('**/*.js'), ['preview:dev:reload']);
-    gulp.watch(paths.src.sass('**/*.scss'), ['preview:dev:reload']);
-    gulp.watch(paths.src.html('**/*.html'), ['preview:dev:reload']);
-
-    app.use(livereloadMiddleware({ port: LIVERELOAD_PORT }));
-    app.use(express.static(paths.work()));
-    app.listen(EXPRESS_PORT);
+gulp.task('preview', (done) => {
 
     livereload.listen();
 
-    gulp.src('')
-        .pipe(open({
-            uri: `http://localhost:${EXPRESS_PORT}`,
-            app: BROWSER
-        }));
+    gulp.watch(
+        [
+            paths.jspm.fontAwesome('fonts/*'),
+            paths.jspm.twitterBootstrap('fonts/*'),
+            paths.src.img('**/*.{png,jpeg,jpg,tiff,webp}'),
+            paths.src.js('**/*.js'),
+            paths.src.sass('**/*.scss'),
+            paths.src.html('**/*.html')
+        ],
+        ['preview:watch']
+    );
 
-    console.log(`Server started at http://localhost:${EXPRESS_PORT}. LiveReload enabled.`);
+    gulp.src([
+        paths.jspm.fontAwesome('fonts/*'),
+        paths.jspm.twitterBootstrap('fonts/*'),
+        paths.src('**/*')
+    ])
+    .pipe(streamCompiler.compile(compilerOpts))
+    .pipe(streamServer.listen(EXPRESS_PORT, LIVERELOAD_PORT))
+    .pipe(open({
+        uri: `http://localhost:${EXPRESS_PORT}`,
+        app: os.platform() === 'linux' ? 'google-chrome' : (
+            os.platform() === 'darwin' ? 'google chrome' : (
+                os.platform() === 'win32' ? 'chrome' : 'firefox'
+            )
+        )
+    }));
 
-});
-
-gulp.task('preview:dev', ['preview']);
-
-gulp.task('preview:dev:reload', ['test:unit', 'reports', 'assets:dev', 'bundle:dev', 'replace:dev'], () => {
-
-    gulp.src(paths.work())
-        .pipe(gulp.dest('.'))
-        .pipe(livereload());
-
-});
-
-gulp.task('preview:dist', ['test:unit', 'reports', 'assets', 'bundle', 'replace', 'revision'], () => {
-
-    let app = express();
-
-    gulp.watch(paths.src.img('**/*.{png,jpeg,jpg,tiff,webp}'), ['preview:dist:reload']);
-    gulp.watch(paths.src.js('**/*.js'), ['preview:dist:reload']);
-    gulp.watch(paths.src.sass('**/*.scss'), ['preview:dist:reload']);
-    gulp.watch(paths.src.html('**/*.html'), ['preview:dist:reload']);
-
-    app.use(livereloadMiddleware({ port: LIVERELOAD_PORT }));
-    app.use(express.static(paths.dist()));
-    app.listen(EXPRESS_PORT);
-
-    livereload.listen();
-
-    gulp.src('')
-        .pipe(open({
-            uri: `http://localhost:${EXPRESS_PORT}`,
-            app: BROWSER
-        }));
-
-    console.log(`Server started at http://localhost:${EXPRESS_PORT}. LiveReload enabled.`);
 
 });
 
-gulp.task('preview:dist:reload', ['test:unit', 'reports', 'assets', 'bundle', 'replace', 'revision'], () => {
+gulp.task('preview:watch', () => {
 
-    gulp.src(paths.dist())
-        .pipe(gulp.dest('.'))
-        .pipe(livereload());
+    return gulp.src([
+            paths.jspm.fontAwesome('fonts/*'),
+            paths.jspm.twitterBootstrap('fonts/*'),
+            paths.src('**/*')
+        ])
+        .pipe(streamCompiler.compile(compilerOpts))
+        .pipe(streamServer.update())
+        .pipe(livereload({quiet: true}));
 
 });

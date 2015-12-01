@@ -53,10 +53,10 @@ To adjust your ulimit (on Macs):
   and replaces all references appropriately, appends a sha hash revision to all filenames and replaces all references
   appropriately, and copies the result to the dist directory.
   
-- `preview:dist`
+- `preview`
  
-  Executes the `dist` task and serves up a preview from the dist directory with LiveReload enabled at 
-  [http://localhost:3000](http://localhost:3000/), and auto-opens Chrome by default.
+  Serves up a preview from memory with LiveReload enabled at [http://localhost:3000](http://localhost:3000/), 
+  and auto-opens Chrome by default.
   
 - `test:unit`
   Executes the unit tests and generates a coverage report.

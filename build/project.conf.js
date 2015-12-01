@@ -29,21 +29,6 @@ export const paths = new PathCalculator({
 
     },
 
-    work: { // work root (relative to project root)
-
-        root: 'target/',
-        folders: {
-
-            html: '',
-            js: 'js/',
-            css: 'css/',
-            img: 'img/',
-            fonts: 'fonts/'
-
-        }
-
-    },
-
     dist: { // dist root (relative to project root)
 
         root: 'dist/',

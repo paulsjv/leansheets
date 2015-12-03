@@ -16,7 +16,7 @@ define(['angular'], function (ng) {
 
         var dataQuery = "select D, E, A, B, C where D is not null AND toDate(D) >= toDate(date '%sd') AND toDate(D) <= toDate(date '%ed') %t order by D",
             cfdStartQuery = "select C, count(A) where %t C is not null AND toDate(C) >= toDate(date '%sd') AND toDate(C) <= toDate(date '%ed') group by C",
-            cfdEndQuery = "select D, count(A) where %t D is not null AND toDate(C) >= toDate(date '%sd') AND toDate(C) <= toDate(date '%ed') group by D",
+            cfdEndQuery = "select D, count(A) where %t D is not null AND toDate(C) >= toDate(date '%sd') AND toDate(D) <= toDate(date '%ed') group by D",
             configQuery = 'select *',
 
             showAllWork = function(showAllWork, query, string) {

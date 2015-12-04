@@ -74,9 +74,13 @@
                 </div>
 
                 <div class="chart-container">
-                    <div class="no-chart-data" data-ng-if="!dataStatus.histogram">{{errorMessage}}</div>
-                    <highchart id="histogramHighChart" data-ng-if="dataStatus.histogram" config="config"></highchart>
+                    <div class="alert alert-warning" role="alert" data-ng-if="!dataStatus.histogram">
+                        <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                        <strong>Your query returned no results</strong>
+                    </div>
+                    <highchart id="histogramHighChart" config="config"></highchart>
                 </div>
+
             </div>
 
             <a id="nav-leadtimerun"></a>
@@ -111,8 +115,11 @@
                         </ul>
                 </div>
                 <div class="chart-container">
-                    <div class="no-chart-data" data-ng-if="!dataStatus.control">{{errorMessage}}</div>
-                    <highchart id="controlHighChart" data-ng-if="dataStatus.control" config="config"></highchart>
+                    <div class="alert alert-warning" role="alert" data-ng-if="!dataStatus.control">
+                        <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                        <strong>Your query returned no results</strong>
+                    </div>
+                    <highchart id="controlHighChart" config="config"></highchart>
                 </div>
             </div>
 
@@ -148,8 +155,11 @@
                         </ul>
                 </div>
                 <div class="chart-container">
-                    <div class="no-chart-data" data-ng-if="!dataStatus.cfd">{{errorMessage}}</div>
-                    <highchart id="cfdHighChart" data-ng-if="dataStatus.cfd" config="config"></highchart>
+                    <div class="alert alert-warning" role="alert" data-ng-if="!dataStatus.cfd">
+                        <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                        <strong>Your query returned no results</strong>
+                    </div>
+                    <highchart id="cfdHighChart" config="config"></highchart>
                 </div>
 
 

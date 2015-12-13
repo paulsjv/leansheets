@@ -23,13 +23,10 @@ define(['angular'], function (ng) {
         function ($log, $scope, typeService, configService, $moment) {
             $scope.workType;
             $scope.workTypes;
-
-            $scope.dataStatus = {
-                histogram: false,
-                control: false,
-                cfd: false
-            };
-
+			// this is the data status for each chart.  It is set in the parent controller
+			// as an empty array but, each controller initilizes it to false upon startup.
+			// it turns to ture in this controller when there is no data returned.
+			$scope.dataStatus = [];
 
             $scope.sheetsKeys = Object.keys(configService.getSheets());
             $scope.sheet = $scope.sheetsKeys[0];
@@ -60,7 +57,6 @@ define(['angular'], function (ng) {
             getWorkTypes($scope.sheet);
 
             $scope.updateChart = function(obj, chart, chartName) {
-                $scope.dataStatus[chartName] = true;
 
                 $log.debug('updateChart: ls-applicationController');
                 if (areWorkTypesValid(obj.workTypes) &&

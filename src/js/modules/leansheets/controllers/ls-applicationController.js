@@ -21,9 +21,15 @@ define(['angular'], function (ng) {
      */
     return ['$log','$scope','ls-typeService','ls-configService','$moment',
         function ($log, $scope, typeService, configService, $moment) {
-
             $scope.workType;
             $scope.workTypes;
+
+            $scope.dataStatus = {
+                histogram: false,
+                control: false,
+                cfd: false
+            };
+
 
             $scope.sheetsKeys = Object.keys(configService.getSheets());
             $scope.sheet = $scope.sheetsKeys[0];
@@ -54,16 +60,21 @@ define(['angular'], function (ng) {
             getWorkTypes($scope.sheet);
 
             $scope.updateChart = function(obj, chart, chartName) {
+                $scope.dataStatus[chartName] = true;
+
                 $log.debug('updateChart: ls-applicationController');
                 if (areWorkTypesValid(obj.workTypes) &&
                         areDatesValid(obj.startDate, obj.endDate)) {
                     chart.getChart(obj).then(
                         function(success) {
+                            // hide the error message message for the chart
                             $log.debug('Firing "chart:' + chartName + '" event: ls-applicationController!');
                             $scope.$broadcast('chart:' + chartName, success);
+                            $scope.dataStatus[chartName] = true;
                         }, function(error) {
+                            // show error message for the chart
+                            $scope.dataStatus[chartName] = false;
                             $log.debug('Error getting data from Google Sheets!', error);
-                             alert('Error getting data from Google Sheets! ' + error);
                         });
                 }
             };
@@ -86,7 +97,7 @@ define(['angular'], function (ng) {
                 return dropdowns;
             };
 
-            // returns current date minus number of days to subtract 
+            // returns current date minus number of days to subtract
             // from current date that is supplied in the config.json
             $scope.getDefaultStartDate = function() {
                 return $moment()
@@ -100,7 +111,7 @@ define(['angular'], function (ng) {
             };
 
             var areDatesValid = function(startDate, endDate) {
-                if (!ng.isDefined(startDate) || 
+                if (!ng.isDefined(startDate) ||
                     !ng.isDefined(endDate) ||
                     !isDateValid(startDate) ||
                     !isDateValid(endDate)) {

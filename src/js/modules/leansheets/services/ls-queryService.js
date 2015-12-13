@@ -37,8 +37,8 @@ define(['angular'], function (ng) {
             });
 
             query = showAllWork(obj.workTypes[0].column,
-                           dataQuery.replace('%sd', getDate(obj.startDate)) 
-                                    .replace('%ed', getDate(obj.endDate)), 
+                           dataQuery.replace('%sd', getDate(obj.startDate))
+                                    .replace('%ed', getDate(obj.endDate)),
                             where);
             $log.debug('ls-queryService: query', query);
             return query;

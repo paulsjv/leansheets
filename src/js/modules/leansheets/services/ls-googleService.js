@@ -148,11 +148,11 @@ define(['angular'], function (ng) {
 			var csvData = $google.visualization.dataTableToCsv(dataTable);
 
             if (!csvData) {
+				$log.debug('ls-googleService: No data for date range and work type(s) selected');
                 deferred.reject({
                     errorcode : '1',
-                    message : 'No data'
+                    message : 'ls-googleService: No data for date range and work type(s)'
                 });
-
                 return undefined;
             } else {
                 deferred.resolve(csvData);

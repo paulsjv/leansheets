@@ -35,6 +35,8 @@ define(['angular'], function (ng) {
             $scope.startDate;
             $scope.endDate;
 
+			$scope.dataStatus[chartName] = false;
+
             $scope.addDropdown = function() {
                 $log.debug('ls-cfdController: adding dropdown');
                 $scope.dropdowns = $scope.addDropdownParent($scope.dropdowns, defaultWorkType, $scope.dropdowns.length);

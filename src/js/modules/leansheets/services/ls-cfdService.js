@@ -24,7 +24,7 @@ define(['angular'], function (ng) {
                         $log.debug('Got the data for the CFD: ls-cfdService!')
                         deferred.resolve(getOptionsForChart('', parseData(data[0], data[1])));
                     }, function(error) {
-                        $log.error('ls-cfdService: Error getting data for CFD!', error);
+                        $log.error('ls-cfdService: Error getting data for CFD!');
                         deferred.reject(error);
                     });
 

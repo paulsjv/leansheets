@@ -72,7 +72,15 @@
                                 ng-model="value" ng-click="changeType(workType, key)" ng-repeat="workType in workTypes"><a>{{workType.name}}</a></li>
                         </ul>
                 </div>
-                <highchart id="histogramHighChart" config="config"></highchart>
+
+                <div class="chart-container">
+                    <div class="alert alert-warning" role="alert" data-ng-if="!dataStatus.histogram">
+                        <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                        <strong>Your query returned no results</strong>
+                    </div>
+                    <highchart id="histogramHighChart" config="config"></highchart>
+                </div>
+
             </div>
 
             <a id="nav-leadtimerun"></a>
@@ -106,7 +114,13 @@
                                 ng-model="value" ng-click="changeType(workType, key)" ng-repeat="workType in workTypes"><a>{{workType.name}}</a></li>
                         </ul>
                 </div>
-                <highchart id="controlHighChart" config="config"></highchart>
+                <div class="chart-container">
+                    <div class="alert alert-warning" role="alert" data-ng-if="!dataStatus.control">
+                        <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                        <strong>Your query returned no results</strong>
+                    </div>
+                    <highchart id="controlHighChart" config="config"></highchart>
+                </div>
             </div>
 
             <a id="nav-cfd"></a>
@@ -140,7 +154,15 @@
                                 ng-model="value" ng-click="changeType(workType, key)" ng-repeat="workType in workTypes"><a>{{workType.name}}</a></li>
                         </ul>
                 </div>
-                <highchart id="cfdHighChart" config="config"></highchart>
+                <div class="chart-container">
+                    <div class="alert alert-warning" role="alert" data-ng-if="!dataStatus.cfd">
+                        <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                        <strong>Your query returned no results</strong>
+                    </div>
+                    <highchart id="cfdHighChart" config="config"></highchart>
+                </div>
+
+
             </div>
         </div>
 

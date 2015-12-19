@@ -3,6 +3,8 @@
 # Get a plugin for your choice of editors at: http://editorconfig.org/#download
 root = true
 
+# Unix-style newlines with a newline ending every file
+# Set default charset
 [*]
 charset = utf-8
 end_of_line = lf

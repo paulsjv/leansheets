@@ -1,5 +1,5 @@
-import PathCalculator from './support/PathCalculator';
-import readJSON from './support/readJSON';
+import PathCalculator from './support/path/PathCalculator';
+import readJSON from './support/util/readJSON';
 
 export const EXPRESS_PORT = 3000;
 export const LIVERELOAD_PORT = 35729;
@@ -21,20 +21,6 @@ export const paths = new PathCalculator({
             html: '',
             js: 'js/',
             sass: 'sass/',
-            img: 'img/',
-            fonts: 'fonts/'
-
-        }
-
-    },
-
-    work: { // work root (relative to project root)
-
-        root: 'target/',
-        folders: {
-
-            html: '',
-            js: 'js/',
             css: 'css/',
             img: 'img/',
             fonts: 'fonts/'

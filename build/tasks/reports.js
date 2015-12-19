@@ -1,7 +1,7 @@
 import gulp from 'gulp';
 import plato from 'plato';
 
-import readJSON from '../support/readJSON';
+import readJSON from '../support/util/readJSON';
 import {paths} from '../project.conf';
 
 gulp.task('reports', ['test:unit', 'reports:complexity']);

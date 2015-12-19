@@ -1,88 +1,81 @@
 LeanSheets
 ==========
 
-A tool that creates Cumulative Flow, Histogram, and Control charts for Kanban systems based off of a Google Spread Sheet.
-
-Life Cycle
------------------
-1. Loads /config.json
-2. Loads the Configuration from your Google Spread Sheet that you have defined
-3. Fires a $broadcast event to other chart's controllers for them to draw their chart
-
 Installing & Running
 -------------------------
-You have two options to run LeanSheets:
+The 2.0 branch of LeanSheets is a development branch.  While we do our best to make sure the branch is always working that may not be the case.  If you would like to install and run LeanSheets 2.0 please feel free to do the following steps.
 
-1. Download either the [.zip](https://github.com/paulsjv/leansheets/zipball/master) or the [tar.gz](https://github.com/paulsjv/leansheets/tarball/master)
-    * If you choose this option you can skip the steps of installing Git and running "git clone" in the below instructions.
-2. Clone the Git repo.
-    * If you choose this step follow all the below instructions.
+Below taken partly from:
+https://raw.githubusercontent.com/tniswong/web-build/master/README.md
 
-Installation instructions:
+# Web-Build Project Template
 
-See the video here:
+Key Features: 
 
-http://www.screencast.com/t/q0aWDzuQGn
+- Gulp
+- ES6 (JSPM/Babel)
+- Sass
+- Karma + PhantomJS + Jasmine + ES6
+- Coverage Reports (Istanbul)
+- Complexity Reports (Plato)
+- Angular
+- Protractor + Jasmine
+- LiveReload
 
-Download and Install the following
+## Getting Started
 
-Nodejs - http://www.nodejs.org
+Run once per machine to install `jspm` and `gulp` (if not installed already):
 
-Click the “Install” button on the page
+- `npm install -g jspm`
+- `npm install -g gulp`
 
-Git - https://git-scm.com/downloads
+Install `npm` and `jspm` dependencies.
 
-Click on the OS you use
+- `npm install && jspm install`
 
-Once these two programs are installed do the following steps:
+## Convention > Configuration
 
-If you are running Windows make sure to run the "GIT Bash" program from your Start menu.  This will get you the command prompt you will need to run the below commands.
+- `build/project.conf.js`
+   
+  Stores relevant project configuration, take a look. Don't change it if you don't have to, it's a convention.
 
-If you are running Mac you will want to run the following commands from your "Terminal."
+## Gulp tasks you care about
 
-```
-cmd> git clone https://github.com/paulsjv/leansheets.git
-cmd> cd leansheets
-cmd> npm install -g bower <may have to run as root>
-cmd> npm install -g grunt-cli <may have to run as root>
-cmd> npm install grunt
-cmd> bower install
-cmd> npm install
-cmd> grunt run
-```
+- `default`
+ 
+  Lints JS, Executes unit tests, generates coverage and complexity reports, bundles Sass and Javascript, converts
+  images to webp and replaces all references appropriately, serves up a preview from memory with sourcemaps
+  and LiveReload enabled at [http://localhost:3000](http://localhost:3000/), and auto-opens Chrome by default.
+   
+  This task is an alias for the `preview` task.
 
-Open the link in your browser:
+- `dist`
+ 
+  Executes unit tests, generates coverage and complexity reports, bundles Sass and Javascript, converts images to webp
+  and replaces all references appropriately, appends a sha hash revision to all filenames and replaces all references
+  appropriately, and copies the result to the dist directory.
+  
+- `preview`
+ 
+  Serves up a preview from memory with LiveReload enabled at [http://localhost:3000](http://localhost:3000/), 
+  and auto-opens Chrome by default.
+  
+- `test:unit`
+  Executes the unit tests and generates a coverage report.
 
-http://localhost:8081
+- `test:functional`
+  Executes the functional tests.
 
-Choose a date between 11/1/2014 and 4/31/2015.  See the Google Sheet here for the data your local instance is currently running.
+## Reports
 
-https://docs.google.com/spreadsheets/d/12cvMUMnWEKynGTsyXQywvJ9drpjYAyyo0-2cnTUJSFw/edit?gid=44020743#gid=497466409
+Reports are located by default under `build/reports`. This location can be modified by modifying `build/project.conf.js`.
 
-Update to use your own Google Sheet
--------------------------
-Update the ./src/config.json file to be like below (Google Sheet is the demo when you first run and lauch LeanSheets in your browser).  Make sure you change the key and the gid in the URL.  Also, depending on what version of Google Sheets you are running the URL might be slightly different.  If you can not figure it out please open an issue on the github page.
+## Sources
 
-https://docs.google.com/spreadsheets/d/[key]/edit?gid=[gid]
+Sources are located by default under `www/`. This location can be modified by modifying `build/project.conf.js`.
 
-  ```json
- {
-    "sheets": {
-        "Sheet: Demo Team": {
-            "configUrl": "https://docs.google.com/spreadsheets/d/12cvMUMnWEKynGTsyXQywvJ9drpjYAyyo0-2cnTUJSFw/edit?gid=44020743",
-            "dataUrl": "https://docs.google.com/spreadsheets/d/12cvMUMnWEKynGTsyXQywvJ9drpjYAyyo0-2cnTUJSFw/edit?gid=497466409"
-        }
-    },
-   "debugEnabled": true,
-    "showAllWork": true,
-    "cacheTtl": 300,
-    "datePickerFormat": "mm/dd/yyyy",
-    "datePickerMomentFormat": "MM/DD/YYYY",
-    "queryDateMomentFormat": "YYYY-MM-DD",
-    "defaultHistoricalNumberOfDays": 60
-}
-  ```
+## Specs
 
-Running Tests
--------------------------
-Coming Soon
+Specs are located by default under `spec/`. This location can be modified by modifying `build/project.conf.js`.
+Both Unit and Functional tests are supported. Unit tests are run via Karma + PhantomJS. Functional tests are run via
+Protractor + Chrome. Both types of specs support ES6

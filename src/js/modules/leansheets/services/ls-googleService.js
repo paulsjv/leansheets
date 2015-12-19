@@ -15,12 +15,12 @@ define(['angular'], function (ng) {
     return ['$log','$http','$q','$moment','$google','ls-configService','ls-queryService','ls-cacheService',
             function ($log, $http, $q, $moment, $google, configService, queryService, cacheService) {
 
-        /** 
-         * sheetKey is passed in via the getConfig method.  The getConfig method is called 
+        /**
+         * sheetKey is passed in via the getConfig method.  The getConfig method is called
          * any time the typeService gets the workTypes from a specific sheet.  The sheetKey
-         * member variable is saved when the getConfig is called so that the rest of the 
+         * member variable is saved when the getConfig is called so that the rest of the
          * class can use it to pass as part of the cache key and to get the sheet URL.
-         * @member {string} 
+         * @member {string}
          */
         var sheetKey;
 
@@ -146,8 +146,18 @@ define(['angular'], function (ng) {
             }
 			var dataTable = response.getDataTable();
 			var csvData = $google.visualization.dataTableToCsv(dataTable);
-	        deferred.resolve(csvData);
-            return csvData;
+
+            if (!csvData) {
+				$log.debug('ls-googleService: No data for date range and work type(s) selected');
+                deferred.reject({
+                    errorcode : '1',
+                    message : 'ls-googleService: No data for date range and work type(s)'
+                });
+                return undefined;
+            } else {
+                deferred.resolve(csvData);
+                return csvData;
+            }
 	    };
     }];
 });

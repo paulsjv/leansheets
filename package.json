@@ -47,6 +47,7 @@
     "lodash": "^3.10.1",
     "merge-stream": "^1.0.0",
     "mime-types": "^2.1.8",
+    "multimatch": "^2.1.0",
     "phantomjs": "^1.9.18",
     "plato": "deedubs/es6-plato",
     "protractor": "^2.4.0",

@@ -126,12 +126,13 @@ export default class StreamCompiler {
 
             },
 
-			json: {
-	
-				filter: paths.src.json('**/*.json'),
+            json: {
 
-				handler: (opts) => (stream) => stream
-			}
+                filter: paths.src.json('**/*.json'),
+
+                handler: (opts) => (stream) => stream
+
+            }
 
         });
 

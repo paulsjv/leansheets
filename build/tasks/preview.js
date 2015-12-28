@@ -24,10 +24,7 @@ gulp.task('preview', (done) => {
         [
             paths.jspm.fontAwesome('fonts/*'),
             paths.jspm.twitterBootstrap('fonts/*'),
-            paths.src.img('**/*.{png,jpeg,jpg,tiff,webp}'),
-            paths.src.js('**/*.js'),
-            paths.src.sass('**/*.scss'),
-            paths.src.html('**/*.html')
+            paths.src('**/*')
         ],
         ['preview:watch']
     );

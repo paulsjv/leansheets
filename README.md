@@ -11,6 +11,7 @@ Key Features:
 - Angular
 - Protractor + Jasmine
 - LiveReload
+- 100% Stream-based in-memory compilation and development previews
 
 ## Getting Started
 
@@ -49,14 +50,19 @@ To adjust your ulimit (on Macs):
 
 - `dist`
  
-  Executes unit tests, generates coverage and complexity reports, bundles Sass and Javascript, converts images to webp
-  and replaces all references appropriately, appends a sha hash revision to all filenames and replaces all references
-  appropriately, and copies the result to the dist directory.
+  Executes unit tests, generates coverage and complexity reports, bundles and minifies Sass and Javascript, converts 
+  images to webp and replaces all references as appropriate, appends a sha hash revision to all filenames and replaces
+  all references as appropriate, and copies the result to the dist directory.
   
 - `preview`
  
-  Serves up a preview from memory with LiveReload enabled at [http://localhost:3000](http://localhost:3000/), 
-  and auto-opens Chrome by default.
+  Serves up a preview from memory with LiveReload enabled at [http://localhost:3000](http://localhost:3000/), and
+  auto-opens Chrome by default.
+  
+- `preview:dist`
+   
+  Executes `dist` and serves up a preview from memory at [http://localhost:3000](http://localhost:3000/) and auto-opens
+  Chrome by default.
   
 - `test:unit`
   Executes the unit tests and generates a coverage report.

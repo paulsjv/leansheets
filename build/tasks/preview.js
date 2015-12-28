@@ -14,7 +14,13 @@ let streamCompiler = new StreamCompiler(),
 
     compilerOpts = {
         sourceMaps: 'inline'
-    };
+    },
+
+    browser = os.platform() === 'linux' ? 'google-chrome' : (
+        os.platform() === 'darwin' ? 'google chrome' : (
+            os.platform() === 'win32' ? 'chrome' : 'firefox'
+        )
+    );
 
 gulp.task('preview', (done) => {
 
@@ -38,11 +44,7 @@ gulp.task('preview', (done) => {
     .pipe(streamServer.listen(EXPRESS_PORT, LIVERELOAD_PORT))
     .pipe(open({
         uri: `http://localhost:${EXPRESS_PORT}`,
-        app: os.platform() === 'linux' ? 'google-chrome' : (
-            os.platform() === 'darwin' ? 'google chrome' : (
-                os.platform() === 'win32' ? 'chrome' : 'firefox'
-            )
-        )
+        app: browser
     }));
 
 
@@ -58,5 +60,18 @@ gulp.task('preview:watch', () => {
         .pipe(streamCompiler.compile(compilerOpts))
         .pipe(streamServer.update())
         .pipe(livereload({quiet: true}));
+
+});
+
+gulp.task('preview:dist', ['dist'], (done) => {
+
+    return gulp.src([
+            paths.dist('**/*')
+        ])
+        .pipe(streamServer.listen(EXPRESS_PORT))
+        .pipe(open({
+            uri: `http://localhost:${EXPRESS_PORT}`,
+            app: browser
+        }));
 
 });

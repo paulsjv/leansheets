@@ -1,3 +1,15 @@
-export default [ '$scope', function( $scope ) {
-		$scope.helloWorld = "Hello World Controller";
-}];
+export default class {
+
+    static get $inject() {
+        return ['$log'];
+    }
+
+    constructor ($log) {
+
+        this.name = "World";
+
+        $log.debug(this.name);
+
+    }
+
+};

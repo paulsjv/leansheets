@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html class="no-js" lang="en">
+
     <head>
 
         <meta charset="utf-8">
@@ -13,12 +14,55 @@
         <title></title>
 
     </head>
-    <body data-ng-app="main" data-ng-cloak>
 
-        <h1>Index.html</h1>
+    <body data-ng-app="main" data-ng-cloak data-ng-strict-di>
 
-		<hello-world name="John"></hello-world>
-		<div data-ng-controller="helloWorldController">{{helloWorld}}</div>
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+
+                <div class="navbar-header">
+
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-nav-collapse" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                    <a class="navbar-brand" href="#">Web-Build</a>
+
+                </div>
+
+                <div class="collapse navbar-collapse" id="main-nav-collapse">
+
+                    <ul class="nav navbar-nav">
+
+                        <li class="active">
+                            <a href="#">Index.html <span class="sr-only">(current)</span></a>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+        </nav>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h1 class="page-header">Index.html</h1>
+
+                    <div data-ng-controller="helloWorldController as ctrl">
+
+                        <div data-hello-world data-name="{{ ctrl.name }}"></div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
 
         <!-- This script reference is automatically replaced by a gulp task by convention -->
         <script type="text/javascript" src="js/main.js"></script>

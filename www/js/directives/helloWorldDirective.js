@@ -2,7 +2,7 @@ export default() => {
 
     return {
 
-        template: "<div>{{ ctrl.greet }} {{ ctrl.name }}</div>",
+        template: "<div>{{ ctrl.greeting }} {{ ctrl.name }}!</div>",
         replace: true,
 
         scope: {},
@@ -19,8 +19,8 @@ export default() => {
 
             constructor ($log) {
 
-                this.greet = 'Hello';
-                $log.debug(this.greet);
+                this.greeting = 'Hello';
+                $log.debug(this.greeting);
 
             }
 

@@ -19,9 +19,11 @@ gulp.task('test:unit', ['jshint'], (done) => {
 
     preProcessors[paths.src.js('**/*.js')] = ['babel', 'coverage'];
     preProcessors[paths.spec.unit('**/*.js')] = ['babel', 'sourcemap'];
+	preProcessors[paths.spec.mocks('**/*.js')] = ['babel', 'sourcemap'];
 
     instrumenter[paths.src.js('**/*.js')] = 'isparta';
     instrumenter[paths.spec.unit('**/*.js')] = 'isparta';
+	instrumenter[paths.spec.mocks('**/*.js')] = 'isparta';
 
     new karma.Server({
 

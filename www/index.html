@@ -13,7 +13,7 @@
         <title>LeanSheets</title>
 
     </head>
-    <body data-ng-app="main" data-ng-cloak>
+    <body data-ng-cloak data-ng-controller="applicationController as application">
 		<header>
 			<!-- Fixed navbar -->
 			<nav class="navbar navbar-default navbar-fixed-top">
@@ -48,13 +48,14 @@
 		</header>
 
         <h1>Index.html</h1>
-		<hello-world name="Jay"></hello-world>
+		<button type="button" ng-click="application.click()">Button Click Me!</button>
 
 		<footer class="footer">
 		  <div class="container">
 			  <p class="text-muted"><span class="copyright">&copy;</span> 2015 LeanSheets All rights reserved | <a class="text-muted" href="https://github.com/paulsjv/leansheets/blob/master/LICENSE">LICENSE</a> | <a class="text-muted" href="https://www.tldrlegal.com/l/ccncnd">Creative Commons Attribution NonCommercial NoDerivs (CC-NC-ND)</a></p>
 		  </div>
 		</footer>
+ 		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
         <!-- This script reference is automatically replaced by a gulp task by convention -->
         <script type="text/javascript" src="js/main.js"></script>
 

@@ -18,7 +18,8 @@ export default (karma) => {
         jspm: {
 
             loadFiles: [
-                paths.spec.unit('**/*.js')
+                paths.spec.unit('**/*.js'),
+				paths.spec.mocks('**/*.js')
             ],
 
             serveFiles: [

@@ -23,7 +23,8 @@ export const paths = new PathCalculator({
             sass: 'sass/',
             css: 'css/',
             img: 'img/',
-            fonts: 'fonts/'
+            fonts: 'fonts/',
+			json: ''
 
         }
 
@@ -38,8 +39,8 @@ export const paths = new PathCalculator({
             js: 'js/',
             css: 'css/',
             img: 'img/',
-            fonts: 'fonts/'
-
+            fonts: 'fonts/',
+			json: ''
         }
 
     },
@@ -50,7 +51,8 @@ export const paths = new PathCalculator({
         folders: {
 
             unit: 'unit/',
-            functional: 'functional/'
+            functional: 'functional/',
+			mocks: 'mocks/'
 
         }
 

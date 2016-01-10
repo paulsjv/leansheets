@@ -12,12 +12,16 @@
 import ng from 'angular'; 
 import applicationController from './controllers/applicationController';
 import configService from './services/configService';
-import buildLocalStorageService from './services/buildLocalStorageService';
+import dataService from './services/dataService';
+import dataServiceFactory from './factories/dataServiceFactory';
+import googleDataService from './services/googleDataService';
 
-export default ng.module('leansheetsApplication', ['config'])
+export default ng.module('leansheetsApplication', ['config','google'])
 					.config(['$logProvider','CONFIG', function($logProvider, config) {
 						$logProvider.debugEnabled(config.debugEnabled);
 					}])
 					.controller('applicationController', applicationController)
 					.service('configService', configService)
-					.service('buildLocalStorageService', buildLocalStorageService);
+					.service('dataService', dataService)
+                    .service('dataServiceFactory', dataServiceFactory)
+                    .service('googleDataService', googleDataService);

@@ -1,30 +1,13 @@
 import ConfigService from 'www/js/services/configService';
+import { CONFIG } from 'spec/mocks/config';
+import Log from 'spec/mocks/log';
 
-describe('The service', () => {
+describe('The ConfigService', () => {
 
-    let	service,
-		config = {
-					"dataSources": { 
-						"Team 1": {
-							"config": "config url",
-							"data": "data url"
-						}, 
-						"Team 2": {
-							"dataSource": "JIRA",
-							"data": "data url"
-						}
-					},
-					"globalDataSource": "google",
-					"debugEnabled": true,
-					"showAllWork": true,
-					"datePickerFormat": "mm/dd/yyyy",
-					"datePickerMomentFormat": "MM/DD/YYYY",
-					"queryDateMomentFormat": "YYYY-MM-DD",
-					"defaultHistoricalNumberOfDays": 60
-				};
+    let	service;
 
     beforeEach(() => {
-		service = new ConfigService({}, config);
+		service = new ConfigService(new Log(), CONFIG);
     });
 
     it('expected service not to be null', () => {
@@ -32,11 +15,11 @@ describe('The service', () => {
     });
 
 	it('expected to have data sources equal the "dataSources" object in config', () => {
-		expect(service.getDataSources()).toEqual({ "Team 1": { "config": "config url", "data": "data url" }, "Team 2": { "dataSource":"JIRA", "data":"data url" }});
+		expect(service.getDataSources()).toEqual({ "Team 1": { "config": "config url", "data": "data url", "dataServiceDriver": "googleDataService" }, "Team 2": { "dataSource":"JIRA", "data":"data url" }});
 	});
 
 	it('expected to get Team 1 data source object', () => {
-		expect(service.getDataSource("Team 1")).toEqual({ "config": "config url", "data": "data url" });
+		expect(service.getDataSource("Team 1")).toEqual({ "config": "config url", "data": "data url", "dataServiceDriver": "googleDataService" });
 	});
 
 	it('expected to get null when getDataSource is called with no parameter', () => {
@@ -82,4 +65,9 @@ describe('The service', () => {
 	it('expected get data source to return null when parameter does not exsist', () => {
 		expect(service.getDataSource('does not exsist')).toBeNull();
 	});
+
+	it('expected getDataSource to return googleDataService', () => {
+		expect(service.getDataSource("Team 1").dataServiceDriver).toEqual('googleDataService');
+	});
+
 });

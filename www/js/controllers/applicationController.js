@@ -1,17 +1,17 @@
 export default class {
 
 	static get $inject() {
-		return [ '$log','buildLocalStorageService' ];
+		return [ '$log','dataService' ];
 	}
 
-	constructor($log, buildLocalStorageService) {
-		this.click = function() {
+	constructor($log, dataService) {
+        this.click = function() {
 			$log.debug('applicationController.js - clicked!');
 		};
 	
 		(function() {
 			$log.debug('applicationController.js - building local storage');
-			buildLocalStorageService.buildLocalStorage();
+            dataService.getData();
 		})();		
 	}
 }

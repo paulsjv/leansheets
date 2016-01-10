@@ -1,8 +1,9 @@
 {
     "dataSources": {
         "Sheet: Demo Team": {
-            "config": "https://docs.google.com/spreadsheets/d/12cvMUMnWEKynGTsyXQywvJ9drpjYAyyo0-2cnTUJSFw/edit?gid=44020743",
-            "data": "https://docs.google.com/spreadsheets/d/12cvMUMnWEKynGTsyXQywvJ9drpjYAyyo0-2cnTUJSFw/edit?gid=497466409"
+            "config": "",
+            "data": "https://docs.google.com/spreadsheets/d/1RBgHdK3A5zLPCzsp-i3XwN7CFKFsJi9a97d8WbpyN4s/edit?gid=497466409",
+            "dataServiceDriver": "googleDataService"
         }
     },
 	"globalDataSource": "google",

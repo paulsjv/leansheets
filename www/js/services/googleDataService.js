@@ -4,14 +4,6 @@
 export default class GoogleDataService {
 
     /**
-    * $inject() fuction that AngularJS uses for it's dependency injection
-    * @return {array} - array or objects that class needs
-    */
-    static get $inject() {
-        return ['$log','$q','configService','$google'];
-    }
-
-    /**
     * Constructor for the GoogleDataService
     * @param {object} $log - logger
     * @param {object} dsConfig - other options to set for service

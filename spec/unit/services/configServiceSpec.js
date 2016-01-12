@@ -22,12 +22,12 @@ describe('The ConfigService', () => {
 		expect(service.getDataSource("Team 1")).toEqual({ "config": "config url", "data": "data url", "dataServiceDriver": "googleDataService" });
 	});
 
-	it('expected to get null when getDataSource is called with no parameter', () => {
-		expect(service.getDataSource()).toBeNull();
+	it('expected getDataSource to throw Error when called with no parameter', () => {
+		expect(() => { service.getDataSource(); }).toThrowError(Error, 'undefined data source key does not exsist in the configuration');
 	});
 
-	it('expected to get null when getDataSource is called with parameter that does not exsist', () => {
-		expect(service.getDataSource("does not exsist")).toBeNull();
+	it('expected getDataSource to throw Error when called with parameter that does not exsist', () => {
+		expect(() => { service.getDataSource("doesNotExsist"); }).toThrowError(Error, 'doesNotExsist data source key does not exsist in the configuration');
 	});
 
 	it('expected to have show all work to be true', () => {
@@ -56,14 +56,6 @@ describe('The ConfigService', () => {
 
 	it('expected to get data source to be "JIRA"', () => {
 		expect(service.getDataSource("Team 2").dataSource).toEqual('JIRA');
-	});
-
-	it('expected get data source to return null', () => {
-		expect(service.getDataSource()).toBeNull();
-	});
-
-	it('expected get data source to return null when parameter does not exsist', () => {
-		expect(service.getDataSource('does not exsist')).toBeNull();
 	});
 
 	it('expected getDataSource to return googleDataService', () => {

@@ -14,7 +14,7 @@ import applicationController from './controllers/applicationController';
 import configService from './services/configService';
 import dataService from './services/dataService';
 import dataServiceFactory from './factories/dataServiceFactory';
-import googleDataService from './services/googleDataService';
+import googleDataServiceFactory from './factories/googleDataServiceFactory';
 
 export default ng.module('leansheetsApplication', ['config','google'])
 					.config(['$logProvider','CONFIG', function($logProvider, config) {
@@ -24,4 +24,4 @@ export default ng.module('leansheetsApplication', ['config','google'])
 					.service('configService', configService)
 					.service('dataService', dataService)
                     .service('dataServiceFactory', dataServiceFactory)
-                    .service('googleDataService', googleDataService);
+                    .service('GoogleDataServiceFactory', googleDataServiceFactory);

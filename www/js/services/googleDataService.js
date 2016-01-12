@@ -8,35 +8,21 @@ export default class GoogleDataService {
     * @return {array} - array or objects that class needs
     */
     static get $inject() {
-        return ['$log','CONFIG','$google','$q'];
+        return ['$log','$q','configService','$google'];
     }
 
     /**
     * Constructor for the GoogleDataService
     * @param {object} $log - logger
-    * @param {object} CONFIG - application configuration
     * @param {object} $google - Google's jsapi
+    * @param {object} configService - gets configuration settings
     */
-    constructor($log, CONFIG, $google, $q) {
+    constructor($log, $q, dsConfig, $google) {
         $log.debug('googleDataService.js - in constructor!');
         this.log = $log;
-        this.config = CONFIG;
         this.google = $google;
         this.q = $q;
-        this.dataUrl = null;
-    }
-
-    /**
-    * Bootstraps the service with values from the application configuration.
-    * @public
-    * @param {string} dataSourceKey - the key from the dataSources object in the configuration
-    */
-    bootstrapInstance(dataSourceKey) {
-        this.log.debug('googleDataService.js - in bootstrapInstance()');
-        if (!this.isConfigValid(dataSourceKey)) {
-            throw new Error('GoogleDataService bootstrap error with configuration');
-        }
-        this.dataUrl = this.config.dataSources[dataSourceKey].data;    
+        this.dataUrl = dsConfig.dataUrl; 
     }
 
     /**
@@ -53,6 +39,8 @@ export default class GoogleDataService {
             promise = deferred.promise,
             dataQuery = "select * where D is not null AND toDate(D) >= toDate(date '"+startDate+"') AND toDate(D) <= toDate(date '"+endDate+"') order by D asc",
             handleResponse = function(response) {
+                that.log.debug('handleResponse from Google:');
+                that.log.debug(response);
                 that.setDataOnPromise(response, deferred);
             },
             query;
@@ -96,9 +84,11 @@ export default class GoogleDataService {
                 return undefined;
         }
         let dataTable = response.getDataTable();
-        let csvData = this.google.visualization.dataTableToCsv(dataTable);
-        deferred.resolve(csvData);
-        return csvData;
+        this.log.debug('dataTable toJSON:');
+        let json = dataTable.toJSON();
+        this.log.debug(json);
+        deferred.resolve(json);
+        return json;
 	}
 
     /**
@@ -115,19 +105,10 @@ export default class GoogleDataService {
     }
 
     /**
-    * Validates that the requested data source is in the application configuration.
-    * @private
-    * @returns {boolean}
-    */
-    isConfigValid(dataSourceKey) {
-        return (this.config.dataSources.hasOwnProperty(dataSourceKey) && this.config.dataSources[dataSourceKey].hasOwnProperty('data'));
-    }
-
-    /**
     * Creates a object of the properties of the class.  Used mainly for testing.
     * @returns {object}
     */ 
     toString() {
-        return { "data": this.dataUrl }; 
+        return { "this.dataUrl": this.dataUrl }; 
     }
 }

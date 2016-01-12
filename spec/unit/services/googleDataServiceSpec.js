@@ -1,10 +1,13 @@
 import GoogleDataService from 'www/js/services/googleDataService';
+import ConfigService from 'www/js/services/configService';
 import Log from 'spec/mocks/log';
 import { CONFIG } from 'spec/mocks/config';
+import { Q } from 'spec/mocks/q';
 
 describe('The GoogleDataService', () => {
 
     let service;
+    let configService;
     let google = {
         visualization: {
             Query: () => { 
@@ -12,29 +15,23 @@ describe('The GoogleDataService', () => {
                     setQuery: () => { },
                     send: () => {  }
                 };*/
-            },
-            dataTableToCsv: () => { return 'CSV Data'; }
+            }
         }
     };
-    let q = {
-        defer: {
-            promise: '',
-            resolve: () => { return null; }, 
-            reject: () => { return null; }
-        }
-    };
-    let error = null;
+    let q = Q;
     let response = {
-        setError: (bool) => { error = bool; },
-        getDataTable: () => { return null; },
-        isError: () => { return error; },
+        getDataTable: () => { return { toJSON: () => { return 'JSON Data'; } }; },
+        isError: () => { return null; },
         getMessage: () => { return null; },
         getDetailedMessage: () => { return null; } 
     };
+    let dsConfig = {
+        dataUrl: "data url"
+    };
 
     beforeEach(() => {
-        error = null;
-        service = new GoogleDataService(new Log(), CONFIG, google, q);
+        configService = new ConfigService(new Log(), CONFIG);
+        service = new GoogleDataService(new Log(), q, dsConfig, google);
     });
 
     it('expected the service to not be null', () => {
@@ -42,61 +39,40 @@ describe('The GoogleDataService', () => {
     });
 
     it('expected the toString to not have a null value for the data key', () => {
-        expect(service.toString()).toEqual({ "data": null });
+        expect(service.toString()).toEqual({ "this.dataUrl": "data url" });
     });
 
-    it('expected the service to set itself based on config', () => {
-        service.bootstrapInstance("Team 1");
-        expect(service.toString()).toEqual({ "data": "data url" });
-    });
-
-    it('expected to throw an error when the no dataSourceKey passed to bootstrapInstance()', () => {
-        expect(() => { service.bootstrapInstance(); }).toThrowError(Error, 'GoogleDataService bootstrap error with configuration');
-    });
-
-    it('expect isConfigValid() to return true with dataSourceKey passed', () => {
-        expect(service.isConfigValid("Team 1")).toBeTruthy();
-    });
-
-    it('expect isConfigValid() to return false when no param is passed', () => {
-        expect(service.isConfigValid()).toBeFalsy();
-    });
-
-    it('expect isConfigValid() to return false when config does not have dataSourceKey', () => {
-        expect(service.isConfigValid('wrongDataSourceKey')).toBeFalsy();
-    });
-/*
-    it('expect getData() to return CSV of data', () => {
-        expect(service.getData()).toEqual("1234,Test Title,10/25/2015,11/2/2015,11/15/2015,12/1/2015,tag 1,tag 2,tag 3,risk 1,risk 2\n5678,Test Title,12/15/2015,12/20/2015,1/1/2016,1/15/2016,tag 1,tag 2,tag 3,risk 1,risk 2");
-    });
-*/
-    it('expect setDataOnPromise() to not be undefined', () => {
-        response.setError(false);
+   it('expect setDataOnPromise() to not be undefined', () => {
+        spyOn(response, 'isError').and.returnValue(false);
         expect(service.setDataOnPromise(response, q.defer)).not.toBe(undefined);
-        expect(service.setDataOnPromise(response, q.defer)).toEqual('CSV Data');
+        expect(service.setDataOnPromise(response, q.defer)).toEqual('JSON Data');
+        expect(response.isError).toHaveBeenCalled();
     });
 
     it('expect setDataOnPromise() to return undefined', () => {
-        response.setError(true);
+        spyOn(response, 'isError').and.returnValue(true);
         expect(service.setDataOnPromise(response, q.defer)).toBe(undefined);
+        expect(response.isError).toHaveBeenCalled();
     });
 
     it('expect isResponseError() to be true if there is an error on the response object', () => {
-        response.setError(true);
+        spyOn(response, 'isError').and.returnValue(true);
         expect(service.isResponseError(response)).toBeTruthy();
+        expect(response.isError).toHaveBeenCalled();
     });
 
     it('expect isResponseError() to be false if there is not an error on the reponse object', () => {
-        response.setError(false);
+        spyOn(response, 'isError').and.returnValue(false);
         expect(service.isResponseError(response)).toBeFalsy();
+        expect(response.isError).toHaveBeenCalled();
     });
 
     it('expect setQuery() to return an object that is not null', () => {
-        service.bootstrapInstance("Team 1");
         expect(service.setQuery()).not.toBeNull();
     });
 
     it('expect setQuery() to throw an Error if the dataUrl is not set', () => {
-        expect(function() { service.setQuery(); }).toThrowError(Error, 'googleDataService.setQuery - this.dataUrl was null - please set to Google Sheet that holds the data');
+        let service = new GoogleDataService(new Log(), q, { dataUrl: null }, google);
+        expect(() => { service.setQuery(); }).toThrowError(Error, 'googleDataService.setQuery - this.dataUrl was null - please set to Google Sheet that holds the data');
     });
 });

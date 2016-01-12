@@ -5,39 +5,43 @@ export default class ConfigService {
 	}
 
 	constructor($log, config) {
-        this.getDataSources = function() {
-            return config.dataSources;
-        };
-
-		this.getDataSource = function(key) {
-			if (config.dataSources.hasOwnProperty(key)) {
-				return config.dataSources[key];
-			}
-			return null;
-		};
-
-		this.getGlobalDataSource = function() {
-			return config.globalDataSource;
-		};
-
-        this.getShowAllWork = function() {
-            return config.showAllWork;
-        };
-
-        this.getDatePickerFormat = function() {
-            return config.datePickerFormat;
-        };
-
-        this.getQueryDateMomentFormat = function() {
-            return config.queryDateMomentFormat;
-        };
-
-        this.getDefaultHistoricalNumberOfDays = function() {
-            return config.defaultHistoricalNumberOfDays;
-        };
-
-        this.getDatePickerMomentFormat = function() {
-            return config.datePickerMomentFormat;
-        };
+        this.log = $log;
+        this.config = config;
     }
+
+    getDataSources() {
+        return this.config.dataSources;
+    }
+
+    getDataSource(key) {
+        if (this.config.dataSources.hasOwnProperty(key)) {
+            return this.config.dataSources[key];
+        }
+        throw new Error(key + ' data source key does not exsist in the configuration');
+    }
+
+    getGlobalDataSource() {
+        return this.config.globalDataSource;
+    }
+
+    getShowAllWork() {
+        return this.config.showAllWork;
+    }
+
+    getDatePickerFormat() {
+        return this.config.datePickerFormat;
+    }
+
+    getQueryDateMomentFormat() {
+        return this.config.queryDateMomentFormat;
+    }
+
+    getDefaultHistoricalNumberOfDays() {
+        return this.config.defaultHistoricalNumberOfDays;
+    }
+
+    getDatePickerMomentFormat() {
+        return this.config.datePickerMomentFormat;
+    }
+
 }

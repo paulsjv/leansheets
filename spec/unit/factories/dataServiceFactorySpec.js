@@ -2,7 +2,6 @@ import DataServiceFactory from 'www/js/factories/dataServiceFactory';
 import ConfigService from 'www/js/services/configService';
 import Log from 'spec/mocks/log';
 import { CONFIG } from 'spec/mocks/config';
-import { Q } from 'spec/mocks/q';
 
 describe('The DataServiceFactory', () => {
 
@@ -11,11 +10,10 @@ describe('The DataServiceFactory', () => {
     let service = {
         createInstance: () => { return {}; }
     };
-    let q = Q;
 
     beforeEach(() => {
         configService = new ConfigService(new Log(), CONFIG);
-        factory = new DataServiceFactory(new Log(), q, configService);
+        factory = new DataServiceFactory(new Log(), configService);
         spyOn(factory, 'getFromAngularContext').and.returnValue(service);
     });
 

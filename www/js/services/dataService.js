@@ -28,11 +28,10 @@ export default class DataService {
             (success) => {
                 this.log.debug('dataService.js - success getting data');
                 this.log.debug(success);
-            }, (error) => {
+            }).catch((error) => {
                 this.log.error('dataService.js - error getting data');
                 this.log.debug(error);
-            }
-        );
+            });
         return {};
     }
 }

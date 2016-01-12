@@ -7,12 +7,16 @@ export default class GoogleDataServiceFactory {
     * @return {array} - array or objects that class needs
     */
     static get $injector() {
-        return ['$log','$q'];
+        return ['$log'];
     }
 
-    constructor($log, $q) {
+    /**
+    * Constructor for the GoogleDataServiceFactory
+    * @param {object} $log - logger
+    * @param {object} $q - object for accessing defer and promise
+    */
+    constructor($log) {
         this.log = $log;
-        this.q = $q;
     }
 
      /**
@@ -23,7 +27,7 @@ export default class GoogleDataServiceFactory {
     * @param {object} - the configService object
     * @param {string} - the data source key
     */
-    createInstance(log, q, configService, dataSourceKey) {
+    createInstance(log, configService, dataSourceKey) {
         log.debug('googleDataServiceFactory.js - in createInstance');
         let ds = configService.getDataSource(dataSourceKey);
         if (!ds.hasOwnProperty('data')) {
@@ -33,6 +37,6 @@ export default class GoogleDataServiceFactory {
         let dsConfig = { 
             dataUrl: ds.data 
         }; 
-        return new GoogleDataService(log, q, dsConfig, window.google);
+        return new GoogleDataService(log, dsConfig, window.google);
     }
 }

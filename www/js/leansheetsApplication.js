@@ -16,7 +16,7 @@ import dataService from './services/dataService';
 import dataServiceFactory from './factories/dataServiceFactory';
 import googleDataServiceFactory from './factories/googleDataServiceFactory';
 
-export default ng.module('leansheetsApplication', ['config','google'])
+export default ng.module('leansheetsApplication', ['config'])
 					.config(['$logProvider','CONFIG', function($logProvider, config) {
 						$logProvider.debugEnabled(config.debugEnabled);
 					}])

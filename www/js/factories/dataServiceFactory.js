@@ -3,14 +3,13 @@ import angular from 'angular';
 export default class DataServiceFactory {
 
     static get $injector() {
-        return ['$log','$q','configService'];
+        return ['$log','configService'];
     }
 
-    constructor($log, $q, configService) {
+    constructor($log, configService) {
         $log.debug('dataServiceFactory.js - in constructor!');
-        this.config = configService; 
+        this.configService = configService; 
         this.log = $log;
-        this.q = $q;
         this.dataServices = [];
     }
 
@@ -20,13 +19,13 @@ export default class DataServiceFactory {
             return this.dataServices[dataSourceKey];
         }
 
-        let ds = this.config.getDataSource(dataSourceKey);
+        let ds = this.configService.getDataSource(dataSourceKey);
         if (!ds.hasOwnProperty('dataServiceDriver')) {
             throw new Error('DataServiceFactory Error with configuration! dataServiceDriver property is missing from the dataSource!');
         }
 
         let factory = this.getFromAngularContext(ds.dataServiceDriver); 
-        let service = factory.createInstance(this.log, this.q, this.config, dataSourceKey);
+        let service = factory.createInstance(this.log, this.configService, dataSourceKey);
         this.dataServices[dataSourceKey] = service;
         return service;
     }

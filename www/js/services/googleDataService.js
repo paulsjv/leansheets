@@ -14,14 +14,13 @@ export default class GoogleDataService {
     /**
     * Constructor for the GoogleDataService
     * @param {object} $log - logger
+    * @param {object} dsConfig - other options to set for service
     * @param {object} $google - Google's jsapi
-    * @param {object} configService - gets configuration settings
     */
-    constructor($log, $q, dsConfig, $google) {
+    constructor($log, dsConfig, $google) {
         $log.debug('googleDataService.js - in constructor!');
         this.log = $log;
         this.google = $google;
-        this.q = $q;
         this.dataUrl = dsConfig.dataUrl; 
     }
 
@@ -35,23 +34,23 @@ export default class GoogleDataService {
     getData(startDate, endDate) {
         this.log.debug('googleDataService.js - getData()');
         let that = this;
-        var deferred = this.q.defer(),
-            promise = deferred.promise,
-            dataQuery = "select * where D is not null AND toDate(D) >= toDate(date '"+startDate+"') AND toDate(D) <= toDate(date '"+endDate+"') order by D asc",
-            handleResponse = function(response) {
-                that.log.debug('handleResponse from Google:');
-                that.log.debug(response);
-                that.setDataOnPromise(response, deferred);
-            },
-            query;
+        let dataQuery = "select * where D is not null AND toDate(D) >= toDate(date '"+startDate+"') AND toDate(D) <= toDate(date '"+endDate+"') order by D asc";
 
         this.log.debug('googleDataService.js - Query for data');
         this.log.debug(dataQuery);
         this.log.debug('*************** Calling Google Over the Wire ***************');
-        query = this.setQuery(); 
-        query.setQuery(dataQuery);
-        query.send(handleResponse);
-        return promise;
+        
+        let promise = new Promise((resolve, reject) => {
+            let query = this.setQuery(); 
+            query.setQuery(dataQuery);
+            query.send((response) => {
+                that.log.debug('handleResponse from Google:');
+                that.log.debug(response);
+                that.setDataOnPromise(response, resolve, reject);
+           });
+        });
+         
+       return promise;
 
     }
 
@@ -74,20 +73,21 @@ export default class GoogleDataService {
     * Sets the CSV data on the promise that was returned in the getData() call.
     * @private
     * @param {object} - the response object from the Google call
-    * @param {object} - the deferred object from the getData() method
+    * @param {object} - the resolve object if call is successful from the getData()
+    * @param {object} - the reject object if call is unsuccessful from the getData()
     * @returns {string} - the CSV data from the response
     */
-    setDataOnPromise(response, deferred) {
+    setDataOnPromise(response, resolve, reject) {
         if (this.isResponseError(response)) {
                 this.log.error('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
-                deferred.reject('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+                reject('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
                 return undefined;
         }
         let dataTable = response.getDataTable();
         this.log.debug('dataTable toJSON:');
         let json = dataTable.toJSON();
         this.log.debug(json);
-        deferred.resolve(json);
+        resolve(json);
         return json;
 	}
 

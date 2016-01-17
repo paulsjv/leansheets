@@ -3,7 +3,15 @@ export const CONFIG = {
         "Team 1": {
             "config": "config url",
             "data": "data url",
-            "dataServiceDriver": "googleDataService"
+            "dataServiceDriver": "googleDataService",
+            "queryConfig": {
+                "id": "A",
+                "description": "B",
+                "link": "C",
+                "states": [ "D","E","F","G" ],
+                "tags": [ "H","I","J","K","L" ],
+                "risks": [ "M","N","O" ]
+            },
         }, 
             "Team 2": {
                 "dataSource": "JIRA",

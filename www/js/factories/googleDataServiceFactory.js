@@ -1,4 +1,5 @@
 import GoogleDataService from 'www/js/services/googleDataService';
+import GoogleQueryBuilder from 'www/js/services/googleQueryBuilder';
 
 export default class GoogleDataServiceFactory {
 
@@ -31,12 +32,17 @@ export default class GoogleDataServiceFactory {
         log.debug('googleDataServiceFactory.js - in createInstance');
         let ds = configService.getDataSource(dataSourceKey);
         if (!ds.hasOwnProperty('data')) {
-            log.error('googleDataSericeFactory.js - DataSource: ' + dataSourceKey + ' in the configuration does not have a "data" property!');
-            throw new Error('GoogleDataServiceFactory createInstance error with configuration');
+            log.error('googleDataServiceFactory.js - DataSource: ' + dataSourceKey + ' in the configuration is missing "data" property!');
+            throw new Error('GoogleDataServiceFactory createInstance error: data property is missing!');
         }
+        if (!ds.hasOwnProperty('queryConfig')) {
+            log.error('googleDataServiceFactory.js - QueryConfig for data source "'+ dataSourceKey +'" is missing!');
+            throw new Error('GoogleDataServiceFactory createInstance error: query configuration is missing!');
+        }
+        let queryBuilder = new GoogleQueryBuilder(log, ds.queryConfig);
         let dsConfig = { 
             dataUrl: ds.data 
         }; 
-        return new GoogleDataService(log, dsConfig, window.google);
+        return new GoogleDataService(log, dsConfig, queryBuilder, window.google);
     }
 }

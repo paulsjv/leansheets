@@ -25,8 +25,11 @@ describe('The GoogleDataService', () => {
     let reject = (obj) => { return obj; };
 
     beforeEach(() => {
+        let queryBuilder = jasmine.createSpyObj('queryBuilder',['getQuery']);
+        queryBuilder.getQuery.and.returnValue('query');
+
         configService = new ConfigService(new Log(), CONFIG);
-        service = new GoogleDataService(new Log(), dsConfig, google);
+        service = new GoogleDataService(new Log(), dsConfig, queryBuilder, google);
     });
 
     it('expected the service to not be null', () => {

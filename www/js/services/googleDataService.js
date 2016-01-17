@@ -9,11 +9,12 @@ export default class GoogleDataService {
     * @param {object} dsConfig - other options to set for service
     * @param {object} $google - Google's jsapi
     */
-    constructor($log, dsConfig, $google) {
+    constructor($log, dsConfig, queryBuilder, $google) {
         $log.debug('googleDataService.js - in constructor!');
         this.log = $log;
         this.google = $google;
         this.dataUrl = dsConfig.dataUrl; 
+        this.queryBuilder = queryBuilder;
     }
 
     /**
@@ -26,7 +27,8 @@ export default class GoogleDataService {
     getData(startDate, endDate) {
         this.log.debug('googleDataService.js - getData()');
         let that = this;
-        let dataQuery = "select * where D is not null AND toDate(D) >= toDate(date '"+startDate+"') AND toDate(D) <= toDate(date '"+endDate+"') order by D asc";
+        let dataQuery = this.queryBuilder.getQuery(startDate, endDate);
+//        let dataQuery = "select * where D is not null AND toDate(D) >= toDate(date '"+startDate+"') AND toDate(D) <= toDate(date '"+endDate+"') order by D asc";
 
         this.log.debug('googleDataService.js - Query for data');
         this.log.debug(dataQuery);

@@ -5,9 +5,10 @@ import Log from 'spec/mocks/log';
 describe('The ConfigService', () => {
 
     let	service;
+    let log = new Log();
 
     beforeEach(() => {
-		service = new ConfigService(new Log(), CONFIG);
+		service = new ConfigService(log, CONFIG);
     });
 
     it('expected service not to be null', () => {
@@ -15,11 +16,13 @@ describe('The ConfigService', () => {
     });
 
 	it('expected to have data sources equal the "dataSources" object in config', () => {
-		expect(service.getDataSources()).toEqual({ "Team 1": { "config": "config url", "data": "data url", "dataServiceDriver": "googleDataService" }, "Team 2": { "dataSource":"JIRA", "data":"data url" }});
+        let ds = service.getDataSources();
+        expect(Object.keys(ds)).toEqual(jasmine.arrayContaining(['Team 1','Team 2']));
 	});
 
 	it('expected to get Team 1 data source object', () => {
-		expect(service.getDataSource("Team 1")).toEqual({ "config": "config url", "data": "data url", "dataServiceDriver": "googleDataService" });
+        let ds = service.getDataSource('Team 1');
+        expect(Object.keys(ds)).toEqual(jasmine.arrayContaining(['config','data','dataServiceDriver','queryConfig']));
 	});
 
 	it('expected getDataSource to throw Error when called with no parameter', () => {
@@ -61,5 +64,16 @@ describe('The ConfigService', () => {
 	it('expected getDataSource to return googleDataService', () => {
 		expect(service.getDataSource("Team 1").dataServiceDriver).toEqual('googleDataService');
 	});
+
+    it('expected getQueryConfig to return config object', () => {
+        let qConfig = service.getQueryConfig('Team 1');
+        expect(Object.keys(qConfig)).toEqual(['id','description','link','states','tags','risks']);
+    });
+
+    it('expected getQueryConfig to throw error if no queryConfig property', () => {
+        let config = { 'dataSources': { 'Team 1': { } } };
+        let service = new ConfigService(log, config);
+        expect(() => { service.getQueryConfig('Team 1'); }).toThrowError(Error, 'There was no query configuration for Team 1 data source!');
+    });
 
 });

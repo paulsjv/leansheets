@@ -20,6 +20,14 @@ export default class ConfigService {
         throw new Error(key + ' data source key does not exsist in the configuration');
     }
 
+    getQueryConfig(key) {
+        let ds = this.getDataSource(key);
+        if (ds.hasOwnProperty('queryConfig')) {
+            return ds.queryConfig;
+        }
+        throw new Error('There was no query configuration for ' + key + ' data source!');
+    }
+
     getGlobalDataSource() {
         return this.config.globalDataSource;
     }

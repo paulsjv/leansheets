@@ -26,7 +26,13 @@ describe('The GoogleDataService', () => {
 
     it('expected to throw an error when there is no data property on config when calling createInstance()', () => {
         spyOn(configService, 'getDataSource').and.returnValue({});
-        expect(() => { factory.createInstance(new Log(), configService, dataSourceKey); }).toThrowError(Error, 'GoogleDataServiceFactory createInstance error with configuration');
+        expect(() => { factory.createInstance(new Log(), configService, dataSourceKey); }).toThrowError(Error, 'GoogleDataServiceFactory createInstance error: data property is missing!');
+        expect(configService.getDataSource).toHaveBeenCalled();
+    });
+
+    it('expected to throw an error when there is no queryConfig property on config when calling createInstance()', () => {
+        spyOn(configService, 'getDataSource').and.returnValue({ 'data': 'dataUrl' });
+        expect(() => { factory.createInstance(new Log(), configService, dataSourceKey); }).toThrowError(Error, 'GoogleDataServiceFactory createInstance error: query configuration is missing!');
         expect(configService.getDataSource).toHaveBeenCalled();
     });
 

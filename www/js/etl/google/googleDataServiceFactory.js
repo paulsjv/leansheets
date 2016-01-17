@@ -1,5 +1,5 @@
-import GoogleDataService from 'www/js/services/googleDataService';
-import GoogleQueryBuilder from 'www/js/services/googleQueryBuilder';
+import GoogleDataService from 'www/js/etl/google/googleDataService';
+import GoogleQueryBuilder from 'www/js/etl/google/googleQueryBuilder';
 
 export default class GoogleDataServiceFactory {
 

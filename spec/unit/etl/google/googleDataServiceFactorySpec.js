@@ -1,5 +1,5 @@
-import GoogleDataServiceFactory from 'www/js/factories/googleDataServiceFactory';
-import GoogleDataService from 'www/js/services/googleDataService';
+import GoogleDataServiceFactory from 'www/js/etl/google/googleDataServiceFactory';
+import GoogleDataService from 'www/js/etl/google/googleDataService';
 import ConfigService from 'www/js/services/configService';
 import Log from 'spec/mocks/log';
 import { CONFIG } from 'spec/mocks/config';

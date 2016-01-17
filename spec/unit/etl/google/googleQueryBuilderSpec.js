@@ -1,4 +1,4 @@
-import GoogleQueryBuilder from 'www/js/services/googleQueryBuilder';
+import GoogleQueryBuilder from 'www/js/etl/google/googleQueryBuilder';
 import ConfigService from 'www/js/services/configService';
 import Log from 'spec/mocks/log';
 import { CONFIG } from 'spec/mocks/config';
@@ -108,5 +108,9 @@ describe('The GoogleQueryBuilder', () => {
             endDate = '2015-05-01',
             query = builder.getQuery(startDate, endDate);
         expect(query).toEqual("SELECT A,B,C,D,E,F,G,H,I,J,K,L,M,N,O WHERE D is not null AND toDate(D) >= toDate(date '"+ startDate +"') AND toDate(D) <= toDate(date '"+ endDate +"') order by D asc");
+    });
+
+    it('expected to validate the date and date format of YYYY-MM-DD', () => {
+        expect(true).toBeFalsy();
     });
 });

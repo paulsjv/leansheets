@@ -72,7 +72,8 @@
       "font-awesome": "npm:font-awesome@^4.4.0",
       "lodash.has": "npm:lodash.has@^4.0.0",
       "lodash.isarray": "npm:lodash.isarray@^4.0.0",
-      "lodash.isempty": "npm:lodash.isempty@^4.0.0"
+      "lodash.isempty": "npm:lodash.isempty@^4.0.0",
+      "lodash.isstring": "npm:lodash.isstring@^4.0.0"
     },
     "devDependencies": {
       "babel": "npm:babel-core@^5.8.24",

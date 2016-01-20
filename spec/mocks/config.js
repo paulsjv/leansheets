@@ -4,6 +4,7 @@ export const CONFIG = {
             "config": "config url",
             "data": "data url",
             "dataServiceDriver": "googleDataService",
+            "dateFormat": "YYYY-MM-DD",
             "queryConfig": {
                 "id": "A",
                 "description": "B",

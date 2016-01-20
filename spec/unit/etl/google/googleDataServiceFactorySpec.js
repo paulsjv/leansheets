@@ -36,5 +36,10 @@ describe('The GoogleDataService', () => {
         expect(configService.getDataSource).toHaveBeenCalled();
     });
 
+    it('expected to throw an error when there is no dateFormat property on config when calling createInstance()', () => {
+        spyOn(configService, 'getDataSource').and.returnValue({ 'data': 'dataUrl', 'queryConfig': 'queryConfig' });
+        expect(() => { factory.createInstance(new Log(), configService, dataSourceKey); }).toThrowError(Error, 'GoogleDataServiceFactory createInstance error: dateFormat property is missing!');
+        expect(configService.getDataSource).toHaveBeenCalled();
+    });
 
 });

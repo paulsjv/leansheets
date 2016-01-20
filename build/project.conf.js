@@ -69,7 +69,6 @@ export const paths = new PathCalculator({
 
             fontAwesome: 'npm/font-awesome@4.4.0/',
             twitterBootstrap: 'github/twbs/bootstrap@3.3.5/'
-
         }
 
     },

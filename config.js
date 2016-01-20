@@ -25,6 +25,7 @@ System.config({
     "lodash.has": "npm:lodash.has@4.0.0",
     "lodash.isarray": "npm:lodash.isarray@4.0.0",
     "lodash.isempty": "npm:lodash.isempty@4.0.0",
+    "lodash.isstring": "npm:lodash.isstring@4.0.0",
     "github:angular/bower-angular-mocks@1.4.6": {
       "angular": "github:angular/bower-angular@1.4.6"
     },

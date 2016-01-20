@@ -19,7 +19,7 @@ export default (karma) => {
 
             loadFiles: [
                 paths.spec.unit('**/*.js'),
-				paths.spec.mocks('**/*.js')
+                paths.spec.mocks('**/*.js')
             ],
 
             serveFiles: [

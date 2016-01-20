@@ -9,4 +9,8 @@ describe('The isEmpty', () => {
     it('expected to not be empty', () => {
         expect(isEmpty('not empty')).toBeFalsy();
     });
+
+    it('expected integers to be empty', () => {
+        expect(isEmpty(1)).toBeTruthy();
+    });
 });

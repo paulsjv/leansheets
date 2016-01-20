@@ -1,76 +1,98 @@
 import GoogleDataService from 'www/js/etl/google/googleDataService';
-import ConfigService from 'www/js/services/configService';
 import Log from 'spec/mocks/log';
-import { CONFIG } from 'spec/mocks/config';
 
 describe('The GoogleDataService', () => {
 
     let service;
-    let configService;
-    let google = {
-        visualization: {
-            Query: () => { }
-        }
-    };
     let response = {
-        getDataTable: () => { return { toJSON: () => { return 'JSON Data'; } }; },
+        getDataTable: () => { return null; },
         isError: () => { return null; },
         getMessage: () => { return null; },
         getDetailedMessage: () => { return null; } 
     };
-    let dsConfig = {
-        dataUrl: "data url"
+    let google = {
+        visualization: {
+            Query: () => { 
+                return {
+                    send: (callback) => {
+                        callback(response);
+                    },
+                    setQuery: () => { }
+                };  
+            }
+        }
     };
-    let resolve = (obj) => { return obj; };
-    let reject = (obj) => { return obj; };
 
     beforeEach(() => {
         let queryBuilder = jasmine.createSpyObj('queryBuilder',['getQuery']);
         queryBuilder.getQuery.and.returnValue('query');
-
-        configService = new ConfigService(new Log(), CONFIG);
-        service = new GoogleDataService(new Log(), dsConfig, queryBuilder, google);
+        let dsConfig = {
+             dataUrl: "data url",
+             dateFormat: "YYYY-MM-DD"
+         };
+        let log = new Log();
+        service = new GoogleDataService(log, dsConfig, queryBuilder, google);
     });
 
-    it('expected the service to not be null', () => {
-        expect(service).not.toBeNull();
-    });
+    it('expected to return a promise successfully with the value of JSON', (done) => {
+        let dataTable = jasmine.createSpyObj(dataTable, ['toJSON']);
+        dataTable.toJSON.and.returnValue('JSON');
+        spyOn(response,'isError').and.returnValue(false);
+        spyOn(response,'getDataTable').and.returnValue(dataTable);
+        spyOn(response,'getDetailedMessage').and.returnValue('getDetailedMessage');
+        spyOn(response,'getMessage').and.returnValue('getMessage');
 
-    it('expected the toString to not have a null value for the data key', () => {
-        expect(service.toString()).toEqual({ "this.dataUrl": "data url" });
-    });
-
-   it('expect setDataOnPromise() to not be undefined', () => {
-        spyOn(response, 'isError').and.returnValue(false);
-        expect(service.setDataOnPromise(response, resolve, reject)).not.toBe(undefined);
-        expect(service.setDataOnPromise(response, resolve, reject)).toEqual('JSON Data');
+        service.getData('2015-12-31','2016-01-15').then((success) => {
+                        expect(success).toEqual('JSON');
+                        done();
+                    });
         expect(response.isError).toHaveBeenCalled();
+        expect(response.getDataTable).toHaveBeenCalled();
+        expect(dataTable.toJSON).toHaveBeenCalled();
     });
 
-    it('expect setDataOnPromise() to return undefined', () => {
+    it('expected to have a response error and reject promise', (done) => {
         spyOn(response, 'isError').and.returnValue(true);
-        expect(service.setDataOnPromise(response, resolve, reject)).toBe(undefined);
+        spyOn(response, 'getDetailedMessage').and.returnValue('getDetailedMessage');
+        spyOn(response, 'getMessage').and.returnValue('getMessage');
+
+        service.getData('2015-12-31','2016-01-15')
+                .catch((error) => {
+                    expect(error).toEqual('Error in query: getMessage getDetailedMessage');
+                    done();
+                }); 
+
         expect(response.isError).toHaveBeenCalled();
+        expect(response.getDetailedMessage).toHaveBeenCalled();
+        expect(response.getMessage).toHaveBeenCalled();
     });
 
-    it('expect isResponseError() to be true if there is an error on the response object', () => {
-        spyOn(response, 'isError').and.returnValue(true);
-        expect(service.isResponseError(response)).toBeTruthy();
-        expect(response.isError).toHaveBeenCalled();
+    it('expect getData() to throw an Error if the dataUrl is not set', (done) => {
+        let queryBuilder = jasmine.createSpyObj(queryBuilder,['getQuery']);
+        queryBuilder.getQuery.and.returnValue('query');
+
+        let queryConfig = { dataUrl: null, dateFormat: 'YYYY-MM-DD' };
+        let service = new GoogleDataService(new Log(), queryConfig, queryBuilder, google);
+
+        service.getData('2015-12-31','2016-02-15')
+                .catch((error) => {
+                    expect(error).toEqual('googleDataService.setQuery - dataUrl was null - please set to Google Sheet that holds the data');
+                    done();
+                });
+        
+        expect(queryBuilder.getQuery).toHaveBeenCalled();
     });
 
-    it('expect isResponseError() to be false if there is not an error on the reponse object', () => {
-        spyOn(response, 'isError').and.returnValue(false);
-        expect(service.isResponseError(response)).toBeFalsy();
-        expect(response.isError).toHaveBeenCalled();
+    it('expect getData() to throw an Error if the startDate or endDate is not valid', () => {
+        let queryBuilder = null;
+        let queryConfig = { dataUrl: null, dateFormat: 'YYYY-MM-DD' };
+        let service = new GoogleDataService(new Log(), queryConfig, queryBuilder, google);
+
+        expect(() => { service.getData('start date','2016-02-15'); })
+                    .toThrowError(Error,'GoogleQueryBuilder - start date: "start date" and/or end date: "2016-02-15" was not a valid date!');
+
+        expect(() => { service.getData('2015-12-31','end date'); })
+                    .toThrowError(Error, 'GoogleQueryBuilder - start date: "2015-12-31" and/or end date: "end date" was not a valid date!');
     });
 
-    it('expect setQuery() to return an object that is not null', () => {
-        expect(service.setQuery()).not.toBeNull();
-    });
-
-    it('expect setQuery() to throw an Error if the dataUrl is not set', () => {
-        let service = new GoogleDataService(new Log(), { dataUrl: null }, google);
-        expect(() => { service.setQuery(); }).toThrowError(Error, 'googleDataService.setQuery - this.dataUrl was null - please set to Google Sheet that holds the data');
-    });
 });

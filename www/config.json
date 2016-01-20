@@ -4,6 +4,7 @@
             "config": "",
             "data": "https://docs.google.com/spreadsheets/d/1RBgHdK3A5zLPCzsp-i3XwN7CFKFsJi9a97d8WbpyN4s/edit?gid=497466409",
             "dataServiceDriver": "GoogleDataServiceFactory",
+            "dateFormat": "YYYY-MM-DD",
              "queryConfig": {
                 "id": "A",
                 "description": "B",

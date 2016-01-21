@@ -53,5 +53,8 @@ describe('The GoogleQueryBuilder', () => {
                     .toThrowError(Error, 'GoogleQueryBuilderHelper - Query Config only supports strings in arrays');
     });
 
+    it('expected getQuery to not have startDate and endDate', () => {
+        expect(builder.getQuery()).toEqual('SELECT A,B,C,D,E,F,G,H,I,J,K,L,M,N,O WHERE D is not null');
+    });
 
  });

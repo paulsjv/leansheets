@@ -15,7 +15,6 @@ export default class GoogleDataServiceFactory {
     /**
     * Constructor for the GoogleDataServiceFactory
     * @param {object} $log - logger
-    * @param {object} $q - object for accessing defer and promise
     */
     constructor($log) {
         this.log = $log;
@@ -25,7 +24,6 @@ export default class GoogleDataServiceFactory {
     * Creates an instance of GoogleDataService and returns it.
     * @public
     * @param {object} - logger for class
-    * @param {object} - q to return defers and promises
     * @param {object} - the configService object
     * @param {string} - the data source key
     */

@@ -52,7 +52,18 @@ var setDataOnPromise = (response, resolve, reject) => {
         return json;
 	};
 
+/**
+* This function tests the start and end dates for a query and will throw an error
+* if either date is not valid.
+* @private
+* @param {string} start date as string
+* @param {string} end date as string
+* @throws {Error} if the dates are not valid
+*/
 var areDatesValid = (startDate, endDate) => {
+    if (isEmpty(startDate) || isEmpty(endDate)) {
+        return;
+    }
     if (!isDate(startDate, dateFormat) || !isDate(endDate, dateFormat)) {
         log.error('googleDataService.js - start date: '+ startDate +' or end date: '+ endDate +' is not valid');
         throw new Error('GoogleQueryBuilder - start date: "'+ startDate + '" and/or end date: "'+ endDate +'" was not a valid date!');

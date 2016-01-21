@@ -62,7 +62,7 @@ describe('The ConfigService', () => {
 	});
 
 	it('expected getDataSource to return googleDataService', () => {
-		expect(service.getDataSource("Team 1").dataServiceDriver).toEqual('googleDataService');
+		expect(service.getDataSource("Team 1").dataServiceDriver).toEqual('GoogleFactory');
 	});
 
     it('expected getQueryConfig to return config object', () => {

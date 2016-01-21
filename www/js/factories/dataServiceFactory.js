@@ -25,7 +25,7 @@ export default class DataServiceFactory {
         }
 
         let factory = this.getFromAngularContext(ds.dataServiceDriver); 
-        let service = factory.createInstance(this.log, this.configService, dataSourceKey);
+        let service = factory.createInstanceDataService(this.log, this.configService, dataSourceKey);
         this.dataServices[dataSourceKey] = service;
         return service;
     }

@@ -2,7 +2,7 @@ import GoogleDataService from 'www/js/etl/google/googleDataService';
 import GoogleQueryBuilder from 'www/js/etl/google/googleQueryBuilder';
 import hasOwnProp from 'www/js/utils/hasOwnProp';
 
-export default class GoogleDataServiceFactory {
+export default class GoogleFactory {
 
     /**
     * $inject() fuction that AngularJS uses for it's dependency injection
@@ -13,7 +13,7 @@ export default class GoogleDataServiceFactory {
     }
 
     /**
-    * Constructor for the GoogleDataServiceFactory
+    * Constructor for the GoogleFactory
     * @param {object} $log - logger
     */
     constructor($log) {
@@ -27,20 +27,20 @@ export default class GoogleDataServiceFactory {
     * @param {object} - the configService object
     * @param {string} - the data source key
     */
-    createInstance(log, configService, dataSourceKey) {
-        log.debug('googleDataServiceFactory.js - in createInstance');
+    createInstanceDataService(log, configService, dataSourceKey) {
+        log.debug('googleFactory.js - in createInstance');
         let ds = configService.getDataSource(dataSourceKey);
         if (!hasOwnProp(ds, 'data')) {
-            log.error('googleDataServiceFactory.js - DataSource: ' + dataSourceKey + ' in the configuration is missing "data" property!');
-            throw new Error('GoogleDataServiceFactory createInstance error: data property is missing!');
+            log.error('googleFactory.js - DataSource: ' + dataSourceKey + ' in the configuration is missing "data" property!');
+            throw new Error('GoogleFactory createInstance error: data property is missing!');
         }
         if (!hasOwnProp(ds, 'queryConfig')) {
-            log.error('googleDataServiceFactory.js - QueryConfig for data source "'+ dataSourceKey +'" is missing!');
-            throw new Error('GoogleDataServiceFactory createInstance error: query configuration is missing!');
+            log.error('googleFactory.js - QueryConfig for data source "'+ dataSourceKey +'" is missing!');
+            throw new Error('GoogleFactory createInstance error: query configuration is missing!');
         }
         if (!hasOwnProp(ds, 'dateFormat')) {
-            log.error('googleDataServiceFactory.js = DataSource: '+ dataSourceKey +' in the configuration is missing "dateFormat" property!');
-            throw new Error('GoogleDataServiceFactory createInstance error: dateFormat property is missing!');
+            log.error('googleFactory.js = DataSource: '+ dataSourceKey +' in the configuration is missing "dateFormat" property!');
+            throw new Error('GoogleFactory createInstance error: dateFormat property is missing!');
         }
         let queryBuilder = new GoogleQueryBuilder(log, ds.queryConfig);
         let dsConfig = { 

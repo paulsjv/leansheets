@@ -1,4 +1,5 @@
 import isDate from 'www/js/utils/isDate';
+import isEmpty from 'www/js/utils/isEmpty';
 
 /**
 * @private variables for the file

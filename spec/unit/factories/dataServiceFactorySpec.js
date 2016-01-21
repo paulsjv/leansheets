@@ -7,14 +7,13 @@ describe('The DataServiceFactory', () => {
 
     let factory;
     let configService;
-    let service = {
-        createInstance: () => { return {}; }
-    };
 
     beforeEach(() => {
+        let dataFactory = jasmine.createSpyObj(dataFactory, ['createInstanceDataService']);
+        dataFactory.createInstanceDataService.and.returnValue({});
         configService = new ConfigService(new Log(), CONFIG);
         factory = new DataServiceFactory(new Log(), configService);
-        spyOn(factory, 'getFromAngularContext').and.returnValue(service);
+        spyOn(factory, 'getFromAngularContext').and.returnValue(dataFactory);
     });
 
     it('expected the factory to not be null', () => {

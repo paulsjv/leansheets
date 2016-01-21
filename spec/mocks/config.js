@@ -3,7 +3,7 @@ export const CONFIG = {
         "Team 1": {
             "config": "config url",
             "data": "data url",
-            "dataServiceDriver": "googleDataService",
+            "dataServiceDriver": "GoogleFactory",
             "dateFormat": "YYYY-MM-DD",
             "queryConfig": {
                 "id": "A",

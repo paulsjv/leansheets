@@ -86,7 +86,7 @@ var buildWhereClause = (startDate, endDate) => {
         if (isEmpty(startDate) || isEmpty(endDate)) {
             return where; 
         }
-        return " AND toDate("+ arrivalState +") >= toDate(date '"+ startDate +"') AND toDate("+ arrivalState +") <= toDate(date '"+ endDate +"') order by D asc"; 
+        return where + " AND toDate("+ arrivalState +") >= toDate(date '"+ startDate +"') AND toDate("+ arrivalState +") <= toDate(date '"+ endDate +"') order by D asc"; 
     };
  
 /**

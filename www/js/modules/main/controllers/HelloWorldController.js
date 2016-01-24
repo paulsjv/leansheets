@@ -1,10 +1,7 @@
 export default class {
 
-    static get $inject() {
-        return ['$log'];
-    }
-
     constructor ($log) {
+        'ngInject';
 
         this.name = "World";
 

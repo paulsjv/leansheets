@@ -1,7 +1,7 @@
 import angular from 'angular';
 import 'angular-mocks';
 
-import 'www/js/main';
+import 'www/js/modules/main/main';
 
 describe('The helloWorldDirective', () => {
 

@@ -1,4 +1,4 @@
-export default() => {
+export default () => {
 
     return {
 
@@ -13,11 +13,8 @@ export default() => {
         controllerAs: 'ctrl',
         controller: class {
 
-            static get $inject() {
-                return ['$log'];
-            }
-
             constructor ($log) {
+                'ngInject';
 
                 this.greeting = 'Hello';
                 $log.debug(this.greeting);

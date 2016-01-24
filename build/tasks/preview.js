@@ -13,7 +13,8 @@ let streamCompiler = new StreamCompiler(),
     streamServer = new StreamServer(),
 
     compilerOpts = {
-        sourceMaps: 'inline'
+        sourceMaps: 'inline',
+        lowResSourceMaps: true
     },
 
     browser = os.platform() === 'linux' ? 'google-chrome' : (

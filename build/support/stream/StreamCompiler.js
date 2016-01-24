@@ -10,6 +10,9 @@ import sass from 'gulp-sass';
 import sourcemaps from 'gulp-sourcemaps';
 import rename from 'gulp-rename';
 import RevAll from 'gulp-rev-all';
+import uglify from 'gulp-uglify';
+import angularTemplateCache from 'gulp-angular-templatecache';
+import ngAnnotate from 'gulp-ng-annotate';
 
 import StreamReplacer from './StreamReplacer';
 
@@ -73,9 +76,45 @@ export default class StreamCompiler {
 
             scripts: {
 
-                filter: paths.src.js(entryPoint.js),
+                filter: [
+                    paths.src.js('**/*.js'),
+                    paths.src.partials('**/*.html'),
+                    `!${paths.src.js('modules/partials')}`, // excludes partials dir itself
+                    `!${paths.src.js('modules/partials/**/*.js')}` // excludes partials dir contents
+                ],
 
-                handler: (opts) => (stream) => stream.pipe(jspm.buildStatic(`js/${APP_NAME}.js`, opts))
+                handler: (opts) => (stream) => {
+
+                    // special handling for minify: true since ngAnnotate requires unminified babel output from jspm.
+                    let jspmOpts = _.extend({}, opts);
+                    delete jspmOpts.minify;
+
+                    let resultStream = stream
+                        .pipe(manifold([
+
+                            manifold.duct(
+
+                                paths.src.partials('**/*.html'),
+
+                                (stream) => stream.pipe(angularTemplateCache({
+                                    filename: path.relative(paths.src(), paths.src.js('modules/partials/partials.js')),
+                                    module: 'app.partials',
+                                    standalone: true
+                                }))
+
+                            )
+
+                        ]))
+                        .pipe(jspm.buildStatic(paths.src.js(entryPoint.js), `js/${APP_NAME}.js`, jspmOpts))
+                        .pipe(ngAnnotate());
+
+                    if (opts.minify) {
+                        resultStream = resultStream.pipe(uglify());
+                    }
+
+                    return resultStream;
+
+                }
 
             },
 
@@ -107,9 +146,7 @@ export default class StreamCompiler {
                     }));
 
                     if (opts.sourceMaps) {
-
                         resultStream = resultStream.pipe(sourcemaps.write('.'));
-
                     }
 
                     return resultStream;
@@ -120,7 +157,11 @@ export default class StreamCompiler {
 
             html: {
 
-                filter: paths.src.html('**/*.html'),
+                filter: [
+                    paths.src.html('**/*.html'),
+                    `!${paths.src.partials()}`, // excludes partials dir itself
+                    `!${paths.src.partials('**')}` // excludes partials dir contents
+                ],
 
                 handler: (opts) => (stream) => stream
 
@@ -153,14 +194,18 @@ export default class StreamCompiler {
                                 paths.src.sass(entryPoint.sass)
                             ],
 
-                            (stream) => stream.pipe(replacer.push((file) => {
+                            (stream) => {
 
-                                let dir = posix.dirname(posix.relative(paths.src(), file.path)),
-                                    ext = posix.extname(file.path);
+                                return stream.pipe(replacer.push((file) => {
 
-                                return posix.join((dir == 'sass' ? 'css' : dir), APP_NAME + (ext === '.scss' ? '.css' : `${ext}`));
+                                    let dir = posix.dirname(posix.relative(paths.src(), file.path)).split(path.sep)[0],
+                                        ext = posix.extname(file.path);
 
-                            }))
+                                    return posix.join((dir == 'sass' ? 'css' : dir), APP_NAME + (ext === '.scss' ? '.css' : `${ext}`));
+
+                                }));
+
+                            }
 
                         ),
 

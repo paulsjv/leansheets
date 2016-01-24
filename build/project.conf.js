@@ -7,7 +7,7 @@ export const LIVERELOAD_PORT = 35729;
 export const APP_NAME = readJSON('package.json').name;
 
 export const entryPoint = { // bundle entry point filenames.
-    js: 'main.js',
+    js: 'modules/main/main.js',
     sass: 'main.scss'
 };
 
@@ -24,7 +24,8 @@ export const paths = new PathCalculator({
             css: 'css/',
             img: 'img/',
             fonts: 'fonts/',
-            json: ''
+            json: '',
+            partials: 'partials/'
 
         }
 

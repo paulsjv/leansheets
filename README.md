@@ -9,6 +9,8 @@ Key Features:
 - Coverage Reports (Istanbul)
 - Complexity Reports (Plato)
 - Angular
+- ng-annotate
+- Cached partials
 - Protractor + Jasmine
 - LiveReload
 - 100% Stream-based in-memory compilation and development previews

@@ -1,7 +1,7 @@
-import GoogleDataService from 'www/js/etl/google/googleDataService';
+import GoogleDataExtract from 'www/js/etl/google/googleDataExtract';
 import Log from 'spec/mocks/log';
 
-describe('The GoogleDataService', () => {
+describe('The GoogleDataExtract', () => {
 
     let service;
     let response = {
@@ -31,7 +31,7 @@ describe('The GoogleDataService', () => {
              dateFormat: "YYYY-MM-DD"
          };
         let log = new Log();
-        service = new GoogleDataService(log, dsConfig, queryBuilder, google);
+        service = new GoogleDataExtract(log, dsConfig, queryBuilder, google);
     });
 
     it('expected to return a promise successfully with the value of JSON', (done) => {
@@ -39,8 +39,6 @@ describe('The GoogleDataService', () => {
         dataTable.toJSON.and.returnValue('JSON');
         spyOn(response,'isError').and.returnValue(false);
         spyOn(response,'getDataTable').and.returnValue(dataTable);
-        spyOn(response,'getDetailedMessage').and.returnValue('getDetailedMessage');
-        spyOn(response,'getMessage').and.returnValue('getMessage');
 
         service.getData('2015-12-31','2016-01-15').then((success) => {
                         expect(success).toEqual('JSON');
@@ -72,11 +70,11 @@ describe('The GoogleDataService', () => {
         queryBuilder.getQuery.and.returnValue('query');
 
         let queryConfig = { dataUrl: null, dateFormat: 'YYYY-MM-DD' };
-        let service = new GoogleDataService(new Log(), queryConfig, queryBuilder, google);
+        let service = new GoogleDataExtract(new Log(), queryConfig, queryBuilder, google);
 
         service.getData('2015-12-31','2016-02-15')
                 .catch((error) => {
-                    expect(error).toEqual('googleDataService.setQuery - dataUrl was null - please set to Google Sheet that holds the data');
+                    expect(error).toEqual('GoogleDataExtract.setQuery - dataUrl was null - please set to Google Sheet that holds the data');
                     done();
                 });
         
@@ -86,13 +84,26 @@ describe('The GoogleDataService', () => {
     it('expect getData() to throw an Error if the startDate or endDate is not valid', () => {
         let queryBuilder = null;
         let queryConfig = { dataUrl: null, dateFormat: 'YYYY-MM-DD' };
-        let service = new GoogleDataService(new Log(), queryConfig, queryBuilder, google);
+        let service = new GoogleDataExtract(new Log(), queryConfig, queryBuilder, google);
 
         expect(() => { service.getData('start date','2016-02-15'); })
                     .toThrowError(Error,'GoogleQueryBuilder - start date: "start date" and/or end date: "2016-02-15" was not a valid date!');
 
         expect(() => { service.getData('2015-12-31','end date'); })
                     .toThrowError(Error, 'GoogleQueryBuilder - start date: "2015-12-31" and/or end date: "end date" was not a valid date!');
+    });
+
+    it('expect to get promise back when no dates are passed to getData', (done) => {
+        let dataTable = jasmine.createSpyObj(dataTable, ['toJSON']);
+        dataTable.toJSON.and.returnValue('JSON');
+        spyOn(response,'isError').and.returnValue(false);
+        spyOn(response,'getDataTable').and.returnValue(dataTable);
+
+        service.getData()
+                .then((success) => {
+                    expect(success).toEqual('JSON');
+                    done();
+                });
     });
 
 });

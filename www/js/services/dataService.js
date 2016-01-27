@@ -11,27 +11,32 @@
 export default class DataService {
 
     static get $inject() {
-        return ['$log','CONFIG','dataServiceFactory'];
+        return ['$log','configService','dataFactory'];
     }
 
-    constructor($log, CONFIG, dataServiceFactory) {
+    constructor($log, configService, dataFactory) {
         $log.debug('dataService.js - in constructor!');
-        this.config = CONFIG;
+        this.configService = configService;
         this.log = $log;
-        this.dataServiceFactory = dataServiceFactory;
+        this.dataFactory = dataFactory;
     }
 
     getData() {
         this.log.debug('dataService.js - in getData()'); 
-        let dataService = this.dataServiceFactory.getDataService("Sheet: Demo Team");
-        dataService.getData('2014-11-01', '2015-05-01').then(
+        let extractService = this.dataFactory.getExtractService("Sheet: Demo Team");
+        let data = null;
+        extractService.getData().then(
             (success) => {
                 this.log.debug('dataService.js - success getting data');
                 this.log.debug(success);
+                data = success;
             }).catch((error) => {
                 this.log.error('dataService.js - error getting data');
                 this.log.debug(error);
             });
+
+        let transformService = this.dataFactory.getTransformService("Sheet: Demo Team");
+        transformService.transformData(data);
         return {};
     }
 }

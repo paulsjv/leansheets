@@ -1,10 +1,11 @@
 import GoogleFactory from 'www/js/etl/google/googleFactory';
-import GoogleDataService from 'www/js/etl/google/googleDataService';
+import GoogleDataExtract from 'www/js/etl/google/googleDataExtract';
+import GoogleDataTransform from 'www/js/etl/google/googleDataTransform';
 import ConfigService from 'www/js/services/configService';
 import Log from 'spec/mocks/log';
 import { CONFIG } from 'spec/mocks/config';
 
-describe('The GoogleDataService', () => {
+describe('The GoogleFactory', () => {
     let factory;
     let configService;
     let dataSourceKey = 'Team 1';
@@ -14,32 +15,42 @@ describe('The GoogleDataService', () => {
         factory = new GoogleFactory(new Log());
     });
 
-    it('expected createInstance to return GoogleDataService object', () => {
-        let service = factory.createInstanceDataService(new Log(), configService, dataSourceKey);
-        expect(service instanceof GoogleDataService).toBeTruthy();
+    /**
+    * Extract createInstanceDataExtractService tests
+    */
+    it('expected createExtractService to return GoogleDataExtract object', () => {
+        let service = factory.createExtractService(configService, dataSourceKey);
+        expect(service instanceof GoogleDataExtract).toBeTruthy();
     });
 
-    it('expected to throw an error when the no dataSourceKey passed to createInstance()', () => {
+    it('expected to throw an error when the no dataSourceKey passed to createExtractService()', () => {
         spyOn(configService, 'getDataSource').and.throwError('error');
-        expect(() => { factory.createInstanceDataService(new Log(), configService); }).toThrowError('error');
+        expect(() => { factory.createExtractService(configService); }).toThrowError('error');
     });
 
-    it('expected to throw an error when there is no data property on config when calling createInstance()', () => {
+    it('expected to throw an error when there is no data property on config when calling createExtractService()', () => {
         spyOn(configService, 'getDataSource').and.returnValue({});
-        expect(() => { factory.createInstanceDataService(new Log(), configService, dataSourceKey); }).toThrowError(Error, 'GoogleFactory createInstance error: data property is missing!');
+        expect(() => { factory.createExtractService(configService, dataSourceKey); }).toThrowError(Error, 'GoogleFactory createExtractService error: data property is missing!');
         expect(configService.getDataSource).toHaveBeenCalled();
     });
 
-    it('expected to throw an error when there is no queryConfig property on config when calling createInstance()', () => {
+    it('expected to throw an error when there is no queryConfig property on config when calling createExtractService()', () => {
         spyOn(configService, 'getDataSource').and.returnValue({ 'data': 'dataUrl' });
-        expect(() => { factory.createInstanceDataService(new Log(), configService, dataSourceKey); }).toThrowError(Error, 'GoogleFactory createInstance error: query configuration is missing!');
+        expect(() => { factory.createExtractService(configService, dataSourceKey); }).toThrowError(Error, 'GoogleFactory createExtractService error: query configuration is missing!');
         expect(configService.getDataSource).toHaveBeenCalled();
     });
 
-    it('expected to throw an error when there is no dateFormat property on config when calling createInstance()', () => {
+    it('expected to throw an error when there is no dateFormat property on config when calling createExtractService()', () => {
         spyOn(configService, 'getDataSource').and.returnValue({ 'data': 'dataUrl', 'queryConfig': 'queryConfig' });
-        expect(() => { factory.createInstanceDataService(new Log(), configService, dataSourceKey); }).toThrowError(Error, 'GoogleFactory createInstance error: dateFormat property is missing!');
+        expect(() => { factory.createExtractService(configService, dataSourceKey); }).toThrowError(Error, 'GoogleFactory createExtractService error: dateFormat property is missing!');
         expect(configService.getDataSource).toHaveBeenCalled();
     });
 
+    /**
+    * Transform createInstanceTransformService tests
+    */
+    it('expected createTransformService to return GoogleDataTransform object', () => {
+        let transform = factory.createTransformService(configService,'Team 1');
+        expect(transform instanceof GoogleDataTransform).toBeTruthy();
+    }); 
 });

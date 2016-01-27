@@ -16,7 +16,7 @@ var setQuery = () => {
         if (dataUrl !== null) { 
             return new google.visualization.Query(dataUrl);
         }
-        throw new Error('googleDataService.setQuery - dataUrl was null - please set to Google Sheet that holds the data');
+        throw new Error('GoogleDataExtract.setQuery - dataUrl was null - please set to Google Sheet that holds the data');
     };
 
 /**
@@ -41,9 +41,9 @@ var isResponseError = (response) => {
 * @returns {string} - the CSV data from the response
 */
 var setDataOnPromise = (response, resolve, reject) => {
-        log.debug('googleDataService.js - in setDataOnPromise()');
+        log.debug('googleDataExtract.js - in setDataOnPromise()');
         if (isResponseError(response)) {
-                log.debug('googleDataService.js - Error in query: '+ response.getMessage() +' '+ response.getDetailedMessage());
+                log.debug('googleDataExtract.js - Error in query: '+ response.getMessage() +' '+ response.getDetailedMessage());
                 reject('Error in query: '+ response.getMessage() +' '+ response.getDetailedMessage());
                 return undefined;
         }
@@ -66,25 +66,25 @@ var areDatesValid = (startDate, endDate) => {
         return;
     }
     if (!isDate(startDate, dateFormat) || !isDate(endDate, dateFormat)) {
-        log.error('googleDataService.js - start date: '+ startDate +' or end date: '+ endDate +' is not valid');
+        log.error('googleDataExtract.js - start date: '+ startDate +' or end date: '+ endDate +' is not valid');
         throw new Error('GoogleQueryBuilder - start date: "'+ startDate + '" and/or end date: "'+ endDate +'" was not a valid date!');
     }
 };
 
 /**
-* GoogleDataService is used to access Google Spreadsheet to pull rows.
+* GoogleDataExtract is used to access Google Spreadsheet to pull rows.
 */
-export default class GoogleDataService {
+export default class GoogleDataExtract {
 
     /**
-    * Constructor for the GoogleDataService
+    * Constructor for the GoogleDataExtract
     * @param {object} $log - logger
     * @param {object} dsConfig - other options to set for service
     * @param {object} qBuilder - instance of GoogleQueryBuilder
     * @param {object} $google - Google's jsapi
     */
     constructor($log, dsConfig, qBuilder, $google) {
-        $log.debug('googleDataService.js - in constructor!');
+        $log.debug('googleDataExtract.js - in constructor!');
         log = $log;
         google = $google;
         dataUrl = dsConfig.dataUrl; 
@@ -93,20 +93,23 @@ export default class GoogleDataService {
     }
 
     /**
-    * Calls Google Sheets over the wire to get a data set.
+    * Calls Google Sheets over the wire to get a data set. If start and end dates are
+    * are passed in then the query will bound the returned data set to those dates.  
+    * If no dates are passed in the query will return the entire data set in the Google
+    * Sheet.
     * @public
-    * @param {date} - start date of first state of work that is in sheet
-    * @param {date} - end date of the first state of work that is in sheet
+    * @param {date} - (optional) start date of first state of work that is in sheet
+    * @param {date} - (optional) end date of the first state of work that is in sheet
     * @returns {promise} - a CSV of sheet data
     */
     getData(startDate, endDate) {
-        log.debug('googleDataService.js - getData()');
+        log.debug('googleDataExtract.js - getData()');
 
         areDatesValid(startDate, endDate);
 
         let dataQuery = queryBuilder.getQuery(startDate, endDate);
 
-        log.debug('googleDataService.js - Query for data');
+        log.debug('googleDataExtract.js - Query for data');
         log.debug(dataQuery);
         log.debug('*************** Calling Google Over the Wire ***************');
         

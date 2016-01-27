@@ -13,7 +13,7 @@ import ng from 'angular';
 import applicationController from './controllers/applicationController';
 import configService from './services/configService';
 import dataService from './services/dataService';
-import dataServiceFactory from './factories/dataServiceFactory';
+import dataFactory from './factories/dataFactory';
 import googleFactory from './etl/google/googleFactory';
 
 export default ng.module('leansheetsApplication', ['config'])
@@ -23,5 +23,5 @@ export default ng.module('leansheetsApplication', ['config'])
 					.controller('applicationController', applicationController)
 					.service('configService', configService)
 					.service('dataService', dataService)
-                    .service('dataServiceFactory', dataServiceFactory)
+                    .service('dataFactory', dataFactory)
                     .service('GoogleFactory', googleFactory);

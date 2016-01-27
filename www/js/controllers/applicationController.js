@@ -1,10 +1,8 @@
 export default class {
 
-	static get $inject() {
-		return [ '$log','dataService' ];
-	}
-
 	constructor($log, dataService) {
+        'ngInject';
+
         this.click = function() {
 			$log.debug('applicationController.js - clicked!');
 		};

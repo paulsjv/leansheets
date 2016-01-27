@@ -1,10 +1,8 @@
 export default class ConfigService {
 
-	static get $inject() {
-		return ['$log','CONFIG'];
-	}
-
 	constructor($log, config) {
+        'ngInject';
+
         this.log = $log;
         this.config = config;
     }

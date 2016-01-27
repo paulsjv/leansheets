@@ -10,11 +10,9 @@
 
 export default class DataService {
 
-    static get $inject() {
-        return ['$log','configService','dataFactory'];
-    }
-
     constructor($log, configService, dataFactory) {
+        'ngInject';
+
         $log.debug('dataService.js - in constructor!');
         this.configService = configService;
         this.log = $log;

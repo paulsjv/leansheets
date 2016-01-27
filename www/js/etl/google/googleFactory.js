@@ -8,18 +8,12 @@ var log;
 export default class GoogleFactory {
 
     /**
-    * $inject() fuction that AngularJS uses for it's dependency injection
-    * @return {array} - array or objects that class needs
-    */
-    static get $injector() {
-        return ['$log'];
-    }
-
-    /**
     * Constructor for the GoogleFactory
     * @param {object} $log - logger
     */
     constructor($log) {
+        'ngInject';
+
         log = $log;
     }
 

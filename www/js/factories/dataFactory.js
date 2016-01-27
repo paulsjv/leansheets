@@ -2,11 +2,9 @@ import angular from 'angular';
 
 export default class DataFactory {
 
-    static get $injector() {
-        return ['$log','configService'];
-    }
-
     constructor($log, configService) {
+        'ngInject';
+
         $log.debug('dataFactory.js - in constructor!');
         this.configService = configService; 
         this.log = $log;

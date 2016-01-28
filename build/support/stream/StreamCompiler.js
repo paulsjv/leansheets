@@ -96,6 +96,7 @@ export default class StreamCompiler {
                                 paths.src.partials('**/*.html'),
 
                                 (stream) => stream.pipe(angularTemplateCache({
+                                    moduleSystem: 'ES6',
                                     filename: path.relative(paths.src(), paths.src.js('modules/partials/partials.js')),
                                     module: 'app.partials',
                                     standalone: true

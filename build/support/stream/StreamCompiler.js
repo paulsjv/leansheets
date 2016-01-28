@@ -7,7 +7,6 @@ import manifold from 'gulp-manifold';
 import webp from 'gulp-webp';
 import jspm from 'gulp-jspm';
 import sass from 'gulp-sass';
-import sourcemaps from 'gulp-sourcemaps';
 import rename from 'gulp-rename';
 import RevAll from 'gulp-rev-all';
 import uglify from 'gulp-uglify';
@@ -21,7 +20,7 @@ import {paths, APP_NAME, entryPoint} from '../../project.conf.js';
 let posix = path.posix,
 
     revAll = new RevAll({
-        dontRenameFile: [/^\/index\.html$/, /^\/favicon.ico$/],
+        dontRenameFile: [/^\/index\.html$/, /^\/sink\.html$/, /^\/favicon.ico$/],
         replacer: (fragment, replaceRegExp, newReference) => {
             fragment.contents = fragment.contents.replace(replaceRegExp, '$1' + encodeURI((newReference)) + '$3$4');
         }
@@ -126,10 +125,6 @@ export default class StreamCompiler {
 
                     let resultStream = stream;
 
-                    if (opts.sourceMaps) {
-                        resultStream = resultStream.pipe(sourcemaps.init())
-                    }
-
                     if (opts.minify) {
 
                         resultStream = resultStream.pipe(sass({
@@ -144,10 +139,6 @@ export default class StreamCompiler {
                         filePath.dirname = 'css';
                         filePath.basename = APP_NAME;
                     }));
-
-                    if (opts.sourceMaps) {
-                        resultStream = resultStream.pipe(sourcemaps.write('.'));
-                    }
 
                     return resultStream;
 

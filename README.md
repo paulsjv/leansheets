@@ -15,7 +15,14 @@ Key Features:
 - LiveReload
 - 100% Stream-based in-memory compilation and development previews
 
+## Known Issues
+ 
+- `gulp preview` command performance will decay after several consecutive `watch` compilations. Kill the `preview` task 
+and re-run it to temporarily reduce the build time.
+
 ## Getting Started
+
+I Recommend that you use npm v3.5+
 
 Run once per machine to install `jspm` and `gulp` (if not installed already):
 
@@ -24,7 +31,9 @@ Run once per machine to install `jspm` and `gulp` (if not installed already):
 
 Install `npm` and `jspm` dependencies.
 
-- `npm install && jspm install`
+- `npm install`
+
+Note: `jspm` dependencies are automatically installed via a `postinstall` script hook configured in `package.json`
 
 Note: If you run into the following error, you may need to adjsut your ulimit settings.
 
@@ -85,3 +94,11 @@ Sources are located by default under `www/`. This location can be modified by mo
 Specs are located by default under `spec/`. This location can be modified by modifying `build/project.conf.js`.
 Both Unit and Functional tests are supported. Unit tests are run via Karma + PhantomJS. Functional tests are run via
 Protractor + Chrome. Both types of specs support ES6
+
+## Installing UI Packages
+
+- `jspm install angular`
+
+No need for `--save` or `--save-dev`. This will install a package that can be included in your source by adding an ES6 
+import such as: `import angular from 'angular';` to any file. For packages that must be included "first", add the import
+statement to `modules/main/main.js`

@@ -36,7 +36,7 @@ gulp.task('preview', (done) => {
         ['preview:watch']
     );
 
-    gulp.src([
+    return gulp.src([
         paths.jspm.fontAwesome('fonts/*'),
         paths.jspm.twitterBootstrap('fonts/*'),
         paths.src('**/*')

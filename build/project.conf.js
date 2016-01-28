@@ -25,7 +25,7 @@ export const paths = new PathCalculator({
             img: 'img/',
             fonts: 'fonts/',
             json: '',
-            partials: 'partials/'
+            templates: 'templates/'
 
         }
 

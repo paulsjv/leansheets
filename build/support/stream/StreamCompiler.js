@@ -77,9 +77,9 @@ export default class StreamCompiler {
 
                 filter: [
                     paths.src.js('**/*.js'),
-                    paths.src.partials('**/*.html'),
-                    `!${paths.src.js('modules/partials')}`, // excludes partials dir itself
-                    `!${paths.src.js('modules/partials/**/*.js')}` // excludes partials dir contents
+                    paths.src.templates('**/*.html'),
+                    `!${paths.src.js('modules/templates')}`, // excludes templates dir itself
+                    `!${paths.src.js('modules/templates/**/*.js')}` // excludes templates dir contents
                 ],
 
                 handler: (opts) => (stream) => {
@@ -93,12 +93,12 @@ export default class StreamCompiler {
 
                             manifold.duct(
 
-                                paths.src.partials('**/*.html'),
+                                paths.src.templates('**/*.html'),
 
                                 (stream) => stream.pipe(angularTemplateCache({
                                     moduleSystem: 'ES6',
-                                    filename: path.relative(paths.src(), paths.src.js('modules/partials/partials.js')),
-                                    module: 'app.partials',
+                                    filename: path.relative(paths.src(), paths.src.js('modules/templates/templates.js')),
+                                    module: 'app.templates',
                                     standalone: true
                                 }))
 
@@ -151,8 +151,8 @@ export default class StreamCompiler {
 
                 filter: [
                     paths.src.html('**/*.html'),
-                    `!${paths.src.partials()}`, // excludes partials dir itself
-                    `!${paths.src.partials('**')}` // excludes partials dir contents
+                    `!${paths.src.templates()}`, // excludes templates dir itself
+                    `!${paths.src.templates('**')}` // excludes templates dir contents
                 ],
 
                 handler: (opts) => (stream) => stream

@@ -10,7 +10,7 @@ Key Features:
 - Complexity Reports (Plato)
 - Angular
 - ng-annotate
-- Cached partials
+- Cached templates
 - Protractor + Jasmine
 - LiveReload
 - 100% Stream-based in-memory compilation and development previews

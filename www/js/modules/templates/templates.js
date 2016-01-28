@@ -6,4 +6,4 @@ import angular from 'angular';
  *
  * Do not modify the contents of this file, and do not delete it.
  */
-export default angular.module('app.partials', []);
+export default angular.module('app.templates', []);

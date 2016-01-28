@@ -2,7 +2,7 @@ export default () => {
 
     return {
 
-        templateUrl: 'partials/main/_nav.html',
+        templateUrl: 'templates/main/_nav.html',
         replace: true,
 
         scope: {},

@@ -98,5 +98,8 @@
         "by"        : true,     // angular-protractor
         "protractor": true      // angular-protractor
 
-    }
+    },
+
+    "-W034"         : true     // ngInject directives
+
 }

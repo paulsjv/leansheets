@@ -20,8 +20,8 @@ System.config({
   },
 
   map: {
-    "angular": "github:angular/bower-angular@1.4.6",
-    "angular-mocks": "github:angular/bower-angular-mocks@1.4.6",
+    "angular": "github:angular/bower-angular@1.4.9",
+    "angular-mocks": "github:angular/bower-angular-mocks@1.4.9",
     "babel": "npm:babel-core@5.8.25",
     "babel-runtime": "npm:babel-runtime@5.8.24",
     "bootstrap": "github:twbs/bootstrap@3.3.5",
@@ -32,8 +32,8 @@ System.config({
     "lodash.isarray": "npm:lodash.isarray@4.0.0",
     "lodash.isempty": "npm:lodash.isempty@4.0.0",
     "lodash.isstring": "npm:lodash.isstring@4.0.0",
-    "github:angular/bower-angular-mocks@1.4.6": {
-      "angular": "github:angular/bower-angular@1.4.6"
+    "github:angular/bower-angular-mocks@1.4.9": {
+      "angular": "github:angular/bower-angular@1.4.9"
     },
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.3.0"

@@ -17,8 +17,10 @@ import dataFactory from './factories/dataFactory';
 import googleFactory from './etl/google/googleFactory';
 
 export default ng.module('leansheetsApplication', ['config'])
-					.config(['$logProvider','CONFIG', function($logProvider, config) {
-						$logProvider.debugEnabled(config.debugEnabled);
+					.config(['$logProvider','CONFIG', function($logProvider, configProvider) {
+						$logProvider.debugEnabled(configProvider.debugEnabled);
+                        console.log('configService: ' + configService);
+                        console.log('dataService: ' + dataService);
 					}])
 					.controller('applicationController', applicationController)
 					.service('configService', configService)

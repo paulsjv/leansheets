@@ -13,7 +13,8 @@ let streamCompiler = new StreamCompiler(),
     streamServer = new StreamServer(),
 
     compilerOpts = {
-        sourceMaps: 'inline'
+       sourceMaps: 'inline',
+        lowResSourceMaps: true
     },
 
     browser = os.platform() === 'linux' ? 'google-chrome' : (
@@ -35,7 +36,7 @@ gulp.task('preview', (done) => {
         ['preview:watch']
     );
 
-    gulp.src([
+    return gulp.src([
         paths.jspm.fontAwesome('fonts/*'),
         paths.jspm.twitterBootstrap('fonts/*'),
         paths.src('**/*')

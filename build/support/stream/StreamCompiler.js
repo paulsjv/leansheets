@@ -7,9 +7,11 @@ import manifold from 'gulp-manifold';
 import webp from 'gulp-webp';
 import jspm from 'gulp-jspm';
 import sass from 'gulp-sass';
-import sourcemaps from 'gulp-sourcemaps';
 import rename from 'gulp-rename';
 import RevAll from 'gulp-rev-all';
+import uglify from 'gulp-uglify';
+import angularTemplateCache from 'gulp-angular-templatecache';
+import ngAnnotate from 'gulp-ng-annotate';
 
 import StreamReplacer from './StreamReplacer';
 
@@ -18,7 +20,7 @@ import {paths, APP_NAME, entryPoint} from '../../project.conf.js';
 let posix = path.posix,
 
     revAll = new RevAll({
-        dontRenameFile: [/^\/index\.html$/, /^\/favicon.ico$/],
+        dontRenameFile: [/^\/index\.html$/, /^\/sink\.html$/, /^\/favicon.ico$/],
         replacer: (fragment, replaceRegExp, newReference) => {
             fragment.contents = fragment.contents.replace(replaceRegExp, '$1' + encodeURI((newReference)) + '$3$4');
         }
@@ -73,9 +75,46 @@ export default class StreamCompiler {
 
             scripts: {
 
-                filter: paths.src.js(entryPoint.js),
+                filter: [
+                    paths.src.js('**/*.js'),
+                    paths.src.templates('**/*.html'),
+                    `!${paths.src.js('modules/templates')}`, // excludes templates dir itself
+                    `!${paths.src.js('modules/templates/**/*.js')}` // excludes templates dir contents
+                ],
 
-                handler: (opts) => (stream) => stream.pipe(jspm.buildStatic(`js/${APP_NAME}.js`, opts))
+                handler: (opts) => (stream) => {
+
+                    // special handling for minify: true since ngAnnotate requires unminified babel output from jspm.
+                    let jspmOpts = _.extend({}, opts);
+                    delete jspmOpts.minify;
+
+                    let resultStream = stream
+                        .pipe(manifold([
+
+                            manifold.duct(
+
+                                paths.src.templates('**/*.html'),
+
+                                (stream) => stream.pipe(angularTemplateCache({
+                                    moduleSystem: 'ES6',
+                                    filename: path.relative(paths.src(), paths.src.js('modules/templates/templates.js')),
+                                    module: 'app.templates',
+                                    standalone: true
+                                }))
+
+                            )
+
+                        ]))
+                        .pipe(jspm.buildStatic(paths.src.js(entryPoint.js), `js/${APP_NAME}.js`, jspmOpts))
+                        .pipe(ngAnnotate());
+
+                    if (opts.minify) {
+                        resultStream = resultStream.pipe(uglify());
+                    }
+
+                    return resultStream;
+
+                }
 
             },
 
@@ -86,10 +125,6 @@ export default class StreamCompiler {
                 handler: (opts) => (stream) => {
 
                     let resultStream = stream;
-
-                    if (opts.sourceMaps) {
-                        resultStream = resultStream.pipe(sourcemaps.init())
-                    }
 
                     if (opts.minify) {
 
@@ -106,12 +141,6 @@ export default class StreamCompiler {
                         filePath.basename = APP_NAME;
                     }));
 
-                    if (opts.sourceMaps) {
-
-                        resultStream = resultStream.pipe(sourcemaps.write('.'));
-
-                    }
-
                     return resultStream;
 
                 }
@@ -120,7 +149,19 @@ export default class StreamCompiler {
 
             html: {
 
-                filter: paths.src.html('**/*.html'),
+                filter: [
+                    paths.src.html('**/*.html'),
+                    `!${paths.src.templates()}`, // excludes templates dir itself
+                    `!${paths.src.templates('**')}` // excludes templates dir contents
+                ],
+
+                handler: (opts) => (stream) => stream
+
+            },
+
+            json: {
+
+                filter: paths.src.json('**/*.json'),
 
                 handler: (opts) => (stream) => stream
 
@@ -151,14 +192,18 @@ export default class StreamCompiler {
                                 paths.src.sass(entryPoint.sass)
                             ],
 
-                            (stream) => stream.pipe(replacer.push((file) => {
+                            (stream) => {
 
-                                let dir = posix.dirname(posix.relative(paths.src(), file.path)),
-                                    ext = posix.extname(file.path);
+                                return stream.pipe(replacer.push((file) => {
 
-                                return posix.join((dir == 'sass' ? 'css' : dir), APP_NAME + (ext === '.scss' ? '.css' : `${ext}`));
+                                    let dir = posix.dirname(posix.relative(paths.src(), file.path)).split(path.sep)[0],
+                                        ext = posix.extname(file.path);
 
-                            }))
+                                    return posix.join((dir == 'sass' ? 'css' : dir), APP_NAME + (ext === '.scss' ? '.css' : `${ext}`));
+
+                                }));
+
+                            }
 
                         ),
 

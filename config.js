@@ -28,7 +28,9 @@ System.config({
     "bootstrap-sass": "github:twbs/bootstrap-sass@3.3.5",
     "core-js": "npm:core-js@1.1.4",
     "font-awesome": "npm:font-awesome@4.4.0",
-    "lodash.has": "npm:lodash.has@4.0.0",
+    "lodash.find": "npm:lodash.find@4.0.1",
+    "lodash.findindex": "npm:lodash.findindex@4.0.1",
+    "lodash.has": "npm:lodash.has@4.0.1",
     "lodash.isarray": "npm:lodash.isarray@4.0.0",
     "lodash.isempty": "npm:lodash.isempty@4.0.0",
     "lodash.isstring": "npm:lodash.isstring@4.0.0",
@@ -67,19 +69,62 @@ System.config({
     "npm:inherits@2.0.1": {
       "util": "github:jspm/nodelibs-util@0.1.0"
     },
-    "npm:lodash.get@4.0.0": {
+    "npm:lodash._baseeach@4.0.0": {
+      "lodash.keys": "npm:lodash.keys@4.0.0"
+    },
+    "npm:lodash._baseisequal@4.0.2": {
+      "lodash._stack": "npm:lodash._stack@4.0.1",
+      "lodash.keys": "npm:lodash.keys@4.0.0"
+    },
+    "npm:lodash._baseismatch@4.0.2": {
+      "lodash._baseisequal": "npm:lodash._baseisequal@4.0.2",
+      "lodash._stack": "npm:lodash._stack@4.0.1"
+    },
+    "npm:lodash._stack@4.0.1": {
+      "lodash._mapcache": "npm:lodash._mapcache@4.0.0"
+    },
+    "npm:lodash.find@4.0.1": {
+      "lodash._baseeach": "npm:lodash._baseeach@4.0.0",
+      "lodash._basefind": "npm:lodash._basefind@3.0.0",
+      "lodash._basefindindex": "npm:lodash._basefindindex@3.6.0",
+      "lodash._baseisequal": "npm:lodash._baseisequal@4.0.2",
+      "lodash._baseismatch": "npm:lodash._baseismatch@4.0.2",
+      "lodash.get": "npm:lodash.get@4.0.1",
+      "lodash.hasin": "npm:lodash.hasin@4.0.1",
+      "lodash.topairs": "npm:lodash.topairs@4.0.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:lodash.has@4.0.0": {
+    "npm:lodash.findindex@4.0.1": {
+      "lodash._basefindindex": "npm:lodash._basefindindex@3.6.0",
+      "lodash._baseisequal": "npm:lodash._baseisequal@4.0.2",
+      "lodash._baseismatch": "npm:lodash._baseismatch@4.0.2",
+      "lodash.get": "npm:lodash.get@4.0.1",
+      "lodash.hasin": "npm:lodash.hasin@4.0.1",
+      "lodash.topairs": "npm:lodash.topairs@4.0.0",
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:lodash.get@4.0.1": {
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:lodash.has@4.0.1": {
       "lodash._baseslice": "npm:lodash._baseslice@4.0.0",
-      "lodash.get": "npm:lodash.get@4.0.0",
+      "lodash.get": "npm:lodash.get@4.0.1",
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:lodash.hasin@4.0.1": {
+      "lodash._baseslice": "npm:lodash._baseslice@4.0.0",
+      "lodash.get": "npm:lodash.get@4.0.1",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:lodash.isempty@4.0.0": {
       "lodash.keys": "npm:lodash.keys@4.0.0",
-      "lodash.size": "npm:lodash.size@4.0.0"
+      "lodash.size": "npm:lodash.size@4.0.1"
     },
-    "npm:lodash.size@4.0.0": {
+    "npm:lodash.size@4.0.1": {
+      "lodash.keys": "npm:lodash.keys@4.0.0"
+    },
+    "npm:lodash.topairs@4.0.0": {
+      "lodash._arraymap": "npm:lodash._arraymap@3.0.0",
       "lodash.keys": "npm:lodash.keys@4.0.0"
     },
     "npm:process@0.11.2": {

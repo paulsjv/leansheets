@@ -96,6 +96,7 @@ export default class GoogleQueryBuilder {
 
     /**
     * Constructor for GoogleQueryBuilder
+    * @public
     * @param {object} the logger
     * @param {object} the query configuration 
     */

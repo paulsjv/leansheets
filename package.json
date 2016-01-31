@@ -70,7 +70,9 @@
       "bootstrap": "github:twbs/bootstrap@^3.3.5",
       "bootstrap-sass": "github:twbs/bootstrap-sass@^3.3.5",
       "font-awesome": "npm:font-awesome@^4.4.0",
-      "lodash.has": "npm:lodash.has@^4.0.0",
+      "lodash.find": "npm:lodash.find@^4.0.1",
+      "lodash.findindex": "npm:lodash.findindex@^4.0.1",
+      "lodash.has": "npm:lodash.has@^4.0.1",
       "lodash.isarray": "npm:lodash.isarray@^4.0.0",
       "lodash.isempty": "npm:lodash.isempty@^4.0.0",
       "lodash.isstring": "npm:lodash.isstring@^4.0.0"

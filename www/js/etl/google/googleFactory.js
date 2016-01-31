@@ -5,10 +5,15 @@ import hasOwnProp from 'www/js/utils/hasOwnProp';
 
 var log;
 
+/**
+* GoogleFactory builds the objects needed for ETLing data from Google Sheets.
+*/
 export default class GoogleFactory {
 
     /**
     * Constructor for the GoogleFactory
+    * @public
+    * @constructor
     * @param {object} $log - logger
     */
     constructor($log) {

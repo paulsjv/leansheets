@@ -21,38 +21,58 @@ define(['angular'], function (ng) {
      */
     return ['$log','$scope','ls-typeService','ls-configService','$moment',
         function ($log, $scope, typeService, configService, $moment) {
-
             $scope.workType;
             $scope.workTypes;
+			// this is the data status for each chart.  It is set in the parent controller
+			// as an empty array but, each controller initilizes it to false upon startup.
+			// it turns to ture in this controller when there is no data returned.
+			$scope.dataStatus = [];
 
-            typeService.getWorkTypes().then(
-                function(success) {
-                    $log.log('Got work types: ls-applicationController', success);
-                    $scope.workTypes = success;
-                    $scope.workType = $scope.workTypes[0].column != "" ? $scope.workTypes[0] : $scope.workTypes[1];
+            $scope.sheetsKeys = Object.keys(configService.getSheets());
+            $scope.sheet = $scope.sheetsKeys[0];
+            $scope.sheets = configService.getSheets();
 
-                    // broadcast event to all child contorllers so they will draw their charts
-                    $log.debug('Firing "types:loaded" event: ls-applicationController');
-                    $scope.$broadcast('types:loaded', $scope.workType);
-                }, function(error) {
-                    $log.log('Error getting work types: ls-applicationController!', error);
-                    alert('Error getting work types! ' + error);
-                });
+            $scope.changeSheet = function(sheet) {
+                $log.debug("ls-applicationController: Changing sheet");
+                $scope.sheet = sheet;
+                getWorkTypes(sheet);
+            };
+
+            var getWorkTypes = function(sheet) {
+                typeService.getWorkTypes(sheet).then(
+                    function(success) {
+                        $log.log('Got work types: ls-applicationController', success);
+                        $scope.workTypes = success;
+                        $scope.workType = $scope.workTypes[0].column != "" ? $scope.workTypes[0] : $scope.workTypes[1];
+
+                        // broadcast event to all child contorllers so they will draw their charts
+                        $log.debug('Firing "types:loaded" event: ls-applicationController');
+                        $scope.$broadcast('types:loaded', $scope.workType);
+                    }, function(error) {
+                        $log.log('Error getting work types: ls-applicationController!', error);
+                        alert('Error getting work types! ' + error);
+                    });
+            };
+
+            getWorkTypes($scope.sheet);
 
             $scope.updateChart = function(obj, chart, chartName) {
+
                 $log.debug('updateChart: ls-applicationController');
                 if (areWorkTypesValid(obj.workTypes) &&
                         areDatesValid(obj.startDate, obj.endDate)) {
                     chart.getChart(obj).then(
                         function(success) {
+                            // hide the error message message for the chart
                             $log.debug('Firing "chart:' + chartName + '" event: ls-applicationController!');
                             $scope.$broadcast('chart:' + chartName, success);
+                            $scope.dataStatus[chartName] = true;
                         }, function(error) {
+                            // show error message for the chart
+                            $scope.dataStatus[chartName] = false;
                             $log.debug('Error getting data from Google Sheets!', error);
-                             alert('Error getting data from Google Sheets! ' + error);
                         });
                 }
-
             };
 
             $scope.addDropdownParent = function(dropdowns, defaultWorkType, key) {
@@ -73,7 +93,7 @@ define(['angular'], function (ng) {
                 return dropdowns;
             };
 
-            // returns current date minus number of days to subtract 
+            // returns current date minus number of days to subtract
             // from current date that is supplied in the config.json
             $scope.getDefaultStartDate = function() {
                 return $moment()
@@ -87,7 +107,7 @@ define(['angular'], function (ng) {
             };
 
             var areDatesValid = function(startDate, endDate) {
-                if (!ng.isDefined(startDate) || 
+                if (!ng.isDefined(startDate) ||
                     !ng.isDefined(endDate) ||
                     !isDateValid(startDate) ||
                     !isDateValid(endDate)) {

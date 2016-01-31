@@ -21,10 +21,25 @@
 
         <!-- build:section partials._header -->
         <!-- /build -->
-        <div data-ng-if="initialLoad">
-            <p>Loading Application....</p>
-        </div>
-        <div class="container-fluid di-flex-box" data-ng-cloak>
+
+        <div class="loading" data-ng-class="{hide: true}"></div>
+
+        <div class="container-fluid di-flex-box" style="display: none;" data-ng-style="{display: 'block'}">
+           <a id="nav-sheets"></a>
+            <!-- Sheets Drop Down -->
+            <div id="sheets-dropdown">
+                <div class="btn-group" role="sheets" aria-label="Sheet Selections" style="padding-right:5px">
+                    <button type="button" class="btn btn-default">{{sheet}}</button>
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu scrollable-menu" role="menu">
+                        <li ng-model="value" ng-click="changeSheet(key)" ng-repeat="(key, value) in sheets"><a>{{key}}</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /Sheets Drop Down -->
             <a id="nav-histogram"></a>
             <div id="histogramChart" data-ng-controller="ls-histogramController">
                 <div class="btn-group" role="date-picker" aira-label="Date Picker">
@@ -57,7 +72,15 @@
                                 ng-model="value" ng-click="changeType(workType, key)" ng-repeat="workType in workTypes"><a>{{workType.name}}</a></li>
                         </ul>
                 </div>
-                <highchart id="histogramHighChart" config="config"></highchart>
+
+                <div class="chart-container">
+                    <div class="alert alert-warning" role="alert" data-ng-if="!dataStatus.histogram">
+                        <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                        <strong>Your query returned no results</strong>
+                    </div>
+                    <highchart id="histogramHighChart" config="config"></highchart>
+                </div>
+
             </div>
 
             <a id="nav-leadtimerun"></a>
@@ -91,7 +114,13 @@
                                 ng-model="value" ng-click="changeType(workType, key)" ng-repeat="workType in workTypes"><a>{{workType.name}}</a></li>
                         </ul>
                 </div>
-                <highchart id="controlHighChart" config="config"></highchart>
+                <div class="chart-container">
+                    <div class="alert alert-warning" role="alert" data-ng-if="!dataStatus.control">
+                        <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                        <strong>Your query returned no results</strong>
+                    </div>
+                    <highchart id="controlHighChart" config="config"></highchart>
+                </div>
             </div>
 
             <a id="nav-cfd"></a>
@@ -125,7 +154,16 @@
                                 ng-model="value" ng-click="changeType(workType, key)" ng-repeat="workType in workTypes"><a>{{workType.name}}</a></li>
                         </ul>
                 </div>
-                <highchart id="cfdHighChart" config="config"></highchart>
+                <div class="chart-container">
+                    <div class="alert alert-warning" role="alert" data-ng-if="!dataStatus.cfd">
+                        <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                        <strong>Your query returned no results</strong>
+                    </div>
+                    <highchart id="cfdHighChart" config="config"></highchart>
+                </div>
+
+
+            </div>
         </div>
 
         <!-- build:section partials._footer -->

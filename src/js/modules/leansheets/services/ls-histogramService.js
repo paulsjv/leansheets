@@ -24,7 +24,7 @@ define(['angular'], function (ng) {
                     $log.debug('Got the data for the histogram!');
       	            deferred.resolve(getOptionsForChart('', parseData(success)));
                 }, function (error) {
-                    $log.error('HistogramService: Error getting data for histogram! ' + error);
+                    $log.error('HistogramService: Error getting data for histogram! ');
                     deferred.reject(error);
                 });
             return promise;
@@ -71,7 +71,7 @@ define(['angular'], function (ng) {
                     yAxis: 1,
                     type: 'column'
    	    		},{
-                    name: 'Percetange of Total',
+                    name: 'Percentage of Total',
                     data: data.percentOfTotal,
                     type: 'spline',
                     tooltip: {

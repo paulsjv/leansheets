@@ -35,16 +35,33 @@ define(['angular'], function (ng) {
             $scope.startDate;
             $scope.endDate;
 
+			$scope.dataStatus[chartName] = false;
+
             $scope.addDropdown = function() {
                 $log.debug('ls-controlController: adding dropdown');
                 $scope.dropdowns = $scope.addDropdownParent($scope.dropdowns, defaultWorkType, $scope.dropdowns.length);
                 key = $scope.dropdowns.length;
             };
 
+             /**
+             * @function removeDropdown
+             * @param {integer} key
+             * Removes one of the dropdowns in the dropdown Array. The key is passed as a parameter.
+             * This parameter is set from using the $index in the HTML.
+             */
             $scope.removeDropdown = function(key) {
                 $log.debug('ls-controlController: removing dropdown');
                 $scope.dropdowns = $scope.removeDropdownParent($scope.dropdowns, key);
                 key = $scope.dropdowns.length;
+            };
+
+             /**
+             * @function removeAllDropdowns
+             * Resets the dropdown array to an empty array. 
+             * $scope.removeDropdown().
+             */
+           var removeAllDropdowns = function() {
+                $scope.dropdowns = [];
             };
 
             $scope.query = function() {
@@ -57,6 +74,7 @@ define(['angular'], function (ng) {
                 function(event, workType) {
                     $log.debug('ls-controlController: Caught "types:loaded" event!');
                     defaultWorkType = workType;
+                    removeAllDropdowns();
                     $scope.addDropdown();
                     $scope.startDate = $scope.getDefaultStartDate();
                     $scope.endDate = $scope.getDefaultEndDate();

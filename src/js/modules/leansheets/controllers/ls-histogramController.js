@@ -27,7 +27,7 @@ define(['angular'], function (ng) {
                 key = 0;
 
             // array of work type objects
-            $scope.dropdowns = [];  
+            $scope.dropdowns = [];
 
             // used for directive date range picker
             // two attributs are two way bound so if it changes in the UI
@@ -35,12 +35,20 @@ define(['angular'], function (ng) {
             $scope.startDate;
             $scope.endDate;
 
+			$scope.dataStatus[chartName] = false;
+
             $scope.addDropdown = function() {
                 $log.debug('ls-histogramController: adding dropdown');
                 $scope.dropdowns = $scope.addDropdownParent($scope.dropdowns, defaultWorkType, $scope.dropdowns.length);
                 key = $scope.dropdowns.length;
             };
 
+             /**
+             * @function removeDropdown
+             * @param {integer} key
+             * Removes one of the dropdowns in the dropdown Array. The key is passed as a parameter.
+             * This parameter is set from using the $index in the HTML.
+             */
             $scope.removeDropdown = function(key) {
                 $log.debug('ls-histogramController: removing dropdown');
                 $scope.dropdowns = $scope.removeDropdownParent($scope.dropdowns, key);
@@ -53,10 +61,20 @@ define(['angular'], function (ng) {
                 updateChart();
             };
 
+             /**
+             * @function removeAllDropdowns
+             * Resets the dropdown array to an empty array. 
+             * $scope.removeDropdown().
+             */
+            var removeAllDropdowns = function() {
+                $scope.dropdowns = [];
+            };
+
             $scope.$on('types:loaded',
                 function(event, workType) {
                     $log.debug('ls-histogramController: Caught "types:loaded" event!');
                     defaultWorkType = workType;
+                    removeAllDropdowns();
                     $scope.addDropdown();
                     $scope.startDate = $scope.getDefaultStartDate();
                     $scope.endDate = $scope.getDefaultEndDate();

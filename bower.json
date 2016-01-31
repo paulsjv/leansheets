@@ -1,6 +1,6 @@
 {
   "name": "leansheets",
-  "version": "0.0.7",
+  "version": "0.1.1",
   "homepage": "https://github.com/paulsjv/leansheets",
   "authors": [
     "Jay Paulson <paulsjv@gmail.com>"
@@ -11,7 +11,7 @@
     "kanban",
     "lean"
   ],
-  "license": "MIT",
+  "license": "CC-BY-NC-ND-3.0",
   "private": true,
   "ignore": [
     "node_modules",

@@ -3,17 +3,20 @@
 # Get a plugin for your choice of editors at: http://editorconfig.org/#download
 root = true
 
+# Unix-style newlines with a newline ending every file
+# Set default charset
 [*]
 charset = utf-8
 end_of_line = lf
-
 insert_final_newline = true
 trim_trailing_whitespace = true
 
+# 4 space indentation
 [**.{js,json,html,less,sass,scss,md,yml,yaml}]
 indent_style = space
 indent_size = 4
 
+# Matches the exact files either package.json, bower.json, or .travis.yml
 [{package.json,bower.json,.travis.yml}]
 indent_style = space
 indent_size = 2

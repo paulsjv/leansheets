@@ -30,7 +30,7 @@ export default class GoogleFactory {
     * @returns {object} GoogleDataExtract
     */
     createExtractService(configService, dataSourceKey) {
-        log.debug('googleFactory.js - in createInstance');
+        log.debug('googleFactory.js - in createExtractService()');
         let ds = configService.getDataSource(dataSourceKey);
         if (!hasOwnProp(ds, 'data')) {
             log.error('googleFactory.js - DataSource: ' + dataSourceKey + ' in the configuration is missing "data" property!');
@@ -60,8 +60,10 @@ export default class GoogleFactory {
     * @returns {object} GoogleDataTransform
     */
     createTransformService(configService, dataSourceKey) {
+        log.debug('googleFactory.js - createTransformService()');
+        let qConfig = configService.getQueryConfig(dataSourceKey);
         let dsConfig = {
-            queryConfig: configService.getDataSource(dataSourceKey).queryConfig,
+            queryConfig: qConfig,
             dataSourceKey: dataSourceKey
         };
         return new GoogleDataTransform(log, dsConfig);

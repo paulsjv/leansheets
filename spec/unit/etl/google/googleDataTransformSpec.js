@@ -9,13 +9,18 @@ describe('The GoogleDataTransform', () => {
     let transform;
     let log = new Log();
     let configService;
-    let queryConfig;
+    let qConfig;
+    let dsKey = "Team 1";
 
     beforeEach(() => {
         configService = new ConfigService(log, CONFIG); 
-        queryConfig = configService.getDataSource("Team 1").queryConfig;
+        qConfig = configService.getQueryConfig(dsKey);
         log.setEnabled(false);
-        transform = new GoogleDataTransform(log, queryConfig); 
+        let dsConfig = {
+            queryConfig: qConfig,
+            dataSourceKey: dsKey 
+        };
+        transform = new GoogleDataTransform(log, dsConfig); 
     });
 
     it('expected transform object to not be null', () => {
@@ -61,7 +66,7 @@ describe('The GoogleDataTransform', () => {
     });
 
     it('expected to return correctly formatted data when data has nulls and excluded values', () => {
-        let queryConfig = {
+        let qConfig = {
                 "id": "A",
                 "description": "B",
                 "states": [ "D","E","F","G" ],
@@ -69,7 +74,11 @@ describe('The GoogleDataTransform', () => {
                 "risks": [ "M","N","O" ]
             };
         let expected = [[ "115", "Sample Item 16", "12/3/2014", null, null, null, "Discovery", "Standard", "Documentation", "Platform", "No", "High", "No One Knows", "Customer will stay" ]];
-        let transform = new GoogleDataTransform(log, queryConfig);
+        let dsConfig = {
+            queryConfig: qConfig,
+            dataSourceKey: dsKey 
+        };
+        let transform = new GoogleDataTransform(log, dsConfig);
         expect(transform.transformData(EXCLUDE_NULL_GDATA).data).toEqual(expected);
     });
 

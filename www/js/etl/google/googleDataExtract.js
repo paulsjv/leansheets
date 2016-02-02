@@ -48,7 +48,7 @@ var setDataOnPromise = (response, resolve, reject) => {
                 return undefined;
         }
         let dataTable = response.getDataTable();
-        let json = dataTable.toJSON();
+        let json = JSON.parse(dataTable.toJSON());
         resolve(json);
         return json;
 	};

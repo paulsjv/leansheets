@@ -76,7 +76,7 @@ var createRows = (rows, map) => {
 * @returns {integer} - returns the counter so that it can be incramented.
 */
 var addProperty = (cols, property, meta, counter) => {
-    log.debug('googleDataTransform.js - in addProperty()');
+    log.debug('googleDataTransform.js - in addProperty()'+property);
     if (hasOwnProp(queryConfig, property)) {
         if (isArray(queryConfig[property])) {
             meta.map[property] = [];
@@ -117,6 +117,10 @@ var createMeta = (cols) => {
     return returnObj;
 };
 
+var toString = (transformed) => {
+
+};
+
 /**
 * GoogleDataTransform takes the JSON data from Google Sheets and transforms it so 
 * LeanSheets can use the data. 
@@ -131,9 +135,10 @@ export default class GoogleDataTransform {
     * @param {object} $log - application logger.
     * @param {object} qConfig - application query configuration.
     */ 
-    constructor($log, qConfig) {
+    constructor($log, dsConfig) {
+        $log.debug('googleDataTransform - in constructor()!');
         log = $log;
-        queryConfig = qConfig;
+        queryConfig = dsConfig.queryConfig;
         googleIndexes = {};
     } 
 
@@ -143,7 +148,7 @@ export default class GoogleDataTransform {
     * @param {object} data - Google Sheets JSON data.
     * @returns {object} - transformed data:
     *   <pre><code>
-    *   { meta: { headers: {}, map {} }, data: {} }
+    *   { meta: { headers: { // same as queryConfig in app configuration //}, map { // same as queryConfig in app configuration // } }, data: [[row1],[row2],[etc]] }
     *   </code></pre>
     */
     transformData(data) {

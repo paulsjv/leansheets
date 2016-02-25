@@ -27,6 +27,7 @@ System.config({
     "bootstrap": "github:twbs/bootstrap@3.3.5",
     "bootstrap-sass": "github:twbs/bootstrap-sass@3.3.5",
     "core-js": "npm:core-js@1.1.4",
+    "d3-selection": "npm:d3-selection@0.7.0",
     "font-awesome": "npm:font-awesome@4.4.0",
     "lodash.find": "npm:lodash.find@4.0.1",
     "lodash.findindex": "npm:lodash.findindex@4.0.1",

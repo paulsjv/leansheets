@@ -31,7 +31,12 @@
         "Team: WD40": {
             "configUrl": "https://docs.google.com/a/drillinginfo.com/spreadsheet/ccc?key=14qxpnruslNQE1xsTfiKbnOgdc3MMQnVou10DyM_NyQY&usp=drive_web&gid=5#",
             "dataUrl": "https://docs.google.com/a/drillinginfo.com/spreadsheet/ccc?key=14qxpnruslNQE1xsTfiKbnOgdc3MMQnVou10DyM_NyQY&gid=2&usp=drive_web#"
+       },
+        "Team: Courthouse Data": {
+            "configUrl": "https://docs.google.com/a/drillinginfo.com/spreadsheet/ccc?key=1sP6QJBWq_AJ2iv8BEO44jWfzPLnAJmVk9wWt2xKENcs&usp=drive_web&gid=5#",
+            "dataUrl": "https://docs.google.com/a/drillinginfo.com/spreadsheet/ccc?key=1sP6QJBWq_AJ2iv8BEO44jWfzPLnAJmVk9wWt2xKENcs&gid=2&usp=drive_web#"
        }
+
 
 
     },

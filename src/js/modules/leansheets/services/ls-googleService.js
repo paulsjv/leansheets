@@ -147,6 +147,7 @@ define(['angular'], function (ng) {
 			var dataTable = response.getDataTable();
 			var csvData = $google.visualization.dataTableToCsv(dataTable);
 	        deferred.resolve(csvData);
+            $log.debug('ls-googleService - CSV Data ' + csvData);
             return csvData;
 	    };
     }];

@@ -21,7 +21,7 @@ define(['angular'], function (ng) {
 
             directivePromise.then(
                 function (success){
-                    $log.debug('Got the data for the histogram!');
+                    $log.debug('Got the data for the histogram!' + success);
       	            deferred.resolve(getOptionsForChart('', parseData(success)));
                 }, function (error) {
                     $log.error('HistogramService: Error getting data for histogram! ' + error);

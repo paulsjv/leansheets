@@ -39,7 +39,12 @@
         "Team: Well Done": {
             "configUrl": "https://docs.google.com/a/drillinginfo.com/spreadsheet/ccc?key=1uEuG9k3rI9uGqOMRu2Z1IF9ma0Qw0hF4RljZrOPXMGo&usp=drive_web&gid=5#",
             "dataUrl": "https://docs.google.com/a/drillinginfo.com/spreadsheet/ccc?key=1uEuG9k3rI9uGqOMRu2Z1IF9ma0Qw0hF4RljZrOPXMGo&gid=2&usp=drive_web#"
+       },
+        "Team: GeoWeb": {
+            "configUrl": "https://docs.google.com/a/drillinginfo.com/spreadsheet/ccc?key=1BaWgFbAclaJ5xx3QO4ymj3my7QiIIjPgErcb3DS_WLU&usp=drive_web&gid=5#",
+            "dataUrl": "https://docs.google.com/a/drillinginfo.com/spreadsheet/ccc?key=1BaWgFbAclaJ5xx3QO4ymj3my7QiIIjPgErcb3DS_WLU&gid=2&usp=drive_web#"
        }
+
 
 
 

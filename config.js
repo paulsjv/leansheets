@@ -27,7 +27,14 @@ System.config({
     "bootstrap": "github:twbs/bootstrap@3.3.5",
     "bootstrap-sass": "github:twbs/bootstrap-sass@3.3.5",
     "core-js": "npm:core-js@1.1.4",
+    "d3-array": "npm:d3-array@0.7.1",
+    "d3-axis": "npm:d3-axis@0.3.0",
+    "d3-format": "npm:d3-format@0.5.1",
+    "d3-scale": "npm:d3-scale@0.6.4",
     "d3-selection": "npm:d3-selection@0.7.0",
+    "d3-shape": "npm:d3-shape@0.5.1",
+    "d3-svg": "npm:d3-svg@0.2.0",
+    "d3-time": "npm:d3-time@0.2.5",
     "font-awesome": "npm:font-awesome@4.4.0",
     "lodash.find": "npm:lodash.find@4.0.1",
     "lodash.findindex": "npm:lodash.findindex@4.0.1",
@@ -63,6 +70,40 @@ System.config({
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "process": "github:jspm/nodelibs-process@0.1.1",
       "systemjs-json": "github:systemjs/plugin-json@0.1.0"
+    },
+    "npm:d3-axis@0.3.0": {
+      "d3-scale": "npm:d3-scale@0.6.4",
+      "d3-selection": "npm:d3-selection@0.7.0",
+      "d3-transition": "npm:d3-transition@0.2.7"
+    },
+    "npm:d3-interpolate@0.7.0": {
+      "d3-color": "npm:d3-color@0.4.2"
+    },
+    "npm:d3-scale@0.6.4": {
+      "d3-array": "npm:d3-array@0.7.1",
+      "d3-collection": "npm:d3-collection@0.1.2",
+      "d3-color": "npm:d3-color@0.4.2",
+      "d3-format": "npm:d3-format@0.5.1",
+      "d3-interpolate": "npm:d3-interpolate@0.7.0",
+      "d3-time": "npm:d3-time@0.2.5",
+      "d3-time-format": "npm:d3-time-format@0.3.1"
+    },
+    "npm:d3-shape@0.5.1": {
+      "d3-path": "npm:d3-path@0.1.5"
+    },
+    "npm:d3-svg@0.2.0": {
+      "d3-selection": "npm:d3-selection@0.6.12"
+    },
+    "npm:d3-time-format@0.3.1": {
+      "d3-time": "npm:d3-time@0.2.5"
+    },
+    "npm:d3-transition@0.2.7": {
+      "d3-color": "npm:d3-color@0.4.2",
+      "d3-dispatch": "npm:d3-dispatch@0.4.3",
+      "d3-ease": "npm:d3-ease@0.7.0",
+      "d3-interpolate": "npm:d3-interpolate@0.7.0",
+      "d3-selection": "npm:d3-selection@0.7.0",
+      "d3-timer": "npm:d3-timer@0.4.1"
     },
     "npm:font-awesome@4.4.0": {
       "css": "github:systemjs/plugin-css@0.1.18"

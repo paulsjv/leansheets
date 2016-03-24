@@ -1,0 +1,17 @@
+histogram-chart {
+  font: 10px sans-serif;
+  text-align: left;
+  padding: 3px;
+  margin: 1px;
+  color: white;
+  display: block;
+}
+
+histogram-chart rect {
+  fill: steelblue;
+  stroke: white;
+}
+
+histogram-chart text {
+    fill: white;
+}

@@ -72,6 +72,7 @@
       "bootstrap-sass": "github:twbs/bootstrap-sass@^3.3.5",
       "d3-array": "npm:d3-array@^0.7.1",
       "d3-axis": "npm:d3-axis@^0.3.0",
+      "d3-collection": "npm:d3-collection@^0.1.2",
       "d3-format": "npm:d3-format@^0.5.1",
       "d3-scale": "npm:d3-scale@^0.6.4",
       "d3-selection": "npm:d3-selection@^0.7.0",

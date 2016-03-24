@@ -29,6 +29,7 @@ System.config({
     "core-js": "npm:core-js@1.1.4",
     "d3-array": "npm:d3-array@0.7.1",
     "d3-axis": "npm:d3-axis@0.3.0",
+    "d3-collection": "npm:d3-collection@0.1.2",
     "d3-format": "npm:d3-format@0.5.1",
     "d3-scale": "npm:d3-scale@0.6.4",
     "d3-selection": "npm:d3-selection@0.7.0",
@@ -74,7 +75,7 @@ System.config({
     "npm:d3-axis@0.3.0": {
       "d3-scale": "npm:d3-scale@0.6.4",
       "d3-selection": "npm:d3-selection@0.7.0",
-      "d3-transition": "npm:d3-transition@0.2.7"
+      "d3-transition": "npm:d3-transition@0.2.8"
     },
     "npm:d3-interpolate@0.7.0": {
       "d3-color": "npm:d3-color@0.4.2"
@@ -97,7 +98,7 @@ System.config({
     "npm:d3-time-format@0.3.1": {
       "d3-time": "npm:d3-time@0.2.5"
     },
-    "npm:d3-transition@0.2.7": {
+    "npm:d3-transition@0.2.8": {
       "d3-color": "npm:d3-color@0.4.2",
       "d3-dispatch": "npm:d3-dispatch@0.4.3",
       "d3-ease": "npm:d3-ease@0.7.0",

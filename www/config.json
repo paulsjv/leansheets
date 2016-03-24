@@ -5,17 +5,32 @@
             "data": "https://docs.google.com/spreadsheets/d/1RBgHdK3A5zLPCzsp-i3XwN7CFKFsJi9a97d8WbpyN4s/edit?gid=497466409",
             "dataServiceDriver": "GoogleFactory",
             "dateFormat": "YYYY-MM-DD",
-             "queryConfig": {
+            "queryConfig": {
                 "id": "A",
                 "description": "B",
                 "link": "C",
-                "states": [ "D","E","F","G" ],
-                "tags": [ "H","I","J","K","L" ],
-                "risks": [ "M","N","O" ]
+                "states": [
+                    "D",
+                    "E",
+                    "F",
+                    "G"
+                ],
+                "tags": [
+                    "H",
+                    "I",
+                    "J",
+                    "K",
+                    "L"
+                ],
+                "risks": [
+                    "M",
+                    "N",
+                    "O"
+                ]
             }
         }
     },
-	"globalDataSource": "google",
+    "globalDataSource": "google",
     "debugEnabled": true,
     "showAllWork": true,
     "cacheTtl": 300,

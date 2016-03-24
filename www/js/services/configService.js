@@ -1,6 +1,6 @@
 export default class ConfigService {
 
-	constructor($log, CONFIG) {
+    constructor($log, CONFIG) {
         'ngInject';
 
         this.log = $log;

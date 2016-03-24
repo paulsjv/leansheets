@@ -6,7 +6,7 @@ export default class DataFactory {
         'ngInject';
 
         $log.debug('dataFactory.js - in constructor!');
-        this.configService = configService; 
+        this.configService = configService;
         this.log = $log;
         this.dataServices = [];
     }
@@ -22,7 +22,7 @@ export default class DataFactory {
             throw new Error('DataFactory Error with configuration! dataServiceDriver property is missing from the dataSource!');
         }
 
-        let factory = this.getFromAngularContext(ds.dataServiceDriver); 
+        let factory = this.getFromAngularContext(ds.dataServiceDriver);
         let service = factory.createExtractService(this.configService, dataSourceKey);
         this.dataServices[dataSourceKey] = service;
         return service;
@@ -34,16 +34,16 @@ export default class DataFactory {
         let factory = this.getFromAngularContext(ds.dataServiceDriver);
         let transform = factory.createTransformService(this.configService, dataSourceKey);
         return transform;
-    } 
+    }
 
     /**
-    * Gets an object from the Angular context
-    * @private
-    * @param {string} the name of the object to get out of Angular context
-    * @returns {object} the object from the Angular context
-    */
+     * Gets an object from the Angular context
+     * @private
+     * @param {string} the name of the object to get out of Angular context
+     * @returns {object} the object from the Angular context
+     */
     getFromAngularContext(dataServiceDriver) {
-       return angular.injector(['ng','leansheetsApplication']).get(dataServiceDriver);
+        return angular.injector(['ng', 'leansheetsApplication']).get(dataServiceDriver);
     }
 
 }

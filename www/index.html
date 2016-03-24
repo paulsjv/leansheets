@@ -1,64 +1,70 @@
 <!DOCTYPE html>
 <html class="no-js" lang="en">
 
-    <head>
+<head>
 
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
 
-        <!-- This stylesheet reference is automatically replaced by a gulp task by convention -->
-        <link rel="stylesheet" href="sass/main.scss" />
+    <!-- This stylesheet reference is automatically replaced by a gulp task by convention -->
+    <link rel="stylesheet" href="sass/main.scss"/>
 
-        <title>LeanSheets</title>
+    <title>LeanSheets</title>
 
-    </head>
-    <body data-ng-cloak data-ng-controller="applicationController as application">
-		<header>
-			<!-- Fixed navbar -->
-			<nav class="navbar navbar-default navbar-fixed-top">
-			  <div class="container">
-				<div class="navbar-header">
-				  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				  </button>
-				  <a class="navbar-brand" href="http://www.leansheets.org">LeanSheets</a>
-				</div>
-				<div id="navbar" class="collapse navbar-collapse">
-				  <ul class="nav navbar-nav">
-					<li><a href="https://github.com/paulsjv/leansheets/blob/master/README.md">Quick Start</a></li>
-					<li class="dropdown">
-					  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Charts <span class="caret"></span></a>
-					  <ul class="dropdown-menu" role="menu">
-						<li><a href="#nav-histogram">Histogram</a></li>
-						<li><a href="#nav-leadtimerun">Lead Time Run</a></li>
-						<li><a href="#nav-cfd">Cumulative Flow</a></li>
-					  </ul>
-					</li>
-				  </ul>
-				  <ul class="nav navbar-nav navbar-right">
-					<li><a href="https://github.com/paulsjv/leansheets"><i class="fa fa-github-square"></i> github.com</a></li>
-				 </ul>
-				</div><!--/.nav-collapse -->
-			  </div>
-			</nav>
-		</header>
+</head>
+<body data-ng-cloak data-ng-controller="applicationController as application">
+<header>
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="http://www.leansheets.org">LeanSheets</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="https://github.com/paulsjv/leansheets/blob/master/README.md">Quick Start</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Charts
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#nav-histogram">Histogram</a></li>
+                            <li><a href="#nav-leadtimerun">Lead Time Run</a></li>
+                            <li><a href="#nav-cfd">Cumulative Flow</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="https://github.com/paulsjv/leansheets"><i class="fa fa-github-square"></i>
+                        github.com</a></li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+</header>
 
-        <h1>Index.html</h1>
+<h1>Index.html</h1>
 <!--		<button type="button" ng-click="application.click()">Button Click Me!</button> -->
-        <histogram-chart></histogram-chart>
-		<footer class="footer">
-		  <div class="container">
-			  <p class="text-muted"><span class="copyright">&copy;</span> 2015 LeanSheets All rights reserved | <a class="text-muted" href="https://github.com/paulsjv/leansheets/blob/master/LICENSE">LICENSE</a> | <a class="text-muted" href="https://www.tldrlegal.com/l/ccncnd">Creative Commons Attribution NonCommercial NoDerivs (CC-NC-ND)</a></p>
-		  </div>
-		</footer>
- 		<script type="text/javascript" src="https://www.google.com/jsapi"></script> 
-        <!-- This script reference is automatically replaced by a gulp task by convention -->
-        <script type="text/javascript" src="js/main.js"></script>
+<histogram-chart></histogram-chart>
+<footer class="footer">
+    <div class="container">
+        <p class="text-muted"><span class="copyright">&copy;</span> 2015 LeanSheets All rights reserved | <a
+            class="text-muted" href="https://github.com/paulsjv/leansheets/blob/master/LICENSE">LICENSE</a> | <a
+            class="text-muted" href="https://www.tldrlegal.com/l/ccncnd">Creative Commons Attribution NonCommercial
+            NoDerivs (CC-NC-ND)</a></p>
+    </div>
+</footer>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<!-- This script reference is automatically replaced by a gulp task by convention -->
+<script type="text/javascript" src="js/main.js"></script>
 
-    </body>
+</body>
 </html>

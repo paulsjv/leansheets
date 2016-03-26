@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import path from 'path';
+import upath from 'upath';
 import through2 from 'through2';
 import stream from 'readable-stream';
 
@@ -17,9 +17,7 @@ import StreamReplacer from './StreamReplacer';
 
 import {paths, APP_NAME, entryPoint} from '../../project.conf.js';
 
-let posix = path.posix,
-
-    revAll = new RevAll({
+let revAll = new RevAll({
         dontRenameFile: [/^\/index\.html$/, /^\/sink\.html$/, /^\/favicon.ico$/],
         replacer: (fragment, replaceRegExp, newReference) => {
             fragment.contents = fragment.contents.replace(replaceRegExp, '$1' + encodeURI((newReference)) + '$3$4');
@@ -54,8 +52,8 @@ export default class StreamCompiler {
                 // through2.obj NOT arrow. (lexical this)
                 handler: (opts) => (stream) => stream.pipe(through2.obj(function (file, enc, flush) {
 
-                    file.base = path.join(file.cwd, paths.src());
-                    file.path = path.join(file.cwd, paths.src.fonts(), path.basename(file.path));
+                    file.base = upath.join(file.cwd, paths.src());
+                    file.path = upath.join(file.cwd, paths.src.fonts(), path.basename(file.path));
 
                     this.push(file);
 
@@ -97,7 +95,7 @@ export default class StreamCompiler {
 
                                 (stream) => stream.pipe(angularTemplateCache({
                                     moduleSystem: 'ES6',
-                                    filename: path.relative(paths.src(), paths.src.js('modules/templates/templates.js')),
+                                    filename: upath.relative(paths.src(), paths.src.js('modules/templates/templates.js')),
                                     module: 'app.templates',
                                     standalone: true
                                 }))
@@ -190,10 +188,10 @@ export default class StreamCompiler {
 
                                 return stream.pipe(replacer.push((file) => {
 
-                                    let dir = posix.dirname(posix.relative(paths.src(), file.path)).split(path.sep)[0],
-                                        ext = posix.extname(file.path);
+                                    let dir = upath.dirname(upath.relative(paths.src(), file.path)).split('/')[0],
+                                        ext = upath.extname(file.path);
 
-                                    return posix.join((dir == 'sass' ? 'css' : dir), APP_NAME + (ext === '.scss' ? '.css' : `${ext}`));
+                                    return upath.join((dir == 'sass' ? 'css' : dir), APP_NAME + (ext === '.scss' ? '.css' : `${ext}`));
 
                                 }));
 
@@ -208,12 +206,12 @@ export default class StreamCompiler {
 
                             (stream) => stream.pipe(replacer.push((file) => {
 
-                                let dir = posix.dirname(posix.relative(paths.src(), file.path)),
-                                    ext = posix.extname(file.path),
-                                    name = posix.basename(file.path, ext);
+                                let dir = upath.dirname(upath.relative(paths.src(), file.path)),
+                                    ext = upath.extname(file.path),
+                                    name = upath.basename(file.path, ext);
 
                                 // replace references to current file with $dir/$name.webp
-                                return posix.join(dir, name + '.webp')
+                                return upath.join(dir, name + '.webp')
 
                             }))
 

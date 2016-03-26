@@ -1,12 +1,10 @@
-import path from 'path';
+import upath from 'upath';
 import through2 from 'through2';
 
 import manifold from 'gulp-manifold';
 
 import {paths} from '../../project.conf.js';
 import regExcape from '../util/regExcape';
-
-let posix = path.posix;
 
 export default class StreamReplacer {
 
@@ -30,12 +28,12 @@ export default class StreamReplacer {
 
         return through2.obj(function (file, enc, flush) {
 
-            let dir = posix.dirname(posix.relative(paths.src(), file.path)),
-                ext = posix.extname(file.path),
-                name = posix.basename(file.path, ext);
+            let dir = upath.dirname(upath.relative(paths.src(), file.path)),
+                ext = upath.extname(file.path),
+                name = upath.basename(file.path, ext);
 
             that.replacements[transformFn(file)] =
-                new RegExp(regExcape(posix.join(dir, name + ext)).replace(/ /g, '(?: |%20)'), 'g');
+                new RegExp(regExcape(upath.join(dir, name + ext)).replace(/ /g, '(?: |%20)'), 'g');
 
             this.push(file);
 

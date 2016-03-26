@@ -58,7 +58,8 @@
     "protractor": "^2.4.0",
     "readable-stream": "^2.0.4",
     "require-dir": "^0.3.0",
-    "through2": "^2.0.0"
+    "through2": "^2.0.0",
+    "upath": "^0.1.7"
   },
   "jspm": {
     "dependencies": {

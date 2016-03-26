@@ -1,8 +1,6 @@
 import upath from 'upath';
 import through2 from 'through2';
 
-import manifold from 'gulp-manifold';
-
 import {paths} from '../../project.conf.js';
 import regExcape from '../util/regExcape';
 

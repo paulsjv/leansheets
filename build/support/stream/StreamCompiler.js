@@ -53,7 +53,7 @@ export default class StreamCompiler {
                 handler: (opts) => (stream) => stream.pipe(through2.obj(function (file, enc, flush) {
 
                     file.base = upath.join(file.cwd, paths.src());
-                    file.path = upath.join(file.cwd, paths.src.fonts(), path.basename(file.path));
+                    file.path = upath.join(file.cwd, paths.src.fonts(), upath.basename(file.path));
 
                     this.push(file);
 

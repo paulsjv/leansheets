@@ -1,9 +1,7 @@
-import path from 'path';
+import upath from 'upath';
 import through2 from 'through2';
 import express from 'express';
 import livereloadMiddleware from 'connect-livereload';
-
-import {LIVERELOAD_PORT, EXPRESS_PORT} from '../../project.conf'
 
 import mime from 'mime-types';
 
@@ -20,7 +18,7 @@ export default class StreamServer {
 
         return through2.obj(function (file, enc, flush) {
             this.push(file);
-            that.cache[`/${file.relative}`] = file.contents;
+            that.cache[`/${upath.toUnix(file.relative)}`] = file.contents;
             flush();
         }, function (flush) {
 
@@ -66,7 +64,7 @@ export default class StreamServer {
 
         return through2.obj(function (file, enc, flush) {
             this.push(file);
-            that.cache[`/${file.relative}`] = file.contents;
+            that.cache[`/${upath.toUnix(file.relative)}`] = file.contents;
             flush();
         });
 

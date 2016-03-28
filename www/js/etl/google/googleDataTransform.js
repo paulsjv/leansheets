@@ -117,10 +117,6 @@ var createMeta = (cols) => {
     return returnObj;
 };
 
-var toString = (transformed) => {
-
-};
-
 /**
 * GoogleDataTransform takes the JSON data from Google Sheets and transforms it so 
 * LeanSheets can use the data. 

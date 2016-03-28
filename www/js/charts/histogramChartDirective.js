@@ -1,11 +1,11 @@
-import { select, selctAll, svg } from 'd3-selection';
-import { time } from 'd3-time';
+import { select } from 'd3-selection';
+// import { time } from 'd3-time';
 import { scaleLinear, scaleBand } from 'd3-scale';
-import { format } from 'd3-format';
-import { extent } from 'd3-array';
-import { axisBottom, axisLeft } from 'd3-axis';
-import { line } from 'd3-shape';
-import { min, max } from 'd3-array';
+// import { format } from 'd3-format';
+// import { extent } from 'd3-array';
+// import { axisBottom, axisLeft } from 'd3-axis';
+// import { line } from 'd3-shape';
+import { max } from 'd3-array';
 
 var log;
 
@@ -33,7 +33,7 @@ export default ($log) => {
 						{ frequency: 3, percentage: 98, leadtime: 25 }, 
 						{ frequency: 1, percentage: 100,leadtime: 50 }];
 
-			let margin = {top: 20, right: 30, bottom: 30, left: 40},
+			let //margin = {top: 20, right: 30, bottom: 30, left: 40},
 			    width = 960, // - margin.left - margin.right,
 				height = 500; // - margin.top - margin.bottom;
 
@@ -50,8 +50,8 @@ export default ($log) => {
 						.domain([0, max(frequency)])
 						.range([height, 0]);
 
-			let xAxis = axisBottom(x);
-			let yAxis = axisLeft(y);
+			// let xAxis = axisBottom(x);
+			// let yAxis = axisLeft(y);
 
 			let histogram = select(elm[0]).attr('width', width + 'px').attr('height', height + 'px');
 //								.attr('width', width + margin.left + margin.right + 'px')
@@ -66,7 +66,7 @@ export default ($log) => {
 			chart.append('g')
 					.call(yAxis);
 */
-            let barWidth = width / data.length;
+            // let barWidth = width / data.length;
 
 			chart.selectAll('.bar')
 						.data(data)
@@ -156,6 +156,6 @@ export default ($log) => {
 */
         }
 
-    }
+    };
 
 };

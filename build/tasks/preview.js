@@ -5,7 +5,6 @@ import open from 'gulp-open';
 import os from 'os';
 
 import {paths, EXPRESS_PORT, LIVERELOAD_PORT} from '../project.conf';
-import regExcape from '../support/util/regExcape';
 import StreamCompiler from '../support/stream/StreamCompiler';
 import StreamServer from '../support/stream/StreamServer';
 
@@ -13,7 +12,7 @@ let streamCompiler = new StreamCompiler(),
     streamServer = new StreamServer(),
 
     compilerOpts = {
-       sourceMaps: 'inline',
+        sourceMaps: 'inline',
         lowResSourceMaps: true
     },
 
@@ -37,18 +36,17 @@ gulp.task('preview', (done) => {
     );
 
     return gulp.src([
-        paths.jspm.fontAwesome('fonts/*'),
-        paths.jspm.twitterBootstrap('fonts/*'),
-        paths.src('**/*')
-    ])
-    .pipe(streamCompiler.compile(compilerOpts))
-    .pipe(streamServer.listen(EXPRESS_PORT, LIVERELOAD_PORT))
-    .pipe(open({
-        uri: `http://localhost:${EXPRESS_PORT}`,
-        app: browser
-    }));
-
-
+            paths.jspm.fontAwesome('fonts/*'),
+            paths.jspm.twitterBootstrap('fonts/*'),
+            paths.src('**/*')
+        ])
+        .pipe(streamCompiler.compile(compilerOpts))
+        .pipe(streamServer.listen(EXPRESS_PORT, LIVERELOAD_PORT))
+        .pipe(open({
+            uri: `http://localhost:${EXPRESS_PORT}`,
+            app: browser
+        }));
+    
 });
 
 gulp.task('preview:watch', () => {

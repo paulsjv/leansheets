@@ -46,20 +46,39 @@ export default class StreamCompiler {
 
                 filter: [
                     paths.jspm.fontAwesome('fonts/*'),
-                    paths.jspm.twitterBootstrap('fonts/*')
+                    paths.jspm.twitterBootstrap('fonts/*'),
+                    paths.src.fonts('**/*')
                 ],
 
-                // through2.obj NOT arrow. (lexical this)
-                handler: (opts) => (stream) => stream.pipe(through2.obj(function (file, enc, flush) {
 
-                    file.base = upath.join(file.cwd, paths.src());
-                    file.path = upath.join(file.cwd, paths.src.fonts(), upath.basename(file.path));
+                handler: (opts) => (stream) => {
 
-                    this.push(file);
+                    return stream.pipe(manifold([
 
-                    flush();
+                        manifold.duct(
 
-                }))
+                            [
+                                paths.jspm.fontAwesome('fonts/*'),
+                                paths.jspm.twitterBootstrap('fonts/*')
+                            ],
+
+                            // through2.obj NOT arrow. (lexical this)
+                            (stream) => stream.pipe(through2.obj(function (file, enc, flush) {
+
+                                file.base = upath.join(file.cwd, paths.src());
+                                file.path = upath.join(file.cwd, paths.src.fonts(), upath.basename(file.path));
+
+                                this.push(file);
+
+                                flush();
+
+                            }))
+
+                        )
+
+                    ]));
+
+                }
 
             },
 

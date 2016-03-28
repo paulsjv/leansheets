@@ -65,9 +65,20 @@ export default class StreamCompiler {
 
             images: {
 
-                filter: paths.src.img('**/*.{png,jpeg,jpg,tiff,webp}'),
+                filter: paths.src.img('**/*'),
 
-                handler: (opts) => (stream) => stream.pipe(webp())
+                handler: (opts) => (stream) => {
+
+                    return stream.pipe(manifold([
+
+                        manifold.duct(
+                            paths.src.img('**/*.{png,jpeg,jpg,tiff,webp}'),
+                            (stream) => stream.pipe(webp())
+                        )
+
+                    ]));
+
+                }
 
             },
 

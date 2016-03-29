@@ -47,28 +47,49 @@ export default class StreamCompiler {
 
                 filter: [
                     paths.jspm.fontAwesome('fonts/*'),
-                    paths.jspm.twitterBootstrap('fonts/*')
+                    paths.jspm.twitterBootstrap('fonts/*'),
+                    paths.src.fonts('**/*')
                 ],
 
                 // through2.obj NOT arrow. (lexical this)
-                handler: (opts) => (stream) => stream.pipe(through2.obj(function (file, enc, flush) {
+                handler: (opts) => (stream) => stream.pipe(manifold([
 
-                    file.base = upath.join(file.cwd, paths.src());
-                    file.path = upath.join(file.cwd, paths.src.fonts(), upath.basename(file.path));
+                    manifold.duct(
 
-                    this.push(file);
+                        [
+                            paths.jspm.fontAwesome('fonts/*'),
+                            paths.jspm.twitterBootstrap('fonts/*')
+                        ],
 
-                    flush();
+                        (stream) => stream.pipe(through2.obj(function (file, enc, flush) {
 
-                }))
+                            file.base = upath.join(file.cwd, paths.src());
+                            file.path = upath.join(file.cwd, paths.src.fonts(), upath.basename(file.path));
+
+                            this.push(file);
+
+                            flush();
+
+                        }))
+
+                    )
+
+                ]))
 
             },
 
             images: {
 
-                filter: paths.src.img('**/*.{png,jpeg,jpg,tiff,webp}'),
+                filter: paths.src.img('**/*'),
 
-                handler: (opts) => (stream) => stream.pipe(webp())
+                handler: (opts) => (stream) => stream.pipe(manifold([
+
+                    manifold.duct(
+                        paths.src.img('**/*.{png,jpeg,jpg,tiff,webp}'),
+                        (stream) => stream.pipe(webp())
+                    )
+
+                ]))
 
             },
 

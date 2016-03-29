@@ -11,7 +11,7 @@ export default (gApiKey, gClientId, gLoadApis, $window, $rootScope) => {
         $window[CALLBACK] = () => {
             $rootScope.$apply(() => {
 
-                var apiPromises = [];
+                var apiPromises = [Promise.resolve($window.gapi.load('auth2'))];
 
                 if (gApiKey) {
                     $window.gapi.client.setApiKey(gApiKey);
@@ -28,6 +28,6 @@ export default (gApiKey, gClientId, gLoadApis, $window, $rootScope) => {
 
         loadScript(`https://apis.google.com/js/api:client:platform.js?onload=${CALLBACK}`);
 
-    })
+    });
 
-}
+};

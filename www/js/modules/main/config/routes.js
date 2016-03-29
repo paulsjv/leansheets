@@ -2,7 +2,7 @@ export default ($stateProvider, $urlRouterProvider) => {
     'ngInject';
 
     $urlRouterProvider
-        .otherwise('/auth');
+        .otherwise('/');
 
     $stateProvider
         .state('main', {
@@ -20,4 +20,4 @@ export default ($stateProvider, $urlRouterProvider) => {
             }
         });
 
-}
+};

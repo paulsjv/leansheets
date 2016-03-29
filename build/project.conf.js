@@ -55,7 +55,8 @@ export const paths = new PathCalculator({
         folders: {
 
             unit: 'unit/',
-            functional: 'functional/'
+            functional: 'functional/',
+            mocks: 'mocks/'
 
         }
 

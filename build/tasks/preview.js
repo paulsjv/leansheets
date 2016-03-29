@@ -1,4 +1,5 @@
 import gulp from 'gulp';
+import manifold from 'gulp-manifold';
 import livereload from 'gulp-livereload';
 import open from 'gulp-open';
 
@@ -46,7 +47,7 @@ gulp.task('preview', (done) => {
             uri: `http://localhost:${EXPRESS_PORT}`,
             app: browser
         }));
-    
+
 });
 
 gulp.task('preview:watch', () => {

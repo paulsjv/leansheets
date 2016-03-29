@@ -22,7 +22,7 @@ export default angular.module('main', ['app.templates', 'ui.router', 'google'])
     .directive('footer', footer)
     .directive('layout', layout)
     .service('layoutService', layoutService)
-    .run(($rootScope) => {
+    .run(() => {
         'ngInject';
 
         // $rootScope.$on('$stateChangeStart',function(event, toState, toParams, fromState, fromParams){

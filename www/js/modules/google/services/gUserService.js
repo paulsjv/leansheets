@@ -1,6 +1,6 @@
 export default class gUserService {
 
-    constructor($log) {
+    constructor() {
         'ngInject';
     }
 

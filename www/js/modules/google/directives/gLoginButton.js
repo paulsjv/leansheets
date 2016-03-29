@@ -46,28 +46,28 @@ export default ($log, $state, gApi, gScopes, gUserService) => {
 
                 google.signin2.render('gLogin', {
 
-                    scope: gScopes.join(' '),
+                   scope: gScopes.join(' '),
 
-                    width: 180,
-                    height: 30,
+                   width: 180,
+                   height: 30,
 
-                    longtitle: true,
-                    theme: 'dark',
+                   longtitle: true,
+                   theme: 'dark',
 
-                    onsuccess: (user) => {
+                   onsuccess: (user) => {
 
-                        scope.$apply(() => {
+                       scope.$apply(() => {
 
-                            gUserService.login(user);
-                            $state.go('main');
+                           gUserService.login(user);
+                           $state.go('main');
 
-                        });
+                       });
 
-                    },
+                   },
 
-                    onfailure: () => {
-                        console.log('failed?');
-                    }
+                   onfailure: () => {
+                       console.log('failed?');
+                   }
 
                 });
 

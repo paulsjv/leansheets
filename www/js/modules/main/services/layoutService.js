@@ -5,4 +5,4 @@ export default class LayoutService {
         this.layout = undefined;
     }
 
-};
+}

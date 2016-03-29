@@ -51,7 +51,6 @@ export default class StreamCompiler {
                     paths.src.fonts('**/*')
                 ],
 
-                // through2.obj NOT arrow. (lexical this)
                 handler: (opts) => (stream) => stream.pipe(manifold([
 
                     manifold.duct(
@@ -61,6 +60,7 @@ export default class StreamCompiler {
                             paths.jspm.twitterBootstrap('fonts/*')
                         ],
 
+                        // through2.obj NOT arrow. (lexical this)
                         (stream) => stream.pipe(through2.obj(function (file, enc, flush) {
 
                             file.base = upath.join(file.cwd, paths.src());
@@ -85,7 +85,7 @@ export default class StreamCompiler {
                 handler: (opts) => (stream) => stream.pipe(manifold([
 
                     manifold.duct(
-                        paths.src.img('**/*.{png,jpeg,jpg,tiff,webp}'),
+                        paths.src.img('**/*.{png,jpeg,jpg,tiff}'),
                         (stream) => stream.pipe(webp())
                     )
 

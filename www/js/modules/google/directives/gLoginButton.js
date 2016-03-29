@@ -10,7 +10,7 @@ export default ($log, $state, gApi, gScopes, gUserService) => {
         scope: {},
         bindToController: {},
 
-        controllerAs: 'login',
+        controllerAs: 'google',
         controller: class {
 
             constructor() {
@@ -33,6 +33,10 @@ export default ($log, $state, gApi, gScopes, gUserService) => {
                 return this.getProfile().getImageUrl();
             }
 
+            login() {
+                console.log('login');
+            }
+
         },
         link: (scope, elem, attrs, ctrl) => {
 
@@ -43,33 +47,33 @@ export default ($log, $state, gApi, gScopes, gUserService) => {
             });
 
             gApi.then((google) => {
-
-                google.signin2.render('gLogin', {
-
-                   scope: gScopes.join(' '),
-
-                   width: 180,
-                   height: 30,
-
-                   longtitle: true,
-                   theme: 'dark',
-
-                   onsuccess: (user) => {
-
-                       scope.$apply(() => {
-
-                           gUserService.login(user);
-                           $state.go('main');
-
-                       });
-
-                   },
-
-                   onfailure: () => {
-                       console.log('failed?');
-                   }
-
-                });
+                
+                // google.signin2.render('gLogin', {
+                //
+                //    scope: gScopes.join(' '),
+                //
+                //    width: 180,
+                //    height: 30,
+                //
+                //    longtitle: true,
+                //    theme: 'dark',
+                //
+                //    onsuccess: (user) => {
+                //
+                //        scope.$apply(() => {
+                //
+                //            gUserService.login(user);
+                //            $state.go('main');
+                //
+                //        });
+                //
+                //    },
+                //
+                //    onfailure: () => {
+                //        console.log('failed?');
+                //    }
+                //
+                // });
 
             });
 

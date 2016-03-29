@@ -1,16 +1,11 @@
-<div class="navbar-btn">
+<div class="btn-login-group btn-login-blue navbar-btn" data-ng-click="google.login()">
 
-    <!--<div data-ng-if="login.currentUser" class="navbar-text">-->
-        <!--{{ login.getName() }}-->
-        <!--<img data-ng-src="{{ login.getImageUrl() }}" class="img-circle" height="40px" style="position: absolute; right: 0; top: 5px;">-->
-    <!--</div>-->
-
-    <div id="gLogin" class="btn-login" data-ng-if="!login.currentUser">
-        <div data-ng-transclude></div>
+    <div class="btn-login-icon">
+        <i class="icon-g"></i>
     </div>
 
-    <!--<button class="btn btn-login">-->
-        <!--<i class="g"></i> Sign in with Google-->
-    <!--</button>-->
+    <div class="btn-login">
+        Sign in with Google
+    </div>
 
 </div>

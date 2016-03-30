@@ -1,11 +1,45 @@
-<div class="btn-login-group btn-login-blue navbar-btn" data-ng-click="google.login()">
+<div>
 
-    <div class="btn-login-icon">
-        <i class="icon-g"></i>
+    <div class="btn-login-group btn-login-blue navbar-btn" data-ng-if="!google.isReady()">
+
+        <div class="btn-login-icon">
+            <i class="icon-g" data-ng-class="{ 'fa-spin': !google.isReady() }"></i>
+        </div>
+
     </div>
 
-    <div class="btn-login">
-        Sign in with Google
+    <div class="btn-login-group btn-login-blue navbar-btn" data-ng-if="google.isLoggedIn() == false" data-ng-click="google.login()">
+
+        <div class="btn-login-icon">
+            <i class="icon-g"></i>
+        </div>
+
+        <div class="btn-login">
+            Sign in with Google
+        </div>
+
     </div>
+
+    <ul class="nav navbar-nav profile-nav" data-ng-if="google.isLoggedIn() == true">
+
+        <li class="dropdown dropdown-profile">
+
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                <img class="img-circle" data-ng-src="{{ google.currentUser.imageUrl }}"> <span class="caret"></span>
+            </a>
+
+            <ul class="dropdown-menu" role="menu">
+                <li class="disabled">
+                    <a href="">{{ google.currentUser.email }}</a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <a href="" data-ng-click="google.logout()">Sign out</a>
+                </li>
+            </ul>
+
+        </li>
+
+    </ul>
 
 </div>

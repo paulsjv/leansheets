@@ -1,4 +1,4 @@
-export default ($log, $state, gApi, gScopes, gUserService) => {
+export default ($log, $state, gUserService) => {
     'ngInject';
 
     return {
@@ -13,69 +13,30 @@ export default ($log, $state, gApi, gScopes, gUserService) => {
         controllerAs: 'google',
         controller: class {
 
-            constructor() {
+            constructor($rootScope) {
                 'ngInject';
+
+                $rootScope.$watch(() => gUserService.currentUser, (newVal) => {
+                    this.currentUser = newVal;
+                });
+
             }
 
-            getProfile() {
-                return this.currentUser.getBasicProfile();
+            isReady() {
+                return this.isLoggedIn() !== undefined;
             }
 
-            getName() {
-                return this.getProfile().getName();
-            }
-
-            getEmail() {
-                return this.getProfile().getEmail();
-            }
-
-            getImageUrl() {
-                return this.getProfile().getImageUrl();
+            isLoggedIn() {
+                return gUserService.isLoggedIn();
             }
 
             login() {
-                console.log('login');
+                gUserService.login();
             }
 
-        },
-        link: (scope, elem, attrs, ctrl) => {
-
-            scope.$watch(() => gUserService.currentUser, (newVal, oldVal) => {
-                if (newVal !== oldVal) {
-                    ctrl.currentUser = gUserService.currentUser;
-                }
-            });
-
-            gApi.then((google) => {
-                
-                // google.signin2.render('gLogin', {
-                //
-                //    scope: gScopes.join(' '),
-                //
-                //    width: 180,
-                //    height: 30,
-                //
-                //    longtitle: true,
-                //    theme: 'dark',
-                //
-                //    onsuccess: (user) => {
-                //
-                //        scope.$apply(() => {
-                //
-                //            gUserService.login(user);
-                //            $state.go('main');
-                //
-                //        });
-                //
-                //    },
-                //
-                //    onfailure: () => {
-                //        console.log('failed?');
-                //    }
-                //
-                // });
-
-            });
+            logout() {
+                gUserService.logout();
+            }
 
         }
 

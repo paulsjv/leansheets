@@ -4,3 +4,9 @@
     @include border-top-radius($radius);
     @include border-bottom-radius($radius);
 }
+
+@mixin appearance($value) {
+    -webkit-appearance: $value;
+    -moz-appearance:    $value;
+    appearance:         $value;
+}

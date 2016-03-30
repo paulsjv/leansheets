@@ -1,53 +1,35 @@
-$google-blue: #4285F4;
-
 .btn-login-group {
+
+    position: relative;
+
+    width: auto;
+
+    @include border-radius(1px);
+    @include box-shadow(0 2px 4px 0 rgba(0, 0, 0, .25));
+
+    @include transition(background-color .218s, border-color .218s, box-shadow .218s);
+    @include user-select(none);
+    @include appearance(none);
+
+    background: #fff none;
+    color: #262626;
+
+    cursor: pointer;
+
+    outline: none;
+    overflow: hidden;
+
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
 
     &.navbar-btn {
         margin-top: 10px;
         margin-bottom: 10px;
     }
 
-    -webkit-border-radius: 1px;
-    border-radius: 1px;
-
-    -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .25);
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .25);
-
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-
-    -webkit-transition: background-color .218s,
-    border-color .218s,
-    box-shadow .218s;
-
-    transition: background-color .218s, border-color .218s,
-    box-shadow .218s;
-
-    -webkit-user-select: none;
-    -webkit-appearance: none;
-
-    background-color: #fff;
-    background-image: none;
-
-    color: #262626;
-
-    cursor: pointer;
-
-    outline: none;
-
-    overflow: hidden;
-
-    position: relative;
-
-    text-align: center;
-    vertical-align: middle;
-
-    white-space: nowrap;
-    width: auto;
-
     &:hover {
-        -webkit-box-shadow: 0 0 3px 3px rgba(66, 133, 244, .3);
-        box-shadow: 0 0 3px 3px rgba(66, 133, 244, .3)
+        @include box-shadow((0 0 3px 3px rgba(66, 133, 244, .3)));
     }
 
     .btn-login-icon,
@@ -67,9 +49,8 @@ $google-blue: #4285F4;
             width: 18px;
             height: 18px;
 
-            background-image: url(/img/google/g.svg);
+            background: url(/img/google/g.svg) no-repeat;
             background-size: cover;
-            background-repeat: no-repeat;
 
         }
 
@@ -77,16 +58,19 @@ $google-blue: #4285F4;
 
     .btn-login {
 
-        font-family: Roboto-Medium, arial, sans-serif;
-        font-size: 12px;
-
-        line-height: 30px;
-        letter-spacing: .21px;
-
         margin-left: 6px;
         margin-right: 6px;
 
         vertical-align: top;
+
+        font-family: Roboto-Medium, arial, sans-serif;
+        font-size: 12px;
+        line-height: 30px;
+        letter-spacing: .21px;
+
+        overflow: hidden;
+        white-space: nowrap;
+        @include transition(width .218s);
 
     }
 
@@ -109,12 +93,8 @@ $google-blue: #4285F4;
         }
 
         .btn-login-icon {
-
             background-color: #fff;
-
-            -webkit-border-radius: 1px;
-            border-radius: 1px;
-
+            @include border-radius(1px);
         }
 
     }
@@ -128,12 +108,8 @@ $google-blue: #4285F4;
         }
 
         .btn-login-icon {
-
             background-color: #fff;
-
-            -webkit-border-radius: 1px;
-            border-radius: 1px;
-
+            @include border-radius(1px);
         }
 
     }
@@ -156,11 +132,36 @@ $google-blue: #4285F4;
         color: #dc4e41;
 
         &:active {
-            background-color: #eee
+            background-color: #eee;
         }
 
         path {
-            fill: #dc4e41
+            fill: #dc4e41;
+        }
+
+    }
+
+}
+
+.profile-nav {
+
+    .dropdown-profile {
+
+        > a {
+
+            padding-top: 5px;
+            padding-bottom: 5px;
+
+            height: $navbar-height;
+
+            img {
+                height: $navbar-height - 10px;
+            }
+
+        }
+
+        .dropdown-menu .disabled a {
+            cursor: default !important;
         }
 
     }

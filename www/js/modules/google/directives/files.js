@@ -14,10 +14,10 @@ export default () => {
             constructor ($log, gDriveService) {
                 'ngInject';
 
-                $log.debug('files');
-
                 gDriveService.files.list().then((list) => {
                     $log.debug(list);
+                }, (error) => {
+                    $log.error(error);
                 });
 
             }

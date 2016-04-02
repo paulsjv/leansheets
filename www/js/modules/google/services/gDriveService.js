@@ -1,9 +1,11 @@
-export default class DriveService {
+export default class gDriveService {
 
-    constructor(g) {
+    constructor(gScriptService, gScripts, $q) {
         'ngInject';
 
-        this.g = g;
+        this.gScriptService = gScriptService;
+        this.gScripts = gScripts;
+        this.$q = $q;
 
     }
 
@@ -13,35 +15,17 @@ export default class DriveService {
 
         return {
 
-            list: () => new Promise((resolve) => {
+            list: () => that.$q((resolve, reject) => {
 
-                that.g.then((api) => {
-
-                    var request = api.client.drive.files.list({
-                        'maxResults': 10
-                    });
-
-                    request.execute(function (resp) {
-
-                        var files = resp.items;
-
-                        if (files && files.length > 0) {
-
-                            for (var i = 0; i < files.length; i++) {
-
-                                var file = files[i];
-                                console.log(file.title + ' (' + file.id + ')');
-
-                            }
-
-                        } else {
-                            console.log('No files found.');
-                        }
-
-                        resolve(resp);
-
-                    });
-
+                that.gScriptService.exec(that.gScripts.LS_DATA_DEV, {
+                    function: 'listSpreadsheets',
+                    parameters: [
+                        'reqParam'
+                    ]
+                }).then((response) => {
+                    resolve(response);
+                }, (error) => {
+                    reject(error);
                 });
 
             })

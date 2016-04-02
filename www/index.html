@@ -14,9 +14,42 @@
         <title>LeanSheets</title>
 
     </head>
+
     <body data-ng-cloak data-ng-strict-di>
 
-        <div class="target" data-ui-view></div>
+        <div class="wrap" data-ui-view>
+
+            <div class="v-align">
+                <div class="v-align-35">
+
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-offset-3 col-sm-6">
+
+                                <div class="panel panel-default" style="margin-bottom: 0;">
+
+                                    <div class="panel-body">
+
+                                        <h2 class="page-header" style="margin-top: 0; margin-bottom: 15px;">Loading...</h2>
+
+                                        <div class="progress" style="margin-bottom: 0;">
+                                            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
 
         <!-- This script reference is automatically replaced by a gulp task by convention -->
         <script type="text/javascript" src="js/modules/main/main.js"></script>

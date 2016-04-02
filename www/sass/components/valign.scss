@@ -1,0 +1,28 @@
+@mixin v-align-pct($pct) {
+
+    $pct-value: percentage($pct / 100);
+
+    .v-align-#{$pct} {
+
+        position: absolute;
+        top: $pct-value;
+
+        width: 100%;
+
+        @include translate(0, $pct-value * -1);
+
+    }
+
+}
+
+.v-align {
+
+    position: relative;
+    height: 100%;
+
+    @include v-align-pct(35);
+    @include v-align-pct(40);
+    @include v-align-pct(45);
+    @include v-align-pct(50);
+
+}

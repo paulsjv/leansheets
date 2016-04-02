@@ -14,4 +14,13 @@
 @import "charts/histogram";
 
 @import "components/buttons";
+@import "components/valign";
 @import "components/fonts";
+
+* {
+    margin: 0;
+}
+
+html, body, .wrap {
+    height: 100%;
+}

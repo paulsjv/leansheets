@@ -1,11 +1,15 @@
 import angular from 'angular';
 
 import files from './directives/files';
-import loginButton from './directives/gLoginButton';
-import meta from './directives/gMeta';
+import signIn from './directives/gSignIn';
+
 import g from './factories/g';
+import gAuth from './factories/gAuth';
+import gUser from './factories/gUser';
+
+import authService from './services/gAuthService';
 import driveService from './services/gDriveService';
-import userService from './services/gUserService';
+import scriptService from './services/gScriptService';
 
 export default angular.module('google', [])
     .constant('gApplicationId', '834306803658')
@@ -25,12 +29,17 @@ export default angular.module('google', [])
     .constant('gScopes', [
         'email',
         'profile',
-        'https://www.googleapis.com/auth/drive.metadata.readonly',
-        'https://www.googleapis.com/auth/drive.file'
+        'https://www.googleapis.com/auth/script.scriptapp',
+        'https://www.googleapis.com/auth/script.external_request'
     ])
+    .constant('gScripts', {
+        LS_DATA_DEV: 'MfAG5em1RAAg8573UF3oAonFIFWf3Dj_9'
+    })
     .directive('files', files)
-    .directive('gLoginButton', loginButton)
-    .directive('gMeta', meta)
+    .directive('gSignIn', signIn)
     .factory('g', g)
+    .factory('gAuth', gAuth)
+    .factory('gUser', gUser)
+    .service('gAuthService', authService)
     .service('gDriveService', driveService)
-    .service('gUserService', userService);
+    .service('gScriptService', scriptService);

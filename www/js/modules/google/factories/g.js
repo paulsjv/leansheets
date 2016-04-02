@@ -3,48 +3,48 @@ import loadScript from '../../../utils/loadScript';
 
 const CALLBACK = 'loadGoogle';
 
-export default ($log, gModules, gLoadApis, gClientLoadApis, gClientId, gScopes, $window, $rootScope) => {
+export default ($log, gModules, gLoadApis, gClientLoadApis, gClientId, gScopes, $window) => {
     'ngInject';
 
-    var gPromise = new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
 
         $window[CALLBACK] = () => {
-            $rootScope.$apply(() => {
 
-                var apiPromises = [];
+            var apiPromises = [];
 
-                angular.forEach(gLoadApis, (name) => {
-                    apiPromises.push(Promise.resolve($window.gapi.load(name)));
-                });
-
-                angular.forEach(gClientLoadApis, (version, name) => {
-                    apiPromises.push(Promise.resolve($window.gapi.client.load(name, version)));
-                });
-
-                Promise.all(apiPromises).then(() => resolve($window.gapi));
-
+            angular.forEach(gLoadApis, (name) => {
+                apiPromises.push($window.gapi.load(name));
             });
+
+            angular.forEach(gClientLoadApis, (version, name) => {
+                apiPromises.push($window.gapi.client.load(name, version));
+            });
+
+            Promise.all(apiPromises).then(() => resolve($window.gapi), reject);
+
         };
 
         loadScript(`https://apis.google.com/js/${gModules.join(':')}.js?onload=${CALLBACK}`);
 
+    }).then((gapi) => {
+
+        return new Promise((resolve, reject) => {
+
+            if (gapi.auth2) {
+
+                gapi.auth2.init({
+                    client_id: gClientId,
+                    scope: gScopes.join(' ')
+                }).then(() => {
+                    resolve(gapi);
+                });
+
+            } else {
+                reject('g.js: auth2 module not loaded.');
+            }
+
+        });
+
     });
-
-    gPromise.then((g) => {
-
-        if (g.auth2) {
-
-            g.auth2.init({
-                client_id: gClientId,
-                scope: gScopes.join(' ')
-            });
-
-            $log.debug('gapi.auth2 initialized.');
-
-        }
-
-    });
-
-    return gPromise;
 
 };

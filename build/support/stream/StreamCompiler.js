@@ -125,8 +125,13 @@ export default class StreamCompiler {
                             )
 
                         ]))
-                        .pipe(jspm.buildStatic(paths.src.js(entryPoint.js), `js/${APP_NAME}.js`, jspmOpts))
-                        .pipe(ngAnnotate());
+                        .pipe(jspm.buildStatic(paths.src.js(entryPoint.js), `js/${APP_NAME}.js`, jspmOpts));
+                        
+                    if (opts.sourceMaps) {
+                        resultStream = resultStream.pipe(ngAnnotate({ map: { inline: true } }));
+                    } else {
+                        resultStream = resultStream.pipe(ngAnnotate());
+                    }
 
                     if (opts.minify) {
                         resultStream = resultStream.pipe(uglify());

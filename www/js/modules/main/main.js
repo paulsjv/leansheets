@@ -14,32 +14,24 @@ export default angular.module('main', ['app.templates', 'ui.router', 'google'])
     .config(routes)
     .constant('gSignInState', 'ls.main.auth.histogram')
     .constant('gSignOutState', 'ls.main.public')
-    .run(() => {
+    .run(($log, $rootScope, $state, gSignOutState) => {
         'ngInject';
 
-        // $rootScope.$on('$stateChangeStart',function(event, toState, toParams, fromState, fromParams){
-        //     console.log('$stateChangeStart');
-        //     console.log(arguments);
-        // });
-        //
-        // $rootScope.$on('$stateChangeError',function(event, toState, toParams, fromState, fromParams){
-        //     console.log('$stateChangeError');
-        //     console.log(arguments);
-        // });
-        //
-        // $rootScope.$on('$stateChangeSuccess',function(event, toState, toParams, fromState, fromParams){
-        //     console.log('$stateChangeSuccess');
-        //     console.log(arguments);
-        // });
-        //
-        // $rootScope.$on('$viewContentLoaded',function(event){
-        //     console.log('$viewContentLoaded');
-        //     console.log(arguments);
-        // });
-        //
-        // $rootScope.$on('$stateNotFound',function(event, unfoundState, fromState, fromParams){
-        //     console.log('$stateNotFound');
-        //     console.log(arguments);
-        // });
+        $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
+
+            if (error && error.status) {
+
+                event.preventDefault();
+
+                switch (error.status) {
+                    case 401:
+                        $log.debug(`$stateChangeError ${JSON.stringify(error)}`);
+                        $state.go(gSignOutState);
+                        break;
+                }
+
+            }
+
+        });
 
     });

@@ -34,7 +34,8 @@ export default ($log, gModules, gLoadApis, gClientLoadApis, gClientId, gScopes, 
 
                 gapi.auth2.init({
                     client_id: gClientId,
-                    scope: gScopes.join(' ')
+                    scope: gScopes.join(' '),
+                    cookiepolicy: 'single_host_origin'
                 }).then(() => {
                     resolve(gapi);
                 });

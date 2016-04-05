@@ -14,7 +14,7 @@ google.then(($google) => {
     function bootstrapApplication() {
         $log.debug('main.js - Bootstraping Application');
         $log.debug('main.js - $google jsapi', $google);
-//		ng.module('google',[]).constant('$google', $google);
+//        ng.module('google',[]).constant('$google', $google);
 //        ng.module('moment',[]).constant('$moment', moment);
 //        ng.module('jssha',[]).constant('$jssha', jssha);
         ng.bootstrap(document, ['leansheetsApplication']);

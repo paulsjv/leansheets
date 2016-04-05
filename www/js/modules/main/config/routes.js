@@ -25,14 +25,26 @@ export default ($stateProvider, $urlRouterProvider) => {
         })
         .state('ls.main.auth', {
             abstract: true,
-            onEnter: ($state, gSignOutState, gAuthService) => {
-                'ngInject';
+            resolve: {
+                auth: (gAuthService) => {
+                    'ngInject';
 
-                gAuthService.getAuthentication().then((gAuth) => {
-                    if (!gAuth.isSignedIn()) {
-                        $state.go(gSignOutState);
-                    }
-                });
+                    return new Promise((resolve, reject) => {
+                        gAuthService.getAuthentication().then((gAuth) => {
+
+                            if (gAuth.isSignedIn()) {
+                                resolve(gAuth);
+                            } else {
+                                reject({
+                                    status: 401,
+                                    message: 'No Authentication.'
+                                });
+                            }
+
+                        });
+                    });
+
+                }
 
             }
         })

@@ -10,45 +10,35 @@ export default ($log, $rootScope, $state, gAuthService) => {
     return {
 
         restrict: 'EA',
-        
+
         replace: true,
         transclude: true,
 
-        templateUrl: 'templates/google/_gSignIn.html',
+        template: '<div class="g-profile" data-ng-transclude></div>',
 
-        controllerAs: 'auth',
         controller: class {
 
             constructor ($scope) {
                 'ngInject';
 
-                this.ready = false;
-
                 gAuthService.getAuthentication().then((gAuth) => {
                     $scope.$apply(() => {
-                        this.ready = true;
-                        this.signedIn = gAuth.isSignedIn();
+                        $scope.profile = gAuth.getCurrentUser();
                     });
                 });
 
                 $scope.$watch(() => {
                     return authentication && authentication.isSignedIn();
                 }, (newVal) => {
-                    this.signedIn = newVal;
+
+                    if (newVal) {
+                        $scope.profile = authentication.getCurrentUser();
+                    } else {
+                        $scope.profile = null;
+                    }
+
                 });
 
-            }
-
-            isReady() {
-                return this.ready;
-            }
-
-            isSignedIn() {
-                return this.signedIn;
-            }
-
-            signIn() {
-                gAuthService.signIn();
             }
 
         }

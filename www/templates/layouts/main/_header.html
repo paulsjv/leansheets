@@ -36,7 +36,49 @@
         </ul>
 
         <div class="navbar-right">
-            <div data-g-sign-in></div>
+
+            <ul class="nav navbar-nav">
+
+                <li>
+                    <a href="https://github.com/paulsjv/leansheets">
+                        <i class="fa fa-lg fa-github"></i>&nbsp; Github
+                    </a>
+                </li>
+
+                <li>
+
+                    <div data-g-sign-in>
+                        <div data-g-profile>
+
+                            <ul class="nav navbar-nav">
+                                <li class="dropdown">
+
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                        <img class="img-circle" data-ng-src="{{ profile.imageUrl }}"> <span class="caret"></span>
+                                    </a>
+
+                                    <ul class="dropdown-menu" role="menu">
+
+                                        <li class="disabled">
+                                            <a href="">{{ profile.email }}</a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li>
+                                            <a href="" data-ng-click="profile.signOut()">Sign out</a>
+                                        </li>
+
+                                    </ul>
+
+                                </li>
+                            </ul>
+
+                        </div>
+                    </div>
+
+                </li>
+
+            </ul>
+
         </div>
 
     </div>

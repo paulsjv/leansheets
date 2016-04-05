@@ -1,45 +1,25 @@
-<div>
+<div class="g-sign-in">
 
-    <div class="btn-login-group btn-login-blue navbar-btn" data-ng-if="!google.isReady()">
+    <div class="btn-group btn-g-blue navbar-btn" data-ng-if="!auth.isReady()">
 
-        <div class="btn-login-icon">
-            <i class="icon-g" data-ng-class="{ 'fa-spin': !google.isReady() }"></i>
+        <div class="btn btn-g-icon">
+            <i class="icon-g" data-ng-class="{ 'fa-spin': !auth.isReady() }"></i>
         </div>
 
     </div>
 
-    <div class="btn-login-group btn-login-blue navbar-btn" data-ng-if="google.isReady() && !google.isSignedIn()" data-ng-click="google.signIn()">
+    <div class="btn-group btn-g-blue navbar-btn" data-ng-if="auth.isReady() && !auth.isSignedIn()" data-ng-click="auth.signIn()">
 
-        <div class="btn-login-icon">
-            <i class="icon-g"></i>
+        <div class="btn btn-g-icon">
+            <i class="icon icon-g"></i>
         </div>
 
-        <div class="btn-login">
-            Sign in with Google
+        <div class="btn btn-g-text">
+            Sign in with auth
         </div>
 
     </div>
 
-    <ul class="nav navbar-nav profile-nav" data-ng-if="google.isReady() && google.isSignedIn()">
-
-        <li class="dropdown dropdown-profile">
-
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                <img class="img-circle" data-ng-src="{{ google.getCurrentUser().imageUrl }}"> <span class="caret"></span>
-            </a>
-
-            <ul class="dropdown-menu" role="menu">
-                <li class="disabled">
-                    <a href="">{{ google.getCurrentUser().email }}</a>
-                </li>
-                <li class="divider"></li>
-                <li>
-                    <a href="" data-ng-click="google.signOut()">Sign out</a>
-                </li>
-            </ul>
-
-        </li>
-
-    </ul>
+    <div data-ng-transclude data-ng-if="auth.isReady() && auth.isSignedIn()"></div>
 
 </div>

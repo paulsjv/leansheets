@@ -1,5 +1,4 @@
 import gulp from 'gulp';
-import manifold from 'gulp-manifold';
 import livereload from 'gulp-livereload';
 import open from 'gulp-open';
 
@@ -36,42 +35,53 @@ gulp.task('preview', (done) => {
         ['preview:watch']
     );
 
-    return gulp.src([
-            paths.jspm.fontAwesome('fonts/*'),
-            paths.jspm.twitterBootstrap('fonts/*'),
-            paths.src('**/*')
-        ])
-        .pipe(streamCompiler.compile(compilerOpts))
-        .pipe(streamServer.listen(EXPRESS_PORT, LIVERELOAD_PORT))
-        .pipe(open({
-            uri: `http://localhost:${EXPRESS_PORT}`,
-            app: browser
-        }));
+    gulp.src([
+        paths.jspm.fontAwesome('fonts/*'),
+        paths.jspm.twitterBootstrap('fonts/*'),
+        paths.src('**/*')
+    ])
+    .pipe(streamCompiler.compile(compilerOpts))
+    .pipe(streamServer.listen(EXPRESS_PORT, LIVERELOAD_PORT)
+        .on('StreamServer.listening', () => {
+            done();
+        })
+    )
+    .pipe(open({
+        uri: `http://localhost:${EXPRESS_PORT}`,
+        app: browser
+    }));
 
 });
 
-gulp.task('preview:watch', () => {
+gulp.task('preview:watch', (done) => {
 
-    return gulp.src([
-            paths.jspm.fontAwesome('fonts/*'),
-            paths.jspm.twitterBootstrap('fonts/*'),
-            paths.src('**/*')
-        ])
-        .pipe(streamCompiler.compile(compilerOpts))
-        .pipe(streamServer.update())
-        .pipe(livereload({quiet: true}));
+    gulp.src([
+        paths.jspm.fontAwesome('fonts/*'),
+        paths.jspm.twitterBootstrap('fonts/*'),
+        paths.src('**/*')
+    ])
+    .pipe(streamCompiler.compile(compilerOpts))
+    .pipe(streamServer.update())
+    .pipe(livereload({quiet: true}))
+    .on('end', () => {
+        done();
+    });
 
 });
 
 gulp.task('preview:dist', ['dist'], (done) => {
 
-    return gulp.src([
-            paths.dist('**/*')
-        ])
-        .pipe(streamServer.listen(EXPRESS_PORT))
-        .pipe(open({
-            uri: `http://localhost:${EXPRESS_PORT}`,
-            app: browser
-        }));
+    gulp.src([
+        paths.dist('**/*')
+    ])
+    .pipe(streamServer.listen(EXPRESS_PORT)
+        .on('StreamServer.listening', () => {
+            done();
+        })
+    )
+    .pipe(open({
+        uri: `http://localhost:${EXPRESS_PORT}`,
+        app: browser
+    }));
 
 });

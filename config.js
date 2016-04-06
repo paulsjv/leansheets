@@ -13,12 +13,6 @@ System.config({
     "npm:*": "jspm_packages/npm/*"
   },
 
-  packages: {
-    "https://www.google.com/": {
-      "defaultExtension": false
-    }
-  },
-
   map: {
     "angular": "github:angular/bower-angular@1.5.3",
     "angular-mocks": "github:angular/bower-angular-mocks@1.5.3",

@@ -21,8 +21,8 @@ gulp.task('reports:complexity', ['clean:reports'], (done) => {
     plato.inspect([
         paths.src.js('**/*.js'),
         paths.spec.unit('**/*.js')
-    ], paths.reports.complexity(), options, () => {});
-
-    done();
+    ], paths.reports.complexity(), options, () => {
+        done();
+    });
 
 });

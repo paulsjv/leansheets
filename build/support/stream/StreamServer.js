@@ -47,6 +47,7 @@ export default class StreamServer {
                 });
 
                 that.server = that.app.listen(port);
+                this.emit('StreamServer.listening');
 
             }
 

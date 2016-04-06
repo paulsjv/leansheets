@@ -10,7 +10,7 @@ export default ($log, $rootScope, $state, gAuthService) => {
     return {
 
         restrict: 'EA',
-        
+
         replace: true,
         transclude: true,
 

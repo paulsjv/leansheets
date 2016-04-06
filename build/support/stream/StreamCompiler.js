@@ -8,6 +8,7 @@ import manifold from 'gulp-manifold';
 import webp from 'gulp-webp';
 import jspm from 'gulp-jspm';
 import sass from 'gulp-sass';
+import htmlmin from 'gulp-htmlmin';
 import rename from 'gulp-rename';
 import RevAll from 'gulp-rev-all';
 import uglify from 'gulp-uglify';
@@ -115,12 +116,16 @@ export default class StreamCompiler {
 
                                 paths.src.templates('**/*.html'),
 
-                                (stream) => stream.pipe(angularTemplateCache({
-                                    moduleSystem: 'ES6',
-                                    filename: path.relative(paths.src(), paths.src.js('modules/templates/templates.js')),
-                                    module: 'app.templates',
-                                    standalone: true
-                                }))
+                                (stream) => stream
+                                    .pipe(htmlmin({
+                                        collapseWhitespace: true
+                                    }))
+                                    .pipe(angularTemplateCache({
+                                        moduleSystem: 'ES6',
+                                        filename: path.relative(paths.src(), paths.src.js('modules/templates/templates.js')),
+                                        module: 'app.templates',
+                                        standalone: true
+                                    }))
 
                             )
 
@@ -180,7 +185,14 @@ export default class StreamCompiler {
                     `!${paths.src.templates('**')}` // excludes templates dir contents
                 ],
 
-                handler: (opts) => (stream) => stream
+                handler: (opts) => (stream) => {
+                    
+                    return stream
+                        .pipe(htmlmin({
+                            collapseWhitespace: true
+                        }));
+                    
+                }
 
             },
 

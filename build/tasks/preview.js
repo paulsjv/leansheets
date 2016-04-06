@@ -36,7 +36,7 @@ gulp.task('preview', (done) => {
         ['preview:watch']
     );
 
-    return gulp.src([
+    gulp.src([
         paths.jspm.fontAwesome('fonts/*'),
         paths.jspm.twitterBootstrap('fonts/*'),
         paths.src('**/*')
@@ -48,12 +48,12 @@ gulp.task('preview', (done) => {
         app: browser
     }));
 
-
+    return true;
 });
 
 gulp.task('preview:watch', () => {
 
-    return gulp.src([
+    gulp.src([
             paths.jspm.fontAwesome('fonts/*'),
             paths.jspm.twitterBootstrap('fonts/*'),
             paths.src('**/*')
@@ -62,11 +62,12 @@ gulp.task('preview:watch', () => {
         .pipe(streamServer.update())
         .pipe(livereload({quiet: true}));
 
+    return true;
 });
 
 gulp.task('preview:dist', ['dist'], (done) => {
 
-    return gulp.src([
+    gulp.src([
             paths.dist('**/*')
         ])
         .pipe(streamServer.listen(EXPRESS_PORT))
@@ -75,4 +76,5 @@ gulp.task('preview:dist', ['dist'], (done) => {
             app: browser
         }));
 
+    return true;
 });

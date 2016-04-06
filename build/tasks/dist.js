@@ -4,7 +4,7 @@ import {paths} from '../project.conf';
 
 gulp.task('dist', ['clean:dist', 'test', 'reports'], () => {
 
-    return gulp.src([
+    gulp.src([
             paths.jspm.fontAwesome('fonts/*'),
             paths.jspm.twitterBootstrap('fonts/*'),
             paths.src('**/*')
@@ -15,4 +15,5 @@ gulp.task('dist', ['clean:dist', 'test', 'reports'], () => {
         }))
         .pipe(gulp.dest(paths.dist()));
 
+    return true;
 });

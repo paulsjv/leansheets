@@ -7,19 +7,41 @@ import { axisBottom, axisLeft } from 'd3-axis';
 import { line } from 'd3-shape';
 import { min, max } from 'd3-array';
 
-var log;
+var log, x, y, element, chart;
+
+let resize = function() {
+    // update width
+    let width = parseInt(select(element.parentNode).style('width'), 10);
+    log.debug('directive resize width: ', width);
+    // reset x range
+    x.range([0, width]);
+    
+    // resize the chart
+    select(chart.node().parentNode)
+   //     .style('height', (y.rangeExtent()[1] + margin.top + margin.bottom) + 'px')
+        .style('width', (width) + 'px');
+/*
+    chart.selectAll('rect.background')
+        .attr('width', width);
+
+    chart.selectAll('rect.percent')
+        .attr('width', function(d) { return x(d.percent); });
+*/
+};
+
 
 export default ($log) => {
     'ngInject';
 
     log = $log;
+    // Resizing window logic
+    select(window).on('resize', () => { resize(); });
 
     return {
         scope: {},
         restrict: 'E',
         link: (scope, elm) => {
             log.debug('histogramChartDirective.js - in link!');
-            log.debug('d3.select: ', select);
 
             let data = [{ frequency: 3, percentage: 13, leadtime: 2 }, 
 						{ frequency: 5, percentage: 25, leadtime: 5 }, 
@@ -33,129 +55,81 @@ export default ($log) => {
 						{ frequency: 3, percentage: 98, leadtime: 25 }, 
 						{ frequency: 1, percentage: 100,leadtime: 50 }];
 
-			let margin = {top: 20, right: 30, bottom: 30, left: 40},
-			    width = 960, // - margin.left - margin.right,
-				height = 500; // - margin.top - margin.bottom;
+            // element is defined at top of file
+            element = elm[0];
 
-			let leadtime = data.map((d) => { return d.leadtime; });
-			let frequency = data.map((d) => { return d.frequency; });
-            log.debug('leadtime',leadtime);
-			let x = scaleBand()
-						.domain([0, max(leadtime)])
-						.range([0, width])
-                        .round(true);
-            x.padding(1);
-            log.debug('scale band width: ', x.bandwidth());
-			let y = scaleLinear()
-						.domain([0, max(frequency)])
-						.range([height, 0]);
+            // chart properties
+            let width = parseInt(select(element).style('width'), 10),
+                height = 400, // hard code for now
+            // container for bars of historgram
+                clipWidth = width * .7, // 70% of width
+                clipHeight = height * .9 // 90% of height
 
-			let xAxis = axisBottom(x);
-			let yAxis = axisLeft(y);
+            log.debug('directive width: ', width);
+            log.debug('directive height:', height);
 
-			let histogram = select(elm[0]).attr('width', width + 'px').attr('height', height + 'px');
-//								.attr('width', width + margin.left + margin.right + 'px')
-//								.attr('height', height + margin.top + margin.bottom + 'px');
-			let chart = histogram.append('svg').attr('width', width + 'px').attr('height', height + 'px');
-//							.attr('width', width + margin.left + margin.right + 'px')
-//							.attr('height', height + margin.top + margin.bottom + 'px');
-/*
-			chart.append('g')
-					.attr('transform', 'translate(0, ' + height + ')')
-					.call(xAxis);
-			chart.append('g')
-					.call(yAxis);
-*/
-            let barWidth = width / data.length;
+            // Lead times for X-Axis
+            let leadtime = data.map((d) => { return d.leadtime; }),
+                maxLeadtime = max(leadtime),
+                minLeadtime = min(leadtime);
 
-			chart.selectAll('.bar')
-						.data(data)
-					.enter().append('g')
-                        .attr('transform', (d, i) => { return 'translate(' + i * 30 + ', 0)'; } )
-                    .append('rect')
-						.attr('class', 'bar')
-//						.attr('x', (d) => { return x(d.leadtime); })
-						.attr('y', (d) => { return y(d.frequency); })
-						.attr('height', (d) => { return height - y(d.frequency); })
-						.attr('width', 10)
-//						.style('stroke-width', 3)
-                    .append('text')
-                        .attr('y', height - 15)
-                        .attr('dy', '.75em')
-                        .text((d) => { return d.leadtime; });
-/*			bar.append('text')
-				.attr('x', barWidth / 2) 
-				.attr('y', height - 15)
-				.attr('dy', '.75em')
-				.text((d) => { return d.leadtime; });
-*/
-/*
-            var outerWidth = 500;
-            var outerHeight = 250;
-            var margin = {
-                left: 70,
-                top: 5,
-                right: 5,
-                bottom: 60
-            };
-            var xColumn = "leadtime";
-            var yColumn = "frequency";
-            var xAxisLabelText = "Lead Time";
-            var xAxisLabelOffset = 48;
-            var yAxisLabelText = "Frequency";
-            var yAxisLabelOffset = 40;
-            var innerWidth = outerWidth - margin.left - margin.right;
-            var innerHeight = outerHeight - margin.top - margin.bottom;
-            var svg = select("histogram-chart").append("svg")
-                .attr("width", outerWidth)
-                .attr("height", outerHeight);
-            var g = svg.append("g")
-                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-            var path = g.append("path")
-                .attr("class", "chart-line");
-            var xAxisG = g.append("g")
-                .attr("class", "x axis")
-                .attr("transform", "translate(0," + innerHeight + ")");
-            var xAxisLabel = xAxisG.append("text")
-                .style("text-anchor", "middle")
-                .attr("transform", "translate(" + (innerWidth / 2) + "," + xAxisLabelOffset + ")")
-                .attr("class", "label")
-                .text(xAxisLabelText);
-            var yAxisG = g.append("g")
-                .attr("class", "y axis");
-            var yAxisLabel = yAxisG.append("text")
-                .style("text-anchor", "middle")
-                .attr("transform", "translate(-" + yAxisLabelOffset + "," + (innerHeight / 2) + ") rotate(-90)")
-                .attr("class", "label")
-                .text(yAxisLabelText);
-            var xScale = scaleTime().range([0, innerWidth]);
-            var yScale = scaleLinear().range([innerHeight, 0]);
-            var xAxis = axisBottom(xScale);
-            var yAxis = axisLeft(yScale);
-            var l = line(data)
-                .x(function(d) {
-                    return xScale(d[xColumn]);
-                })
-                .y(function(d) {
-                    return yScale(d[yColumn]);
-                });
+            log.debug('leadtime: ', leadtime);
+            log.debug('max leadtime: ', maxLeadtime);
+            log.debug('min leadtime: ', minLeadtime);
 
-            function render(data) {
-                xScale.domain(extent(data, function(d) {
-                    return d[xColumn];
-                }));
-                yScale.domain(extent(data, function(d) {
-                    return d[yColumn];
-                }));
-                xAxisG.call(xAxis);
-                yAxisG.call(yAxis);
-                path.attr("d", l(data));
-            }
+            // x is defined at top of file since it is used in resize()
+            //      for responsive charting.
+            // D3.js X-Axis implemenation see:
+            //      https://github.com/d3/d3-scale#band-scales
+            x = scaleBand()
+					.domain(leadtime)
+					.rangeRound([0, width]);
+            // Padding between bars both inner and outter padding
+            x.padding(.58);
 
-            render(data);
-*/
+            log.debug('band(value)', x(maxLeadtime));
+            log.debug('band.bandwidth(): ', x.bandwidth());
+            log.debug('band.step()', x.step());
+            log.debug('band.padding()', x.padding());
+
+            // Frequency for how tall each bar is on left Y-Axis
+            let frequency = data.map((d) => { return d.frequency; }),
+                maxFrequency = max(frequency),
+                minFrequency = min(frequency),
+                barHeight = Math.round(height / (maxFrequency ));
+
+            log.debug('barHeight', barHeight);
+            log.debug('frequency:', frequency);
+            log.debug('max frequency:', maxFrequency);
+            log.debug('min frequency:', minFrequency);
+
+            // y is defined at top of file since it is used in resize()
+            //      for responsive charting.
+            // D3.js Y-Axis implemenation see:
+            //      https://github.com/d3/d3-scale#linear-scales
+            //      https://github.com/d3/d3-scale#continuous-scales
+            y = scaleLinear()
+                    .domain([minFrequency, maxFrequency])
+                    .range([0, height]);
+
+            // Creating the chart and all the SVG elements for it.
+            // chart is defined at the top of the file since it is used in resize()
+            chart = select(element)
+                            .append('svg')
+                                .style('width', width).style('height', height)
+                            .append('g');
+
+            // Each bar in the histogram defined here
+            var bars = chart.selectAll('.bar')
+                    .data(data)
+                  .enter().append('rect')
+                    .attr('class', 'bar background')
+                    .attr('width', x.bandwidth())
+                    .attr('height', (d) => { return d.frequency * barHeight; })
+                    .attr('x', (d) => { return x(d.leadtime); })
+                    .attr('y', (d) => { return height - (d.frequency * barHeight); });
         }
 
-    }
+    };
 
 };

@@ -1,4 +1,4 @@
-import { select, selctAll, svg } from 'd3-selection';
+import { select, selectAll } from 'd3-selection';
 import { time } from 'd3-time';
 import { scaleLinear, scaleBand } from 'd3-scale';
 import { format } from 'd3-format';
@@ -7,35 +7,50 @@ import { axisBottom, axisLeft } from 'd3-axis';
 import { line } from 'd3-shape';
 import { min, max } from 'd3-array';
 
-var log, x, y, element, chart;
+var log, x, y, element, svg, bars;
 
 let resize = function() {
-    // update width
-    let width = parseInt(select(element.parentNode).style('width'), 10);
-    log.debug('directive resize width: ', width);
-    // reset x range
-    x.range([0, width]);
-    
-    // resize the chart
-    select(chart.node().parentNode)
-   //     .style('height', (y.rangeExtent()[1] + margin.top + margin.bottom) + 'px')
-        .style('width', (width) + 'px');
-/*
-    chart.selectAll('rect.background')
-        .attr('width', width);
+    // get new width of parent node of svg width
+    let svgWidth = getSvgWidth(element);
+    log.debug('directive resize width: ', svgWidth);
 
-    chart.selectAll('rect.percent')
+    // update svg with new width
+    svg.style('width', svgWidth);
+
+    // reset x range
+    let barContainerWidth = getBarContainerWidth(svgWidth, getClipWidth(svgWidth));
+    x.rangeRound([0, barContainerWidth]);
+    log.debug('bar continer width', barContainerWidth);
+    log.debug('x.bandwidth()', x.bandwidth());
+
+    // update all bars
+    selectAll('rect.bar')
+        .attr('width', x.bandwidth())
+        .attr('x', (d) => { return x(d.leadtime); });
+/*
+    svg.selectAll('rect.percent')
         .attr('width', function(d) { return x(d.percent); });
 */
 };
 
+let getSvgWidth = (elm) => {
+    return parseInt(select(elm).style('width'), 10);
+};
+
+let getClipWidth = (width) => {
+    return Math.round(width * .9);
+};
+
+let getBarContainerWidth = (svgWidth, clipWidth) => {
+    return svgWidth - (svgWidth - clipWidth);
+};
 
 export default ($log) => {
     'ngInject';
 
     log = $log;
     // Resizing window logic
-    select(window).on('resize', () => { resize(); });
+    select(window).on('resize', resize);
 
     return {
         scope: {},
@@ -58,15 +73,23 @@ export default ($log) => {
             // element is defined at top of file
             element = elm[0];
 
-            // chart properties
-            let width = parseInt(select(element).style('width'), 10),
-                height = 400, // hard code for now
-            // container for bars of historgram
-                clipWidth = width * .7, // 70% of width
-                clipHeight = height * .9 // 90% of height
+            // svg properties
+            let svgWidth = getSvgWidth(element),
+                svgHeight = 400, // hard code for now
+            // container for bars of historgram also margins
+                clipWidth = getClipWidth(svgWidth), // 90% of width
+                clipHeight = Math.round(svgHeight * .7); // 70% of height
+           // bar container 
+            let barContainerWidth = getBarContainerWidth(svgWidth, clipWidth),
+                barContainerHeight = svgHeight - (svgHeight - clipHeight), 
+            // bar width
+                minBarWidth = 6,
+                maxBarWidth = 45;
 
-            log.debug('directive width: ', width);
-            log.debug('directive height:', height);
+            log.debug('directive width: ', svgWidth);
+            log.debug('directive height:', svgHeight);
+            log.debug('barContainerHeight', barContainerHeight);
+            log.debug('barContainerWidth', barContainerWidth);
 
             // Lead times for X-Axis
             let leadtime = data.map((d) => { return d.leadtime; }),
@@ -83,9 +106,10 @@ export default ($log) => {
             //      https://github.com/d3/d3-scale#band-scales
             x = scaleBand()
 					.domain(leadtime)
-					.rangeRound([0, width]);
+					.rangeRound([0, barContainerWidth]);
             // Padding between bars both inner and outter padding
-            x.padding(.58);
+            // TODO: change padding to be responsive and have a min and max for bar width
+            x.padding(.58); // .58
 
             log.debug('band(value)', x(maxLeadtime));
             log.debug('band.bandwidth(): ', x.bandwidth());
@@ -96,7 +120,7 @@ export default ($log) => {
             let frequency = data.map((d) => { return d.frequency; }),
                 maxFrequency = max(frequency),
                 minFrequency = min(frequency),
-                barHeight = Math.round(height / (maxFrequency ));
+                barHeight = Math.round(barContainerHeight / (maxFrequency ));
 
             log.debug('barHeight', barHeight);
             log.debug('frequency:', frequency);
@@ -110,24 +134,44 @@ export default ($log) => {
             //      https://github.com/d3/d3-scale#continuous-scales
             y = scaleLinear()
                     .domain([minFrequency, maxFrequency])
-                    .range([0, height]);
+                    .range([0, barContainerHeight]);
 
-            // Creating the chart and all the SVG elements for it.
-            // chart is defined at the top of the file since it is used in resize()
-            chart = select(element)
+            // Creating the svg and all the SVG elements for it.
+            // svg is defined at the top of the file since it is used in resize()
+            svg = select(element)
                             .append('svg')
-                                .style('width', width).style('height', height)
-                            .append('g');
-
+                                .style('width', svgWidth).style('height', svgHeight);
+/*
+            let clippath = svg.append('defs')
+                                    .append('clippath')
+                                        .attr('id', 'histogram-bars')
+                                        .append('rect')
+                                            .attr('x', 0)
+                                            .attr('y', 0)
+                                            .attr('width', clipWidth)
+                                            .attr('height', clipHeight);
+*/                                          
+            // bars is defined at the top of the file since it is used in resize()
             // Each bar in the histogram defined here
-            var bars = chart.selectAll('.bar')
+            bars = svg.append('g')
+                        .attr('id', 'barcontainer')
+                        .attr('transform', 'translate(' + [((svgWidth - clipWidth)/2), ((svgHeight - clipHeight)/2)] + ')')
+                    .selectAll('.bar')
                     .data(data)
                   .enter().append('rect')
-                    .attr('class', 'bar background')
-                    .attr('width', x.bandwidth())
+                    .attr('class', 'bar')
+                    .attr('width', x.bandwidth()
+                                   /* () => {  if (x.bandwidth() > maxBarWidth) {
+                                                return maxBarWidth;
+                                            } else if (x.bandwidth() < minBarWidth) {
+                                                return minBarWidth;
+                                            } else { return x.bandwidth(); }}*/
+                    )
                     .attr('height', (d) => { return d.frequency * barHeight; })
                     .attr('x', (d) => { return x(d.leadtime); })
-                    .attr('y', (d) => { return height - (d.frequency * barHeight); });
+                    .attr('y', (d) => { return barContainerHeight - (d.frequency * barHeight); })
+                    .attr('rx', 0)  // rounded edges 0 = sharp corners
+                    .attr('ry', 0); // rounded edges 0 = sharp corners
         }
 
     };

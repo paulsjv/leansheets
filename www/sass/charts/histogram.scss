@@ -7,17 +7,14 @@ histogram-chart {
   display: block;
 }
 
-histogram-chart rect {
-  fill: steelblue;
-  stroke: white;
-}
-
 histogram-chart text {
     fill: white;
 }
 
-histogram-chart .bar rect.background {
-    fill: rgb(47, 126, 216);
+histogram-chart rect.bar {
+    fill: #2f7ed8;
+    stroke: #ffffff;
+    stroke-width: 1;
 }
 
 histogram-chart svg {

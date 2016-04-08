@@ -1,8 +1,5 @@
 import { select, selectAll } from 'd3-selection';
-import { time } from 'd3-time';
 import { scaleLinear, scaleBand } from 'd3-scale';
-import { format } from 'd3-format';
-import { extent } from 'd3-array';
 import { axisBottom, axisLeft } from 'd3-axis';
 import { line } from 'd3-shape';
 import { min, max } from 'd3-array';
@@ -27,10 +24,6 @@ let resize = function() {
     selectAll('rect.bar')
         .attr('width', x.bandwidth())
         .attr('x', (d) => { return x(d.leadtime); });
-/*
-    svg.selectAll('rect.percent')
-        .attr('width', function(d) { return x(d.percent); });
-*/
 };
 
 let getSvgWidth = (elm) => {
@@ -81,10 +74,7 @@ export default ($log) => {
                 clipHeight = Math.round(svgHeight * .7); // 70% of height
            // bar container 
             let barContainerWidth = getBarContainerWidth(svgWidth, clipWidth),
-                barContainerHeight = svgHeight - (svgHeight - clipHeight), 
-            // bar width
-                minBarWidth = 6,
-                maxBarWidth = 45;
+                barContainerHeight = svgHeight - (svgHeight - clipHeight); 
 
             log.debug('directive width: ', svgWidth);
             log.debug('directive height:', svgHeight);
@@ -132,10 +122,10 @@ export default ($log) => {
             // D3.js Y-Axis implemenation see:
             //      https://github.com/d3/d3-scale#linear-scales
             //      https://github.com/d3/d3-scale#continuous-scales
-            y = scaleLinear()
+/*            y = scaleLinear()
                     .domain([minFrequency, maxFrequency])
-                    .range([0, barContainerHeight]);
-
+                    .range([barContainerHeight, 0]);
+*/
             // Creating the svg and all the SVG elements for it.
             // svg is defined at the top of the file since it is used in resize()
             svg = select(element)
@@ -160,18 +150,46 @@ export default ($log) => {
                     .data(data)
                   .enter().append('rect')
                     .attr('class', 'bar')
-                    .attr('width', x.bandwidth()
-                                   /* () => {  if (x.bandwidth() > maxBarWidth) {
-                                                return maxBarWidth;
-                                            } else if (x.bandwidth() < minBarWidth) {
-                                                return minBarWidth;
-                                            } else { return x.bandwidth(); }}*/
-                    )
+                    .attr('width', x.bandwidth())
                     .attr('height', (d) => { return d.frequency * barHeight; })
                     .attr('x', (d) => { return x(d.leadtime); })
                     .attr('y', (d) => { return barContainerHeight - (d.frequency * barHeight); })
                     .attr('rx', 0)  // rounded edges 0 = sharp corners
                     .attr('ry', 0); // rounded edges 0 = sharp corners
+
+            // Overlay Line
+            let percentage = data.map((d) => { return d.percentage; });
+            let minPercentage = min(percentage);
+            let maxPercentage = max(percentage);
+
+            log.debug('percentage', percentage);
+
+            // new linear scale for the overlay line
+            let yOverlay = scaleLinear()
+                //                .domain([minPercentage, maxPercentage])
+                                .range([barContainerHeight, 0]);
+            let xOverlay = scaleLinear()
+              //                  .domain([minLeadtime, maxLeadtime])
+                                .range([0, barContainerWidth]);
+            log.debug('yOverlay(13)', yOverlay(13));
+            log.debug('yOverlay(25)', yOverlay(25));
+            log.debug('x', xOverlay(2));
+
+            let xy = [ { "x": 1,   "y": 5},  { "x": 20,  "y": 20},
+                 { "x": 40,  "y": 10}, { "x": 60,  "y": 40},
+                 { "x": 80,  "y": 5},  { "x": 100, "y": 60}];
+            yOverlay.domain([min(xy.map((d) => { return d.y; })), max(xy.map((d) => { return d.y; }))]);
+            xOverlay.domain([min(xy.map((d) => { return d.x; })), max(xy.map((d) => { return d.x; }))]);
+            let path = line().x((d) => { return xOverlay(d.x);} )
+                            .y((d) => { return yOverlay(d.y); });
+           svg.append('g')
+                    .attr('transform', 'translate(' + [((svgWidth - clipWidth)/2), ((svgHeight - clipHeight)/2)] + ')')
+                    .attr('id', 'overlay')
+                .append('path')
+                    .datum(xy)
+                    .attr('d', path); 
+                                  
+
         }
 
     };

@@ -7,17 +7,37 @@ histogram-chart {
   display: block;
 }
 
-histogram-chart text {
-    fill: white;
-}
-
 histogram-chart rect.bar {
     fill: #2f7ed8;
-    stroke: #ffffff;
-    stroke-width: 1;
 }
 
 histogram-chart svg {
     font-family:"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;font-size:12px;
     font-size: 12px;
 }
+
+.axis {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #C0D0E0;
+  shape-rendering: crispEdges;
+}
+
+.axis text {
+  fill: #666;
+}
+
+.axis--x path {
+  stroke: #C0D0E0;
+}
+
+path.overlay {
+  fill: none;
+  stroke: black;
+  stroke-width: 1; 
+}
+

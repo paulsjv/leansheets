@@ -2,7 +2,7 @@ import { select, selectAll } from 'd3-selection';
 import { scaleLinear, scaleBand } from 'd3-scale';
 import { axisBottom, axisLeft } from 'd3-axis';
 import { line } from 'd3-shape';
-import { min, max } from 'd3-array';
+import { min, max, extent } from 'd3-array';
 
 var log, x, y, element, svg, bars;
 
@@ -75,6 +75,10 @@ export default ($log) => {
            // bar container 
             let barContainerWidth = getBarContainerWidth(svgWidth, clipWidth),
                 barContainerHeight = svgHeight - (svgHeight - clipHeight); 
+            let margin = {  top:((svgHeight - clipHeight)/2), 
+                            right:((svgWidth - clipWidth)/2),
+                            bottom:((svgHeight - clipHeight)/2),
+                            left:((svgWidth - clipWidth)/2) }
 
             log.debug('directive width: ', svgWidth);
             log.debug('directive height:', svgHeight);
@@ -98,7 +102,6 @@ export default ($log) => {
 					.domain(leadtime)
 					.rangeRound([0, barContainerWidth]);
             // Padding between bars both inner and outter padding
-            // TODO: change padding to be responsive and have a min and max for bar width
             x.padding(.58); // .58
 
             log.debug('band(value)', x(maxLeadtime));
@@ -117,19 +120,31 @@ export default ($log) => {
             log.debug('max frequency:', maxFrequency);
             log.debug('min frequency:', minFrequency);
 
+            // Overlay Line
+            let percentage = data.map((d) => { return d.percentage; });
+            let minPercentage = min(percentage);
+            let maxPercentage = max(percentage);
+
             // y is defined at top of file since it is used in resize()
             //      for responsive charting.
             // D3.js Y-Axis implemenation see:
             //      https://github.com/d3/d3-scale#linear-scales
             //      https://github.com/d3/d3-scale#continuous-scales
-/*            y = scaleLinear()
-                    .domain([minFrequency, maxFrequency])
+            y = scaleLinear()
+                    .domain(extent(percentage)) //[minFrequency, maxFrequency])
                     .range([barContainerHeight, 0]);
-*/
+
+            // Axises
+            let xAxis = axisBottom(x);//.tickValues(leadtime);
+            let yAxis = axisLeft(y);
+
+
             // Creating the svg and all the SVG elements for it.
             // svg is defined at the top of the file since it is used in resize()
             svg = select(element)
                             .append('svg')
+                                .attr('version', '1.1')
+                                .attr('xmlns','http://www.w3.org/2000/svg')
                                 .style('width', svgWidth).style('height', svgHeight);
 /*
             let clippath = svg.append('defs')
@@ -140,12 +155,32 @@ export default ($log) => {
                                             .attr('y', 0)
                                             .attr('width', clipWidth)
                                             .attr('height', clipHeight);
-*/                                          
-            // bars is defined at the top of the file since it is used in resize()
+*/ 
+            svg.append('g')
+                    .attr('transform', 'translate(' + [margin.left, (margin.top + barContainerHeight)] + ')')
+                    .attr('class', 'axis axis--x')
+                    .attr('zIndex', '2')
+                .call(xAxis);
+
+            svg.append('g')
+                    .attr('transform', 'translate(' + [margin.left, margin.top] + ')')
+                    .attr('class', 'axis axis--y')
+                    .attr('zIndex', '2')
+                .call(yAxis)
+                .append('text')
+                    .attr('class', 'axis-text')
+                    .attr('transform', 'rotate(-90)')
+                    .attr('y', 6)
+                    .attr('dy', '.71em')
+                    .style('text-anchor', 'end')
+                    .text('Percentage %');
+
+           // bars is defined at the top of the file since it is used in resize()
             // Each bar in the histogram defined here
             bars = svg.append('g')
                         .attr('id', 'barcontainer')
-                        .attr('transform', 'translate(' + [((svgWidth - clipWidth)/2), ((svgHeight - clipHeight)/2)] + ')')
+                        .attr('transform', 'translate(' + [margin.left, margin.top] + ')')
+                        .attr('zIndex', '0.1')
                     .selectAll('.bar')
                     .data(data)
                   .enter().append('rect')
@@ -153,40 +188,17 @@ export default ($log) => {
                     .attr('width', x.bandwidth())
                     .attr('height', (d) => { return d.frequency * barHeight; })
                     .attr('x', (d) => { return x(d.leadtime); })
-                    .attr('y', (d) => { return barContainerHeight - (d.frequency * barHeight); })
+                    .attr('y', (d) => { return barContainerHeight - (d.frequency * barHeight) - .5; })
                     .attr('rx', 0)  // rounded edges 0 = sharp corners
                     .attr('ry', 0); // rounded edges 0 = sharp corners
 
-            // Overlay Line
-            let percentage = data.map((d) => { return d.percentage; });
-            let minPercentage = min(percentage);
-            let maxPercentage = max(percentage);
-
-            log.debug('percentage', percentage);
-
-            // new linear scale for the overlay line
-            let yOverlay = scaleLinear()
-                //                .domain([minPercentage, maxPercentage])
-                                .range([barContainerHeight, 0]);
-            let xOverlay = scaleLinear()
-              //                  .domain([minLeadtime, maxLeadtime])
-                                .range([0, barContainerWidth]);
-            log.debug('yOverlay(13)', yOverlay(13));
-            log.debug('yOverlay(25)', yOverlay(25));
-            log.debug('x', xOverlay(2));
-
-            let xy = [ { "x": 1,   "y": 5},  { "x": 20,  "y": 20},
-                 { "x": 40,  "y": 10}, { "x": 60,  "y": 40},
-                 { "x": 80,  "y": 5},  { "x": 100, "y": 60}];
-            yOverlay.domain([min(xy.map((d) => { return d.y; })), max(xy.map((d) => { return d.y; }))]);
-            xOverlay.domain([min(xy.map((d) => { return d.x; })), max(xy.map((d) => { return d.x; }))]);
-            let path = line().x((d) => { return xOverlay(d.x);} )
-                            .y((d) => { return yOverlay(d.y); });
+            let path = line().x((d) => { return x(d.leadtime);} )
+                            .y((d) => { return y(d.percentage); });
            svg.append('g')
-                    .attr('transform', 'translate(' + [((svgWidth - clipWidth)/2), ((svgHeight - clipHeight)/2)] + ')')
-                    .attr('id', 'overlay')
+                    .attr('transform', 'translate(' + [margin.left, margin.top] + ')')
                 .append('path')
-                    .datum(xy)
+                    .attr('class','overlay')
+                    .datum(data)
                     .attr('d', path); 
                                   
 

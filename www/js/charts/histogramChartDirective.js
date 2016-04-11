@@ -4,7 +4,19 @@ import { axisBottom, axisLeft } from 'd3-axis';
 import { line } from 'd3-shape';
 import { min, max, extent } from 'd3-array';
 
-var log, x, y, element, svg, bars;
+var log, x, y, element, svg, bars, overlay, xAxis, yAxis;
+var data = [{ frequency: 3, percentage: 13, leadtime: 2 }, 
+            { frequency: 5, percentage: 25, leadtime: 5 }, 
+            { frequency: 8, percentage: 50, leadtime: 7 }, 
+            { frequency: 3, percentage: 63, leadtime: 10 }, 
+            { frequency: 1, percentage: 68, leadtime: 11 }, 
+            { frequency: 4, percentage: 75, leadtime: 15 }, 
+            { frequency: 2, percentage: 82, leadtime: 17 }, 
+            { frequency: 2, percentage: 90, leadtime: 20 }, 
+            { frequency: 1, percentage: 92, leadtime: 21 }, 
+            { frequency: 3, percentage: 98, leadtime: 25 }, 
+            { frequency: 1, percentage: 100,leadtime: 50 }];
+
 
 let resize = function() {
     // get new width of parent node of svg width
@@ -24,6 +36,14 @@ let resize = function() {
     selectAll('rect.bar')
         .attr('width', x.bandwidth())
         .attr('x', (d) => { return x(d.leadtime); });
+
+    // update x-axis
+    select('.axis--x').call(xAxis);
+
+    // update overlay line
+    select('.overlay')
+        .attr('d', overlay); 
+
 };
 
 let getSvgWidth = (elm) => {
@@ -50,18 +70,6 @@ export default ($log) => {
         restrict: 'E',
         link: (scope, elm) => {
             log.debug('histogramChartDirective.js - in link!');
-
-            let data = [{ frequency: 3, percentage: 13, leadtime: 2 }, 
-						{ frequency: 5, percentage: 25, leadtime: 5 }, 
-						{ frequency: 8, percentage: 50, leadtime: 7 }, 
-						{ frequency: 3, percentage: 63, leadtime: 10 }, 
-						{ frequency: 1, percentage: 68, leadtime: 11 }, 
-						{ frequency: 4, percentage: 75, leadtime: 15 }, 
-						{ frequency: 2, percentage: 82, leadtime: 17 }, 
-						{ frequency: 2, percentage: 90, leadtime: 20 }, 
-						{ frequency: 1, percentage: 92, leadtime: 21 }, 
-						{ frequency: 3, percentage: 98, leadtime: 25 }, 
-						{ frequency: 1, percentage: 100,leadtime: 50 }];
 
             // element is defined at top of file
             element = elm[0];
@@ -135,8 +143,8 @@ export default ($log) => {
                     .range([barContainerHeight, 0]);
 
             // Axises
-            let xAxis = axisBottom(x);//.tickValues(leadtime);
-            let yAxis = axisLeft(y);
+            xAxis = axisBottom(x);//.tickValues(leadtime);
+            yAxis = axisLeft(y).ticks(5);
 
 
             // Creating the svg and all the SVG elements for it.
@@ -192,15 +200,17 @@ export default ($log) => {
                     .attr('rx', 0)  // rounded edges 0 = sharp corners
                     .attr('ry', 0); // rounded edges 0 = sharp corners
 
-            let path = line().x((d) => { return x(d.leadtime);} )
+            // Line Overlay
+            // Line start x-axis
+            let overlayXstart = margin.left + Math.round((x.bandwidth() / 2));
+            overlay = line().x((d) => { return x(d.leadtime);} )
                             .y((d) => { return y(d.percentage); });
-           svg.append('g')
+            svg.append('g')
                     .attr('transform', 'translate(' + [margin.left, margin.top] + ')')
                 .append('path')
                     .attr('class','overlay')
                     .datum(data)
-                    .attr('d', path); 
-                                  
+                    .attr('d', overlay); 
 
         }
 

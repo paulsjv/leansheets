@@ -1,21 +1,21 @@
 import { select, selectAll } from 'd3-selection';
 import { scaleLinear, scaleBand } from 'd3-scale';
-import { axisBottom, axisLeft } from 'd3-axis';
-import { line } from 'd3-shape';
+import { axisBottom, axisLeft, axisRight } from 'd3-axis';
+import { line, curveCardinal, curveBundle } from 'd3-shape';
 import { min, max, extent } from 'd3-array';
 
-var log, x, y, element, svg, bars, overlay, xAxis, yAxis;
+var log, x, y, element, svg, bars, overlayLine, xOverlay, xAxis, yAxis;
 var data = [{ frequency: 3, percentage: 13, leadtime: 2 }, 
             { frequency: 5, percentage: 25, leadtime: 5 }, 
             { frequency: 8, percentage: 50, leadtime: 7 }, 
             { frequency: 3, percentage: 63, leadtime: 10 }, 
-            { frequency: 8, percentage: 68, leadtime: 11 }, 
+            { frequency: 1, percentage: 68, leadtime: 11 }, 
             { frequency: 4, percentage: 75, leadtime: 15 }, 
             { frequency: 2, percentage: 82, leadtime: 17 }, 
             { frequency: 2, percentage: 90, leadtime: 20 }, 
-            { frequency: 8, percentage: 92, leadtime: 21 }, 
-            { frequency: 8, percentage: 98, leadtime: 25 }, 
-            { frequency: 8, percentage: 100,leadtime: 50 }];
+            { frequency: 1, percentage: 92, leadtime: 21 }, 
+            { frequency: 3, percentage: 98, leadtime: 25 }, 
+            { frequency: 1, percentage: 100,leadtime: 50 }];
 
 
 let resize = function() {
@@ -40,9 +40,12 @@ let resize = function() {
     // update x-axis
     select('.axis--x').call(xAxis);
 
+    // update xOverlay scaleBand.rangeRound
+    xOverlay.rangeRound([ x.range()[0] + (x.bandwidth()/2), x.range()[1] + (x.bandwidth()/2) ]);
+
     // update overlay line
     select('.overlay')
-        .attr('d', overlay); 
+        .attr('d', overlayLine); 
 
 };
 
@@ -145,7 +148,7 @@ export default ($log) => {
 
             // Axises
             xAxis = axisBottom(x);//.tickValues(leadtime);
-            yAxis = axisLeft(y).ticks(5);
+            yAxis = axisLeft(y).ticks(5).tickSize(-barContainerWidth);
 
 
             // Creating the svg and all the SVG elements for it.
@@ -203,25 +206,24 @@ export default ($log) => {
 
             // Line Overlay
             // Line start x-axis
-            let overlayXstart = margin.left + Math.round((x.bandwidth() / 2));
-            let xOverlay = x.copy();
+            xOverlay = x.copy();
             xOverlay.range([ x.range()[0] + (x.bandwidth()/2), x.range()[1] + (x.bandwidth()/2) ]);
 
-            let yOverlay = scaleLinear()
-                                .domain(extent(percentage))
-                                .range([barContainerHeight - min(percentage), 0]);
-            overlay = line().x((d, i) => { 
-                                log.debug('Leadtime: '+ d.leadtime + ' Line x: ' + xOverlay(d.leadtime));
-                                return xOverlay(d.leadtime);} )
-                            .y((d) => { 
-                                log.debug('Percentage: ' + d.percentage + ' Line y: ' + yOverlay(d.percentage));
-                                return yOverlay(d.percentage); });
+            // Line start y-axis
+            let yOverlay = y.copy();
+            yOverlay.range([barContainerHeight - min(percentage), 0]);
+
+            // Line function that is passed to the "p" element
+            overlayLine = line().curve(curveCardinal)
+                            .x((d) => { return xOverlay(d.leadtime); })
+                            .y((d) => { return yOverlay(d.percentage); });
+
             svg.append('g')
                     .attr('transform', 'translate(' + [margin.left, margin.top] + ')')
                 .append('path')
                     .attr('class','overlay')
                     .datum(data)
-                    .attr('d', overlay); 
+                    .attr('d', overlayLine); 
 
         }
 

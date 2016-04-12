@@ -116,16 +116,21 @@ export default class StreamCompiler {
 
                                 paths.src.templates('**/*.html'),
 
-                                (stream) => stream
-                                    .pipe(htmlmin({
-                                        collapseWhitespace: true
-                                    }))
-                                    .pipe(angularTemplateCache({
-                                        moduleSystem: 'ES6',
-                                        filename: path.relative(paths.src(), paths.src.js('modules/templates/templates.js')),
-                                        module: 'app.templates',
-                                        standalone: true
-                                    }))
+                                (stream) => {
+                                    
+                                    return stream
+                                        .pipe(htmlmin({
+                                            removeComments: true,
+                                            collapseWhitespace: true
+                                        }))
+                                        .pipe(angularTemplateCache({
+                                            moduleSystem: 'ES6',
+                                            filename: path.relative(paths.src(), paths.src.js('modules/templates/templates.js')),
+                                            module: 'app.templates',
+                                            standalone: true
+                                        }));
+
+                                }
 
                             )
 
@@ -189,6 +194,7 @@ export default class StreamCompiler {
                     
                     return stream
                         .pipe(htmlmin({
+                            removeComments: true,
                             collapseWhitespace: true
                         }));
                     

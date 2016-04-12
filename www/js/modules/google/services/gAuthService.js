@@ -1,35 +1,20 @@
-import gAuth from '../model/gAuth';
-
 export default class gAuthService {
 
-    constructor($rootScope, $state, g, gSignInState, gSignOutState) {
+    constructor($rootScope, g, gAuthFactory) {
         'ngInject';
 
         g.then((gapi) => {
             gapi.auth2.getAuthInstance().then((googleAuth) => {
 
                 googleAuth.isSignedIn.listen(() => {
-
-                    $rootScope.$apply(() => {
-                        $rootScope.$emit('gAuth.status.changed', gAuth.create(googleAuth));
-                    });
-
+                    $rootScope.$emit('gAuth.status.changed', gAuthFactory.create(googleAuth));
                 });
 
             });
         });
 
-        $rootScope.$on('gAuth.status.changed', (event, gAuth) => {
-
-            if (gAuth.isSignedIn()) {
-                $state.go(gSignInState);
-            } else {
-                $state.go(gSignOutState);
-            }
-
-        });
-
         this.g = g;
+        this.gAuthFactory = gAuthFactory;
 
     }
 
@@ -38,9 +23,9 @@ export default class gAuthService {
         return new Promise((resolve, reject) => {
             this.g.then((gapi) => {
                 gapi.auth2.getAuthInstance().then((googleAuth) => {
-                    resolve(gAuth.create(googleAuth));
+                    resolve(this.gAuthFactory.create(googleAuth));
                 }, reject);
-            });
+            }, reject);
         });
 
     }

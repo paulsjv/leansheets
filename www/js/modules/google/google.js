@@ -1,19 +1,16 @@
 import angular from 'angular';
 
-import files from './directives/files';
-import profile from './directives/gProfile';
-import signIn from './directives/gSignIn';
-
 import g from './factories/g';
+import gAuthFactory from './factories/gAuthFactory';
+import gAuthResponseFactory from './factories/gAuthResponseFactory';
+import gBasicProfileFactory from './factories/gBasicProfileFactory';
+import gUserFactory from './factories/gUserFactory';
 
 import authService from './services/gAuthService';
-import driveService from './services/gDriveService';
 import scriptService from './services/gScriptService';
 
 export default angular.module('google', [])
-    .constant('gApplicationId', '834306803658')
-    .constant('gClientId', '834306803658-pbrj1t1lur7eq6nacauqanljjsan0i0n.apps.googleusercontent.com')
-    .constant('gClientSecret', 'UfY5f96OwV8eXk2Ma2Px0qMz')
+    .constant('gClientId', '138745799930-6liem3jdh7f9n2e7dnrdbenfu7en1q31.apps.googleusercontent.com')
     .constant('gModules', [
         'client'
     ])
@@ -21,21 +18,27 @@ export default angular.module('google', [])
         'auth2'
     ])
     .constant('gClientLoadApis', {
-        'drive' : 'v2'
+        'drive' : 'v3'
     })
     .constant('gScopes', [
-        'email',
         'profile',
-        'https://www.googleapis.com/auth/script.scriptapp',
-        'https://www.googleapis.com/auth/script.external_request'
+        'https://www.googleapis.com/auth/script.external_request',
+        'https://www.googleapis.com/auth/drive',
+        'https://www.googleapis.com/auth/drive.appdata',
+        'https://www.googleapis.com/auth/drive.appfolder',
+        'https://www.googleapis.com/auth/drive.file',
+        'https://www.googleapis.com/auth/drive.metadata',
+        'https://www.googleapis.com/auth/drive.metadata.readonly',
+        'https://www.googleapis.com/auth/drive.readonly',
+        'https://www.googleapis.com/auth/drive.scripts'
     ])
     .constant('gScripts', {
-        LS_DATA_DEV: 'MfAG5em1RAAg8573UF3oAonFIFWf3Dj_9'
+        LS_DATA_DEV: 'MzA0CROwlXMIvJMrE-vp8hHFIFWf3Dj_9'
     })
-    .directive('files', files)
-    .directive('gSignIn', signIn)
-    .directive('gProfile', profile)
     .factory('g', g)
+    .factory('gAuthFactory', gAuthFactory)
+    .factory('gAuthResponseFactory', gAuthResponseFactory)
+    .factory('gBasicProfileFactory', gBasicProfileFactory)
+    .factory('gUserFactory', gUserFactory)
     .service('gAuthService', authService)
-    .service('gDriveService', driveService)
     .service('gScriptService', scriptService);

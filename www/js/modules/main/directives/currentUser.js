@@ -1,10 +1,10 @@
-export default ($log, $rootScope, $state, gAuthService) => {
+export default ($log, $rootScope, authService) => {
     'ngInject';
 
     let authentication;
 
-    $rootScope.$on('gAuth.status.changed', (event, gAuth) => {
-        authentication = gAuth;
+    $rootScope.$on('auth.status.changed', (event, auth) => {
+        authentication = auth;
     });
 
     return {
@@ -14,16 +14,16 @@ export default ($log, $rootScope, $state, gAuthService) => {
         replace: true,
         transclude: true,
 
-        template: '<div class="g-profile" data-ng-transclude></div>',
+        template: '<div class="current-user" data-ng-transclude></div>',
 
         controller: class {
 
             constructor ($scope) {
                 'ngInject';
 
-                gAuthService.getAuthentication().then((gAuth) => {
+                authService.getAuthentication().then((auth) => {
                     $scope.$apply(() => {
-                        $scope.profile = gAuth.getCurrentUser();
+                        $scope.currentUser = auth.getCurrentUser();
                     });
                 });
 
@@ -32,12 +32,14 @@ export default ($log, $rootScope, $state, gAuthService) => {
                 }, (newVal) => {
 
                     if (newVal) {
-                        $scope.profile = authentication.getCurrentUser();
+                        $scope.currentUser = authentication.getCurrentUser();
                     } else {
-                        $scope.profile = null;
+                        $scope.currentUser = null;
                     }
 
                 });
+
+                $scope.signOut = () => authService.signOut();
 
             }
 

@@ -1,10 +1,10 @@
-export default ($log, $rootScope, $state, gAuthService) => {
+export default ($log, $rootScope, authService) => {
     'ngInject';
 
     let authentication;
 
-    $rootScope.$on('gAuth.status.changed', (event, gAuth) => {
-        authentication = gAuth;
+    $rootScope.$on('auth.status.changed', (event, auth) => {
+        authentication = auth;
     });
 
     return {
@@ -14,7 +14,7 @@ export default ($log, $rootScope, $state, gAuthService) => {
         replace: true,
         transclude: true,
 
-        templateUrl: 'templates/google/_gSignIn.html',
+        templateUrl: 'templates/directives/_signIn.html',
 
         controllerAs: 'auth',
         controller: class {
@@ -24,10 +24,10 @@ export default ($log, $rootScope, $state, gAuthService) => {
 
                 this.ready = false;
 
-                gAuthService.getAuthentication().then((gAuth) => {
+                authService.getAuthentication().then((auth) => {
                     $scope.$apply(() => {
                         this.ready = true;
-                        this.signedIn = gAuth.isSignedIn();
+                        this.signedIn = auth.isSignedIn();
                     });
                 });
 
@@ -48,7 +48,7 @@ export default ($log, $rootScope, $state, gAuthService) => {
             }
 
             signIn() {
-                gAuthService.signIn();
+                authService.signIn();
             }
 
         }

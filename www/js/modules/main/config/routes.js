@@ -26,14 +26,15 @@ export default ($stateProvider, $urlRouterProvider) => {
         .state('ls.main.auth', {
             abstract: true,
             resolve: {
-                auth: (gAuthService) => {
+                auth: (authService) => {
                     'ngInject';
 
                     return new Promise((resolve, reject) => {
-                        gAuthService.getAuthentication().then((gAuth) => {
 
-                            if (gAuth.isSignedIn()) {
-                                resolve(gAuth);
+                        authService.getAuthentication().then((auth) => {
+
+                            if (auth.isSignedIn()) {
+                                resolve(auth);
                             } else {
                                 reject({
                                     status: 401,
@@ -42,6 +43,7 @@ export default ($stateProvider, $urlRouterProvider) => {
                             }
 
                         });
+
                     });
 
                 }
@@ -52,7 +54,7 @@ export default ($stateProvider, $urlRouterProvider) => {
             url: '/histogram',
             views: {
                 'content@ls': {
-                    templateUrl: 'templates/main/_histogram.html'
+                    templateUrl: 'templates/pages/_histogram.html'
                 }
             }
         })
@@ -60,7 +62,7 @@ export default ($stateProvider, $urlRouterProvider) => {
             url: '/',
             views: {
                 'content@ls': {
-                    templateUrl: 'templates/main/_public.html'
+                    templateUrl: 'templates/pages/_public.html'
                 }
             }
         });

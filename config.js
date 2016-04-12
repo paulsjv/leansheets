@@ -17,6 +17,7 @@ System.config({
     "angular": "github:angular/bower-angular@1.5.3",
     "angular-mocks": "github:angular/bower-angular-mocks@1.5.3",
     "angular-ui-router": "github:angular-ui/ui-router@0.2.18",
+    "angularfire": "github:firebase/angularfire@1.2.0",
     "babel": "npm:babel-core@5.8.38",
     "babel-runtime": "npm:babel-runtime@5.8.38",
     "bootstrap": "github:twbs/bootstrap@3.3.6",
@@ -31,6 +32,7 @@ System.config({
     "d3-shape": "npm:d3-shape@0.5.1",
     "d3-svg": "npm:d3-svg@0.2.0",
     "d3-time": "npm:d3-time@0.2.5",
+    "firebase": "github:firebase/firebase-bower@2.4.2",
     "font-awesome": "npm:font-awesome@4.5.0",
     "lodash.find": "npm:lodash.find@4.2.0",
     "lodash.findindex": "npm:lodash.findindex@4.2.0",
@@ -43,6 +45,10 @@ System.config({
     },
     "github:angular/bower-angular-mocks@1.5.3": {
       "angular": "github:angular/bower-angular@1.5.3"
+    },
+    "github:firebase/angularfire@1.2.0": {
+      "angular": "github:angular/bower-angular@1.5.3",
+      "firebase": "github:firebase/firebase-bower@2.4.2"
     },
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.3.0"

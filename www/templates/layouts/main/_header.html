@@ -47,24 +47,24 @@
 
                 <li>
 
-                    <div data-g-sign-in>
-                        <div data-g-profile>
+                    <div data-sign-in>
+                        <div data-current-user>
 
                             <ul class="nav navbar-nav">
                                 <li class="dropdown">
 
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                        <img class="img-circle" data-ng-src="{{ profile.imageUrl }}"> <span class="caret"></span>
+                                        <img class="img-circle" data-ng-src="{{ currentUser.getImageUrl() }}"> <span class="caret"></span>
                                     </a>
 
                                     <ul class="dropdown-menu" role="menu">
 
                                         <li class="disabled">
-                                            <a href="">{{ profile.email }}</a>
+                                            <a href="">{{ currentUser.getEmail() }}</a>
                                         </li>
                                         <li class="divider"></li>
                                         <li>
-                                            <a href="" data-ng-click="profile.signOut()">Sign out</a>
+                                            <a href="" data-ng-click="signOut()">Sign out</a>
                                         </li>
 
                                     </ul>

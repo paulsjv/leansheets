@@ -9,13 +9,13 @@ var data = [{ frequency: 3, percentage: 13, leadtime: 2 },
             { frequency: 5, percentage: 25, leadtime: 5 }, 
             { frequency: 8, percentage: 50, leadtime: 7 }, 
             { frequency: 3, percentage: 63, leadtime: 10 }, 
-            { frequency: 1, percentage: 68, leadtime: 11 }, 
+            { frequency: 8, percentage: 68, leadtime: 11 }, 
             { frequency: 4, percentage: 75, leadtime: 15 }, 
             { frequency: 2, percentage: 82, leadtime: 17 }, 
             { frequency: 2, percentage: 90, leadtime: 20 }, 
-            { frequency: 1, percentage: 92, leadtime: 21 }, 
-            { frequency: 3, percentage: 98, leadtime: 25 }, 
-            { frequency: 1, percentage: 100,leadtime: 50 }];
+            { frequency: 8, percentage: 92, leadtime: 21 }, 
+            { frequency: 8, percentage: 98, leadtime: 25 }, 
+            { frequency: 8, percentage: 100,leadtime: 50 }];
 
 
 let resize = function() {
@@ -86,7 +86,8 @@ export default ($log) => {
             let margin = {  top:((svgHeight - clipHeight)/2), 
                             right:((svgWidth - clipWidth)/2),
                             bottom:((svgHeight - clipHeight)/2),
-                            left:((svgWidth - clipWidth)/2) }
+                            left:((svgWidth - clipWidth)/2) },
+            padding = .62;
 
             log.debug('directive width: ', svgWidth);
             log.debug('directive height:', svgHeight);
@@ -110,7 +111,7 @@ export default ($log) => {
 					.domain(leadtime)
 					.rangeRound([0, barContainerWidth]);
             // Padding between bars both inner and outter padding
-            x.padding(.58); // .58
+            x.padding(padding); // .58
 
             log.debug('band(value)', x(maxLeadtime));
             log.debug('band.bandwidth(): ', x.bandwidth());
@@ -203,8 +204,18 @@ export default ($log) => {
             // Line Overlay
             // Line start x-axis
             let overlayXstart = margin.left + Math.round((x.bandwidth() / 2));
-            overlay = line().x((d) => { return x(d.leadtime);} )
-                            .y((d) => { return y(d.percentage); });
+            let xOverlay = x.copy();
+            xOverlay.range([ x.range()[0] + (x.bandwidth()/2), x.range()[1] + (x.bandwidth()/2) ]);
+
+            let yOverlay = scaleLinear()
+                                .domain(extent(percentage))
+                                .range([barContainerHeight - min(percentage), 0]);
+            overlay = line().x((d, i) => { 
+                                log.debug('Leadtime: '+ d.leadtime + ' Line x: ' + xOverlay(d.leadtime));
+                                return xOverlay(d.leadtime);} )
+                            .y((d) => { 
+                                log.debug('Percentage: ' + d.percentage + ' Line y: ' + yOverlay(d.percentage));
+                                return yOverlay(d.percentage); });
             svg.append('g')
                     .attr('transform', 'translate(' + [margin.left, margin.top] + ')')
                 .append('path')

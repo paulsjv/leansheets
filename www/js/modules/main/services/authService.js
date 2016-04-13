@@ -13,17 +13,32 @@ export default class authService {
     }
 
     _authenticate() {
+
         return new Promise((resolve, reject) => {
-            this.gAuthService.getAuthentication().then((gAuth) => {
 
-                let accessToken = gAuth.getCurrentUser().getAuthResponse().getAccessToken();
+            this.gAuthService.getAuthentication()
+                .then((gAuth) => {
 
-                this.firebaseAuth.$authWithOAuthToken('google', accessToken).then((authData) => {
+                    let accessToken = gAuth.getCurrentUser().getAuthResponse().getAccessToken()
+
+                    return Promise.all([
+                        Promise.resolve(gAuth),
+                        this.firebaseAuth.$authWithOAuthToken('google', accessToken)
+                    ]);
+
+                })
+                .then((authValues) => {
+
+                    let gAuth = authValues[0],
+                        authData = authValues[1];
+
                     resolve(this.authFactory.create(gAuth, authData));
-                }, reject);
 
-            }, reject);
+                })
+                .catch(reject);
+
         });
+
     }
 
     getAuthentication() {
@@ -44,30 +59,42 @@ export default class authService {
      * @returns {Promise}
      */
     signIn() {
+
         return new Promise((resolve, reject) => {
-            this.gAuthService.signIn().then((gUser) => {
 
-                this.clearAuthentication();
-                resolve(this.userFactory.create(gUser));
+            this.gAuthService.signIn()
+                .then((gUser) => {
 
-            }, reject);
+                    this.clearAuthentication();
+                    resolve(this.userFactory.create(gUser));
+
+                })
+                .catch(reject);
+
         });
+
     }
 
     /**
      * @returns {Promise}
      */
     signOut() {
+
         return new Promise((resolve, reject) => {
-            this.gAuthService.signOut().then(() => {
 
-                this.clearAuthentication();
-                this.firebaseAuth.$unauth();
+            this.gAuthService.signOut()
+                .then(() => {
 
-                resolve();
+                    this.clearAuthentication();
+                    this.firebaseAuth.$unauth();
 
-            }, reject);
+                    resolve();
+
+                })
+                .catch(reject);
+
         });
+
     }
 
 }

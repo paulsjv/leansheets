@@ -4,13 +4,11 @@ export default class gAuthService {
         'ngInject';
 
         g.then((gapi) => {
-            gapi.auth2.getAuthInstance().then((googleAuth) => {
 
-                googleAuth.isSignedIn.listen(() => {
-                    $rootScope.$emit('gAuth.status.changed', gAuthFactory.create(googleAuth));
-                });
-
+            gapi.auth2.getAuthInstance().isSignedIn.listen(() => {
+                $rootScope.$emit('gAuth.status.changed', gAuthFactory.create(gapi.auth2.getAuthInstance()));
             });
+
         });
 
         this.$log = $log;
@@ -24,14 +22,14 @@ export default class gAuthService {
     _authenticate() {
 
         return new Promise((resolve, reject) => {
-            this.g.then((gapi) => {
-                gapi.auth2.getAuthInstance().then((googleAuth) => {
 
-                    let gAuth = this.gAuthFactory.create(googleAuth);
+            this.g
+                .then((gapi) => this.gAuthFactory.create(gapi.auth2.getAuthInstance()))
+                .then((gAuth) => {
                     gAuth.isSignedIn() ? resolve(gAuth) : reject();
+                })
+                .catch(reject);
 
-                }, reject);
-            }, reject);
         });
 
     }
@@ -56,16 +54,17 @@ export default class gAuthService {
     signIn() {
 
         return new Promise((resolve, reject) => {
-            this.g.then((gapi) => {
-                gapi.auth2.getAuthInstance().then((googleAuth) => {
-                    googleAuth.signIn().then((googleUser) => {
 
-                        this.clearAuthentication();
-                        resolve(this.gUserFactory.create(googleUser));
+            this.g
+                .then((gapi) => gapi.auth2.getAuthInstance().signIn())
+                .then((googleUser) => {
 
-                    }, reject);
-                }, reject);
-            }, reject);
+                    this.clearAuthentication();
+                    resolve(this.gUserFactory.create(googleUser));
+
+                })
+                .catch(reject);
+
         });
 
     }
@@ -74,18 +73,21 @@ export default class gAuthService {
      * @returns {Promise}
      */
     signOut() {
+
         return new Promise((resolve, reject) => {
-            this.g.then((gapi) => {
-                gapi.auth2.getAuthInstance().then((googleAuth) => {
-                    googleAuth.signOut().then(() => {
 
-                        this.clearAuthentication();
-                        resolve();
+            this.g
+                .then((gapi) => gapi.auth2.getAuthInstance().signOut())
+                .then(() => {
 
-                    }, reject);
-                }, reject);
-            }, reject);
+                    this.clearAuthentication();
+                    resolve();
+
+                })
+                .catch(reject);
+
         });
+
     }
 
 }

@@ -16,11 +16,9 @@ import authFactory from './factories/authFactory';
 import userFactory from './factories/userFactory';
 import onEvents from './run/onEvents';
 import authService from './services/authService';
-import firebaseRef from './services/firebaseRef';
 
 export default angular.module('main', ['app.templates', 'domain', 'google', 'ui.router', 'firebase'])
     .config(routes)
-    .constant('firebaseUrl', 'https://flickering-torch-9908.firebaseio.com/')
     .constant('signInState', 'ls.main.auth.histogram')
     .constant('signOutState', 'ls.main.public')
     .directive('currentUser', currentUser)
@@ -28,5 +26,4 @@ export default angular.module('main', ['app.templates', 'domain', 'google', 'ui.
     .factory('authFactory', authFactory)
     .factory('userFactory', userFactory)
     .service('authService', authService)
-    .service('firebaseRef', firebaseRef)
     .run(onEvents);

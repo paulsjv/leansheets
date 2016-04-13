@@ -34,6 +34,10 @@ export default class gAuthService {
 
     }
 
+    _flushAuth() {
+        this.auth = null;
+    }
+
     getAuthentication() {
 
         if (!this.auth) {
@@ -42,10 +46,6 @@ export default class gAuthService {
 
         return this.auth;
 
-    }
-
-    clearAuthentication() {
-        this.auth = null;
     }
 
     /**
@@ -59,7 +59,7 @@ export default class gAuthService {
                 .then((gapi) => gapi.auth2.getAuthInstance().signIn())
                 .then((googleUser) => {
 
-                    this.clearAuthentication();
+                    this._flushAuth();
                     resolve(this.gUserFactory.create(googleUser));
 
                 })
@@ -80,7 +80,7 @@ export default class gAuthService {
                 .then((gapi) => gapi.auth2.getAuthInstance().signOut())
                 .then(() => {
 
-                    this.clearAuthentication();
+                    this._flushAuth();
                     resolve();
 
                 })

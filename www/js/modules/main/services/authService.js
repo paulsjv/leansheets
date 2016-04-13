@@ -41,6 +41,10 @@ export default class authService {
 
     }
 
+    _flushAuth() {
+        this.auth = null;
+    }
+
     getAuthentication() {
 
         if (!this.auth) {
@@ -49,10 +53,6 @@ export default class authService {
 
         return this.auth;
 
-    }
-
-    clearAuthentication() {
-        this.auth = null;
     }
 
     /**
@@ -65,7 +65,7 @@ export default class authService {
             this.gAuthService.signIn()
                 .then((gUser) => {
 
-                    this.clearAuthentication();
+                    this._flushAuth();
                     resolve(this.userFactory.create(gUser));
 
                 })
@@ -85,7 +85,7 @@ export default class authService {
             this.gAuthService.signOut()
                 .then(() => {
 
-                    this.clearAuthentication();
+                    this._flushAuth();
                     this.firebaseAuth.$unauth();
 
                     resolve();

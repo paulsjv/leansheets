@@ -25,6 +25,8 @@ export default ($log, $rootScope, authService) => {
                     $scope.$apply(() => {
                         $scope.currentUser = auth.getCurrentUser();
                     });
+                }, () => {
+                    $scope.currentUser = null;
                 });
 
                 $scope.$watch(() => {

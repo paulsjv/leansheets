@@ -4,16 +4,8 @@ export default () => {
     return class gAuthResponse {
 
         /**
-         * https://developers.google.com/identity/sign-in/web/reference
-         *
-         * @param authResponse {gapi.auth2.AuthResponse}
-         */
-        constructor(authResponse) {
-            this.authResponse = authResponse;
-        }
-
-        /**
-         * https://developers.google.com/identity/sign-in/web/reference
+         * Factory method.
+         * @see https://developers.google.com/identity/sign-in/web/reference
          *
          * @param authResponse {gapi.auth2.AuthResponse}
          *
@@ -21,6 +13,15 @@ export default () => {
          */
         static create(authResponse) {
             return new gAuthResponse(authResponse);
+        }
+        
+        /**
+         * https://developers.google.com/identity/sign-in/web/reference
+         *
+         * @param authResponse {gapi.auth2.AuthResponse}
+         */
+        constructor(authResponse) {
+            this.authResponse = authResponse;
         }
 
         /**

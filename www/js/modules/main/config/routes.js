@@ -26,28 +26,22 @@ export default ($stateProvider, $urlRouterProvider) => {
         .state('ls.main.auth', {
             abstract: true,
             resolve: {
-                auth: (authService) => {
+                authentication: ($log, authService) => {
                     'ngInject';
 
                     return new Promise((resolve, reject) => {
 
                         authService.getAuthentication().then((auth) => {
-
-                            if (auth.isSignedIn()) {
-                                resolve(auth);
-                            } else {
-                                reject({
-                                    status: 401,
-                                    message: 'No Authentication.'
-                                });
-                            }
-
+                            resolve(auth);
+                        }, () => {
+                            reject({
+                                status: 401,
+                                message: 'No Authentication.'
+                            });
                         });
 
                     });
-
                 }
-
             }
         })
         .state('ls.main.auth.histogram', {

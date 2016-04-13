@@ -4,19 +4,21 @@ export default () => {
     return class User {
 
         /**
-         * @param gUser {gUser}
-         */
-        constructor(gUser) {
-            this.gBasicProfile = gUser.getBasicProfile();
-        }
-
-        /**
+         * Factory method.
+         * 
          * @param gUser {gUser}
          *
          * @returns {User}
          */
         static create(gUser) {
             return new User(gUser);
+        }
+        
+        /**
+         * @param gUser {gUser}
+         */
+        constructor(gUser) {
+            this.gBasicProfile = gUser.getBasicProfile();
         }
 
         getEmail() {

@@ -4,16 +4,8 @@ export default (gAuthResponseFactory, gBasicProfileFactory) => {
     return class gUser {
 
         /**
-         * https://developers.google.com/identity/sign-in/web/reference
-         *
-         * @param googleUser {gapi.auth2.GoogleUser}
-         */
-        constructor(googleUser) {
-            this.googleUser = googleUser;
-        }
-
-        /**
-         * https://developers.google.com/identity/sign-in/web/reference
+         * Factory method.
+         * @see https://developers.google.com/identity/sign-in/web/reference
          *
          * @param googleUser {gapi.auth2.GoogleUser}
          *
@@ -21,6 +13,15 @@ export default (gAuthResponseFactory, gBasicProfileFactory) => {
          */
         static create(googleUser) {
             return new gUser(googleUser);
+        }
+        
+        /**
+         * https://developers.google.com/identity/sign-in/web/reference
+         *
+         * @param googleUser {gapi.auth2.GoogleUser}
+         */
+        constructor(googleUser) {
+            this.googleUser = googleUser;
         }
 
         /**

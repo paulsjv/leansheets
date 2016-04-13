@@ -4,16 +4,8 @@ export default () => {
     return class gBasicProfile {
 
         /**
-         * https://developers.google.com/identity/sign-in/web/reference
-         *
-         * @param basicProfile {gapi.auth2.BasicProfile}
-         */
-        constructor(basicProfile) {
-            this.basicProfile = basicProfile;
-        }
-
-        /**
-         * https://developers.google.com/identity/sign-in/web/reference
+         * Factory method.
+         * @see https://developers.google.com/identity/sign-in/web/reference
          *
          * @param basicProfile {gapi.auth2.BasicProfile}
          *
@@ -21,6 +13,15 @@ export default () => {
          */
         static create(basicProfile) {
             return new gBasicProfile(basicProfile);
+        }
+        
+        /**
+         * https://developers.google.com/identity/sign-in/web/reference
+         *
+         * @param basicProfile {gapi.auth2.BasicProfile}
+         */
+        constructor(basicProfile) {
+            this.basicProfile = basicProfile;
         }
 
         /**

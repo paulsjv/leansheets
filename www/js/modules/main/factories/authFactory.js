@@ -1,22 +1,27 @@
-export default (gAuthService, $firebaseAuth, userFactory) => {
+export default ($log, userFactory) => {
     'ngInject';
 
     return class Auth {
 
         /**
-         * @param gAuth {gAuth}
-         */
-        constructor(gAuth) {
-            this.gAuth = gAuth;
-        }
-
-        /**
-         * @param gAuth {gAuth}
+         * Factory method.
          * 
+         * @param gAuth {gAuth}
+         * @param authData {authData}
+         *
          * @returns {Auth}
          */
-        static create(gAuth) {
-            return new Auth(gAuth);
+        static create(gAuth, authData) {
+            return new Auth(gAuth, authData);
+        }
+        
+        /**
+         * @param gAuth {gAuth}
+         * @param authData {authData}
+         */
+        constructor(gAuth, authData) {
+            this.gAuth = gAuth;
+            this.authData = authData;
         }
 
         /**
@@ -37,32 +42,6 @@ export default (gAuthService, $firebaseAuth, userFactory) => {
          */
         isSignedIn() {
             return this.gAuth.isSignedIn();
-        }
-
-        /**
-         * @returns {Promise}
-         */
-        signIn() {
-
-            return new Promise((resolve, reject) => {
-                
-                this.gAuth.signIn().then(() => {
-                    
-                })
-                
-            });
-
-        }
-
-        /**
-         * @returns {Promise}
-         */
-        signOut() {
-
-            return new Promise((resolve, reject) => {
-                resolve(this.gAuth.signOut());
-            });
-
         }
 
     }

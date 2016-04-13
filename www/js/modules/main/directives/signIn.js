@@ -29,6 +29,11 @@ export default ($log, $rootScope, authService) => {
                         this.ready = true;
                         this.signedIn = auth.isSignedIn();
                     });
+                }, () => {
+                    $scope.$apply(() => {
+                        this.ready = true;
+                        this.signedIn = false;
+                    });
                 });
 
                 $scope.$watch(() => {

@@ -1,7 +1,19 @@
 export default (gUserFactory) => {
     'ngInject';
-    
+
     return class gAuth {
+
+        /**
+         * Factory method.
+         * @see https://developers.google.com/identity/sign-in/web/reference
+         *
+         * @param googleAuth {gapi.auth2.GoogleAuth}
+         *
+         * @returns {gAuth}
+         */
+        static create(googleAuth) {
+            return new gAuth(googleAuth);
+        }
 
         /**
          * https://developers.google.com/identity/sign-in/web/reference
@@ -10,17 +22,6 @@ export default (gUserFactory) => {
          */
         constructor(googleAuth) {
             this.googleAuth = googleAuth;
-        }
-
-        /**
-         * https://developers.google.com/identity/sign-in/web/reference
-         *
-         * @param googleAuth {gapi.auth2.GoogleAuth}
-         *
-         * @returns {gAuth}
-         */
-        static create(googleAuth) {
-            return new gAuth(googleAuth);
         }
 
         /**
@@ -41,20 +42,6 @@ export default (gUserFactory) => {
          */
         isSignedIn() {
             return this.googleAuth.isSignedIn.get();
-        }
-
-        /**
-         * @returns {Promise}
-         */
-        signIn() {
-            return this.googleAuth.signIn();
-        }
-
-        /**
-         * @returns {Promise}
-         */
-        signOut() {
-            return this.googleAuth.signOut();
         }
 
     }

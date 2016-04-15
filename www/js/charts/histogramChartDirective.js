@@ -167,7 +167,7 @@ export default ($log) => {
                     .range([barContainerHeight, 0]);
             // Axises
             xAxis = axisBottom(x);//.tickValues(leadtime);
-            let yAxisLeft = axisLeft(yFrequency).ticks(ticks).tickSize(-barContainerWidth);//.ticks(ticks).tickSize(-barContainerWidth);
+            let yAxisLeft = axisLeft(yFrequency).ticks(6).tickSize(-barContainerWidth);//.ticks(ticks).tickSize(-barContainerWidth);
             log.debug('yAxisLeft.tickArguments', yAxisLeft.tickArguments());
             log.debug('yAxisLeft.tickValues', yAxisLeft.tickValues());
             log.debug('y.ticks', y.ticks());

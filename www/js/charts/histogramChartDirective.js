@@ -142,10 +142,10 @@ export default ($log) => {
                 maxFrequency = max(frequency),
                 minFrequency = min(frequency);
 
-            let domainMax = max(frequency),
+            let domainMax = max([max(frequency), ticks]),
                 remainder = domainMax % ticks;
 
-            if (remainder > 0) {
+            if (remainder > 0 || domainMax === max(frequency)) {
                 domainMax += (ticks - remainder);
             }
 

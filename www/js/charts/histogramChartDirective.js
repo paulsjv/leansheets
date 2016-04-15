@@ -2,7 +2,7 @@ import { select, selectAll } from 'd3-selection';
 import { scaleLinear, scaleBand } from 'd3-scale';
 import { axisBottom, axisLeft, axisRight } from 'd3-axis';
 import { line, curveCardinal, curveBundle } from 'd3-shape';
-import { min, max, extent } from 'd3-array';
+import { range, min, max, extent } from 'd3-array';
 import { format, precisionFixed } from 'd3-format';
 
 var log, x, y, element, svg, bars, overlayLine, xOverlay, xAxis;
@@ -60,7 +60,7 @@ let resize = function() {
 
     // update overlay line
     select('.overlay')
-        .attr('d', overlayLine); 
+        .attr('d', overlayLine);
 
 };
 
@@ -140,8 +140,16 @@ export default ($log) => {
             // Frequency for how tall each bar is on left Y-Axis
             let frequency = data.map((d) => { return d.frequency; }),
                 maxFrequency = max(frequency),
-                minFrequency = min(frequency),
-                barHeight = barContainerHeight / maxFrequency;
+                minFrequency = min(frequency);
+
+            let domainMax = max(frequency),
+                remainder = domainMax % ticks;
+
+            if (remainder > 0) {
+                domainMax += (ticks - remainder);
+            }
+
+            let barHeight = barContainerHeight / domainMax;
 
             log.debug('barHeight', barHeight);
             log.debug('frequency:', frequency);
@@ -159,22 +167,28 @@ export default ($log) => {
             //      https://github.com/d3/d3-scale#linear-scales
             //      https://github.com/d3/d3-scale#continuous-scales
             y = scaleLinear()
-                    .domain([0, max(percentage)]) 
+                    .domain([0, max(percentage)])
                     .range([barContainerHeight, 0]);
 
             let yFrequency = scaleLinear()
-                    .domain([0, max(frequency)])
+                    .domain([0, domainMax])
                     .range([barContainerHeight, 0]);
             // Axises
             xAxis = axisBottom(x);//.tickValues(leadtime);
-            let yAxisLeft = axisLeft(yFrequency).ticks(6).tickSize(-barContainerWidth);//.ticks(ticks).tickSize(-barContainerWidth);
+           let yAxisLeft = axisLeft(yFrequency)
+                .tickValues(range(0, domainMax + 1, domainMax / ticks))
+                .tickSize(-barContainerWidth);//.ticks(ticks).tickSize(-barContainerWidth);
+
             log.debug('yAxisLeft.tickArguments', yAxisLeft.tickArguments());
             log.debug('yAxisLeft.tickValues', yAxisLeft.tickValues());
             log.debug('y.ticks', y.ticks());
             log.debug('y.tickFormat', y.tickFormat());
             log.debug('yAxisLeft.ticks', yAxisLeft.ticks());
-            let yAxisRight = axisRight(y).tickValues([0, 25, 50, 75, 100, 125])
-                                .tickFormat((d) => { return d + '%'; });
+
+            let yPercentageTickMax = 100,
+                yAxisRight = axisRight(y)
+                .tickValues(range(0, yPercentageTickMax + 1, yPercentageTickMax / ticks))
+                .tickFormat((d) => { return d + '%'; });
 
             // Creating the svg and all the SVG elements for it.
             // svg is defined at the top of the file since it is used in resize()
@@ -251,7 +265,7 @@ export default ($log) => {
                 .append('path')
                     .attr('class','overlay')
                     .datum(data)
-                    .attr('d', overlayLine); 
+                    .attr('d', overlayLine);
 
         }
 

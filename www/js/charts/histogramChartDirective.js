@@ -60,7 +60,7 @@ let resize = function() {
 
     // update overlay line
     select('.overlay')
-        .attr('d', overlayLine); 
+        .attr('d', overlayLine);
 
 };
 
@@ -143,10 +143,10 @@ export default ($log) => {
                 minFrequency = min(frequency);
 
             let domainMax = max(frequency),
-                remainder = domainMax % 5;
+                remainder = domainMax % ticks;
 
             if (remainder > 0) {
-                domainMax += (5 - remainder);
+                domainMax += (ticks - remainder);
             }
 
             let barHeight = barContainerHeight / domainMax;
@@ -167,7 +167,7 @@ export default ($log) => {
             //      https://github.com/d3/d3-scale#linear-scales
             //      https://github.com/d3/d3-scale#continuous-scales
             y = scaleLinear()
-                    .domain([0, max(percentage)]) 
+                    .domain([0, max(percentage)])
                     .range([barContainerHeight, 0]);
 
             let yFrequency = scaleLinear()
@@ -176,15 +176,21 @@ export default ($log) => {
             // Axises
             xAxis = axisBottom(x);//.tickValues(leadtime);
             let yAxisLeft = axisLeft(yFrequency)
-                .tickValues(range(0, domainMax + 1, domainMax / 5))
+                .tickValues(range(0, domainMax + 1, domainMax / ticks))
                 .tickSize(-barContainerWidth);//.ticks(ticks).tickSize(-barContainerWidth);
+
             log.debug('yAxisLeft.tickArguments', yAxisLeft.tickArguments());
             log.debug('yAxisLeft.tickValues', yAxisLeft.tickValues());
             log.debug('y.ticks', y.ticks());
             log.debug('y.tickFormat', y.tickFormat());
             log.debug('yAxisLeft.ticks', yAxisLeft.ticks());
-            let yAxisRight = axisRight(y).tickValues([0, 25, 50, 75, 100, 125])
-                                .tickFormat((d) => { return d + '%'; });
+
+            let yPercentageTickMax = 100,
+                yAxisRight = axisRight(y)
+                .tickValues(range(0, yPercentageTickMax + 1, yPercentageTickMax / ticks))
+                .tickFormat((d) => { return d + '%'; });
+
+            debugger;
 
             // Creating the svg and all the SVG elements for it.
             // svg is defined at the top of the file since it is used in resize()
@@ -261,7 +267,7 @@ export default ($log) => {
                 .append('path')
                     .attr('class','overlay')
                     .datum(data)
-                    .attr('d', overlayLine); 
+                    .attr('d', overlayLine);
 
         }
 

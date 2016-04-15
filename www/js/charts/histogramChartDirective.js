@@ -190,8 +190,6 @@ export default ($log) => {
                 .tickValues(range(0, yPercentageTickMax + 1, yPercentageTickMax / ticks))
                 .tickFormat((d) => { return d + '%'; });
 
-            debugger;
-
             // Creating the svg and all the SVG elements for it.
             // svg is defined at the top of the file since it is used in resize()
             svg = select(element)

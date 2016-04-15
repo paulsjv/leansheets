@@ -3,20 +3,35 @@ import { scaleLinear, scaleBand } from 'd3-scale';
 import { axisBottom, axisLeft, axisRight } from 'd3-axis';
 import { line, curveCardinal, curveBundle } from 'd3-shape';
 import { min, max, extent } from 'd3-array';
+import { format, precisionFixed } from 'd3-format';
 
-var log, x, y, element, svg, bars, overlayLine, xOverlay, xAxis, yAxis;
+var log, x, y, element, svg, bars, overlayLine, xOverlay, xAxis;
 var data = [{ frequency: 3, percentage: 13, leadtime: 2 }, 
             { frequency: 5, percentage: 25, leadtime: 5 }, 
-            { frequency: 8, percentage: 50, leadtime: 7 }, 
+            { frequency: 13, percentage: 50, leadtime: 7 }, 
             { frequency: 3, percentage: 63, leadtime: 10 }, 
             { frequency: 1, percentage: 68, leadtime: 11 }, 
             { frequency: 4, percentage: 75, leadtime: 15 }, 
             { frequency: 2, percentage: 82, leadtime: 17 }, 
             { frequency: 2, percentage: 90, leadtime: 20 }, 
             { frequency: 1, percentage: 92, leadtime: 21 }, 
+{ frequency: 12, percentage: 93, leadtime: 22 }, 
+{ frequency: 11, percentage: 94, leadtime: 23 }, 
+{ frequency: 10, percentage: 95, leadtime: 24 }, 
             { frequency: 3, percentage: 98, leadtime: 25 }, 
             { frequency: 1, percentage: 100,leadtime: 50 }];
 
+let buildBackground = () => {
+    // need to know # of ticks which is data.length
+    // if data.frequency < 3 do math for 6 ticks
+    // if data.frequency = 3 do normal 6 ticks - do same at data.frequency 4
+    // if data.frequency = 5 then have 7 ticks go to 150% on right axis [0, 1, 2, 3, 4, 5, 6]
+    // if data.frequency = 7 then go to 6 ticks only even #s [0, 2, 4, 6, 8, 10]
+    // if data.frequency = 9 do math for 6 ticks [0, 2.5, 5, 7.5, 10, 12.5]
+    // if data.frequency = 12 do math for 7 ticks [0, 2.5, 5, 7.5, 10, 12.5, 15]
+    // if data.frequency > 15 do math for 6 ticks [0, 5, 10, 15, 20, 25]
+
+};
 
 let resize = function() {
     // get new width of parent node of svg width
@@ -90,7 +105,8 @@ export default ($log) => {
                             right:((svgWidth - clipWidth)/2),
                             bottom:((svgHeight - clipHeight)/2),
                             left:((svgWidth - clipWidth)/2) },
-            padding = .62;
+            padding = .62,
+            ticks = 5;
 
             log.debug('directive width: ', svgWidth);
             log.debug('directive height:', svgHeight);
@@ -125,7 +141,7 @@ export default ($log) => {
             let frequency = data.map((d) => { return d.frequency; }),
                 maxFrequency = max(frequency),
                 minFrequency = min(frequency),
-                barHeight = Math.round(barContainerHeight / (maxFrequency ));
+                barHeight = barContainerHeight / maxFrequency;
 
             log.debug('barHeight', barHeight);
             log.debug('frequency:', frequency);
@@ -143,13 +159,22 @@ export default ($log) => {
             //      https://github.com/d3/d3-scale#linear-scales
             //      https://github.com/d3/d3-scale#continuous-scales
             y = scaleLinear()
-                    .domain(extent(percentage)) //[minFrequency, maxFrequency])
+                    .domain([0, max(percentage)]) 
                     .range([barContainerHeight, 0]);
 
+            let yFrequency = scaleLinear()
+                    .domain([0, max(frequency)])
+                    .range([barContainerHeight, 0]);
             // Axises
             xAxis = axisBottom(x);//.tickValues(leadtime);
-            yAxis = axisLeft(y).ticks(5).tickSize(-barContainerWidth);
-
+            let yAxisLeft = axisLeft(yFrequency).ticks(ticks).tickSize(-barContainerWidth);//.ticks(ticks).tickSize(-barContainerWidth);
+            log.debug('yAxisLeft.tickArguments', yAxisLeft.tickArguments());
+            log.debug('yAxisLeft.tickValues', yAxisLeft.tickValues());
+            log.debug('y.ticks', y.ticks());
+            log.debug('y.tickFormat', y.tickFormat());
+            log.debug('yAxisLeft.ticks', yAxisLeft.ticks());
+            let yAxisRight = axisRight(y).tickValues([0, 25, 50, 75, 100, 125])
+                                .tickFormat((d) => { return d + '%'; });
 
             // Creating the svg and all the SVG elements for it.
             // svg is defined at the top of the file since it is used in resize()
@@ -158,34 +183,37 @@ export default ($log) => {
                                 .attr('version', '1.1')
                                 .attr('xmlns','http://www.w3.org/2000/svg')
                                 .style('width', svgWidth).style('height', svgHeight);
-/*
-            let clippath = svg.append('defs')
-                                    .append('clippath')
-                                        .attr('id', 'histogram-bars')
-                                        .append('rect')
-                                            .attr('x', 0)
-                                            .attr('y', 0)
-                                            .attr('width', clipWidth)
-                                            .attr('height', clipHeight);
-*/ 
-            svg.append('g')
+
+           svg.append('g')
                     .attr('transform', 'translate(' + [margin.left, (margin.top + barContainerHeight)] + ')')
                     .attr('class', 'axis axis--x')
                     .attr('zIndex', '2')
                 .call(xAxis);
 
+            svg.append('text')
+                    .attr('class', 'axis-text')
+                    .attr('transform', 'translate(' + (barContainerWidth + margin.left + margin.right) + ', ' + svgHeight + ')')
+
             svg.append('g')
                     .attr('transform', 'translate(' + [margin.left, margin.top] + ')')
                     .attr('class', 'axis axis--y')
                     .attr('zIndex', '2')
-                .call(yAxis)
-                .append('text')
+                .call(yAxisLeft);
+
+            svg.append('text')
                     .attr('class', 'axis-text')
-                    .attr('transform', 'rotate(-90)')
+                    .attr('transform', 'translate(20, ' + (barContainerHeight/2) + ') rotate(-90)')
                     .attr('y', 6)
                     .attr('dy', '.71em')
                     .style('text-anchor', 'end')
-                    .text('Percentage %');
+                    .text('Frequency');
+
+            svg.append('g')
+                    .attr('transform', 'translate(' + [margin.left + barContainerWidth, margin.top] + ')')
+                    .attr('class', 'axis axis--y')
+                    .attr('zIndex', '2')
+                .call(yAxisRight);
+
 
            // bars is defined at the top of the file since it is used in resize()
             // Each bar in the histogram defined here
@@ -211,7 +239,7 @@ export default ($log) => {
 
             // Line start y-axis
             let yOverlay = y.copy();
-            yOverlay.range([barContainerHeight - min(percentage), 0]);
+            yOverlay.range([barContainerHeight, 0]);
 
             // Line function that is passed to the "p" element
             overlayLine = line().curve(curveCardinal)

@@ -31,8 +31,16 @@ histogram-chart svg {
   fill: #666;
 }
 
+text.axis-text {
+    fill: #4d759e;
+}
+
 .axis--x path {
   stroke: #C0D0E0;
+}
+
+path.domain {
+    stroke-width: 0;
 }
 
 path.overlay {

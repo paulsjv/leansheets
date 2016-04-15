@@ -2,7 +2,7 @@ import { select, selectAll } from 'd3-selection';
 import { scaleLinear, scaleBand } from 'd3-scale';
 import { axisBottom, axisLeft, axisRight } from 'd3-axis';
 import { line, curveCardinal, curveBundle } from 'd3-shape';
-import { min, max, extent } from 'd3-array';
+import { range, min, max, extent } from 'd3-array';
 import { format, precisionFixed } from 'd3-format';
 
 var log, x, y, element, svg, bars, overlayLine, xOverlay, xAxis;
@@ -140,8 +140,16 @@ export default ($log) => {
             // Frequency for how tall each bar is on left Y-Axis
             let frequency = data.map((d) => { return d.frequency; }),
                 maxFrequency = max(frequency),
-                minFrequency = min(frequency),
-                barHeight = barContainerHeight / maxFrequency;
+                minFrequency = min(frequency);
+
+            let domainMax = max(frequency),
+                remainder = domainMax % 5;
+
+            if (remainder > 0) {
+                domainMax += (5 - remainder);
+            }
+
+            let barHeight = barContainerHeight / domainMax;
 
             log.debug('barHeight', barHeight);
             log.debug('frequency:', frequency);
@@ -163,11 +171,13 @@ export default ($log) => {
                     .range([barContainerHeight, 0]);
 
             let yFrequency = scaleLinear()
-                    .domain([0, max(frequency)])
+                    .domain([0, domainMax])
                     .range([barContainerHeight, 0]);
             // Axises
             xAxis = axisBottom(x);//.tickValues(leadtime);
-            let yAxisLeft = axisLeft(yFrequency).ticks(ticks).tickSize(-barContainerWidth);//.ticks(ticks).tickSize(-barContainerWidth);
+            let yAxisLeft = axisLeft(yFrequency)
+                .tickValues(range(0, domainMax + 1, domainMax / 5))
+                .tickSize(-barContainerWidth);//.ticks(ticks).tickSize(-barContainerWidth);
             log.debug('yAxisLeft.tickArguments', yAxisLeft.tickArguments());
             log.debug('yAxisLeft.tickValues', yAxisLeft.tickValues());
             log.debug('y.ticks', y.ticks());

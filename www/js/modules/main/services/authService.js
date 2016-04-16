@@ -8,7 +8,7 @@ export default class authService {
         this.userFactory = userFactory;
 
         this.gAuthService = gAuthService;
-        this.firebaseAuth = firebaseRef.getAuth();
+        this.firebaseAuth = firebaseRef.getAuthRef();
 
     }
 

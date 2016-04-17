@@ -2,10 +2,10 @@ import angular from 'angular';
 
 import 'angularfire';
 
-import firebaseRef from './services/firebaseRef';
-import settingsService from './services/settingsService';
+import firebaseRef from './factories/firebaseRef';
+import User from './factories/User';
 
 export default angular.module('domain', ['firebase'])
-    .constant('firebaseUrl', 'https://flickering-torch-9908.firebaseio.com')
-    .service('firebaseRef', firebaseRef)
-    .service('settingsService', settingsService);
+    .constant('FIREBASE_URL', 'https://flickering-torch-9908.firebaseio.com')
+    .factory('firebaseRef', firebaseRef)
+    .factory('User', User);

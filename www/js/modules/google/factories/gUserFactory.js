@@ -1,6 +1,6 @@
-export default (gAuthResponseFactory, gBasicProfileFactory) => {
+export default ($log, gAuthResponseFactory, gBasicProfileFactory) => {
     'ngInject';
-    
+
     return class gUser {
 
         /**
@@ -14,7 +14,7 @@ export default (gAuthResponseFactory, gBasicProfileFactory) => {
         static create(googleUser) {
             return new gUser(googleUser);
         }
-        
+
         /**
          * https://developers.google.com/identity/sign-in/web/reference
          *
@@ -22,6 +22,47 @@ export default (gAuthResponseFactory, gBasicProfileFactory) => {
          */
         constructor(googleUser) {
             this.googleUser = googleUser;
+        }
+
+        /**
+         * @returns {String}
+         */
+        getId() {
+            return this.googleUser.getId();
+        }
+
+        /**
+         * @returns {Boolean}
+         */
+        isSignedIn() {
+            return this.googleUser.isSignedIn();
+        }
+
+        /**
+         * @returns {String}
+         */
+        getHostedDomain() {
+            return this.googleUser.getHostedDomain();
+        }
+
+        /**
+         * @returns {String}
+         */
+        getGrantedScopes() {
+            return this.googleUser.getGrantedScopes();
+        }
+
+        /**
+         * @returns {gBasicProfile}
+         */
+        getBasicProfile() {
+
+            if (!this._profile) {
+                this._profile = gBasicProfileFactory.create(this.googleUser.getBasicProfile());
+            }
+
+            return this._profile;
+
         }
 
         /**
@@ -38,18 +79,39 @@ export default (gAuthResponseFactory, gBasicProfileFactory) => {
         }
 
         /**
-         * @returns {gBasicProfile}
+         * @param scopes {String} A space-delimited string of scopes.
+         *
+         * @returns {Boolean}
          */
-        getBasicProfile() {
+        hasGrantedScopes(scopes) {
+            return this.googleUser.hasGrantedScopes(scopes);
+        }
 
-            if (!this._profile) {
-                this._profile = gBasicProfileFactory.create(this.googleUser.getBasicProfile());
-            }
+        /**
+         * @param options
+         */
+        signIn(options) {
+            return this.googleUser.signIn(options);
+        }
 
-            return this._profile;
+        /**
+         * @param options
+         */
+        grant(options) {
+            return this.googleUser.grant(options);
+        }
 
+        /**
+         * @param scopes
+         */
+        grantOfflineAccess(scopes) {
+            return this.googleUser.grantOfflineAccess(scopes);
+        }
+
+        disconnect() {
+            return this.googleUser.disconnect();
         }
 
     }
-    
+
 }

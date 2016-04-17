@@ -1,4 +1,4 @@
-export default (gUserFactory) => {
+export default ($log, gUserFactory) => {
     'ngInject';
 
     return class gAuth {
@@ -25,6 +25,13 @@ export default (gUserFactory) => {
         }
 
         /**
+         * @returns {Boolean}
+         */
+        isSignedIn() {
+            return this.googleAuth.isSignedIn.get();
+        }
+
+        /**
          * @returns {gUser}
          */
         getCurrentUser() {
@@ -37,11 +44,20 @@ export default (gUserFactory) => {
 
         }
 
-        /**
-         * @returns {Boolean}
-         */
-        isSignedIn() {
-            return this.googleAuth.isSignedIn.get();
+        signIn(options) {
+            return this.googleAuth.signIn(options);
+        }
+
+        signOut() {
+            return this.googleAuth.signOut();
+        }
+
+        disconnect() {
+            return this.googleAuth.disconnect();
+        }
+
+        grantOfflineAccess(options) {
+            return this.googleAuth.grantOfflineAccess(options);
         }
 
     }

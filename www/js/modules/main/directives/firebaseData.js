@@ -1,4 +1,4 @@
-export default ($log, $rootScope, firebaseRef, $firebaseObject) => {
+export default ($log, $rootScope, firebaseRef, $firebaseAuth, User) => {
     'ngInject';
 
     return {
@@ -10,18 +10,23 @@ export default ($log, $rootScope, firebaseRef, $firebaseObject) => {
 
         templateUrl: 'templates/directives/_firebaseData.html',
 
+        controllerAs: 'ctrl',
         controller: class {
 
-            constructor ($scope) {
+            constructor () {
                 'ngInject';
 
-                $scope.data = firebaseRef.getAuthRef().$getAuth();
+                this.firebaseAuth = $firebaseAuth(firebaseRef);
+                
+                User.get(this.firebaseAuth.$getAuth().uid).then((data) => {
+                    this.data = data;
+                });
                 // $scope.data = $firebaseObject(firebaseRef.getRef().child('/settings'));
 
             }
 
             setData() {
-                
+
             }
 
         }

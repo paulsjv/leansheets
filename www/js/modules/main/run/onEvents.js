@@ -1,24 +1,5 @@
-export default ($log, $rootScope, $state, signInState, signOutState, authFactory) => {
+export default ($log, $rootScope, $state, signInState, signOutState) => {
     'ngInject';
-
-    // tap into gAuth event to trigger auth event.
-    // i.e., convert gAuth to generic Auth.
-    $rootScope.$on('gAuth.status.changed', (event, gAuth) => {
-        $rootScope.$apply(() => {
-            $rootScope.$emit('auth.status.changed', authFactory.create(gAuth));
-        });
-    });
-
-    // on auth status changed, do navigation.
-    $rootScope.$on('auth.status.changed', (event, auth) => {
-
-        if (auth.isSignedIn()) {
-            $state.go(signInState);
-        } else {
-            $state.go(signOutState);
-        }
-
-    });
 
     $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
 

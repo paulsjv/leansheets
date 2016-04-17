@@ -18,7 +18,7 @@ export default angular.module('google', [])
         'auth2'
     ])
     .constant('gClientLoadApis', {
-        'drive' : 'v3'
+        'drive': 'v3'
     })
     .constant('gScopes', [
         'profile',

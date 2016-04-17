@@ -7,7 +7,23 @@ export default ($stateProvider, $urlRouterProvider) => {
     $stateProvider
         .state('ls', {
             abstract: true,
-            templateUrl: 'templates/layouts/main/_index.html'
+            templateUrl: 'templates/layouts/main/_index.html',
+            resolve: {
+                authentication: ($log, authService) => {
+                    'ngInject';
+                    return authService.authenticate();
+                }
+            },
+            controller: ($log, $scope, authentication, authService) => {
+                'ngInject';
+
+                $scope.authentication = authentication;
+
+                $scope.$watch(() => authService.getAuthentication(), (authentication) => {
+                    $scope.authentication = authentication;
+                }, true);
+
+            }
         })
         .state('ls.main', {
             abstract: true,
@@ -26,21 +42,9 @@ export default ($stateProvider, $urlRouterProvider) => {
         .state('ls.main.auth', {
             abstract: true,
             resolve: {
-                authentication: ($log, authService) => {
+                restrict: (authService, authentication) => {
                     'ngInject';
-
-                    return new Promise((resolve, reject) => {
-
-                        authService.getAuthentication().then((auth) => {
-                            resolve(auth);
-                        }, () => {
-                            reject({
-                                status: 401,
-                                message: 'No Authentication.'
-                            });
-                        });
-
-                    });
+                    return authService.authorize(authentication);
                 }
             }
         })

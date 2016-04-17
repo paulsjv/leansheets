@@ -1,46 +1,39 @@
-export default () => {
+export default ($log, User) => {
     'ngInject';
-    
-    return class User {
+
+    return class UserFactory {
 
         /**
          * Factory method.
-         * 
+         *
          * @param gUser {gUser}
          *
          * @returns {User}
          */
-        static create(gUser) {
-            return new User(gUser);
-        }
-        
-        /**
-         * @param gUser {gUser}
-         */
-        constructor(gUser) {
-            this.gBasicProfile = gUser.getBasicProfile();
-        }
+        static fromGoogle(gUser) {
 
-        getEmail() {
-            return this.gBasicProfile.getEmail();
-        }
+            $log.debug('fromGoogle');
 
-        getFullName() {
-            return this.gBasicProfile.getName()
-        }
+            var gBasicProfile = gUser.getBasicProfile(),
+                user = new User({
+                    $id: `google:${gUser.getId()}`,
+                    displayName: gBasicProfile.getGivenName(),
+                    imageUrl: gBasicProfile.getImageUrl()
+                });
 
-        getFirstName() {
-            return this.gBasicProfile.getGivenName();
-        }
+            user.setProfile({
+                email: gBasicProfile.getEmail(),
+                fullName: gBasicProfile.getName(),
+                firstName: gBasicProfile.getGivenName(),
+                lastName: gBasicProfile.getFamilyName()
+            });
 
-        getLastName() {
-            return this.gBasicProfile.getFamilyName();
-        }
+            user.$save();
 
-        getImageUrl() {
-            return this.gBasicProfile.getImageUrl();
+            return user;
+
         }
 
     }
-    
+
 }

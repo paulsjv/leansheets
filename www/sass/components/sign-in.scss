@@ -157,27 +157,23 @@
 
     }
 
-    .current-user {
+    .navbar-nav > .dropdown {
 
-        .navbar-nav > .dropdown {
+        > a {
 
-            > a {
+            padding-top: 5px;
+            padding-bottom: 5px;
 
-                padding-top: 5px;
-                padding-bottom: 5px;
+            height: $navbar-height;
 
-                height: $navbar-height;
-
-                img {
-                    height: $navbar-height - 10px;
-                }
-
+            img {
+                height: $navbar-height - 10px;
             }
 
-            .dropdown-menu .disabled a {
-                cursor: default !important;
-            }
+        }
 
+        .dropdown-menu .disabled a {
+            cursor: default !important;
         }
 
     }

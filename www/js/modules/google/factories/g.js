@@ -3,7 +3,7 @@ import loadScript from '../../../utils/loadScript';
 
 const CALLBACK = 'loadGoogle';
 
-export default ($log, gModules, gLoadApis, gClientLoadApis, gClientId, gScopes, $window) => {
+export default ($log, $window, gModules, gLoadApis, gClientLoadApis, gClientId, gScopes) => {
     'ngInject';
 
     return new Promise((resolve, reject) => {

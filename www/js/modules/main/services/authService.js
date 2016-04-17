@@ -1,58 +1,81 @@
 export default class authService {
 
-    constructor($log, authFactory, userFactory, gAuthService, firebaseRef) {
+    constructor($log, $state, signInState, signOutState, authenticationFactory, gAuthService, firebaseRef, $firebaseAuth, User) {
         'ngInject';
 
         this.$log = $log;
-        this.authFactory = authFactory;
-        this.userFactory = userFactory;
+
+        this.$state = $state;
+        this.signInState = signInState;
+        this.signOutState = signOutState;
+
+        this.authenticationFactory = authenticationFactory;
 
         this.gAuthService = gAuthService;
-        this.firebaseAuth = firebaseRef.getAuthRef();
+        this.firebaseAuth = $firebaseAuth(firebaseRef);
+
+        this.User = User;
 
     }
 
-    _authenticate() {
+    authenticate() {
 
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
 
-            this.gAuthService.getAuthentication()
+            this.gAuthService.getAuthInstance()
                 .then((gAuth) => {
 
-                    let accessToken = gAuth.getCurrentUser().getAuthResponse().getAccessToken()
+                    let authData = this.firebaseAuth.$getAuth(),
+                        accessToken = gAuth.getCurrentUser().getAuthResponse().getAccessToken();
 
-                    return Promise.all([
-                        Promise.resolve(gAuth),
-                        this.firebaseAuth.$authWithOAuthToken('google', accessToken)
-                    ]);
+                    if (!authData) {
+
+                        return this.firebaseAuth.$authWithOAuthToken('google', accessToken)
+                            .then((authData) => this.User.get(authData.uid))
+                            .then((currentUser) => {
+                                this.setAuthentication(this.authenticationFactory.create(currentUser));
+                                return resolve(this.getAuthentication());
+                            });
+
+                    } else {
+
+                        return this.User.get(authData.uid)
+                            .then((currentUser) => {
+                                this.setAuthentication(this.authenticationFactory.create(currentUser));
+                                return resolve(this.getAuthentication());
+                            });
+
+                    }
 
                 })
-                .then((authValues) => {
+                .catch(() => {
 
-                    let gAuth = authValues[0],
-                        authData = authValues[1];
+                    this.setAuthentication(this.authenticationFactory.create());
+                    return resolve(this.getAuthentication());
 
-                    resolve(this.authFactory.create(gAuth, authData));
-
-                })
-                .catch(reject);
+                });
 
         });
 
     }
 
-    _flushAuth() {
-        this.auth = null;
+    authorize(authentication) {
+        
+        let auth = this.getAuthentication() || authentication;
+        
+        return auth && auth.isSignedIn() ? Promise.resolve() : Promise.reject({
+            status: 401,
+            error: "Unauthorized."
+        });
+
     }
 
     getAuthentication() {
-
-        if (!this.auth) {
-            this.auth = this._authenticate();
-        }
-
         return this.auth;
+    }
 
+    setAuthentication(auth) {
+        this.auth = auth;
     }
 
     /**
@@ -63,10 +86,20 @@ export default class authService {
         return new Promise((resolve, reject) => {
 
             this.gAuthService.signIn()
-                .then((gUser) => {
+                .then((gAuth) => {
 
-                    this._flushAuth();
-                    resolve(this.userFactory.create(gUser));
+                    let accessToken = gAuth.getCurrentUser().getAuthResponse().getAccessToken();
+
+                    return this.firebaseAuth.$authWithOAuthToken('google', accessToken);
+
+                })
+                .then((authData) => this.User.get(authData.uid))
+                .then((currentUser) => {
+
+                    this.setAuthentication(this.authenticationFactory.create(currentUser));
+                    this.$state.go(this.signInState);
+
+                    resolve(this.getAuthentication());
 
                 })
                 .catch(reject);
@@ -85,10 +118,12 @@ export default class authService {
             this.gAuthService.signOut()
                 .then(() => {
 
-                    this._flushAuth();
                     this.firebaseAuth.$unauth();
 
-                    resolve();
+                    this.setAuthentication(this.authenticationFactory.create());
+                    this.$state.go(this.signOutState);
+
+                    resolve(this.getAuthentication());
 
                 })
                 .catch(reject);

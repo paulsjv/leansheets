@@ -1,12 +1,6 @@
 export default ($log, $rootScope, authService) => {
     'ngInject';
 
-    let authentication;
-
-    $rootScope.$on('auth.status.changed', (event, auth) => {
-        authentication = auth;
-    });
-
     return {
 
         restrict: 'EA',
@@ -16,40 +10,33 @@ export default ($log, $rootScope, authService) => {
 
         templateUrl: 'templates/directives/_signIn.html',
 
-        controllerAs: 'auth',
+        scope: false,
+        bindToController: {
+            auth: '=signIn'
+        },
+
+        controllerAs: '$ctrl',
         controller: class {
 
             constructor ($scope) {
                 'ngInject';
 
-                this.ready = false;
+                $scope.signOut = () => authService.signOut();
 
-                authService.getAuthentication().then((auth) => {
-                    $scope.$apply(() => {
-                        this.ready = true;
-                        this.signedIn = auth.isSignedIn();
-                    });
-                }, () => {
-                    $scope.$apply(() => {
-                        this.ready = true;
-                        this.signedIn = false;
-                    });
-                });
+                if (this.auth) {
+                    $scope.currentUser = this.auth.getCurrentUser();
+                }
 
-                $scope.$watch(() => {
-                    return authentication && authentication.isSignedIn();
-                }, (newVal) => {
-                    this.signedIn = newVal;
-                });
+                $scope.$watch(() => authService.getAuthentication(), (auth) => {
+                    if (auth) {
+                        $scope.currentUser = auth.getCurrentUser();
+                    }
+                }, true);
 
-            }
-
-            isReady() {
-                return this.ready;
             }
 
             isSignedIn() {
-                return this.signedIn;
+                return this.auth && this.auth.isSignedIn();
             }
 
             signIn() {

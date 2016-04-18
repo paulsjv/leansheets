@@ -5,7 +5,7 @@ import { line, curveCardinal, curveBundle } from 'd3-shape';
 import { range, min, max, extent } from 'd3-array';
 import { format, precisionFixed } from 'd3-format';
 
-var log, x, y, element, svg, margin, bars, overlayLine, xOverlay, xAxis, yAxisRight;
+var log, x, y, element, svg, margin, bars, overlayLine, xOverlay, xAxis, yAxisRight, barContainerHeight;
 var data = [{ frequency: 2, percentage: 13, leadtime: 2 }, 
             { frequency: 5, percentage: 25, leadtime: 5 }, 
             { frequency: 13, percentage: 50, leadtime: 7 }, 
@@ -56,8 +56,8 @@ let resize = function() {
 		.attr('transform', 'translate(' + [margin.left + barContainerWidth, margin.top] + ')')
 		.call(yAxisRight);
 
-	// update y-axis-text
-	select('text.y-axis-text')
+	// update y-axis-text-right
+	select('.y-axis-text-right')
 		.attr('transform', 'translate(' + (svgWidth - 25) + ', ' + (barContainerHeight/2) + ') rotate(90)')
 
     // update overlay line
@@ -101,8 +101,8 @@ export default ($log) => {
                 clipWidth = getClipWidth(svgWidth), // 90% of width
                 clipHeight = Math.round(svgHeight * .7); // 70% of height
            // bar container 
-            let barContainerWidth = getBarContainerWidth(svgWidth, clipWidth),
-                barContainerHeight = svgHeight - (svgHeight - clipHeight); 
+            let barContainerWidth = getBarContainerWidth(svgWidth, clipWidth);
+            barContainerHeight = svgHeight - (svgHeight - clipHeight); 
             margin = {  top:((svgHeight - clipHeight)/2), 
                             right:((svgWidth - clipWidth)/2),
                             bottom:((svgHeight - clipHeight)/2),
@@ -233,7 +233,7 @@ export default ($log) => {
                 .call(yAxisRight);
 
             svg.append('text')
-                    .attr('class', 'axis-text y-axis-text')
+                    .attr('class', 'axis-text y-axis-text-right')
 					.attr('dy', '.71em')
                     .attr('transform', 'translate(' + (svgWidth - 25) + ', ' + (barContainerHeight/2) + ') rotate(90)')
 					.text('Percentage of Total');

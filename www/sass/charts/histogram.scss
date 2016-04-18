@@ -11,7 +11,8 @@ histogram-chart rect.bar {
     fill: #2f7ed8;
 }
 
-histogram-chart svg {
+histogram-chart svg,
+.axis-text {
     font-family:"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;font-size:12px;
     font-size: 12px;
 }

@@ -5,8 +5,8 @@ import { line, curveCardinal, curveBundle } from 'd3-shape';
 import { range, min, max, extent } from 'd3-array';
 import { format, precisionFixed } from 'd3-format';
 
-var log, x, y, element, svg, bars, overlayLine, xOverlay, xAxis;
-var data = [{ frequency: 3, percentage: 13, leadtime: 2 }, 
+var log, x, y, element, svg, margin, bars, overlayLine, xOverlay, xAxis, yAxisRight;
+var data = [{ frequency: 2, percentage: 13, leadtime: 2 }, 
             { frequency: 5, percentage: 25, leadtime: 5 }, 
             { frequency: 13, percentage: 50, leadtime: 7 }, 
             { frequency: 3, percentage: 63, leadtime: 10 }, 
@@ -20,18 +20,6 @@ var data = [{ frequency: 3, percentage: 13, leadtime: 2 },
 { frequency: 10, percentage: 95, leadtime: 24 }, 
             { frequency: 3, percentage: 98, leadtime: 25 }, 
             { frequency: 1, percentage: 100,leadtime: 50 }];
-
-let buildBackground = () => {
-    // need to know # of ticks which is data.length
-    // if data.frequency < 3 do math for 6 ticks
-    // if data.frequency = 3 do normal 6 ticks - do same at data.frequency 4
-    // if data.frequency = 5 then have 7 ticks go to 150% on right axis [0, 1, 2, 3, 4, 5, 6]
-    // if data.frequency = 7 then go to 6 ticks only even #s [0, 2, 4, 6, 8, 10]
-    // if data.frequency = 9 do math for 6 ticks [0, 2.5, 5, 7.5, 10, 12.5]
-    // if data.frequency = 12 do math for 7 ticks [0, 2.5, 5, 7.5, 10, 12.5, 15]
-    // if data.frequency > 15 do math for 6 ticks [0, 5, 10, 15, 20, 25]
-
-};
 
 let resize = function() {
     // get new width of parent node of svg width
@@ -54,9 +42,23 @@ let resize = function() {
 
     // update x-axis
     select('.axis--x').call(xAxis);
+	
+	// update x-axis-text
+	select('.x-axis-text')
+		.attr('transform', 'translate(' + ((barContainerWidth - margin.left - margin.right)/2) + ', 35 )');
 
     // update xOverlay scaleBand.rangeRound
     xOverlay.rangeRound([ x.range()[0] + (x.bandwidth()/2), x.range()[1] + (x.bandwidth()/2) ]);
+
+	// update yAxisLeft tick size
+	yAxisRight.tickSize(-barContainerWidth);
+	select('.axis-right')
+		.attr('transform', 'translate(' + [margin.left + barContainerWidth, margin.top] + ')')
+		.call(yAxisRight);
+
+	// update y-axis-text
+	select('text.y-axis-text')
+		.attr('transform', 'translate(' + (svgWidth - 25) + ', ' + (barContainerHeight/2) + ') rotate(90)')
 
     // update overlay line
     select('.overlay')
@@ -101,12 +103,12 @@ export default ($log) => {
            // bar container 
             let barContainerWidth = getBarContainerWidth(svgWidth, clipWidth),
                 barContainerHeight = svgHeight - (svgHeight - clipHeight); 
-            let margin = {  top:((svgHeight - clipHeight)/2), 
+            margin = {  top:((svgHeight - clipHeight)/2), 
                             right:((svgWidth - clipWidth)/2),
                             bottom:((svgHeight - clipHeight)/2),
-                            left:((svgWidth - clipWidth)/2) },
-            padding = .62,
-            ticks = 5;
+                            left:((svgWidth - clipWidth)/2) };
+			let padding = .62,
+            	ticks = 5;
 
             log.debug('directive width: ', svgWidth);
             log.debug('directive height:', svgHeight);
@@ -175,9 +177,9 @@ export default ($log) => {
                     .range([barContainerHeight, 0]);
             // Axises
             xAxis = axisBottom(x);//.tickValues(leadtime);
-           let yAxisLeft = axisLeft(yFrequency)
+            let yAxisLeft = axisLeft(yFrequency)
                 .tickValues(range(0, domainMax + 1, domainMax / ticks))
-                .tickSize(-barContainerWidth);//.ticks(ticks).tickSize(-barContainerWidth);
+				.tickFormat((d) => { return format('.' + precisionFixed(1) + 'f')(d); });
 
             log.debug('yAxisLeft.tickArguments', yAxisLeft.tickArguments());
             log.debug('yAxisLeft.tickValues', yAxisLeft.tickValues());
@@ -185,10 +187,11 @@ export default ($log) => {
             log.debug('y.tickFormat', y.tickFormat());
             log.debug('yAxisLeft.ticks', yAxisLeft.ticks());
 
-            let yPercentageTickMax = 100,
-                yAxisRight = axisRight(y)
+            let yPercentageTickMax = 100;
+            yAxisRight = axisRight(y)
                 .tickValues(range(0, yPercentageTickMax + 1, yPercentageTickMax / ticks))
-                .tickFormat((d) => { return d + '%'; });
+                .tickFormat((d) => { return d + '%'; })
+				.tickSize(-barContainerWidth);
 
             // Creating the svg and all the SVG elements for it.
             // svg is defined at the top of the file since it is used in resize()
@@ -202,21 +205,22 @@ export default ($log) => {
                     .attr('transform', 'translate(' + [margin.left, (margin.top + barContainerHeight)] + ')')
                     .attr('class', 'axis axis--x')
                     .attr('zIndex', '2')
-                .call(xAxis);
+                .call(xAxis)
 
-            svg.append('text')
-                    .attr('class', 'axis-text')
-                    .attr('transform', 'translate(' + (barContainerWidth + margin.left + margin.right) + ', ' + svgHeight + ')')
+            .append('text')
+                    .attr('class', 'axis-text x-axis-text')
+                    .attr('transform', 'translate(' + ((barContainerWidth - margin.left - margin.right)/2) + ', 35 )')
+					.text('Lead Time');
 
             svg.append('g')
                     .attr('transform', 'translate(' + [margin.left, margin.top] + ')')
-                    .attr('class', 'axis axis--y')
+                    .attr('class', 'axis axis--y axis-left')
                     .attr('zIndex', '2')
                 .call(yAxisLeft);
 
             svg.append('text')
                     .attr('class', 'axis-text')
-                    .attr('transform', 'translate(20, ' + (barContainerHeight/2) + ') rotate(-90)')
+                    .attr('transform', 'translate(' + (margin.left  - 50) + ', ' + (barContainerHeight/2) + ') rotate(-90)')
                     .attr('y', 6)
                     .attr('dy', '.71em')
                     .style('text-anchor', 'end')
@@ -224,10 +228,15 @@ export default ($log) => {
 
             svg.append('g')
                     .attr('transform', 'translate(' + [margin.left + barContainerWidth, margin.top] + ')')
-                    .attr('class', 'axis axis--y')
+                    .attr('class', 'axis axis--y axis-right')
                     .attr('zIndex', '2')
                 .call(yAxisRight);
 
+            svg.append('text')
+                    .attr('class', 'axis-text y-axis-text')
+					.attr('dy', '.71em')
+                    .attr('transform', 'translate(' + (svgWidth - 25) + ', ' + (barContainerHeight/2) + ') rotate(90)')
+					.text('Percentage of Total');
 
            // bars is defined at the top of the file since it is used in resize()
             // Each bar in the histogram defined here

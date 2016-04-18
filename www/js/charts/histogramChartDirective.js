@@ -57,8 +57,8 @@ let resize = function() {
 		.call(yAxisRight);
 
 	// update y-axis-text-right
-	select('.y-axis-text-right')
-		.attr('transform', 'translate(' + (svgWidth - 25) + ', ' + (barContainerHeight/2) + ') rotate(90)')
+//	select('.y-axis-text-right')
+//		.attr('transform', 'translate(' + (svgWidth - 25) + ', ' + (barContainerHeight/2) + ') rotate(90)')
 
     // update overlay line
     select('.overlay')
@@ -216,11 +216,11 @@ export default ($log) => {
                     .attr('transform', 'translate(' + [margin.left, margin.top] + ')')
                     .attr('class', 'axis axis--y axis-left')
                     .attr('zIndex', '2')
-                .call(yAxisLeft);
+                .call(yAxisLeft)
 
-            svg.append('text')
+            .append('text')
                     .attr('class', 'axis-text')
-                    .attr('transform', 'translate(' + (margin.left  - 50) + ', ' + (barContainerHeight/2) + ') rotate(-90)')
+                    .attr('transform', 'translate(-50, ' + (barContainerHeight/2) + ') rotate(-90)')
                     .attr('y', 6)
                     .attr('dy', '.71em')
                     .style('text-anchor', 'end')
@@ -230,12 +230,12 @@ export default ($log) => {
                     .attr('transform', 'translate(' + [margin.left + barContainerWidth, margin.top] + ')')
                     .attr('class', 'axis axis--y axis-right')
                     .attr('zIndex', '2')
-                .call(yAxisRight);
+                .call(yAxisRight)
 
-            svg.append('text')
+            .append('text')
                     .attr('class', 'axis-text y-axis-text-right')
 					.attr('dy', '.71em')
-                    .attr('transform', 'translate(' + (svgWidth - 25) + ', ' + (barContainerHeight/2) + ') rotate(90)')
+                    .attr('transform', 'translate(50, ' + (barContainerHeight/2) + ') rotate(90)')
 					.text('Percentage of Total');
 
            // bars is defined at the top of the file since it is used in resize()

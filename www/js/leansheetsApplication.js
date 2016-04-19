@@ -15,7 +15,6 @@ import configService from 'modules/main/services/configService';
 import dataService from 'modules/main/services/dataService';
 import dataFactory from 'modules/main/factories/dataFactory';
 import googleFactory from './etl/google/googleFactory';
-import histogramChartDirective from './charts/histogramChartDirective';
 
 export default ng.module('leansheetsApplication', ['config'])
     .config(['$logProvider','CONFIG', function($logProvider, config) {
@@ -25,5 +24,4 @@ export default ng.module('leansheetsApplication', ['config'])
     .service('configService', configService)
     .service('dataService', dataService)
     .service('dataFactory', dataFactory)
-    .service('GoogleFactory', googleFactory)
-    .directive('histogramChart', histogramChartDirective);
+    .service('GoogleFactory', googleFactory);

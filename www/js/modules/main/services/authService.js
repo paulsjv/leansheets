@@ -1,6 +1,6 @@
 export default class authService {
 
-    constructor($log, $state, signInState, signOutState, authenticationFactory, gAuthService, firebaseRef, $firebaseAuth, User) {
+    constructor($log, $state, signInState, signOutState, authenticationFactory, gAuthService, firebaseRef, $firebaseAuth, User) { //, userFactory) {
         'ngInject';
 
         this.$log = $log;
@@ -15,6 +15,7 @@ export default class authService {
         this.firebaseAuth = $firebaseAuth(firebaseRef);
 
         this.User = User;
+//        this.userFactory = userFactory;
 
     }
 
@@ -24,7 +25,7 @@ export default class authService {
 
             this.gAuthService.getAuthInstance()
                 .then((gAuth) => {
-
+//                    this.userFactory.fromGoogle(gAuth.getCurrentUser());
                     let authData = this.firebaseAuth.$getAuth(),
                         accessToken = gAuth.getCurrentUser().getAuthResponse().getAccessToken();
 

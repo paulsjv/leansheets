@@ -5,7 +5,7 @@ import {paths} from '../project.conf';
 
 gulp.task('jshint', () => {
 
-    return gulp.src([
+    gulp.src([
         paths.src.js('**/*.js'),
         paths.spec.unit('**/*.js')
     ])
@@ -13,4 +13,5 @@ gulp.task('jshint', () => {
     .pipe(jshint.reporter('jshint-stylish'))
     .pipe(jshint.reporter('fail'));
 
+    return true;
 });

@@ -1,17 +1,52 @@
 histogram-chart {
-    font: 10px sans-serif;
-    text-align: left;
-    padding: 3px;
-    margin: 1px;
-    color: white;
-    display: block;
+  font: 10px sans-serif;
+  text-align: right;
+  padding: 3px;
+  margin: 1px;
+  color: white;
+  display: block;
 }
 
-histogram-chart rect {
-    fill: steelblue;
-    stroke: white;
+histogram-chart rect.bar {
+    fill: #2f7ed8;
 }
 
-histogram-chart text {
-    fill: white;
+histogram-chart svg,
+.axis-text {
+    font-family:"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;font-size:12px;
+    font-size: 12px;
 }
+
+.axis {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #C0D0E0;
+  shape-rendering: crispEdges;
+}
+
+.axis text {
+  fill: #666;
+}
+
+text.axis-text {
+    fill: #4d759e;
+}
+
+.axis--x path {
+  stroke: #C0D0E0;
+}
+
+path.domain {
+    stroke-width: 0;
+}
+
+path.overlay {
+  fill: none;
+  stroke: black;
+  stroke-width: 2px;
+}
+

@@ -1,9 +1,10 @@
-import { select, selectAll } from 'd3-selection';
+import { select, selectAll, mouse, matcher } from 'd3-selection';
 import { scaleLinear, scaleBand } from 'd3-scale';
 import { axisBottom, axisLeft, axisRight } from 'd3-axis';
 import { line, curveCardinal, curveBundle } from 'd3-shape';
 import { range, min, max, extent } from 'd3-array';
 import { format, precisionFixed } from 'd3-format';
+import { transition, active } from 'd3-transition';
 
 var log, x, yOverlay, element, svg, margin, bars, overlayLine, xOverlay, xAxis, yAxisRight, barContainerHeight;
 var data = [{ frequency: 2, percentage: 13, leadtime: 2 }, 
@@ -77,6 +78,10 @@ let getElementHeight = (elm) => {
 
 let getElementWidth = (elm) => {
     return parseInt(select(elm).node().getBBox().width, 10);
+};
+
+let removeElement = (elm) => {
+    select(elm).remove();
 };
 
 export default ($log) => {
@@ -197,6 +202,7 @@ export default ($log) => {
             // svg is defined at the top of the file since it is used in resize()
             svg = select(element)
                             .append('svg')
+                                .attr('id', 'svgTop')
                                 .attr('version', '1.1')
                                 .attr('xmlns','http://www.w3.org/2000/svg')
                                 .style('width', svgWidth).style('height', svgHeight);
@@ -267,14 +273,47 @@ export default ($log) => {
                         .attr('zIndex', '0.1')
                     .selectAll('.bar')
                     .data(data)
-                  .enter().append('rect')
+                  .enter()
+
+            bars.append('rect')
                     .attr('class', 'bar')
                     .attr('width', x.bandwidth())
                     .attr('height', (d) => { return d.frequency * barHeight; })
                     .attr('x', (d) => { return x(d.leadtime); })
                     .attr('y', (d) => { return barContainerHeight - (d.frequency * barHeight) - .5; })
                     .attr('rx', 0)  // rounded edges 0 = sharp corners
-                    .attr('ry', 0); // rounded edges 0 = sharp corners
+                    .attr('ry', 0)  // rounded edges 0 = sharp corners
+                    .on('mousemove', 
+                        function(d, i) {
+                            select('.rect-'+i).remove();
+                            let group = select('#svgTop')
+                                            .append('g')
+                                            .attr('class', 'rect-'+i);
+
+                            group.append('rect')
+                                    .attr('class', 'float-box')
+                                    .attr('rx', 3)
+                                    .attr('ry', 3)
+                                    .attr('width', 100)
+                                    .attr('height', 50)
+                                    .attr('x', (x(d.leadtime) + (x.bandwidth())))
+                                    .attr('y', mouse(this)[1]+2);
+
+                            group.append('text')
+                                    .attr('fill', 'black')
+                                    .attr('x', (x(d.leadtime) + (x.bandwidth())))
+                                    .attr('y', mouse(this)[1]+2)
+                                    .text('testing!');
+                        })
+                    .on('mouseout',
+                        function(d, i) {
+                            select('.rect-'+i).remove();
+                        });
+
+             bars.append('text') //.node().parentNode.append('text')
+                    .attr('x', (d) => { return x(d.leadtime); })
+                    .attr('y', (d) => {return barContainerHeight - (d.frequency * barHeight) - .5; })
+                    .text((d) => { return d.frequency; });
 
             // Line Overlay
             // Line start x-axis

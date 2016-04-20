@@ -83,6 +83,7 @@
       "d3-shape": "npm:d3-shape@^0.5.1",
       "d3-svg": "npm:d3-svg@^0.2.0",
       "d3-time": "npm:d3-time@^0.2.5",
+      "d3-transition": "npm:d3-transition@^0.2.8",
       "firebase": "github:firebase/firebase-bower@^2.4.2",
       "font-awesome": "npm:font-awesome@4.5.0",
       "lodash.find": "npm:lodash.find@^4.0.1",

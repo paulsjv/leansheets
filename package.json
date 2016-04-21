@@ -85,6 +85,7 @@
       "d3-time": "npm:d3-time@^0.2.5",
       "firebase": "github:firebase/firebase-bower@^2.4.2",
       "font-awesome": "npm:font-awesome@4.5.0",
+      "inflect": "npm:inflect@^0.3.0",
       "lodash.find": "npm:lodash.find@^4.0.1",
       "lodash.findindex": "npm:lodash.findindex@^4.0.1",
       "lodash.has": "npm:lodash.has@^4.0.1",

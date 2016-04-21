@@ -6,14 +6,39 @@ export default (firebaseRef, $firebaseArray, $firebaseObject) => {
     let usersRef = firebaseRef.child('users'),
         users = $firebaseArray(usersRef);
 
+    // Getters
+    // Object.keys(obj.prototype)
+    //     .filter((k) => k.indexOf('get') === 0)
+    //     .map((k) => k.replace(/^get/, ''));
+
     return class User {
 
-        static get(uid) {
-            return users.$loaded().then(() => new User(users.$getRecord(uid)));
+        static $get(uid) {
+            return users.$loaded().then(() => {
+
+                let user = users.$getRecord(uid);
+
+                if (user) {
+                    return Promise.resolve(new User(user));
+                } else {
+                    return Promise.reject();
+                }
+
+            });
+        }
+
+        static $all() {
+            return users.$loaded();
         }
 
         constructor(obj) {
-            angular.extend(this, obj);
+
+            obj = obj || {};
+
+            this.$id = obj.$id;
+            this.displayName = obj.displayName;
+            this.imageUrl = obj.imageUrl;
+
         }
 
         getProfile() {
@@ -23,14 +48,6 @@ export default (firebaseRef, $firebaseArray, $firebaseObject) => {
         setProfile(profile) {
             this.profile = profile;
         }
-
-        // getSettings() {
-        //
-        // }
-        //
-        // setSettings(settings) {
-        //
-        // }
 
         $save() {
 
@@ -45,6 +62,6 @@ export default (firebaseRef, $firebaseArray, $firebaseObject) => {
 
         }
 
-    }
+    };
 
 }

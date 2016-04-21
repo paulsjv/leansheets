@@ -13,6 +13,25 @@ export default (firebaseRef, $firebaseArray, $firebaseObject) => {
 
     return class User {
 
+        static get $mapping() {
+
+            return {
+                // string, url, email, integer, date, boolean, array
+                // required, min, max, nullable, blank, inList, matches, minSize, maxSize, notEqual, validator
+                $id: 'string',
+                displayName: 'string',
+                imageUrl: 'url',
+                profile: {
+                    email: 'email',
+                    fullName: 'string',
+                    firstName: 'string',
+                    lastName: 'string'
+                }
+
+            }
+
+        }
+
         static $get(uid) {
             return users.$loaded().then(() => {
 
@@ -32,21 +51,7 @@ export default (firebaseRef, $firebaseArray, $firebaseObject) => {
         }
 
         constructor(obj) {
-
-            obj = obj || {};
-
-            this.$id = obj.$id;
-            this.displayName = obj.displayName;
-            this.imageUrl = obj.imageUrl;
-
-        }
-
-        getProfile() {
-            return this.profile;
-        }
-
-        setProfile(profile) {
-            this.profile = profile;
+            angular.extend(obj, this);
         }
 
         $save() {

@@ -1,9 +1,12 @@
 export default ($stateProvider, $urlRouterProvider, $urlMatcherFactoryProvider, $scaffoldProvider, SCAFFOLD_PARENT_STATE) => {
     'ngInject';
-    
+
     $scaffoldProvider.install(SCAFFOLD_PARENT_STATE);
-    $urlRouterProvider.otherwise('/error/404');
     
+    $urlRouterProvider
+        .when('', '/')
+        .otherwise('/error/404');
+
     $stateProvider
         .state('ls', {
             abstract: true,

@@ -1,13 +1,13 @@
 export default class authService {
 
-    constructor($log, $state, signInState, signOutState, authenticationFactory, gAuthService, firebaseRef, $firebaseAuth, User) { //, userFactory) {
+    constructor($log, $state, SIGN_IN_STATE, SIGN_OUT_STATE, authenticationFactory, gAuthService, firebaseRef, $firebaseAuth, User) {
         'ngInject';
 
         this.$log = $log;
 
         this.$state = $state;
-        this.signInState = signInState;
-        this.signOutState = signOutState;
+        this.SIGN_IN_STATE = SIGN_IN_STATE;
+        this.SIGN_OUT_STATE = SIGN_OUT_STATE;
 
         this.authenticationFactory = authenticationFactory;
 
@@ -15,7 +15,6 @@ export default class authService {
         this.firebaseAuth = $firebaseAuth(firebaseRef);
 
         this.User = User;
-//        this.userFactory = userFactory;
 
     }
 
@@ -25,14 +24,14 @@ export default class authService {
 
             this.gAuthService.getAuthInstance()
                 .then((gAuth) => {
-//                    this.userFactory.fromGoogle(gAuth.getCurrentUser());
+
                     let authData = this.firebaseAuth.$getAuth(),
                         accessToken = gAuth.getCurrentUser().getAuthResponse().getAccessToken();
 
                     if (!authData) {
 
                         return this.firebaseAuth.$authWithOAuthToken('google', accessToken)
-                            .then((authData) => this.User.get(authData.uid))
+                            .then((authData) => this.User.$get(authData.uid))
                             .then((currentUser) => {
                                 this.setAuthentication(this.authenticationFactory.create(currentUser));
                                 return resolve(this.getAuthentication());
@@ -40,7 +39,7 @@ export default class authService {
 
                     } else {
 
-                        return this.User.get(authData.uid)
+                        return this.User.$get(authData.uid)
                             .then((currentUser) => {
                                 this.setAuthentication(this.authenticationFactory.create(currentUser));
                                 return resolve(this.getAuthentication());
@@ -94,11 +93,11 @@ export default class authService {
                     return this.firebaseAuth.$authWithOAuthToken('google', accessToken);
 
                 })
-                .then((authData) => this.User.get(authData.uid))
+                .then((authData) => this.User.$get(authData.uid))
                 .then((currentUser) => {
 
                     this.setAuthentication(this.authenticationFactory.create(currentUser));
-                    this.$state.go(this.signInState);
+                    this.$state.go(this.SIGN_IN_STATE);
 
                     resolve(this.getAuthentication());
 
@@ -122,7 +121,7 @@ export default class authService {
                     this.firebaseAuth.$unauth();
 
                     this.setAuthentication(this.authenticationFactory.create());
-                    this.$state.go(this.signOutState);
+                    this.$state.go(this.SIGN_OUT_STATE);
 
                     resolve(this.getAuthentication());
 

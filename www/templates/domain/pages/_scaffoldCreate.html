@@ -1,0 +1,19 @@
+<div>
+
+    <h1 class="page-title">Scaffold Create</h1>
+
+    <div data-ng-show="$ctrl.error">
+        <span>{{ $ctrl.error.message }}</span>
+    </div>
+
+    <form data-ng-submit="$ctrl.create()">
+
+        <div class="input-group">
+            <input type="email" class="form-control" placeholder="Email" data-ng-model="$ctrl.instance.email">
+        </div>
+
+        <input type="submit" class="btn btn-default" value="Create">
+
+    </form>
+
+</div>

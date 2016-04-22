@@ -1,13 +1,16 @@
-export default ($stateProvider, $urlRouterProvider) => {
+export default ($stateProvider, $urlRouterProvider, $urlMatcherFactoryProvider, $scaffoldProvider, SCAFFOLD_PARENT_STATE) => {
     'ngInject';
 
+    $scaffoldProvider.install(SCAFFOLD_PARENT_STATE);
+    
     $urlRouterProvider
-        .otherwise('/histogram');
+        .when('', '/')
+        .otherwise('/error/404');
 
     $stateProvider
         .state('ls', {
             abstract: true,
-            templateUrl: 'templates/layouts/main/_index.html',
+            templateUrl: 'templates/main/layouts/_index.html',
             resolve: {
                 authentication: ($log, authService) => {
                     'ngInject';
@@ -30,11 +33,11 @@ export default ($stateProvider, $urlRouterProvider) => {
             views: {
 
                 'header': {
-                    templateUrl: 'templates/layouts/main/_header.html'
+                    templateUrl: 'templates/main/layouts/_header.html'
                 },
 
                 'footer': {
-                    templateUrl: 'templates/layouts/main/_footer.html'
+                    templateUrl: 'templates/main/layouts/_footer.html'
                 }
 
             }
@@ -42,9 +45,24 @@ export default ($stateProvider, $urlRouterProvider) => {
         .state('ls.main.auth', {
             abstract: true,
             resolve: {
-                restrict: (authService, authentication) => {
+                signedIn: (authService, authentication) => {
                     'ngInject';
                     return authService.authorize(authentication);
+                }
+            }
+        })
+        .state('ls.main.auth.admin', {
+            abstract: true,
+            url: '/admin',
+            views: {
+                'content@ls': {
+                    template: '<div data-ui-view></div>',
+                    resolve: {
+                        restrict: (authService, authentication) => {
+                            'ngInject';
+                            return authService.authorize(authentication, ['LS_ADMIN']);
+                        }
+                    }
                 }
             }
         })
@@ -52,7 +70,7 @@ export default ($stateProvider, $urlRouterProvider) => {
             url: '/histogram',
             views: {
                 'content@ls': {
-                    templateUrl: 'templates/pages/_histogram.html'
+                    templateUrl: 'templates/main/pages/_histogram.html'
                 }
             }
         })
@@ -60,7 +78,29 @@ export default ($stateProvider, $urlRouterProvider) => {
             url: '/',
             views: {
                 'content@ls': {
-                    templateUrl: 'templates/pages/_public.html'
+                    templateUrl: 'templates/main/pages/_public.html'
+                }
+            }
+        })
+        .state('ls.main.error', {
+            url: '/error/:status',
+            params: {
+                message: null
+            },
+            views: {
+                'content@ls': {
+                    templateUrl: 'templates/main/pages/_error.html',
+                    controllerAs: '$ctrl',
+                    controller: class {
+
+                        constructor($stateParams) {
+                            'ngInject';
+
+                            this.status = $stateParams.status;
+                            this.message = $stateParams.message;
+                        }
+
+                    }
                 }
             }
         });

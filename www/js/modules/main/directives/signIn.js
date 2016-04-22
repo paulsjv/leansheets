@@ -8,7 +8,7 @@ export default ($log, $rootScope, authService) => {
         replace: true,
         transclude: true,
 
-        templateUrl: 'templates/directives/_signIn.html',
+        templateUrl: 'templates/main/directives/_signIn.html',
 
         scope: false,
         bindToController: {

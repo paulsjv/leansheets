@@ -41,6 +41,14 @@ let resize = function() {
         .attr('width', x.bandwidth())
         .attr('x', (d) => { return x(d.leadtime); });
 
+    // update bar-text
+    selectAll('.bar-text')
+        .each(function(d) { 
+                        let barTextWidth = getElementWidth(this);
+                        select(this).attr('x', x(d.leadtime) + (x.bandwidth()/2) - (barTextWidth/2));
+                      });
+
+
     // update x-axis
     select('.axis--x').call(xAxis);
     let leadtimeGroupWidth = getElementWidth('.axis--x');
@@ -84,6 +92,24 @@ let removeElement = (elm) => {
     select(elm).remove();
 };
 
+let tooltipAdd = () => {
+    select('body').append('div')
+            .attr('class', 'tooltip');
+};
+
+let tooltipShow = (top, left, innerHtml) => {
+    select('.tooltip')
+            .style('visibility', 'visible')
+            .style('top', top)
+            .style('left', left)
+            .html(innerHtml);
+};
+
+let tooltipHide = () => {
+    select('.tooltip')
+            .style('visibility', 'hidden');
+};
+
 export default ($log) => {
     'ngInject';
 
@@ -99,6 +125,9 @@ export default ($log) => {
 
             // element is defined at top of file
             element = elm[0];
+
+            // add the tooltip div for mouse overs
+            tooltipAdd();
 
             // svg properties
             let svgWidth = getSvgWidth(element),
@@ -285,35 +314,24 @@ export default ($log) => {
                     .attr('ry', 0)  // rounded edges 0 = sharp corners
                     .on('mousemove', 
                         function(d, i) {
-                            select('.rect-'+i).remove();
-                            let group = select('#svgTop')
-                                            .append('g')
-                                            .attr('class', 'rect-'+i);
-
-                            group.append('rect')
-                                    .attr('class', 'float-box')
-                                    .attr('rx', 3)
-                                    .attr('ry', 3)
-                                    .attr('width', 100)
-                                    .attr('height', 50)
-                                    .attr('x', (x(d.leadtime) + (x.bandwidth())))
-                                    .attr('y', mouse(this)[1]+2);
-
-                            group.append('text')
-                                    .attr('fill', 'black')
-                                    .attr('x', (x(d.leadtime) + (x.bandwidth())))
-                                    .attr('y', mouse(this)[1]+2)
-                                    .text('testing!');
+                            tooltipShow((mouse(select('html').node())[1] + 10) + 'px', (mouse(select('html').node())[0] + 10) + 'px', 
+                                       '<b>Frequency: </b>' + d.frequency + '<br/><b>Percentage: </b>' + d.percentage + '%');
                         })
                     .on('mouseout',
                         function(d, i) {
-                            select('.rect-'+i).remove();
+                            tooltipHide();
                         });
 
-             bars.append('text') //.node().parentNode.append('text')
-                    .attr('x', (d) => { return x(d.leadtime); })
-                    .attr('y', (d) => {return barContainerHeight - (d.frequency * barHeight) - .5; })
+             bars.append('text')
+                    .attr('class', 'bar-text')
+                    .attr('y', (d) => {return barContainerHeight - (d.frequency * barHeight) - 3; })
                     .text((d) => { return d.frequency; });
+
+            selectAll('.bar-text')
+                .each(function(d) { 
+                                let barTextWidth = getElementWidth(this);
+                                select(this).attr('x', x(d.leadtime) + (x.bandwidth()/2) - (barTextWidth/2));
+                              });
 
             // Line Overlay
             // Line start x-axis

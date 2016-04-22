@@ -17,29 +17,48 @@ rect.bar:hover {
 
 .float-box {
     fill: rgb(255, 255, 255);
-    stroke: rgb(127, 127, 127);
+    stroke: rgb(192, 208, 224);
     stroke-width: 1;
+}
 
+.float-box-text {
+    fill-opacity:0.1
+}
+
+.tooltip {
+    position: absolute;
+    color: #222;
+    background: #fff;
+    padding: .5em;
+    text-shadow: #f5f5f5 0 1px 0;
+    border-radius: 2px;
+    box-shadow: 0px 0px 2px 0px #a6a6a6;
+    opacity: 0.9;
+    font-family: sans-serif;
+    font-size: 9px;
+    z-index: 10;
 }
 
 histogram-chart svg,
 .axis-text {
-    font-family:"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;font-size:12px;
+    font-family:"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
     font-size: 12px;
 }
 
-.axis {
+.axis,
+.bar-text {
   font: 10px sans-serif;
 }
 
 .axis path,
 .axis line {
   fill: none;
-  stroke: #C0D0E0;
+  stroke: rgb(192, 208, 224);
   shape-rendering: crispEdges;
 }
 
-.axis text {
+.axis text,
+.bar-text {
   fill: #666;
 }
 

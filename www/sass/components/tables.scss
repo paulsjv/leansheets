@@ -1,0 +1,21 @@
+.table {
+
+    table-layout: fixed;
+
+    > tbody > tr > td {
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+    }
+
+}
+
+.table-sortable {
+
+    > thead > tr > th {
+        line-height: 28px;
+    }
+
+}

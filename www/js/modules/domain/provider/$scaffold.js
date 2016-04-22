@@ -1,22 +1,22 @@
 import inflect from 'inflect';
 
 export default class {
-    
+
     constructor($stateProvider) {
         'ngInject';
         this.$stateProvider = $stateProvider;
     }
-    
+
     $get() {
         throw Error("Use $scaffoldProvider during config phase only.");
     }
-    
+
     install(parentState) {
 
-        let scaffoldBaseState = `${parentState}.domain`;
+        let scaffoldParentState = `${parentState}.domain`;
 
         this.$stateProvider
-            .state(scaffoldBaseState, {
+            .state(scaffoldParentState, {
                 abstract: true,
                 url: '/{domainClass:[a-zA-Z0-9\-]+}',
                 template: '<div data-ui-view></div>',
@@ -43,7 +43,7 @@ export default class {
                     }
                 }
             })
-            .state(`${scaffoldBaseState}.list`, {
+            .state(`${scaffoldParentState}.list`, {
                 url: '',
                 templateUrl: 'templates/domain/pages/_scaffoldList.html',
                 resolve: {
@@ -70,16 +70,34 @@ export default class {
                 controllerAs: '$ctrl',
                 controller: class {
 
-                    constructor(instances) {
+                    constructor($stateParams, DomainClass, instances, DomainUtils) {
                         'ngInject';
 
+                        this.domainClass = $stateParams.domainClass;
+                        this.DomainClass = DomainClass;
                         this.instances = instances;
+                        this.DomainUtils = DomainUtils;
 
+                        this.fields = DomainUtils.fields(DomainClass);
+                        this.children = DomainUtils.children(DomainClass);
+
+                    }
+
+                    childFields(field) {
+                        return this.DomainUtils.childFields(this.DomainClass, field);
+                    }
+
+                    titleize(str) {
+                        return inflect.titleize(inflect.humanize(inflect.underscore(str.replace(/^\$/, ''))));
+                    }
+                    
+                    pluralize(str) {
+                        return inflect.pluralize(str);
                     }
 
                 }
             })
-            .state(`${scaffoldBaseState}.create`, {
+            .state(`${scaffoldParentState}.create`, {
                 url: '/create',
                 templateUrl: 'templates/domain/pages/_scaffoldCreate.html',
                 controllerAs: '$ctrl',
@@ -98,7 +116,7 @@ export default class {
 
                 }
             })
-            .state(`${scaffoldBaseState}.instance`, {
+            .state(`${scaffoldParentState}.instance`, {
                 url: '/:id',
                 templateUrl: 'templates/domain/pages/_scaffoldInstance.html',
                 resolve: {
@@ -136,7 +154,7 @@ export default class {
 
                 }
             });
-        
+
     }
 
 }

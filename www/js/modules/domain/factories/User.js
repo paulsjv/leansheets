@@ -51,7 +51,7 @@ export default (firebaseRef, $firebaseArray, $firebaseObject) => {
         }
 
         constructor(obj) {
-            angular.extend(obj, this);
+            angular.extend(this, obj);
         }
 
         $save() {

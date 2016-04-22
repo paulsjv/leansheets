@@ -7,8 +7,19 @@ histogram-chart {
   display: block;
 }
 
-histogram-chart rect.bar {
-    fill: #2f7ed8;
+rect.bar {
+    fill: rgb(47, 126, 216);
+}
+
+rect.bar:hover {
+    fill: rgb(72, 151, 241);
+}
+
+.float-box {
+    fill: rgb(255, 255, 255);
+    stroke: rgb(127, 127, 127);
+    stroke-width: 1;
+
 }
 
 histogram-chart svg,

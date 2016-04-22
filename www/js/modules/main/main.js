@@ -15,6 +15,7 @@ import signIn from './directives/signIn';
 import authenticationFactory from './factories/authenticationFactory';
 import onEvents from './run/onEvents';
 import authService from './services/authService';
+//import userFactory from './factories/userFactory';
 
 export default angular.module('main', ['app.templates', 'domain', 'google', 'ui.router'])
     .config(routes)
@@ -26,5 +27,6 @@ export default angular.module('main', ['app.templates', 'domain', 'google', 'ui.
     .directive('histogramChart', histogramChart)
     .directive('signIn', signIn)
     .factory('authenticationFactory', authenticationFactory)
+//    .factory('userFactory', userFactory)
     .service('authService', authService)
     .run(onEvents);

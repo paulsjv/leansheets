@@ -1,11 +1,12 @@
-import { select, selectAll } from 'd3-selection';
+import { select, selectAll, mouse, matcher } from 'd3-selection';
 import { scaleLinear, scaleBand } from 'd3-scale';
 import { axisBottom, axisLeft, axisRight } from 'd3-axis';
 import { line, curveCardinal, curveBundle } from 'd3-shape';
 import { range, min, max, extent } from 'd3-array';
 import { format, precisionFixed } from 'd3-format';
+import { transition, active } from 'd3-transition';
 
-var log, x, y, element, svg, margin, bars, overlayLine, xOverlay, xAxis, yAxisRight, barContainerHeight;
+var log, x, yOverlay, element, svg, margin, bars, overlayLine, xOverlay, xAxis, yAxisRight, barContainerHeight;
 var data = [{ frequency: 2, percentage: 13, leadtime: 2 }, 
             { frequency: 5, percentage: 25, leadtime: 5 }, 
             { frequency: 13, percentage: 50, leadtime: 7 }, 
@@ -15,9 +16,9 @@ var data = [{ frequency: 2, percentage: 13, leadtime: 2 },
             { frequency: 2, percentage: 82, leadtime: 17 }, 
             { frequency: 2, percentage: 90, leadtime: 20 }, 
             { frequency: 1, percentage: 92, leadtime: 21 }, 
-{ frequency: 12, percentage: 93, leadtime: 22 }, 
-{ frequency: 11, percentage: 94, leadtime: 23 }, 
-{ frequency: 10, percentage: 95, leadtime: 24 }, 
+            { frequency: 12, percentage: 93, leadtime: 22 }, 
+            { frequency: 11, percentage: 94, leadtime: 23 }, 
+            { frequency: 10, percentage: 95, leadtime: 24 }, 
             { frequency: 3, percentage: 98, leadtime: 25 }, 
             { frequency: 1, percentage: 100,leadtime: 50 }];
 
@@ -30,7 +31,7 @@ let resize = function() {
     svg.style('width', svgWidth);
 
     // reset x range
-    let barContainerWidth = getBarContainerWidth(svgWidth, getClipWidth(svgWidth));
+    let barContainerWidth = getBarContainerWidth(svgWidth, margin.left + margin.right); //getClipWidth(svgWidth));
     x.rangeRound([0, barContainerWidth]);
     log.debug('bar continer width', barContainerWidth);
     log.debug('x.bandwidth()', x.bandwidth());
@@ -42,23 +43,20 @@ let resize = function() {
 
     // update x-axis
     select('.axis--x').call(xAxis);
-	
-	// update x-axis-text
-	select('.x-axis-text')
-		.attr('transform', 'translate(' + ((barContainerWidth - margin.left - margin.right)/2) + ', 35 )');
+    let leadtimeGroupWidth = getElementWidth('.axis--x');
+    let leadtimeTextWidth = getElementWidth('.axis--x text.axis-text');
+ 
+    select('.axis--x text.axis-text')
+        .attr('transform', 'translate(' + ((leadtimeGroupWidth/2) - (leadtimeTextWidth/2)) + ', 35)');
 
     // update xOverlay scaleBand.rangeRound
     xOverlay.rangeRound([ x.range()[0] + (x.bandwidth()/2), x.range()[1] + (x.bandwidth()/2) ]);
 
-	// update yAxisLeft tick size
+	// update yAxisRight tick size
 	yAxisRight.tickSize(-barContainerWidth);
 	select('.axis-right')
 		.attr('transform', 'translate(' + [margin.left + barContainerWidth, margin.top] + ')')
 		.call(yAxisRight);
-
-	// update y-axis-text-right
-//	select('.y-axis-text-right')
-//		.attr('transform', 'translate(' + (svgWidth - 25) + ', ' + (barContainerHeight/2) + ') rotate(90)')
 
     // update overlay line
     select('.overlay')
@@ -70,12 +68,20 @@ let getSvgWidth = (elm) => {
     return parseInt(select(elm).style('width'), 10);
 };
 
-let getClipWidth = (width) => {
-    return Math.round(width * .9);
+let getBarContainerWidth = (svgWidth, clipWidth) => {
+    return svgWidth - clipWidth;
 };
 
-let getBarContainerWidth = (svgWidth, clipWidth) => {
-    return svgWidth - (svgWidth - clipWidth);
+let getElementHeight = (elm) => {
+    return parseInt(select(elm).node().getBBox().height, 10);
+};
+
+let getElementWidth = (elm) => {
+    return parseInt(select(elm).node().getBBox().width, 10);
+};
+
+let removeElement = (elm) => {
+    select(elm).remove();
 };
 
 export default ($log) => {
@@ -98,16 +104,15 @@ export default ($log) => {
             let svgWidth = getSvgWidth(element),
                 svgHeight = 400, // hard code for now
             // container for bars of historgram also margins
-                clipWidth = getClipWidth(svgWidth), // 90% of width
                 clipHeight = Math.round(svgHeight * .7); // 70% of height
-           // bar container 
-            let barContainerWidth = getBarContainerWidth(svgWidth, clipWidth);
+            // bar container 
+            margin = { top:((svgHeight - clipHeight)/2),
+                        right:60,
+                        bottom:((svgHeight - clipHeight)/2),
+                        left:60 };
+	        let barContainerWidth = getBarContainerWidth(svgWidth, margin.left + margin.right);
             barContainerHeight = svgHeight - (svgHeight - clipHeight); 
-            margin = {  top:((svgHeight - clipHeight)/2), 
-                            right:((svgWidth - clipWidth)/2),
-                            bottom:((svgHeight - clipHeight)/2),
-                            left:((svgWidth - clipWidth)/2) };
-			let padding = .62,
+		    let padding = .62,
             	ticks = 5;
 
             log.debug('directive width: ', svgWidth);
@@ -163,12 +168,12 @@ export default ($log) => {
             let minPercentage = min(percentage);
             let maxPercentage = max(percentage);
 
-            // y is defined at top of file since it is used in resize()
+            // yOverlay is defined at top of file since it is used in resize()
             //      for responsive charting.
             // D3.js Y-Axis implemenation see:
             //      https://github.com/d3/d3-scale#linear-scales
             //      https://github.com/d3/d3-scale#continuous-scales
-            y = scaleLinear()
+            yOverlay = scaleLinear()
                     .domain([0, max(percentage)])
                     .range([barContainerHeight, 0]);
 
@@ -183,12 +188,12 @@ export default ($log) => {
 
             log.debug('yAxisLeft.tickArguments', yAxisLeft.tickArguments());
             log.debug('yAxisLeft.tickValues', yAxisLeft.tickValues());
-            log.debug('y.ticks', y.ticks());
-            log.debug('y.tickFormat', y.tickFormat());
+            log.debug('yOverlay.ticks', yOverlay.ticks());
+            log.debug('yOverlay.tickFormat', yOverlay.tickFormat());
             log.debug('yAxisLeft.ticks', yAxisLeft.ticks());
 
             let yPercentageTickMax = 100;
-            yAxisRight = axisRight(y)
+            yAxisRight = axisRight(yOverlay)
                 .tickValues(range(0, yPercentageTickMax + 1, yPercentageTickMax / ticks))
                 .tickFormat((d) => { return d + '%'; })
 				.tickSize(-barContainerWidth);
@@ -197,6 +202,7 @@ export default ($log) => {
             // svg is defined at the top of the file since it is used in resize()
             svg = select(element)
                             .append('svg')
+                                .attr('id', 'svgTop')
                                 .attr('version', '1.1')
                                 .attr('xmlns','http://www.w3.org/2000/svg')
                                 .style('width', svgWidth).style('height', svgHeight);
@@ -206,39 +212,60 @@ export default ($log) => {
                     .attr('class', 'axis axis--x')
                     .attr('zIndex', '2')
                 .call(xAxis)
-
-            .append('text')
+                .append('text')
                     .attr('class', 'axis-text x-axis-text')
-                    .attr('transform', 'translate(' + ((barContainerWidth - margin.left - margin.right)/2) + ', 35 )')
+                    .attr('visibility', 'hidden')
 					.text('Lead Time');
+
+            let leadtimeGroupWidth = getElementWidth('.axis--x');
+            let leadtimeTextWidth = getElementWidth('.axis--x text.axis-text');
+ 
+            select('.axis--x text.axis-text')
+                    .attr('transform', 'translate(' + ((leadtimeGroupWidth/2) - (leadtimeTextWidth/2)) + ', 35)')
+                    .attr('visibility', 'visible');
 
             svg.append('g')
                     .attr('transform', 'translate(' + [margin.left, margin.top] + ')')
                     .attr('class', 'axis axis--y axis-left')
                     .attr('zIndex', '2')
                 .call(yAxisLeft)
-
-            .append('text')
+                .append('text')
                     .attr('class', 'axis-text')
-                    .attr('transform', 'translate(-50, ' + (barContainerHeight/2) + ') rotate(-90)')
+                    .attr('visiblity', 'hidden')
                     .attr('y', 6)
                     .attr('dy', '.71em')
                     .style('text-anchor', 'end')
                     .text('Frequency');
+
+            let frequencyGroupHeight = getElementHeight('.axis-left');
+            let frequencyTextHeight = getElementWidth('.axis-left text.axis-text');
+ 
+            select('.axis-left text.axis-text')
+                    .attr('transform', 'translate(-50, ' + ((frequencyGroupHeight/2) - (frequencyTextHeight/2)) + ') rotate(-90)')
+                    .attr('visibility', 'visible');
 
             svg.append('g')
                     .attr('transform', 'translate(' + [margin.left + barContainerWidth, margin.top] + ')')
                     .attr('class', 'axis axis--y axis-right')
                     .attr('zIndex', '2')
                 .call(yAxisRight)
-
-            .append('text')
-                    .attr('class', 'axis-text y-axis-text-right')
+                .append('text')
+                    .attr('class', 'axis-text')
+                    .attr('visibility', 'hidden')
 					.attr('dy', '.71em')
-                    .attr('transform', 'translate(50, ' + (barContainerHeight/2) + ') rotate(90)')
 					.text('Percentage of Total');
+            
+            log.debug('.axis-right', select('.axis-right').node().getBBox().height);
+            log.debug('.axis-right text.axis-text', select('.axis-right text.axis-text').node().getBBox().width);
 
-           // bars is defined at the top of the file since it is used in resize()
+            let percentGroupHeight = getElementHeight('.axis-right');
+            let percentTextHeight = getElementWidth('.axis-right text.axis-text');
+ 
+            select('.axis-right text.axis-text')
+                    .attr('transform', 'translate(50, ' + ((percentGroupHeight/2) - (percentTextHeight/2)) + ') rotate(90)')
+                    .attr('visibility', 'visible');
+
+            // bars is defined at the top of the file since it is used in resize()
             // Each bar in the histogram defined here
             bars = svg.append('g')
                         .attr('id', 'barcontainer')
@@ -246,14 +273,47 @@ export default ($log) => {
                         .attr('zIndex', '0.1')
                     .selectAll('.bar')
                     .data(data)
-                  .enter().append('rect')
+                  .enter()
+
+            bars.append('rect')
                     .attr('class', 'bar')
                     .attr('width', x.bandwidth())
                     .attr('height', (d) => { return d.frequency * barHeight; })
                     .attr('x', (d) => { return x(d.leadtime); })
                     .attr('y', (d) => { return barContainerHeight - (d.frequency * barHeight) - .5; })
                     .attr('rx', 0)  // rounded edges 0 = sharp corners
-                    .attr('ry', 0); // rounded edges 0 = sharp corners
+                    .attr('ry', 0)  // rounded edges 0 = sharp corners
+                    .on('mousemove', 
+                        function(d, i) {
+                            select('.rect-'+i).remove();
+                            let group = select('#svgTop')
+                                            .append('g')
+                                            .attr('class', 'rect-'+i);
+
+                            group.append('rect')
+                                    .attr('class', 'float-box')
+                                    .attr('rx', 3)
+                                    .attr('ry', 3)
+                                    .attr('width', 100)
+                                    .attr('height', 50)
+                                    .attr('x', (x(d.leadtime) + (x.bandwidth())))
+                                    .attr('y', mouse(this)[1]+2);
+
+                            group.append('text')
+                                    .attr('fill', 'black')
+                                    .attr('x', (x(d.leadtime) + (x.bandwidth())))
+                                    .attr('y', mouse(this)[1]+2)
+                                    .text('testing!');
+                        })
+                    .on('mouseout',
+                        function(d, i) {
+                            select('.rect-'+i).remove();
+                        });
+
+             bars.append('text') //.node().parentNode.append('text')
+                    .attr('x', (d) => { return x(d.leadtime); })
+                    .attr('y', (d) => {return barContainerHeight - (d.frequency * barHeight) - .5; })
+                    .text((d) => { return d.frequency; });
 
             // Line Overlay
             // Line start x-axis
@@ -261,9 +321,6 @@ export default ($log) => {
             xOverlay.range([ x.range()[0] + (x.bandwidth()/2), x.range()[1] + (x.bandwidth()/2) ]);
 
             // Line start y-axis
-            let yOverlay = y.copy();
-            yOverlay.range([barContainerHeight, 0]);
-
             // Line function that is passed to the "p" element
             overlayLine = line().curve(curveCardinal)
                             .x((d) => { return xOverlay(d.leadtime); })

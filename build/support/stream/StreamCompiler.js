@@ -117,7 +117,7 @@ export default class StreamCompiler {
                                 paths.src.templates('**/*.html'),
 
                                 (stream) => {
-                                    
+
                                     return stream
                                         .pipe(htmlmin({
                                             removeComments: true,
@@ -136,7 +136,7 @@ export default class StreamCompiler {
 
                         ]))
                         .pipe(jspm.buildStatic(paths.src.js(entryPoint.js), `js/${APP_NAME}.js`, jspmOpts));
-                        
+
                     if (opts.sourceMaps) {
                         resultStream = resultStream.pipe(ngAnnotate({ map: { inline: true } }));
                     } else {
@@ -159,24 +159,20 @@ export default class StreamCompiler {
 
                 handler: (opts) => (stream) => {
 
-                    let resultStream = stream;
+                    let sassOpts = {
+                        precision: 10 // for bootstrap
+                    };
 
                     if (opts.minify) {
-
-                        resultStream = resultStream.pipe(sass({
-                            outputStyle: 'compressed'
-                        }).on('error', sass.logError));
-
-                    } else {
-                        resultStream = resultStream.pipe(sass().on('error', sass.logError));
+                        sassOpts.outputStyle = 'compressed';
                     }
 
-                    resultStream = resultStream.pipe(rename((filePath) => {
-                        filePath.dirname = 'css';
-                        filePath.basename = APP_NAME;
-                    }));
-
-                    return resultStream;
+                    return stream
+                        .pipe(sass(sassOpts).on('error', sass.logError))
+                        .pipe(rename((filePath) => {
+                            filePath.dirname = 'css';
+                            filePath.basename = APP_NAME;
+                        }));
 
                 }
 
@@ -191,13 +187,13 @@ export default class StreamCompiler {
                 ],
 
                 handler: (opts) => (stream) => {
-                    
+
                     return stream
                         .pipe(htmlmin({
                             removeComments: true,
                             collapseWhitespace: true
                         }));
-                    
+
                 }
 
             },

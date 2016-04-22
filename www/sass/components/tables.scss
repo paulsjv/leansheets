@@ -2,6 +2,14 @@
 
     table-layout: fixed;
 
+    > thead > tr > th {
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+    }
+
     > tbody > tr > td {
 
         white-space: nowrap;
@@ -15,7 +23,71 @@
 .table-sortable {
 
     > thead > tr > th {
+
+        position: relative;
+
         line-height: 28px;
+        padding-right: 28px + ($table-cell-padding * 2);
+
+        .sort-indicator {
+
+            position: absolute;
+            right: 0;
+            top: 0;
+
+            padding: $table-cell-padding;
+
+            .fa-stack {
+                color: $gray-lighter;
+            }
+
+        }
+
+        > a:hover {
+
+            + .sort-indicator .fa-sort-asc {
+                color: $text-color;
+            }
+
+        }
+
+        &.sorted {
+
+            &.asc {
+
+                .sort-indicator .fa-sort-asc {
+                    color: $text-color;
+                }
+
+                > a:hover {
+
+                    + .sort-indicator .fa-sort-desc {
+                        color: $text-color;
+                    }
+
+                }
+
+            }
+
+            &.desc {
+
+                .sort-indicator .fa-sort-desc {
+                    color: $text-color;
+                }
+
+                > a:hover {
+
+                    + .sort-indicator .fa-sort-asc {
+                        color: $text-color;
+                    }
+
+                }
+
+            }
+
+        }
+
+
     }
 
 }

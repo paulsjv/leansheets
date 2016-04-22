@@ -4,55 +4,61 @@
 
         <div class="col-md-12">
 
-            <p>&nbsp;</p>
+            <h1 class="page-header">
+                {{ $ctrl.titleize($ctrl.domainClass) }}
+            </h1>
 
-            <nav class="navbar navbar-default">
+            <form class="form-inline pull-right hidden-xs">
 
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#scaffold-nav" aria-expanded="false">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <div class="navbar-brand">List</div>
+                <button class="btn btn-default">New {{ $ctrl.singularize($ctrl.titleize($ctrl.domainClass)) }}</button>
+
+                &nbsp;
+
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Search">
                 </div>
 
-                <div id="scaffold-nav" class="collapse navbar-collapse">
+            </form>
 
-                    <ul class="nav navbar-nav">
+            <form class="form visible-xs">
 
-                        <li class="active">
-                            <a href="" data-target="#{{ $ctrl.domainClass }}" data-toggle="tab">{{ $ctrl.titleize($ctrl.domainClass) }}</a>
-                        </li>
-
-                        <li data-ng-repeat="child in $ctrl.children">
-                            <a href="" data-target="#{{ child }}" data-toggle="tab">{{ $ctrl.pluralize($ctrl.titleize(child)) }}</a>
-                        </li>
-
-                    </ul>
-
-                    <form class="navbar-form navbar-right">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search">
-                        </div>
-                    </form>
-
+                <div class="form-group">
+                    <button class="btn btn-default btn-block">New {{ $ctrl.singularize($ctrl.titleize($ctrl.domainClass)) }}</button>
                 </div>
-            </nav>
+
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Search">
+                </div>
+
+            </form>
+
+            <ul class="nav nav-tabs">
+
+                <li class="active">
+                    <a href="" data-target="#{{ $ctrl.domainClass }}" data-toggle="tab">{{ $ctrl.titleize($ctrl.domainClass) }}</a>
+                </li>
+
+                <li data-ng-repeat="child in $ctrl.children">
+                    <a href="" data-target="#{{ child }}" data-toggle="tab">{{ $ctrl.pluralize($ctrl.titleize(child)) }}</a>
+                </li>
+
+            </ul>
 
             <div class="tab-content">
+
                 <div id="{{ $ctrl.domainClass }}" class="tab-pane fade in active">
 
-                    <table class="table table-bordered table-responsive table-striped table-hover table-sortable">
+                    <table class="table table-responsive table-striped table-hover table-sortable">
                         <thead>
 
                             <tr>
                                 <th data-ng-repeat="field in $ctrl.fields">
 
-                                    {{ $ctrl.titleize(field) }}
+                                    <a href="">
+                                        {{ $ctrl.titleize(field) }}
+                                    </a>
 
-                                    <div class="pull-right">
+                                    <div class="sort-indicator">
                                         <span class="fa-stack">
                                             <i class="fa fa-stack-1x fa-sort-asc"></i>
                                             <i class="fa fa-stack-1x fa-sort-desc"></i>
@@ -67,7 +73,15 @@
 
                             <tr data-ng-repeat="instance in $ctrl.instances">
                                 <td data-ng-repeat="field in $ctrl.fields">
-                                    {{ instance[field] }}
+
+                                    <a href="" data-ng-if="$first">
+                                        {{ instance[field] }}
+                                    </a>
+
+                                    <span data-ng-if="!$first">
+                                        {{ instance[field] }}
+                                    </span>
+
                                 </td>
                             </tr>
 
@@ -78,19 +92,35 @@
 
                 <div id="{{ child }}" class="tab-pane fade" data-ng-repeat="child in $ctrl.children">
 
-                    <table class="table table-bordered table-responsive table-striped table-hover table-sortable">
+                    <table class="table table-responsive table-striped table-hover table-sortable">
                         <thead>
 
                             <tr>
+                                <th>
+
+                                    <a href="">
+                                        {{ $ctrl.singularize($ctrl.titleize($ctrl.domainClass)) + ' ' + $ctrl.titleize($ctrl.fields[0]) }}
+                                    </a>
+
+                                    <div class="sort-indicator">
+                                        <span class="fa-stack">
+                                            <i class="fa fa-stack-1x fa-sort-asc"></i>
+                                            <i class="fa fa-stack-1x fa-sort-desc"></i>
+                                        </span>
+                                    </div>
+
+                                </th>
                                 <th data-ng-repeat="field in $ctrl.childFields(child)">
 
-                                    {{ $ctrl.titleize(field) }}
+                                    <a href="">
+                                        {{ $ctrl.titleize(field) }}
+                                    </a>
 
-                                    <div class="pull-right">
-                                            <span class="fa-stack">
-                                                <i class="fa fa-stack-1x fa-sort-asc"></i>
-                                                <i class="fa fa-stack-1x fa-sort-desc"></i>
-                                            </span>
+                                    <div class="sort-indicator">
+                                        <span class="fa-stack">
+                                            <i class="fa fa-stack-1x fa-sort-asc"></i>
+                                            <i class="fa fa-stack-1x fa-sort-desc"></i>
+                                        </span>
                                     </div>
 
                                 </th>
@@ -100,9 +130,15 @@
                         <tbody>
 
                             <tr data-ng-repeat="instance in $ctrl.instances">
+
+                                <td>
+                                    <a href="">{{ instance[$ctrl.fields[0]] }}</a>
+                                </td>
+
                                 <td data-ng-repeat="field in $ctrl.childFields(child)">
                                     {{ instance[child][field] }}
                                 </td>
+
                             </tr>
 
                         </tbody>

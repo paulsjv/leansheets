@@ -1,6 +1,6 @@
 import angular from 'angular';
 
-export default (firebaseRef, $firebaseArray, $firebaseObject) => {
+export default ($http, $firebaseAuth, firebaseRef, $firebaseArray, $firebaseObject) => {
     'ngInject';
 
     let usersRef = firebaseRef.child('users'),
@@ -48,6 +48,19 @@ export default (firebaseRef, $firebaseArray, $firebaseObject) => {
 
         static $all() {
             return users.$loaded();
+        }
+
+        static $count() {
+
+            return $http.get(`${usersRef.toString()}.json`, {
+                params: {
+                    auth: $firebaseAuth(usersRef).$getAuth().token,
+                    shallow: true
+                }
+            }).then((response) => {
+                return Object.keys(response.data).length;
+            });
+
         }
 
         constructor(obj) {

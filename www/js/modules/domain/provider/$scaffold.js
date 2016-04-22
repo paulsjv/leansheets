@@ -94,6 +94,10 @@ export default class {
                     pluralize(str) {
                         return inflect.pluralize(str);
                     }
+                    
+                    singularize(str) {
+                        return inflect.singularize(str);
+                    }
 
                 }
             })

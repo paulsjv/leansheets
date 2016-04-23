@@ -147,9 +147,9 @@ export default class StreamCompiler {
 
                         resultStream = resultStream
                             .pipe(sourceMaps.init({ loadMaps: true }))
-                            // remove the bundle from the sourcemap
-                            .pipe(SourceMapUtil.streamRemoveSource(APP_NAME)) 
                             .pipe(ngAnnotate())
+                            // remove the bundle from the sourcemap
+                            .pipe(SourceMapUtil.streamRemoveSource(APP_NAME))
                             .pipe(sourceMaps.write('.', {
                                 mapSources: (sourcePath) => {
 

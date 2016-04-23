@@ -12,10 +12,12 @@ import htmlmin from 'gulp-htmlmin';
 import rename from 'gulp-rename';
 import RevAll from 'gulp-rev-all';
 import uglify from 'gulp-uglify';
+import sourceMaps from 'gulp-sourcemaps';
 import angularTemplateCache from 'gulp-angular-templatecache';
 import ngAnnotate from 'gulp-ng-annotate';
 
 import StreamReplacer from './StreamReplacer';
+import SourceMapUtil from '../util/SourceMapUtil';
 
 import {paths, APP_NAME, entryPoint} from '../../project.conf.js';
 
@@ -109,6 +111,10 @@ export default class StreamCompiler {
                     let jspmOpts = _.extend({}, opts);
                     delete jspmOpts.minify;
 
+                    if (jspmOpts.sourceMaps) {
+                        jspmOpts.sourceMaps = 'inline';
+                    }
+
                     let resultStream = stream
                         .pipe(manifold([
 
@@ -138,7 +144,26 @@ export default class StreamCompiler {
                         .pipe(jspm.buildStatic(paths.src.js(entryPoint.js), `js/${APP_NAME}.js`, jspmOpts));
 
                     if (opts.sourceMaps) {
-                        resultStream = resultStream.pipe(ngAnnotate({ map: { inline: true } }));
+
+                        resultStream = resultStream
+                            .pipe(sourceMaps.init({ loadMaps: true }))
+                            // remove the bundle from the sourcemap
+                            .pipe(SourceMapUtil.streamRemoveSource(APP_NAME)) 
+                            .pipe(ngAnnotate())
+                            .pipe(sourceMaps.write('.', {
+                                mapSources: (sourcePath) => {
+
+                                    let newPath = upath.relative('js/', sourcePath);
+
+                                    if (!new RegExp(paths.jspm()).test(sourcePath)) {
+                                        newPath = upath.relative(paths.src.js(), newPath);
+                                    }
+
+                                    return newPath;
+
+                                }
+                            }));
+
                     } else {
                         resultStream = resultStream.pipe(ngAnnotate());
                     }

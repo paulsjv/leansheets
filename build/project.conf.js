@@ -1,7 +1,14 @@
+import os from 'os';
 import PathCalculator from './support/path/PathCalculator';
-import readJSON from './support/util/readJSON';
+import FileUtil from './support/util/FileUtil';
 
-let pkg = readJSON('package.json');
+let pkg = FileUtil.readJSON('package.json');
+
+export const BROWSER = os.platform() === 'linux' ? 'google-chrome' : (
+    os.platform() === 'darwin' ? 'google chrome' : (
+        os.platform() === 'win32' ? 'chrome' : 'firefox'
+    )
+);
 
 export const EXPRESS_PORT = 3000;
 export const LIVERELOAD_PORT = 35729;

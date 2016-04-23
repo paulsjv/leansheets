@@ -1,14 +1,14 @@
 import gulp from 'gulp';
 import plato from 'plato';
 
-import readJSON from '../support/util/readJSON';
+import FileUtil from '../support/util/FileUtil';
 import {paths} from '../project.conf';
 
 gulp.task('reports', ['test:unit', 'reports:complexity']);
 
 gulp.task('reports:complexity', ['clean:reports'], (done) => {
 
-    let jshintrc = readJSON('.jshintrc', true),
+    let jshintrc = FileUtil.readJSON('.jshintrc', true),
         options = {
             jshint: {
                 options: jshintrc,

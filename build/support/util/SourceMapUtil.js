@@ -1,21 +1,20 @@
-import path from 'path';
+import upath from 'upath';
 import through2 from 'through2';
 
-import { SourceMapConsumer, SourceMapGenerator} from 'source-map';
+import { SourceMapConsumer, SourceMapGenerator } from 'source-map';
 
 export default class SourceMapUtil {
 
-    static removeSource(sourceMap, source) {
+    static removeSource(inMap, sourceToRemove) {
 
-        let consumer = new SourceMapConsumer(sourceMap),
+        let consumer = new SourceMapConsumer(inMap),
             generator = new SourceMapGenerator({
-                file: sourceMap.file,
-                sourceRoot: sourceMap.sourceRoot
+                file: inMap.file
             });
 
         consumer.eachMapping((mapping) => {
 
-            if (mapping.source !== source) {
+            if (mapping.source !== sourceToRemove) {
 
                 generator.addMapping({
                     name: mapping.name,
@@ -30,38 +29,61 @@ export default class SourceMapUtil {
                     }
                 });
 
-                if (consumer.hasContentsOfAllSources()) {
-                    generator.setSourceContent(mapping.source, consumer.sourceContentFor(mapping.source));
-                }
-
             }
 
+        });
+
+        inMap.sources.forEach((source) => {
+            if (source !== sourceToRemove) {
+                generator.setSourceContent(source, consumer.sourceContentFor(source));
+            }
         });
 
         return generator.toJSON();
 
     }
 
-    static streamRemoveSource(source) {
-
-        let sourceRegex = new RegExp(source);
+    static streamRemoveSource(sourceRegex) {
 
         return through2.obj(function (file, enc, flush) {
 
-            let isMapFile = path.extname(file.path) === '.map',
-                sourceMap;
-
-            if (isMapFile) {
-                sourceMap = JSON.parse(file.contents.toString('utf8'))
-            } else {
-                // support for gulp-sourcemaps
+            let isMapFile = upath.extname(file.path) === '.map',
+                isJsFile = upath.extname(file.path) === '.js',
                 sourceMap = file.sourceMap;
+
+            if (!sourceMap) {
+
+                if (isMapFile) {
+                    sourceMap = JSON.parse(file.contents.toString('utf8'))
+                } else if (isJsFile) {
+
+                    let sourceMappingUrlRegex = /\/\/# sourceMappingURL=(.+)$/,
+                        sourceMappingUrlMatches = sourceMappingUrlRegex.exec(file.contents.toString('utf8')),
+                        sourceMappingUrl = sourceMappingUrlMatches ? sourceMappingUrlMatches[1] : null,
+
+                        dataRegex = /^data:(.+);(.+),(.+)$/,
+                        dataMatches = sourceMappingUrl ? dataRegex.exec(sourceMappingUrl) : null,
+
+                        isDataUri = dataMatches && dataMatches.length === 4,
+
+                        contentType = isDataUri ? dataMatches[1] : null,
+                        encoding = isDataUri ? dataMatches[2] : null,
+                        data = isDataUri ? dataMatches[3] : null;
+
+                    if (isDataUri && contentType === 'application/json') {
+                        sourceMap = JSON.parse(new Buffer(data, encoding).toString('utf8'));
+                    }
+
+                }
+
             }
 
             if (sourceMap) {
 
                 sourceMap.sources
-                    .filter((source) => sourceRegex.test(source))
+                    .filter((source) => {
+                        return sourceRegex.test(source);
+                    })
                     .forEach((source) => {
                         sourceMap = SourceMapUtil.removeSource(sourceMap, source);
                     });

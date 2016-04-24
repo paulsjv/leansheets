@@ -111,10 +111,6 @@ export default class StreamCompiler {
                     let jspmOpts = _.extend({}, opts);
                     delete jspmOpts.minify;
 
-                    if (jspmOpts.sourceMaps) {
-                        jspmOpts.sourceMaps = 'inline';
-                    }
-
                     let resultStream = stream
                         .pipe(manifold([
 
@@ -148,19 +144,12 @@ export default class StreamCompiler {
                         resultStream = resultStream
                             .pipe(sourceMaps.init({ loadMaps: true }))
                             .pipe(ngAnnotate())
-                            // remove the bundle from the sourcemap
-                            .pipe(SourceMapUtil.streamRemoveSource(APP_NAME))
+                            // remove the bundle from the sourcemap (improves browser debugger)
+                            .pipe(SourceMapUtil.streamRemoveSource(new RegExp(APP_NAME)))
                             .pipe(sourceMaps.write('.', {
                                 mapSources: (sourcePath) => {
-
                                     let newPath = upath.relative('js/', sourcePath);
-
-                                    if (!new RegExp(paths.jspm()).test(sourcePath)) {
-                                        newPath = upath.relative(paths.src.js(), newPath);
-                                    }
-
-                                    return newPath;
-
+                                    return upath.relative(paths.src.js(), newPath);
                                 }
                             }));
 

@@ -31,7 +31,7 @@
     "gulp-jspm": "github:tniswong/gulp-jspm#1.0",
     "gulp-livereload": "^3.8.1",
     "gulp-manifold": "github:tniswong/gulp-manifold",
-    "gulp-ng-annotate": "^1.1.0",
+    "gulp-ng-annotate": "^2.0.0",
     "gulp-open": "^1.0.0",
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.4",

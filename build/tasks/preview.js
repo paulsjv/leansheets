@@ -11,7 +11,7 @@ let streamCompiler = new StreamCompiler(),
     streamServer = new StreamServer(),
     
     compilerOpts = {
-        sourceMaps: true,
+        sourceMaps: 'inline',
         lowResSourceMaps: true
     };
 

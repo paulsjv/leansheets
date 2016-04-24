@@ -148,8 +148,11 @@ export default class StreamCompiler {
                             .pipe(SourceMapUtil.streamRemoveSource(new RegExp(APP_NAME)))
                             .pipe(sourceMaps.write('.', {
                                 mapSources: (sourcePath) => {
-                                    let newPath = upath.relative('js/', sourcePath);
-                                    return upath.relative(paths.src.js(), newPath);
+                                    if (!new RegExp(paths.jspm()).test(sourcePath)) {
+                                        return upath.relative(paths.src.js(), sourcePath);
+                                    } else {
+                                        return upath.relative(paths.src(), sourcePath);
+                                    }
                                 }
                             }));
 

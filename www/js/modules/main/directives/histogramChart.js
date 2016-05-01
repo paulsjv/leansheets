@@ -131,13 +131,13 @@ export default ($log) => {
         controller: histogramController,
         controllerAs: 'histogramController',
         bindToController: {
-            dataSet: '@'
+            dataset: '='
         },
         scope: {},
         restrict: 'E',
-        link: (scope, elm, attrs) => {
+        link: (scope, elm, attrs, ctrl) => {
             log.debug('histogramChartDirective.js - in link!');
-            let data = scope.dataSet;//histogramController().getData();
+            let data = ctrl.dataset;//histogramController().getData();
             log.debug('histogramChartDirective.js - data', attrs);
             log.debug('elm', elm);
             log.debug('scope',scope);

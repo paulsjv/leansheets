@@ -7,7 +7,7 @@ import { format, precisionFixed } from 'd3-format';
 import { transition, active } from 'd3-transition';
 
 var log, x, yOverlay, element, svg, margin, bars, overlayLine, xOverlay, xAxis, yAxisRight, barContainerHeight;
-var data = [{ frequency: 2, percentage: 13, leadtime: 2 }, 
+/*var data = [{ frequency: 2, percentage: 13, leadtime: 2 }, 
             { frequency: 5, percentage: 25, leadtime: 5 }, 
             { frequency: 13, percentage: 50, leadtime: 7 }, 
             { frequency: 3, percentage: 63, leadtime: 10 }, 
@@ -21,7 +21,7 @@ var data = [{ frequency: 2, percentage: 13, leadtime: 2 },
             { frequency: 10, percentage: 95, leadtime: 24 }, 
             { frequency: 3, percentage: 98, leadtime: 25 }, 
             { frequency: 1, percentage: 100,leadtime: 50 }];
-
+*/
 let resize = function() {
     // get new width of parent node of svg width
     let svgWidth = getSvgWidth(element);
@@ -110,6 +110,16 @@ let tooltipHide = () => {
             .style('visibility', 'hidden');
 };
 
+let histogramController = function() {
+/*    this.setData = function(data) {
+        this.data = data;
+    }
+    this.getDataSet = function() {
+        return this.dataSet;
+    }
+*/
+};
+
 export default ($log) => {
     'ngInject';
 
@@ -118,11 +128,19 @@ export default ($log) => {
     select(window).on('resize', resize);
 
     return {
+        controller: histogramController,
+        controllerAs: 'histogramController',
+        bindToController: {
+            dataSet: '@'
+        },
         scope: {},
         restrict: 'E',
-        link: (scope, elm) => {
+        link: (scope, elm, attrs) => {
             log.debug('histogramChartDirective.js - in link!');
-
+            let data = scope.dataSet;//histogramController().getData();
+            log.debug('histogramChartDirective.js - data', attrs);
+            log.debug('elm', elm);
+            log.debug('scope',scope);
             // element is defined at top of file
             element = elm[0];
 

@@ -16,6 +16,8 @@ import authenticationFactory from './factories/authenticationFactory';
 import onEvents from './run/onEvents';
 import authService from './services/authService';
 //import userFactory from './factories/userFactory';
+import histogramContainer from './components/histogram-container';
+import filterContainer from './components/filter-container';
 
 export default angular.module('main', ['app.templates', 'domain', 'google', 'ui.router'])
     .config(routes)
@@ -27,4 +29,6 @@ export default angular.module('main', ['app.templates', 'domain', 'google', 'ui.
     .factory('authenticationFactory', authenticationFactory)
 //    .factory('userFactory', userFactory)
     .service('authService', authService)
+    .component('histogramContainer', histogramContainer)
+    .component('filterContainer', filterContainer)
     .run(onEvents);

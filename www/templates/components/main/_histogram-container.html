@@ -1,0 +1,8 @@
+<div>
+
+    {{$ctrl.data}}
+
+    <filter-container filter="$ctrl.filter" on-filter-change="$ctrl.toggle($event.filter)"></filter-container>
+    <histogram-chart data-dataset="$ctrl.data"></histogram-chart>
+
+</div>

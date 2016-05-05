@@ -10,7 +10,7 @@ import '../templates/templates';
 
 import routes from './config/routes';
 import firebaseData from './directives/firebaseData';
-import histogramChart from './directives/histogramChart';
+import histogramChart from './directives/histogram/histogramChart';
 import signIn from './directives/signIn';
 import authenticationFactory from './factories/authenticationFactory';
 import onEvents from './run/onEvents';

@@ -36,11 +36,21 @@ let setupXScaleBand = (maxRange, padding) => {
 /**
 * getSvgWidth()
 * This method gets the pixel width of the element passed in rounded to the nearest 10s.
-* @param element
-* @return integer
+* @param element - object - html element
+* @return integer - width in pixels
 */
 let getSvgWidth = (element) => {
     return parseInt(select(element).style('width'), 10);
+};
+
+/**
+* getElementWidth()
+* Gets the width of an svg element passed in rounded to the nearest 10s.
+* @param element - object - svg element
+* @returns integer - width in pixels
+*/
+let getElementWidth = (elm) => {
+    return parseInt(select(elm).node().getBBox().width, 10);
 };
 
 /**
@@ -75,6 +85,16 @@ let getDomainMax = (data, ticks) => {
     return domainMax;
 };
 
+/**
+* renderSvgElement()
+* Renders the &lt;svg&gt; element to the DOM and then returns the instance of it.
+* If the &lt;svg&gt; element already is attached to the DOM it will return that instance
+* and not create a new one.
+* @param element - object - the html element to attach the &lt;svg&gt; element to
+* @param height - integer - height in pixels
+* @param width - integer - width in pixels
+* @return object - a d3 selection object
+*/
 let renderSvgElement = (element, height, width) => {
     let svg = select('#svgTop');
     if (!svg.empty())
@@ -87,6 +107,61 @@ let renderSvgElement = (element, height, width) => {
                 .attr('xmlns','http://www.w3.org/2000/svg')
                 .style('height', height)
                 .style('width', width);
+};
+
+/**
+* renderBars()
+* Renders all the bars on the histogram chart
+* @param data - object - the data to render the bars with
+* @param barHeight - integer - pixels for how tall one bar is
+* @param svg - object - d3 selection that the group &lt;g&gt; will be appended to
+*/
+let renderBars = (data, barHeight) => {
+    // Each bar in the histogram defined here
+    // Bind the data
+    // global variable
+    // TODO: chart is not centered and clipped on the right side.
+    bars = renderSvgElement().append('g')
+                    .attr('id', 'barcontainer')
+                    .attr('transform', 'translate(' + [margin.left, margin.top] + ')')
+                .selectAll('.bar')
+                .data(data);
+
+    // Update
+    bars.enter().append('rect')
+        .attr('class', 'bar')
+        .attr('width', x.bandwidth())
+        .attr('rx', 0)  // rounded edges 0 = sharp corners
+        .attr('ry', 0);  // rounded edges 0 = sharp corners
+
+    // All the values that change when the data set changes
+   bars.enter().selectAll('rect.bar')
+          .attr('height', (d) => { return d.frequency * barHeight; })
+          .attr('x', (d) => { return x(d.leadtime); }) 
+          .attr('y', (d) => { return barContainerHeight - (d.frequency * barHeight) - .5; })
+        .on('mousemove', 
+            function(d, i) {
+//                    tooltipShow((mouse(select('html').node())[1] + 10) + 'px', (mouse(select('html').node())[0] + 10) + 'px', 
+//                              '<b>Frequency: </b>' + d.frequency + '<br/><b>Percentage: </b>' + d.percentage + '%');
+            })
+        .on('mouseout',
+            function(d, i) {
+//                    tooltipHide();
+            });
+
+     bars.enter().append('text')
+            .attr('class', 'bar-text')
+            .attr('y', (d) => {return barContainerHeight - (d.frequency * barHeight) - 3; })
+            .text((d) => { return d.frequency; });
+
+    selectAll('.bar-text')
+        .each(function(d) { 
+                let barTextWidth = getElementWidth(this);
+                select(this).attr('x', x(d.leadtime) + (x.bandwidth()/2) - (barTextWidth/2));
+              });
+
+    // Remove
+        
 };
 
 /**
@@ -108,7 +183,7 @@ export function setup(element, $log) {
  
     // histogram bars are 70% the height of the svg element height 
     // global variable
-    barContainerHeight  = Math.round(svgHeight * .7); 
+    barContainerHeight  = Math.round(svgHeight * .7);   // TODO: get 70% of height hardcoded for now 
 
     // set top and bottom margins have getting barContainerHeight
     // global variable
@@ -117,7 +192,7 @@ export function setup(element, $log) {
 
     // setup x scale band for histogram bars
     // global variable
-    x = setupXScaleBand(barContainerWidth, .62);
+    x = setupXScaleBand(barContainerWidth, padding);
 
     // Creating the svg and all the SVG elements for it.
     // svg is defined at the top of the file since it is used in resize()
@@ -135,38 +210,8 @@ export function update(data) {
 
     x.domain(data.map((d) => { return d.leadtime; }));
 
-    let svg = renderSvgElement();
-
-    // Each bar in the histogram defined here
-    // Bind the data
-    // global variable
-    // TODO: chart is not centered and clipped on the right side.
-    bars = svg.append('g')
-                    .attr('id', 'barcontainer')
-                    .attr('transform', 'translate(' + [margin.left, margin.top] + ')')
-                .selectAll('.bar')
-                .data(data).enter();
-
-    // Update
-    bars.append('rect')
-        .attr('class', 'bar')
-        .attr('width', x.bandwidth())
-        .attr('height', (d) => { return d.frequency * barHeight; })
-        .attr('x', (d) => { return x(d.leadtime); })
-        .attr('y', (d) => { return barContainerHeight - (d.frequency * barHeight) - .5; })
-        .attr('rx', 0)  // rounded edges 0 = sharp corners
-        .attr('ry', 0)  // rounded edges 0 = sharp corners
-        .on('mousemove', 
-            function(d, i) {
-//                    tooltipShow((mouse(select('html').node())[1] + 10) + 'px', (mouse(select('html').node())[0] + 10) + 'px', 
-//                              '<b>Frequency: </b>' + d.frequency + '<br/><b>Percentage: </b>' + d.percentage + '%');
-            })
-        .on('mouseout',
-            function(d, i) {
-//                    tooltipHide();
-            });
-
-
+    renderSvgElement();
+    renderBars(data, barHeight);
 };
 
 /**

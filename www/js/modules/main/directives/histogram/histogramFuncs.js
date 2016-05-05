@@ -14,8 +14,10 @@ var log;
 */
 var margin = {},        // used in setup and resize functions
     x,                  // scaleBand - the scaleBand on the x-axis for each histogram bar
-    barContainerHeight, // number of pixels the container that holds the bars of histogram
-    bars;               // the rect html elements of the histogram
+    yOverlay,           // scaleLinear - the y scale for the line overlay
+    xOverlay,           // scaleBand - copy of `x` for the line overlay
+    barContainerHeight; // number of pixels the container that holds the bars of histogram
+//    bars;               // the rect html elements of the histogram
 
 /**
 * setupXScaleBand()
@@ -31,6 +33,18 @@ let setupXScaleBand = (maxRange, padding) => {
             .rangeRound([0, maxRange]);
     xScaleBand.padding(padding);
     return xScaleBand;
+};
+
+let setupYOverlay = (barContainerHeight) => {
+    // yOverlay is defined at top of file since it is used in resize()
+    //      for responsive charting.
+    // D3.js Y-Axis implemenation see:
+    //      https://github.com/d3/d3-scale#linear-scales
+    //      https://github.com/d3/d3-scale#continuous-scales
+    let yOverlay = scaleLinear()
+            
+            .range([barContainerHeight, 0]);
+    return yOverlay;
 };
 
 /**
@@ -62,7 +76,7 @@ let getElementWidth = (elm) => {
 * @return integer - width of the container in pixels
 */
 let getBarContainerWidth = (svgWidth, margin) => {
-    return svgWidth - margin.left + margin.right;
+    return svgWidth - (margin.left + margin.right);
 };
 
 /**
@@ -111,57 +125,105 @@ let renderSvgElement = (element, height, width) => {
 
 /**
 * renderBars()
-* Renders all the bars on the histogram chart
+* Renders all the bars on the histogram chart. 
 * @param data - object - the data to render the bars with
 * @param barHeight - integer - pixels for how tall one bar is
 * @param svg - object - d3 selection that the group &lt;g&gt; will be appended to
 */
 let renderBars = (data, barHeight) => {
-    // Each bar in the histogram defined here
-    // Bind the data
-    // global variable
-    // TODO: chart is not centered and clipped on the right side.
-    bars = renderSvgElement().append('g')
-                    .attr('id', 'barcontainer')
-                    .attr('transform', 'translate(' + [margin.left, margin.top] + ')')
-                .selectAll('.bar')
-                .data(data);
+    // For updating remove the barcontainer from the DOM
+    // TODO: see `selection.remove()` API documentation as removing the element from
+    //      the DOM doesn't destroy it.  There maybe a memory leak here depending on
+    //      how the browser handles DOM elements that are no longer attached.
+    //      https://github.com/d3/d3-selection#modifying-elements
+    //  As long as the element is not saved in a variable gc will destroy it.
+    //      https://developer.mozilla.org/en-US/docs/Web/API/Node/removeChild
+    select('#barcontainer').remove();
 
-    // Update
+    // Add the barcontainer back to the DOM with the new data
+    // Each bar in the histogram defined here
+    // global variable
+    let barsGroup = renderSvgElement().append('g')
+                    .attr('id', 'barcontainer')
+                    .attr('transform', 'translate(' + [margin.left, margin.top] + ')');
+
+    // Bind data
+    let bars = barsGroup.selectAll('rect').data(data);
+
+    // Enter 
     bars.enter().append('rect')
         .attr('class', 'bar')
-        .attr('width', x.bandwidth())
         .attr('rx', 0)  // rounded edges 0 = sharp corners
-        .attr('ry', 0);  // rounded edges 0 = sharp corners
-
-    // All the values that change when the data set changes
-   bars.enter().selectAll('rect.bar')
-          .attr('height', (d) => { return d.frequency * barHeight; })
-          .attr('x', (d) => { return x(d.leadtime); }) 
-          .attr('y', (d) => { return barContainerHeight - (d.frequency * barHeight) - .5; })
-        .on('mousemove', 
-            function(d, i) {
+        .attr('ry', 0)  // rounded edges 0 = sharp corners
+        .attr('height', (d) => { return d.frequency * barHeight; })
+        .attr('width', x.bandwidth())
+        .attr('x', (d) => { return x(d.leadtime); }) 
+        .attr('y', (d) => { return barContainerHeight - (d.frequency * barHeight) - .5; })
+      .on('mousemove', 
+          function(d, i) {
 //                    tooltipShow((mouse(select('html').node())[1] + 10) + 'px', (mouse(select('html').node())[0] + 10) + 'px', 
 //                              '<b>Frequency: </b>' + d.frequency + '<br/><b>Percentage: </b>' + d.percentage + '%');
-            })
-        .on('mouseout',
-            function(d, i) {
+          })
+      .on('mouseout',
+          function(d, i) {
 //                    tooltipHide();
-            });
+          });
+      
+};
 
-     bars.enter().append('text')
+/**
+* renderBarText()
+* This method will render the text that is shown right above each bar in the histogram.
+* @param data - object - data for the histogram
+* @param barHeight - integer - pixel height for one of the bars
+*/    
+let renderBarText = (data, barHeight) => {
+    // For updating remove the barcontainer from the DOM
+    // TODO: see `selection.remove()` API documentation as removing the element from
+    //      the DOM doesn't destroy it.  There maybe a memory leak here depending on
+    //      how the browser handles DOM elements that are no longer attached.
+    //      https://github.com/d3/d3-selection#modifying-elements
+    //  As long as the element is not saved in a variable gc will destroy it.
+    //      https://developer.mozilla.org/en-US/docs/Web/API/Node/removeChild
+    select('#barcontainer-text').remove();
+
+    // text on top of bars
+    let barTextGroup = renderSvgElement().append('g')
+                    .attr('id', 'barcontainer-text')
+                    .attr('transform', 'translate(' + [margin.left, margin.top] + ')');
+
+    // Bind Data
+    let barText = barTextGroup.selectAll('text').data(data);
+
+    // Enter Text
+    barText.enter().append('text')
             .attr('class', 'bar-text')
-            .attr('y', (d) => {return barContainerHeight - (d.frequency * barHeight) - 3; })
+            .attr('y', (d) => { return barContainerHeight - (d.frequency * barHeight) - 3; })
             .text((d) => { return d.frequency; });
 
-    selectAll('.bar-text')
+    selectAll('text.bar-text')
         .each(function(d) { 
                 let barTextWidth = getElementWidth(this);
                 select(this).attr('x', x(d.leadtime) + (x.bandwidth()/2) - (barTextWidth/2));
               });
+ 
+};
 
-    // Remove
-        
+let renderOverlay = (data) => {
+    select('#overlayline').remove();
+    // Line start y-axis
+    // Line function that is passed to the "p" element
+    let overlayLine = line().curve(curveCardinal)
+                    .x((d) => { return xOverlay(d.leadtime); })
+                    .y((d) => { return yOverlay(d.percentage); });
+
+    renderSvgElement().append('g')
+            .attr('id', 'overlayline')
+            .attr('transform', 'translate(' + [margin.left, margin.top] + ')')
+        .append('path')
+            .attr('class','overlay')
+            .datum(data)
+            .attr('d', overlayLine);
 };
 
 /**
@@ -194,6 +256,9 @@ export function setup(element, $log) {
     // global variable
     x = setupXScaleBand(barContainerWidth, padding);
 
+    // setup yOverlay scaleLinear for the overlay line
+    yOverlay = setupYOverlay(barContainerHeight);
+
     // Creating the svg and all the SVG elements for it.
     // svg is defined at the top of the file since it is used in resize()
     renderSvgElement(element, svgHeight, svgWidth);
@@ -208,10 +273,19 @@ export function update(data) {
         domainMax = getDomainMax(data, ticks),
         barHeight = barContainerHeight / domainMax;
 
+    // set the domain of the scaledBand
+    // global variable
     x.domain(data.map((d) => { return d.leadtime; }));
+
+    // global variable
+    yOverlay.domain([0, max(data.map((d) => { return d.percentage; }))]);
+    xOverlay = x.copy(); 
+    xOverlay.range([ x.range()[0] + (x.bandwidth()/2), x.range()[1] + (x.bandwidth()/2) ]);
 
     renderSvgElement();
     renderBars(data, barHeight);
+    renderBarText(data, barHeight);
+    renderOverlay(data);
 };
 
 /**

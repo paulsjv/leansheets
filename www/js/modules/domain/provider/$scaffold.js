@@ -60,7 +60,7 @@ export default class {
                                     reject({
                                         status: 404,
                                         message: 'Not found.'
-                                    })
+                                    });
                                 });
 
                         });
@@ -131,13 +131,13 @@ export default class {
 
                             DomainClass.$get($stateParams.id)
                                 .then((instance) => {
-                                    resolve(instance)
+                                    resolve(instance);
                                 })
                                 .catch(() => {
                                     reject({
                                         status: 404,
                                         message: 'Not found.'
-                                    })
+                                    });
                                 });
 
                         });

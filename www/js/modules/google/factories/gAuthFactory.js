@@ -60,6 +60,6 @@ export default ($log, gUserFactory) => {
             return this.googleAuth.grantOfflineAccess(options);
         }
 
-    }
+    };
 
-}
+};

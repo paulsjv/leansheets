@@ -12,10 +12,12 @@ import htmlmin from 'gulp-htmlmin';
 import rename from 'gulp-rename';
 import RevAll from 'gulp-rev-all';
 import uglify from 'gulp-uglify';
+import sourceMaps from 'gulp-sourcemaps';
 import angularTemplateCache from 'gulp-angular-templatecache';
 import ngAnnotate from 'gulp-ng-annotate';
 
 import StreamReplacer from './StreamReplacer';
+import SourceMapUtil from '../util/SourceMapUtil';
 
 import {paths, APP_NAME, entryPoint} from '../../project.conf.js';
 
@@ -117,7 +119,7 @@ export default class StreamCompiler {
                                 paths.src.templates('**/*.html'),
 
                                 (stream) => {
-                                    
+
                                     return stream
                                         .pipe(htmlmin({
                                             removeComments: true,
@@ -136,9 +138,24 @@ export default class StreamCompiler {
 
                         ]))
                         .pipe(jspm.buildStatic(paths.src.js(entryPoint.js), `js/${APP_NAME}.js`, jspmOpts));
-                        
+
                     if (opts.sourceMaps) {
-                        resultStream = resultStream.pipe(ngAnnotate({ map: { inline: true } }));
+
+                        resultStream = resultStream
+                            .pipe(sourceMaps.init({ loadMaps: true }))
+                            .pipe(ngAnnotate())
+                            // remove the bundle from the sourcemap (improves browser debugger)
+                            .pipe(SourceMapUtil.streamRemoveSource(new RegExp(APP_NAME)))
+                            .pipe(sourceMaps.write('.', {
+                                mapSources: (sourcePath) => {
+                                    if (!new RegExp(paths.jspm()).test(sourcePath)) {
+                                        return upath.relative(paths.src.js(), sourcePath);
+                                    } else {
+                                        return upath.relative(paths.src(), sourcePath);
+                                    }
+                                }
+                            }));
+
                     } else {
                         resultStream = resultStream.pipe(ngAnnotate());
                     }
@@ -159,24 +176,20 @@ export default class StreamCompiler {
 
                 handler: (opts) => (stream) => {
 
-                    let resultStream = stream;
+                    let sassOpts = {
+                        precision: 10 // for bootstrap
+                    };
 
                     if (opts.minify) {
-
-                        resultStream = resultStream.pipe(sass({
-                            outputStyle: 'compressed'
-                        }).on('error', sass.logError));
-
-                    } else {
-                        resultStream = resultStream.pipe(sass().on('error', sass.logError));
+                        sassOpts.outputStyle = 'compressed';
                     }
 
-                    resultStream = resultStream.pipe(rename((filePath) => {
-                        filePath.dirname = 'css';
-                        filePath.basename = APP_NAME;
-                    }));
-
-                    return resultStream;
+                    return stream
+                        .pipe(sass(sassOpts).on('error', sass.logError))
+                        .pipe(rename((filePath) => {
+                            filePath.dirname = 'css';
+                            filePath.basename = APP_NAME;
+                        }));
 
                 }
 
@@ -191,13 +204,13 @@ export default class StreamCompiler {
                 ],
 
                 handler: (opts) => (stream) => {
-                    
+
                     return stream
                         .pipe(htmlmin({
                             removeComments: true,
                             collapseWhitespace: true
                         }));
-                    
+
                 }
 
             },

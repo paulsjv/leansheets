@@ -1,11 +1,9 @@
-import { select, selectAll, mouse, matcher } from 'd3-selection';
+import { select, selectAll, mouse } from 'd3-selection';
 import { scaleLinear, scaleBand } from 'd3-scale';
 import { axisBottom, axisLeft, axisRight } from 'd3-axis';
-import { line, curveCardinal, curveBundle } from 'd3-shape';
-import { range, min, max, extent } from 'd3-array';
+import { line, curveCardinal } from 'd3-shape';
+import { range, min, max } from 'd3-array';
 import { format, precisionFixed } from 'd3-format';
-import { transition, active } from 'd3-transition';
-
 import { setup, update, resize } from './histogramFuncs';
 
 var log, x, yOverlay, element, svg, margin, bars, overlayLine, xOverlay, xAxis, yAxisRight, barContainerHeight, barHeight;
@@ -31,7 +29,7 @@ let resize = function() {
 
     // update bar-text
     selectAll('.bar-text')
-        .each(function(d) { 
+        .each(function(d) {
                         let barTextWidth = getElementWidth(this);
                         select(this).attr('x', x(d.leadtime) + (x.bandwidth()/2) - (barTextWidth/2));
                       });
@@ -41,7 +39,7 @@ let resize = function() {
     select('.axis--x').call(xAxis);
     let leadtimeGroupWidth = getElementWidth('.axis--x');
     let leadtimeTextWidth = getElementWidth('.axis--x text.axis-text');
- 
+
     select('.axis--x text.axis-text')
         .attr('transform', 'translate(' + ((leadtimeGroupWidth/2) - (leadtimeTextWidth/2)) + ', 35)');
 
@@ -113,11 +111,11 @@ let update = (data, element) => {
 
     // Bind data
 //    bars.data(data).enter();
-    
+
     // Enter
      bars.selectAll('rect')
         .attr('height', (d) => { return d.frequency * barHeight; })
-        .attr('x', (d) => { return x(d.leadtime); }) 
+        .attr('x', (d) => { return x(d.leadtime); })
         .attr('y', (d) => { return barContainerHeight - (d.frequency * barHeight) - .5; });
 };
 
@@ -174,15 +172,15 @@ export default ($log) => {
             let svgWidth = getSvgWidth(element),
                 svgHeight = 400, // hard code for now
             // container for bars of historgram also margins
-                clipHeight = Math.round(svgHeight * .7); // 70% of height
-            // bar container 
+                clipHeight = Math.round(svgHeight * 0.7); // 70% of height
+            // bar container
             margin = { top:((svgHeight - clipHeight)/2),
                         right:60,
                         bottom:((svgHeight - clipHeight)/2),
                         left:60 };
 	        let barContainerWidth = getBarContainerWidth(svgWidth, margin.left + margin.right);
-            barContainerHeight = svgHeight - (svgHeight - clipHeight); 
-		    let padding = .62,
+            barContainerHeight = svgHeight - (svgHeight - clipHeight);
+		    let padding = 0.62,
             	ticks = 5;
 
             // Lead times for X-Axis
@@ -220,8 +218,6 @@ export default ($log) => {
             // Overlay Line
             // TODO: will need to update percentage on update
             let percentage = data.map((d) => { return d.percentage; });
-            let minPercentage = min(percentage);
-            let maxPercentage = max(percentage);
 
             // yOverlay is defined at top of file since it is used in resize()
             //      for responsive charting.
@@ -272,7 +268,7 @@ export default ($log) => {
 
             let leadtimeGroupWidth = getElementWidth('.axis--x');
             let leadtimeTextWidth = getElementWidth('.axis--x text.axis-text');
- 
+
             select('.axis--x text.axis-text')
                     .attr('transform', 'translate(' + ((leadtimeGroupWidth/2) - (leadtimeTextWidth/2)) + ', 35)')
                     .attr('visibility', 'visible');
@@ -292,7 +288,7 @@ export default ($log) => {
 
             let frequencyGroupHeight = getElementHeight('.axis-left');
             let frequencyTextHeight = getElementWidth('.axis-left text.axis-text');
- 
+
             select('.axis-left text.axis-text')
                     .attr('transform', 'translate(-50, ' + ((frequencyGroupHeight/2) - (frequencyTextHeight/2)) + ') rotate(-90)')
                     .attr('visibility', 'visible');
@@ -307,13 +303,13 @@ export default ($log) => {
                     .attr('visibility', 'hidden')
 					.attr('dy', '.71em')
 					.text('Percentage of Total');
-            
+
             log.debug('.axis-right', select('.axis-right').node().getBBox().height);
             log.debug('.axis-right text.axis-text', select('.axis-right text.axis-text').node().getBBox().width);
 
             let percentGroupHeight = getElementHeight('.axis-right');
             let percentTextHeight = getElementWidth('.axis-right text.axis-text');
- 
+
             select('.axis-right text.axis-text')
                     .attr('transform', 'translate(50, ' + ((percentGroupHeight/2) - (percentTextHeight/2)) + ') rotate(90)')
                     .attr('visibility', 'visible');
@@ -327,19 +323,19 @@ export default ($log) => {
                         .attr('zIndex', '0.1')
                     .selectAll('.bar')
                     .data(data).enter();
-            
+
             // TODO: need to update bars on update
             bars.append('rect')
                     .attr('class', 'bar')
                     .attr('width', x.bandwidth())
                     .attr('height', (d) => { return d.frequency * barHeight; })
                     .attr('x', (d) => { return x(d.leadtime); })
-                    .attr('y', (d) => { return barContainerHeight - (d.frequency * barHeight) - .5; })
+                    .attr('y', (d) => { return barContainerHeight - (d.frequency * barHeight) - 0.5; })
                     .attr('rx', 0)  // rounded edges 0 = sharp corners
                     .attr('ry', 0)  // rounded edges 0 = sharp corners
-                    .on('mousemove', 
+                    .on('mousemove',
                         function(d, i) {
-                            tooltipShow((mouse(select('html').node())[1] + 10) + 'px', (mouse(select('html').node())[0] + 10) + 'px', 
+                            tooltipShow((mouse(select('html').node())[1] + 10) + 'px', (mouse(select('html').node())[0] + 10) + 'px',
                                       '<b>Frequency: </b>' + d.frequency + '<br/><b>Percentage: </b>' + d.percentage + '%');
                         })
                     .on('mouseout',
@@ -350,17 +346,17 @@ export default ($log) => {
             // All the values that change when the data set changes
            bars.selectAll('rect')
                   .attr('height', (d) => { return d.frequency * barHeight; })
-                  .attr('x', (d) => { return x(d.leadtime); }) 
+                  .attr('x', (d) => { return x(d.leadtime); })
                   .attr('y', (d) => { return barContainerHeight - (d.frequency * barHeight) - .5; });
-            
+
              // TODO: will need to update the text on update
-             bars.append('text')
-                    .attr('class', 'bar-text')
-                    .attr('y', (d) => {return barContainerHeight - (d.frequency * barHeight) - 3; })
+             bars.append('text') //.node().parentNode.append('text')
+                    .attr('x', (d) => { return x(d.leadtime); })
+                    .attr('y', (d) => {return barContainerHeight - (d.frequency * barHeight) - 0.5; })
                     .text((d) => { return d.frequency; });
 
             selectAll('.bar-text')
-                .each(function(d) { 
+                .each(function(d) {
                                 let barTextWidth = getElementWidth(this);
                                 select(this).attr('x', x(d.leadtime) + (x.bandwidth()/2) - (barTextWidth/2));
                               });

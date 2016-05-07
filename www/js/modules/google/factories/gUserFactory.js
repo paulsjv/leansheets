@@ -112,6 +112,6 @@ export default ($log, gAuthResponseFactory, gBasicProfileFactory) => {
             return this.googleUser.disconnect();
         }
 
-    }
+    };
 
-}
+};

@@ -21,8 +21,10 @@ import filterContainer from './components/filter-container';
 
 export default angular.module('main', ['app.templates', 'domain', 'google', 'ui.router'])
     .config(routes)
-    .constant('signInState', 'ls.main.auth.histogram')
-    .constant('signOutState', 'ls.main.public')
+    .constant('SIGN_IN_STATE', 'ls.main.auth.histogram')
+    .constant('SIGN_OUT_STATE', 'ls.main.public')
+    .constant('ERROR_STATE', 'ls.main.error')
+    .constant('SCAFFOLD_PARENT_STATE', 'ls.main.auth.admin')
     .directive('firebaseData', firebaseData)
     .directive('histogramChart', histogramChart)
     .directive('signIn', signIn)

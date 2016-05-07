@@ -34,6 +34,6 @@ export default ($log, User) => {
 
         }
 
-    }
+    };
 
-}
+};

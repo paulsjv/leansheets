@@ -1,4 +1,4 @@
-export default ($log, $rootScope, $state, signInState, signOutState) => {
+export default ($log, $rootScope, $state, SIGN_OUT_STATE, ERROR_STATE) => {
     'ngInject';
 
     $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
@@ -10,7 +10,11 @@ export default ($log, $rootScope, $state, signInState, signOutState) => {
             switch (error.status) {
                 case 401:
                     $log.debug(`$stateChangeError ${JSON.stringify(error)}`);
-                    $state.go(signOutState);
+                    $state.go(SIGN_OUT_STATE);
+                    break;
+                case 404:
+                case 500:
+                    $state.go(ERROR_STATE, error);
                     break;
             }
 
@@ -18,4 +22,4 @@ export default ($log, $rootScope, $state, signInState, signOutState) => {
 
     });
 
-}
+};

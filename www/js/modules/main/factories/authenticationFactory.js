@@ -1,4 +1,4 @@
-export default ($log) => {
+export default () => {
     'ngInject';
 
     return class Authentication {
@@ -35,6 +35,6 @@ export default ($log) => {
             return !!this.currentUser;
         }
 
-    }
+    };
 
-}
+};

@@ -35,6 +35,7 @@ System.config({
     "d3-transition": "npm:d3-transition@0.2.8",
     "firebase": "github:firebase/firebase-bower@2.4.2",
     "font-awesome": "npm:font-awesome@4.5.0",
+    "inflect": "npm:inflect@0.3.0",
     "lodash.find": "npm:lodash.find@4.2.0",
     "lodash.findindex": "npm:lodash.findindex@4.2.0",
     "lodash.has": "npm:lodash.has@4.2.1",
@@ -62,6 +63,9 @@ System.config({
     },
     "github:jspm/nodelibs-util@0.1.0": {
       "util": "npm:util@0.10.3"
+    },
+    "github:jspm/nodelibs-vm@0.1.0": {
+      "vm-browserify": "npm:vm-browserify@0.0.4"
     },
     "github:twbs/bootstrap@3.3.6": {
       "jquery": "github:components/jquery@2.2.1"
@@ -115,6 +119,13 @@ System.config({
     "npm:font-awesome@4.5.0": {
       "css": "github:systemjs/plugin-css@0.1.20"
     },
+    "npm:inflect@0.3.0": {
+      "fs": "github:jspm/nodelibs-fs@0.1.2",
+      "module": "github:jspm/nodelibs-module@0.1.0",
+      "path": "github:jspm/nodelibs-path@0.1.0",
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "vm": "github:jspm/nodelibs-vm@0.1.0"
+    },
     "npm:inherits@2.0.1": {
       "util": "github:jspm/nodelibs-util@0.1.0"
     },
@@ -147,6 +158,9 @@ System.config({
     "npm:util@0.10.3": {
       "inherits": "npm:inherits@2.0.1",
       "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:vm-browserify@0.0.4": {
+      "indexof": "npm:indexof@0.0.1"
     }
   }
 });

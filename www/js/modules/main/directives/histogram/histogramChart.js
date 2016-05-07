@@ -11,7 +11,7 @@ import { transition, active } from 'd3-transition';
 import { select } from 'd3-selection';
 
 //import { setup, update, resize } from './histogramFuncs';
-import Histogram from './histogramController';
+import Histogram from './histogramService';
 
 var log; //, x, yOverlay, element, svg, margin, bars, overlayLine, xOverlay, xAxis, yAxisRight, barContainerHeight, barHeight;
 /*
@@ -141,18 +141,17 @@ let setupXscaleBand = (data) => {
 
 }
 */
-let histogramController = function() {
+let histogramController = function() {};
 
-};
-
-export default ($log) => {
+export default ($log, histogramService) => {
     'ngInject';
 
     log = $log;
-    let histogram = new Histogram(log);
+//    let histogram = histogramService;
+ //   log.debug('histogramService', histogram);
 
     // Resizing window logic
-    select(window).on('resize', histogram.resize);
+ //   select(window).on('resize', histogram.resize);
 
     return {
         controller: histogramController,
@@ -183,12 +182,13 @@ export default ($log) => {
                     percentageTickMaxValue: percentageTickMaxValue
                 };
 
-            histogram.setup(elm[0], properties);
+//            histogram.setup(elm[0], properties);
 
-            scope.$watch('histogramController.dataset', function() {
-                log.debug('HistogramDirective - histogramChart.js - data set changed!', ctrl.dataset);
-                histogram.update(ctrl.dataset);
-            });
+//            scope.$watch('histogramController.dataset', function() {
+//                log.debug('HistogramDirective - histogramChart.js - data set changed!', ctrl.dataset);
+//                histogram.update(ctrl.dataset);
+//            });
+
 /*
             let data = ctrl.dataset;
             log.debug('data', data);

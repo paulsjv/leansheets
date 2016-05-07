@@ -15,7 +15,12 @@ var log;
 var margin = {},        // used in setup and resize functions
     x,                  // scaleBand - the scaleBand on the x-axis for each histogram bar
     yOverlay,           // scaleLinear - the y scale for the line overlay
-    xOverlay,           // scaleBand - copy of `x` for the line overlay
+    xOverlay,           // scaleBand - a copy of `x` scale for the bars to make the overlay line
+    xAxis,              // axisBottom - shows leadtime
+    yAxisLeft,          // axisLeft - shows frequency
+    yAxisRight,         // axisRight - shows percentage
+    yFrequency,         // yFrequency - the scale for the y-left-axis
+    barContainerWidth,  // barContainerWidth - the width of the histogram bars
     barContainerHeight; // number of pixels the container that holds the bars of histogram
 //    bars;               // the rect html elements of the histogram
 
@@ -35,16 +40,51 @@ let setupXScaleBand = (maxRange, padding) => {
     return xScaleBand;
 };
 
+/**
+* setupYOverlay()
+* Set the scaleLinear for the overlay line on the y-axis
+* @param barContainerHeight - integer - pixels for the height of the bar
+* @return - object - d3 scaleLinear object
+*/
 let setupYOverlay = (barContainerHeight) => {
-    // yOverlay is defined at top of file since it is used in resize()
-    //      for responsive charting.
     // D3.js Y-Axis implemenation see:
     //      https://github.com/d3/d3-scale#linear-scales
     //      https://github.com/d3/d3-scale#continuous-scales
-    let yOverlay = scaleLinear()
-            
+    return scaleLinear()
             .range([barContainerHeight, 0]);
-    return yOverlay;
+};
+
+/**
+* setupLeftAxisScale()
+* Sets the scaleLinear for the y-left-axis, frequency, on the histogram.
+* @param barContainerHeight - integer - pixels for the height of the bar
+* @return - object - d3 scaleLinear object
+*/
+let setupLeftAxisScale = (barContainerHeight) => {
+    return scaleLinear()
+            .range([barContainerHeight, 0]);
+};
+
+/**
+* setupLeftAxis()
+* Sets up the y-axis on the left of the graph for the number of frequencies
+* in each bar in the histogram.
+* @param frequencyScaleLinear - object - scaleLinear of frequencies
+* @param domainMax - integer - the max number of frequencies for ticks
+* @param ticks - integer - the number of ticks on the axis
+* @return axisLeft - object - the d3 axisLeft object
+*/
+let setupLeftAxis = (frequencyScaleLinear, domainMax, ticks) => {
+    return axisLeft(frequencyScaleLinear)
+            .tickValues(range(0, domainMax + 1, domainMax / ticks))
+            .tickFormat((d) => { return format('.' + precisionFixed(1) + 'f')(d); });
+};
+
+let setupRightAxis = (percentageScaleLinear, percentageTickMaxValue, ticks, barContainerWidth) => {
+    return axisRight(percentageScaleLinear)
+        .tickValues(range(0, percentageTickMaxValue + 1, percentageTickMaxValue / ticks))
+        .tickFormat((d) => { return d + '%'; })
+        .tickSize(-barContainerWidth);
 };
 
 /**
@@ -63,8 +103,18 @@ let getSvgWidth = (element) => {
 * @param element - object - svg element
 * @returns integer - width in pixels
 */
-let getElementWidth = (elm) => {
-    return parseInt(select(elm).node().getBBox().width, 10);
+let getElementWidth = (element) => {
+    return parseInt(select(element).node().getBBox().width, 10);
+};
+
+/**
+* getElementHeight()
+* Gets the hieght of an svg element passed in rounded to the nearest 10s.
+* @param element - object - svg element
+* @returns integer - height in pixels
+*/
+let getElementHeight = (elm) => {
+    return parseInt(select(elm).node().getBBox().height, 10);
 };
 
 /**
@@ -227,6 +277,76 @@ let renderOverlay = (data) => {
 };
 
 /**
+* renderXAxis()
+* Renders the SVG elements for the x-axis
+* @param xAxis - object - d3 bottomAxis object
+*/
+let renderBottomAxis = (axis) => {
+    select('#x-axis').remove();
+
+    renderSvgElement().append('g')
+            .attr('id', 'x-axis')
+            .attr('transform', 'translate(' + [margin.left, (margin.top + barContainerHeight)] + ')')
+            .attr('class', 'axis axis--x')
+        .call(axis)
+        .append('text')
+            .attr('class', 'axis-text x-axis-text')
+            .attr('visibility', 'hidden')
+            .text('Lead Time');
+
+    let leadtimeGroupWidth = getElementWidth('.axis--x');
+    let leadtimeTextWidth = getElementWidth('.axis--x text.axis-text');
+
+    select('.axis--x text.axis-text')
+            .attr('transform', 'translate(' + ((leadtimeGroupWidth/2) - (leadtimeTextWidth/2)) + ', 35)')
+            .attr('visibility', 'visible');
+};
+
+let renderLeftAxis = (axis) => {
+    select('#left-axis').remove();
+
+    renderSvgElement().append('g')
+            .attr('id', 'left-axis')
+            .attr('transform', 'translate(' + [margin.left, margin.top] + ')')
+            .attr('class', 'axis axis--y axis-left')
+        .call(axis)
+        .append('text')
+            .attr('class', 'axis-text')
+            .attr('visiblity', 'hidden')
+            .attr('y', 6)
+            .attr('dy', '.71em')
+            .style('text-anchor', 'end')
+            .text('Frequency');
+
+    let frequencyGroupHeight = getElementHeight('.axis-left');
+    let frequencyTextHeight = getElementWidth('.axis-left text.axis-text');
+
+    select('.axis-left text.axis-text')
+            .attr('transform', 'translate(-50, ' + ((frequencyGroupHeight/2) - (frequencyTextHeight/2)) + ') rotate(-90)')
+            .attr('visibility', 'visible');
+};
+
+let renderRightAxis = (axis, barContainerWidth) => {
+    renderSvgElement().append('g')
+            .attr('transform', 'translate(' + [margin.left + barContainerWidth, margin.top] + ')')
+            .attr('class', 'axis axis--y axis-right')
+            .attr('zIndex', '2')
+        .call(axis)
+        .append('text')
+            .attr('class', 'axis-text')
+            .attr('visibility', 'hidden')
+            .attr('dy', '.71em')
+            .text('Percentage of Total');
+    
+    let percentGroupHeight = getElementHeight('.axis-right');
+    let percentTextHeight = getElementWidth('.axis-right text.axis-text');
+
+    select('.axis-right text.axis-text')
+            .attr('transform', 'translate(50, ' + ((percentGroupHeight/2) - (percentTextHeight/2)) + ') rotate(90)')
+            .attr('visibility', 'visible');
+};
+
+/**
 * Sets up all the static parts of the histogram chart
 * @param data - the chart data
 */
@@ -257,7 +377,12 @@ export function setup(element, $log) {
     x = setupXScaleBand(barContainerWidth, padding);
 
     // setup yOverlay scaleLinear for the overlay line
+    // global variable
     yOverlay = setupYOverlay(barContainerHeight);
+
+    // setup yFrequency for use in the yLeftAxis
+    // global variable
+    yFrequency = setupLeftAxisScale(barContainerHeight);
 
     // Creating the svg and all the SVG elements for it.
     // svg is defined at the top of the file since it is used in resize()
@@ -271,7 +396,8 @@ export function setup(element, $log) {
 export function update(data) {
     let ticks   = 5,    // TODO: hardcoded for now
         domainMax = getDomainMax(data, ticks),
-        barHeight = barContainerHeight / domainMax;
+        barHeight = barContainerHeight / domainMax,
+        percentageTickMaxValue = 100;   // the overlay line percentage done top value
 
     // set the domain of the scaledBand
     // global variable
@@ -279,13 +405,27 @@ export function update(data) {
 
     // global variable
     yOverlay.domain([0, max(data.map((d) => { return d.percentage; }))]);
+    // global variable
+    yFrequency.domain([0, domainMax]);
+    // global variable
     xOverlay = x.copy(); 
     xOverlay.range([ x.range()[0] + (x.bandwidth()/2), x.range()[1] + (x.bandwidth()/2) ]);
 
-    renderSvgElement();
+    // axises
+    // global variable
+    xAxis = axisBottom(x);
+    // global
+    yAxisLeft = setupLeftAxis(yFrequency, domainMax, ticks);
+    // global
+    yAxisRight = setupRightAxis(yOverlay, percentageTickMaxValue, ticks, barContainerWidth);
+
+    // render chart
     renderBars(data, barHeight);
     renderBarText(data, barHeight);
     renderOverlay(data);
+    renderBottomAxis(xAxis);
+    renderLeftAxis(yAxisLeft);
+    renderRightAxis(yAxisRight, barContainerWidth);
 };
 
 /**

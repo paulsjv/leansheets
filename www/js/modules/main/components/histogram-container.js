@@ -30,7 +30,7 @@ export default {
 
         toggle(filter) {
             this.$log.debug('histogram-container.toggle called', filter);
-			if (filter) 
+			if (filter) { 
 				return [
 					{frequency: 2, percentage: 13, leadtime: 2},
 					{frequency: 5, percentage: 25, leadtime: 5},
@@ -47,8 +47,8 @@ export default {
 					{frequency: 3, percentage: 98, leadtime: 25},
 					{frequency: 1, percentage: 100, leadtime: 50}
 				];
-
-			else
+            }
+			else {
 				return [
 					{frequency: 2, percentage: 10, leadtime: 1},
 					{frequency: 3, percentage: 25, leadtime: 4},
@@ -62,6 +62,7 @@ export default {
 					{frequency: 2, percentage: 95, leadtime: 23},
 					{frequency: 1, percentage: 100, leadtime: 55}
 				];
+            }
         }
     }
 }

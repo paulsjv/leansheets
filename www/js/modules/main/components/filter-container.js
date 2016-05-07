@@ -7,7 +7,7 @@ function filterController($log) {
         $log.debug('setFilter', filter);
         this.filter = this.filter ? this.filter = 0 : this.filter = 1;
         this.onFilterChange({ $event: { filter: this.filter } });
-    }
+    };
 }
 
 export default {
@@ -19,4 +19,4 @@ export default {
         filter: '<',
         onFilterChange: '&'
     }
-}
+};

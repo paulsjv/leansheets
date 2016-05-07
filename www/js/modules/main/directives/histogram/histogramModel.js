@@ -19,8 +19,8 @@ export default class HistogramModel {
     }
 
     // Root Element
-    get rootElement()                       { return this.rootElement;                  }
-    set rootElement(element)                { this.rootElement = element;               }
+    getRootElement()                       { return this.rootElement;                  }
+    setRootElement(element)                { this.rootElement = element;               }
 
     // Histogram Properties
     get svgHeight()                         { return this.svgHeight;                    }

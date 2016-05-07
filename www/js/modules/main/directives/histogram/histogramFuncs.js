@@ -1,10 +1,10 @@
-import { select, selectAll, mouse, matcher } from 'd3-selection';
+import { select, selectAll/*, mouse, matcher*/ } from 'd3-selection';
 import { scaleLinear, scaleBand } from 'd3-scale';
 import { axisBottom, axisLeft, axisRight } from 'd3-axis';
-import { line, curveCardinal, curveBundle } from 'd3-shape';
-import { range, min, max, extent } from 'd3-array';
+import { line, curveCardinal/*, curveBundle*/ } from 'd3-shape';
+import { range, /*min,*/ max, /*extent*/ } from 'd3-array';
 import { format, precisionFixed } from 'd3-format';
-import { transition, active } from 'd3-transition';
+//import { transition, active } from 'd3-transition';
 
 var log;
 
@@ -161,8 +161,7 @@ let getDomainMax = (data, ticks) => {
 */
 let renderSvgElement = (element, height, width) => {
     let svg = select('#svgTop');
-    if (!svg.empty())
-        return svg;
+    if (!svg.empty()) { return svg; }
 
     return select(element)
             .append('svg')
@@ -208,16 +207,16 @@ let renderBars = (data, barHeight) => {
         .attr('height', (d) => { return d.frequency * barHeight; })
         .attr('width', x.bandwidth())
         .attr('x', (d) => { return x(d.leadtime); }) 
-        .attr('y', (d) => { return barContainerHeight - (d.frequency * barHeight) - .5; })
-      .on('mousemove', 
-          function(d, i) {
+        .attr('y', (d) => { return barContainerHeight - (d.frequency * barHeight) - 0.5; })
+      .on('mousemove', function() {})
+//          function(d, i) {
 //                    tooltipShow((mouse(select('html').node())[1] + 10) + 'px', (mouse(select('html').node())[0] + 10) + 'px', 
 //                              '<b>Frequency: </b>' + d.frequency + '<br/><b>Percentage: </b>' + d.percentage + '%');
-          })
-      .on('mouseout',
-          function(d, i) {
+//          })
+      .on('mouseout', function() {});
+//          function(d, i) {
 //                    tooltipHide();
-          });
+//          });
       
 };
 
@@ -361,11 +360,11 @@ export function setup(element, $log) {
     let svgWidth    = getSvgWidth(element),
         svgHeight   = 400,  // TODO: hardcoded for now
         barContainerWidth   = getBarContainerWidth(svgWidth, margin),
-        padding     = .62;  // TODO: hardcoded for now
+        padding     = 0.62;  // TODO: hardcoded for now
  
     // histogram bars are 70% the height of the svg element height 
     // global variable
-    barContainerHeight  = Math.round(svgHeight * .7);   // TODO: get 70% of height hardcoded for now 
+    barContainerHeight  = Math.round(svgHeight * 0.7);   // TODO: get 70% of height hardcoded for now 
 
     // set top and bottom margins have getting barContainerHeight
     // global variable
@@ -387,7 +386,7 @@ export function setup(element, $log) {
     // Creating the svg and all the SVG elements for it.
     // svg is defined at the top of the file since it is used in resize()
     renderSvgElement(element, svgHeight, svgWidth);
-};
+}
 
 /**
 * Used to update all the dynamic parts of the historgam chart
@@ -426,7 +425,7 @@ export function update(data) {
     renderBottomAxis(xAxis);
     renderLeftAxis(yAxisLeft);
     renderRightAxis(yAxisRight, barContainerWidth);
-};
+}
 
 /**
 * resize()
@@ -435,4 +434,4 @@ export function update(data) {
 */
 export function resize() {
 
-};
+}

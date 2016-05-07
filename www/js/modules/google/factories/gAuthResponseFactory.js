@@ -73,6 +73,6 @@ export default () => {
             return this.authResponse.expires_at;
         }
 
-    }
+    };
     
-}
+};

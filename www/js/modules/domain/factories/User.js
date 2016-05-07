@@ -28,7 +28,7 @@ export default ($http, $firebaseAuth, firebaseRef, $firebaseArray, $firebaseObje
                     lastName: 'string'
                 }
 
-            }
+            };
 
         }
 
@@ -50,18 +50,18 @@ export default ($http, $firebaseAuth, firebaseRef, $firebaseArray, $firebaseObje
             return users.$loaded();
         }
 
-        static $count() {
-
-            return $http.get(`${usersRef.toString()}.json`, {
-                params: {
-                    auth: $firebaseAuth(usersRef).$getAuth().token,
-                    shallow: true
-                }
-            }).then((response) => {
-                return Object.keys(response.data).length;
-            });
-
-        }
+        // static $count() {
+        //
+        //     return $http.get(`${usersRef.toString()}.json`, {
+        //         params: {
+        //             auth: $firebaseAuth(usersRef).$getAuth().token,
+        //             shallow: true
+        //         }
+        //     }).then((response) => {
+        //         return Object.keys(response.data).length;
+        //     });
+        //
+        // }
 
         constructor(obj) {
             angular.extend(this, obj);
@@ -82,4 +82,4 @@ export default ($http, $firebaseAuth, firebaseRef, $firebaseArray, $firebaseObje
 
     };
 
-}
+};

@@ -1,4 +1,4 @@
-export default ($log, $rootScope, firebaseRef, $firebaseAuth, User) => {
+export default ($log, $rootScope, firebaseRef, $firebaseAuth) => {
     'ngInject';
 
     return {

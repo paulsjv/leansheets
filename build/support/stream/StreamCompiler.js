@@ -12,10 +12,12 @@ import htmlmin from 'gulp-htmlmin';
 import rename from 'gulp-rename';
 import RevAll from 'gulp-rev-all';
 import uglify from 'gulp-uglify';
+import sourceMaps from 'gulp-sourcemaps';
 import angularTemplateCache from 'gulp-angular-templatecache';
 import ngAnnotate from 'gulp-ng-annotate';
 
 import StreamReplacer from './StreamReplacer';
+import SourceMapUtil from '../util/SourceMapUtil';
 
 import {paths, APP_NAME, entryPoint} from '../../project.conf.js';
 
@@ -138,7 +140,22 @@ export default class StreamCompiler {
                         .pipe(jspm.buildStatic(paths.src.js(entryPoint.js), `js/${APP_NAME}.js`, jspmOpts));
 
                     if (opts.sourceMaps) {
-                        resultStream = resultStream.pipe(ngAnnotate({ map: { inline: true } }));
+
+                        resultStream = resultStream
+                            .pipe(sourceMaps.init({ loadMaps: true }))
+                            .pipe(ngAnnotate())
+                            // remove the bundle from the sourcemap (improves browser debugger)
+                            .pipe(SourceMapUtil.streamRemoveSource(new RegExp(APP_NAME)))
+                            .pipe(sourceMaps.write('.', {
+                                mapSources: (sourcePath) => {
+                                    if (!new RegExp(paths.jspm()).test(sourcePath)) {
+                                        return upath.relative(paths.src.js(), sourcePath);
+                                    } else {
+                                        return upath.relative(paths.src(), sourcePath);
+                                    }
+                                }
+                            }));
+
                     } else {
                         resultStream = resultStream.pipe(ngAnnotate());
                     }

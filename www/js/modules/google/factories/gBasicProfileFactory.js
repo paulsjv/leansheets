@@ -59,6 +59,6 @@ export default () => {
             return this.basicProfile.getImageUrl();
         }
 
-    }
+    };
     
-}
+};

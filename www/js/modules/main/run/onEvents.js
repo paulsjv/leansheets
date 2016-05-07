@@ -22,4 +22,4 @@ export default ($log, $rootScope, $state, SIGN_OUT_STATE, ERROR_STATE) => {
 
     });
 
-}
+};

@@ -5,41 +5,43 @@
         <div class="col-md-12">
 
             <h1 class="page-header">
-                {{ $ctrl.titleize($ctrl.domainClass) }}
+                {{ $ctrl.domainClass | underscore | humanize | titleize }} <small>Total: {{ $ctrl.all.length }}</small>
             </h1>
 
             <form class="form-inline pull-right hidden-xs">
 
-                <button class="btn btn-default">New {{ $ctrl.singularize($ctrl.titleize($ctrl.domainClass)) }}</button>
+                <span class="label label-primary fade" data-ng-class="{ in: $ctrl.all.length !== $ctrl.instances.length || searchQuery }">
+                    Matching {{ $ctrl.domainClass | underscore | humanize | titleize }}: {{ $ctrl.instances.length }}
+                </span>
 
                 &nbsp;
 
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Search">
-                </div>
+                <button class="btn btn-default" data-ng-click="$ctrl.newInstance()">New {{ $ctrl.domainClass | underscore | humanize | titleize | singularize }}</button>
+
+                &nbsp;
+
+                <clearable-input model="searchQuery" placeholder="Search"></clearable-input>
 
             </form>
 
             <form class="form visible-xs">
 
                 <div class="form-group">
-                    <button class="btn btn-default btn-block">New {{ $ctrl.singularize($ctrl.titleize($ctrl.domainClass)) }}</button>
+                    <button class="btn btn-default btn-block" data-ng-click="$ctrl.newInstance()">New {{ $ctrl.domainClass | underscore | humanize | titleize | singularize }}</button>
                 </div>
 
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Search">
-                </div>
+                <clearable-input model="searchQuery" placeholder="Search"></clearable-input>
 
             </form>
 
             <ul class="nav nav-tabs">
 
                 <li class="active">
-                    <a href="" data-target="#{{ $ctrl.domainClass }}" data-toggle="tab">{{ $ctrl.titleize($ctrl.domainClass) }}</a>
+                    <a href="" data-target="#{{ $ctrl.domainClass }}" data-toggle="tab">{{ $ctrl.domainClass | underscore | humanize | titleize }}</a>
                 </li>
 
                 <li data-ng-repeat="child in $ctrl.children">
-                    <a href="" data-target="#{{ child }}" data-toggle="tab">{{ $ctrl.pluralize($ctrl.titleize(child)) }}</a>
+                    <a href="" data-target="#{{ $ctrl.domainClass + '-' + child }}" data-toggle="tab">{{ child | underscore | humanize | titleize | pluralize }}</a>
                 </li>
 
             </ul>
@@ -52,10 +54,14 @@
                         <thead>
 
                             <tr>
-                                <th data-ng-repeat="field in $ctrl.fields">
+                                <th data-ng-repeat="field in $ctrl.fields" data-ng-class="{
+                                    sorted: $ctrl.sort === field,
+                                    asc: $ctrl.sort === field && !$ctrl.order,
+                                    desc: $ctrl.sort === field && $ctrl.order
+                                }">
 
-                                    <a href="">
-                                        {{ $ctrl.titleize(field) }}
+                                    <a href="" data-ng-click="$ctrl.sortBy(field)">
+                                        {{ field | underscore | humanize | titleize }}
                                     </a>
 
                                     <div class="sort-indicator">
@@ -71,10 +77,10 @@
                         </thead>
                         <tbody>
 
-                            <tr data-ng-repeat="instance in $ctrl.instances">
+                            <tr data-ng-repeat="instance in $ctrl.instances | sort: $ctrl.sort : $ctrl.order | paginate: $ctrl.offset : $ctrl.max">
                                 <td data-ng-repeat="field in $ctrl.fields">
 
-                                    <a href="" data-ng-if="$first">
+                                    <a href="" data-ng-if="$first" data-ng-click="$ctrl.toInstance(instance[field])">
                                         {{ instance[field] }}
                                     </a>
 
@@ -88,18 +94,27 @@
                         </tbody>
                     </table>
 
+                    <div class="alert alert-info" data-ng-if="$ctrl.instances.length < 1">
+                        <strong>Info:</strong> There are no {{ $ctrl.domainClass | underscore | humanize | lowercase }} to view.
+                    </div>
+
                 </div>
 
-                <div id="{{ child }}" class="tab-pane fade" data-ng-repeat="child in $ctrl.children">
+                <div id="{{ $ctrl.domainClass + '-' + child }}" class="tab-pane fade" data-ng-repeat="child in $ctrl.children">
 
                     <table class="table table-responsive table-striped table-hover table-sortable">
                         <thead>
 
                             <tr>
-                                <th>
 
-                                    <a href="">
-                                        {{ $ctrl.singularize($ctrl.titleize($ctrl.domainClass)) + ' ' + $ctrl.titleize($ctrl.fields[0]) }}
+                                <th data-ng-class="{
+                                    sorted: $ctrl.sort === $ctrl.fields[0],
+                                    asc: $ctrl.sort === $ctrl.fields[0] && !$ctrl.order,
+                                    desc: $ctrl.sort === $ctrl.fields[0] && $ctrl.order
+                                }">
+
+                                    <a href="" data-ng-click="$ctrl.sortBy($ctrl.fields[0])">
+                                        {{ $ctrl.domainClass | underscore | humanize | titleize | singularize }} {{ $ctrl.fields[0] | underscore | humanize | titleize }}
                                     </a>
 
                                     <div class="sort-indicator">
@@ -110,10 +125,15 @@
                                     </div>
 
                                 </th>
-                                <th data-ng-repeat="field in $ctrl.childFields(child)">
 
-                                    <a href="">
-                                        {{ $ctrl.titleize(field) }}
+                                <th data-ng-repeat="field in $ctrl.childFields(child)" data-ng-class="{
+                                    sorted: $ctrl.sort === child + '.' + field,
+                                    asc: $ctrl.sort === child + '.' + field && !$ctrl.order,
+                                    desc: $ctrl.sort === child + '.' + field && $ctrl.order
+                                }">
+
+                                    <a href="" data-ng-click="$ctrl.sortBy(child + '.' + field)">
+                                        {{ field | underscore | humanize | titleize }}
                                     </a>
 
                                     <div class="sort-indicator">
@@ -124,15 +144,16 @@
                                     </div>
 
                                 </th>
+
                             </tr>
 
                         </thead>
                         <tbody>
 
-                            <tr data-ng-repeat="instance in $ctrl.instances">
+                            <tr data-ng-repeat="instance in $ctrl.instances | sort: $ctrl.sort : $ctrl.order | paginate: $ctrl.offset : $ctrl.max">
 
                                 <td>
-                                    <a href="">{{ instance[$ctrl.fields[0]] }}</a>
+                                    <a href="" data-ng-click="$ctrl.toInstance(instance[$ctrl.fields[0]])">{{ instance[$ctrl.fields[0]] }}</a>
                                 </td>
 
                                 <td data-ng-repeat="field in $ctrl.childFields(child)">
@@ -144,9 +165,39 @@
                         </tbody>
                     </table>
 
+                    <div class="alert alert-info" data-ng-if="$ctrl.instances.length < 1">
+                        <strong>Info:</strong> There are no {{ child | underscore | humanize | lowercase | pluralize }} to view.
+                    </div>
+
                 </div>
 
             </div>
+
+            <nav class="text-center fade" data-ng-class="{ in: $ctrl.instances.length > $ctrl.max }">
+                <ul class="pagination">
+
+                    <li data-ng-repeat-start="page in $ctrl.instances | pages: $ctrl.max as pages" data-ng-if="$first" data-ng-class="{ disabled: $ctrl.offset === 0 }">
+
+                        <a href="" aria-label="Previous" data-ng-click="$ctrl.prev()">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+
+                    </li>
+
+                    <li data-ng-class="{ active: $ctrl.offset === $index * $ctrl.max }">
+                        <a href="" data-ng-click="$ctrl.offset = $index * $ctrl.max">{{ page }}</a>
+                    </li>
+
+                    <li data-ng-repeat-end data-ng-if="$last" data-ng-class="{ disabled: $ctrl.offset === (pages.length - 1) * $ctrl.max }">
+
+                        <a href="" aria-label="Next" data-ng-click="$ctrl.next()">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+
+                    </li>
+
+                </ul>
+            </nav>
 
         </div>
 

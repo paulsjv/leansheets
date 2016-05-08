@@ -70,16 +70,35 @@ export default class {
                 controllerAs: '$ctrl',
                 controller: class {
 
-                    constructor($stateParams, DomainClass, instances, DomainUtils) {
+                    constructor($scope, $filter, $stateParams, DomainClass, instances, DomainUtils, $state) {
                         'ngInject';
 
-                        this.domainClass = $stateParams.domainClass;
-                        this.DomainClass = DomainClass;
-                        this.instances = instances;
                         this.DomainUtils = DomainUtils;
+                        this.$state = $state;
+
+                        this.DomainClass = DomainClass;
+                        this.domainClass = $stateParams.domainClass;
+
+                        this.all = instances;
+                        this.instances = instances;
 
                         this.fields = DomainUtils.fields(DomainClass);
                         this.children = DomainUtils.children(DomainClass);
+
+                        this.sort = 'id';
+                        this.order = false; // true = desc, false = asc
+                        this.offset = 0;
+                        this.max = 10;
+
+                        $scope.$watch('searchQuery', (newVal) => {
+
+                            this.instances = $filter('filter')(instances, newVal);
+
+                            if (this.instances.length <= this.offset) {
+                                this.offset = 0;
+                            }
+
+                        });
 
                     }
 
@@ -87,16 +106,42 @@ export default class {
                         return this.DomainUtils.childFields(this.DomainClass, field);
                     }
 
-                    titleize(str) {
-                        return inflect.titleize(inflect.humanize(inflect.underscore(str.replace(/^\$/, ''))));
+                    toInstance(id) {
+
+                        this.$state.go('^.instance', {
+                            id: id
+                        });
+
                     }
-                    
-                    pluralize(str) {
-                        return inflect.pluralize(str);
+
+                    newInstance() {
+                        this.$state.go('^.create');
                     }
-                    
-                    singularize(str) {
-                        return inflect.singularize(str);
+
+                    sortBy(sort) {
+
+                        if (this.sort === sort) {
+                            this.order = !this.order;
+                        } else {
+                            this.sort = sort;
+                            this.order = false;
+                        }
+
+                    }
+
+                    prev() {
+                        this.offset = Math.max(this.offset - this.max, 0);
+                    }
+
+                    next() {
+
+                        let nextOffset = this.offset + this.max,
+                            numPages = Math.ceil(this.instances.length / this.max),
+                            lastPageIndex = numPages - 1,
+                            lastPageOffset = lastPageIndex * this.max;
+
+                        this.offset = Math.min(nextOffset, lastPageOffset);
+
                     }
 
                 }

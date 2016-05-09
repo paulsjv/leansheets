@@ -1,7 +1,21 @@
-import { select } from 'd3-selection';
-import { max } from 'd3-array';
-import { scaleBand } from 'd3-scale';
+import { select, selectAll, mouse } from 'd3-selection';
+import { max, range } from 'd3-array';
+import { scaleBand, scaleLinear } from 'd3-scale';
+import { format, precisionFixed } from 'd3-format';
+import { axisBottom, axisLeft, axisRight } from 'd3-axis';
+import { line, curveCardinal } from 'd3-shape';
 
 export { select };
+export { selectAll };
 export { max };
+export { range };
 export { scaleBand };
+export { scaleLinear };
+export { mouse };
+export { format };
+export { precisionFixed };
+export { axisBottom };
+export { axisLeft };
+export { axisRight };
+export { line };
+export { curveCardinal };

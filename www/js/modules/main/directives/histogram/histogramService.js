@@ -1,6 +1,10 @@
 import HistogramView                from './histogramView';
 import LineOverlayView              from './lineOverlayView';
-import { select, max, scaleBand }   from 'www/js/modules/utils/d3';
+import { select, max, scaleBand,
+         format, precisionFixed,
+         scaleLinear, axisBottom,
+         axisLeft, range,
+         axisRight }   from 'www/js/modules/utils/d3';
 
 let log;
 /**
@@ -67,6 +71,7 @@ export default class HistogramService {
         // Histogram Properties
         // set element where root svg is going to be attached to DOM
         this.histogramModel.rootElement          = element;
+        this.histogramModel.svgId                = 'svgTop';
 
         // static properties passed
         this.histogramModel.svgHeight            = properties.svgHeight;
@@ -81,23 +86,27 @@ export default class HistogramService {
 
         // scale band x-axis
         this.histogramModel.scaleBand = scaleBand()
-                                    .rangeRound([0, this.histogramModel.barContainerWidth])
-                                    .padding(this.histogramModel.padding); 
+                                        .rangeRound([0, this.histogramModel.barContainerWidth])
+                                        .padding(this.histogramModel.padding); 
 
         // scale linear left y-axis
-
+        this.histogramModel.scaleLinear = scaleLinear()
+                                            .range([this.histogramModel.barContainerHeight, 0]);
 
         // Line Overlay Properties
-        this.lineOverlayModel.percentageTickMaxValue = properties.percentageTickMaxValue;
-
-        // scale band overlay x-axis
-
+        this.lineOverlayModel.percentageTickMaxValue    = properties.percentageTickMaxValue;
+        this.lineOverlayModel.svgId                     = this.histogramModel.svgId;
+        this.lineOverlayModel.margin                    = this.histogramModel.margin;
+        this.lineOverlayModel.barContainerWidth         = this.histogramModel.barContainerWidth;
         // scale linear right y-axis
+        this.lineOverlayModel.scaleLinear               = scaleLinear()
+                                                            .range([this.histogramModel.barContainerHeight, 0]);
     }
 
     update(data) {
         log.debug('HistogramController.update');
 
+        // Histogram
         // computed properties
         this.histogramModel.domainMax     = computeDomainMax(data, this.histogramModel.ticks);
         this.histogramModel.barHeight     = this.histogramModel.barContainerHeight / this.histogramModel.domainMax;
@@ -105,19 +114,45 @@ export default class HistogramService {
         // update scale band domain x-axis scale
         this.histogramModel.scaleBand.domain(data.map((d) => { return d.leadtime; }));
         // update x-axis
+        this.histogramModel.axisBottom  = axisBottom(this.histogramModel.scaleBand);
 
+        // update left y-axis scale
+        this.histogramModel.scaleLinear.domain([0, this.histogramModel.domainMax]);
         // update left y-axis
+        this.histogramModel.axisLeft    = axisLeft(this.histogramModel.scaleLinear)
+                            .tickValues(range(0, 
+                                              this.histogramModel.domainMax + 1, 
+                                              this.histogramModel.domainMax / this.histogramModel.ticks))
+                            .tickFormat((d) => { return format('.' + precisionFixed(1) + 'f')(d); });
 
+        // Line Overlay
         // update scale linear line overlay y-axis
-
+        this.lineOverlayModel.scaleLinear.domain([0, max(data.map((d) => { return d.percentage; }))]);   
         // update scale band line overlay x-axis
-
+        this.lineOverlayModel.scaleBand     = this.histogramModel.scaleBand.copy()
+                                                    .range([ this.histogramModel.scaleBand.range()[0] + (this.histogramModel.scaleBand.bandwidth()/2), 
+                                                             this.histogramModel.scaleBand.range()[1] + (this.histogramModel.scaleBand.bandwidth()/2) ]);
         // update right y-axis
-    
-        // draw the histogram 
-        this.histogramView.draw(data, this.histogramModel);
-        // draw line overlay
-        this.lineOverlayView.draw(this.lineOverlayModel);
+        this.lineOverlayModel.axisRight     = axisRight(this.lineOverlayModel.scaleLinear)
+                                                .tickValues(
+                                                    range(0, this.lineOverlayModel.percentageTickMaxValue + 1, 
+                                                             this.lineOverlayModel.percentageTickMaxValue / this.histogramModel.ticks))
+                                                .tickFormat((d) => { return d + '%'; })
+                                                .tickSize(-this.histogramModel.barContainerWidth);
+
+        // set the model on the views
+        this.histogramView.setModel(this.histogramModel);
+        this.lineOverlayView.setModel(this.lineOverlayModel);
+
+        // draw the histogram and overlay
+        this.histogramView.drawSvg();
+        this.histogramView.drawAxisLeft();
+        this.histogramView.drawAxisBottom();
+        this.lineOverlayView.drawAxisRight();
+        this.histogramView.drawBars(data);
+        this.lineOverlayView.drawLine(data);
+        this.histogramView.drawBarText(data);
+        this.histogramView.drawToolTip();
     }
 
     resize() {

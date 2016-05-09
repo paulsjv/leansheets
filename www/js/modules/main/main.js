@@ -20,10 +20,6 @@ import authService from './services/authService';
 import histogramContainer from './components/histogram-container';
 import filterContainer from './components/filter-container';
 import histogramChart from './directives/histogram/histogramChart';
-import histogramService from './directives/histogram/histogramService';
-import histogramModel from './directives/histogram/histogramModel';
-import histogramView from './directives/histogram/histogramView';
-import lineOverlayModel from './directives/histogram/lineOverlayModel';
 
 export default angular.module('main', ['app.templates', 'domain', 'google', 'ui.router'])
     .config(routes)
@@ -41,9 +37,5 @@ export default angular.module('main', ['app.templates', 'domain', 'google', 'ui.
     .component('histogramContainer', histogramContainer)
     .component('filterContainer', filterContainer)
     .directive('histogramChart', histogramChart)
-    .service('histogramService', histogramService)
-    .service('histogramModel', histogramModel)
-    .service('histogramView', histogramView)
-    .service('lineOverlayModel', lineOverlayModel)
-   
+  
     .run(onEvents);

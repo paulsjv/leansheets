@@ -1,15 +1,10 @@
 import angular from 'angular';
+import omitBy from 'lodash.omitby';
 
-export default ($http, $firebaseAuth, firebaseRef, $firebaseArray, $firebaseObject) => {
+export default ($http, firebaseRef, $firebaseArray, $firebaseObject) => {
     'ngInject';
 
-    let usersRef = firebaseRef.child('users'),
-        users = $firebaseArray(usersRef);
-
-    // Getters
-    // Object.keys(obj.prototype)
-    //     .filter((k) => k.indexOf('get') === 0)
-    //     .map((k) => k.replace(/^get/, ''));
+    let usersRef = firebaseRef.child('users');
 
     return class User {
 
@@ -18,7 +13,7 @@ export default ($http, $firebaseAuth, firebaseRef, $firebaseArray, $firebaseObje
             return {
                 // string, url, email, integer, date, boolean, array
                 // required, min, max, nullable, blank, inList, matches, minSize, maxSize, notEqual, validator
-                $id: 'string',
+                id: 'string',
                 displayName: 'string',
                 imageUrl: 'url',
                 profile: {
@@ -33,7 +28,7 @@ export default ($http, $firebaseAuth, firebaseRef, $firebaseArray, $firebaseObje
         }
 
         static $get(uid) {
-            return users.$loaded().then(() => {
+            return $firebaseArray(usersRef).$loaded().then((users) => {
 
                 let user = users.$getRecord(uid);
 
@@ -47,31 +42,23 @@ export default ($http, $firebaseAuth, firebaseRef, $firebaseArray, $firebaseObje
         }
 
         static $all() {
-            return users.$loaded();
+            return $firebaseArray(usersRef).$loaded().then((users) => users.map((user) => new User(user)));
         }
 
-        // static $count() {
-        //
-        //     return $http.get(`${usersRef.toString()}.json`, {
-        //         params: {
-        //             auth: $firebaseAuth(usersRef).$getAuth().token,
-        //             shallow: true
-        //         }
-        //     }).then((response) => {
-        //         return Object.keys(response.data).length;
-        //     });
-        //
-        // }
-
         constructor(obj) {
-            angular.extend(this, obj);
+
+            let startsWithDollar = /^\$/;
+
+            this.id = obj.$id;
+            angular.extend(this, omitBy(obj, (prop) => startsWithDollar.test(prop)));
+
         }
 
         $save() {
 
-            return users.$save(this).catch(() => {
+            return $firebaseArray(usersRef).$save(this).catch(() => {
 
-                let user = $firebaseObject(usersRef.child(this.$id));
+                let user = $firebaseObject(usersRef.child(this.id));
                 angular.extend(user, this);
 
                 return user.$save();

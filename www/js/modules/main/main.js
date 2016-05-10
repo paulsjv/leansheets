@@ -2,12 +2,15 @@ import 'bootstrap';
 
 import angular from 'angular';
 import 'angular-ui-router';
+import 'angular-animate';
 
 import '../../modules/domain/domain';
 import '../../modules/google/google';
+import '../../modules/inflect/inflect';
 
 import '../templates/templates';
 
+import debugInfo from './config/debugInfo';
 import routes from './config/routes';
 import firebaseData from './directives/firebaseData';
 import signIn from './directives/signIn';
@@ -22,7 +25,8 @@ import filterContainer from './components/filter-container';
 import histogramChart from './directives/histogram/histogramChart';
 import histogramController from './directives/histogram/histogramController';
 
-export default angular.module('main', ['app.templates', 'domain', 'google', 'ui.router'])
+export default angular.module('main', ['app.templates', 'domain', 'google', 'inflect', 'ui.router', 'ngAnimate'])
+    .config(debugInfo)
     .config(routes)
     .constant('SIGN_IN_STATE', 'ls.main.auth.histogram')
     .constant('SIGN_OUT_STATE', 'ls.main.public')

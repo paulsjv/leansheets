@@ -10,14 +10,17 @@ System.config({
   },
   paths: {
     "github:*": "jspm_packages/github/*",
-    "npm:*": "jspm_packages/npm/*"
+    "npm:*": "jspm_packages/npm/*",
+    "bower:*": "jspm_packages/bower/*"
   },
 
   map: {
-    "angular": "github:angular/bower-angular@1.5.3",
+    "angular": "github:angular/bower-angular@1.5.5",
+    "angular-animate": "github:angular/bower-angular-animate@1.5.5",
     "angular-mocks": "github:angular/bower-angular-mocks@1.5.3",
     "angular-ui-router": "github:angular-ui/ui-router@0.2.18",
     "angularfire": "github:firebase/angularfire@1.2.0",
+    "animate.css": "bower:animate.css@3.5.1",
     "babel": "npm:babel-core@5.8.38",
     "babel-runtime": "npm:babel-runtime@5.8.38",
     "bootstrap": "github:twbs/bootstrap@3.3.6",
@@ -42,14 +45,25 @@ System.config({
     "lodash.isarray": "npm:lodash.isarray@4.0.0",
     "lodash.isempty": "npm:lodash.isempty@4.1.3",
     "lodash.isstring": "npm:lodash.isstring@4.0.1",
+    "lodash.omitby": "npm:lodash.omitby@4.3.0",
+    "lodash.range": "npm:lodash.range@3.1.4",
+    "lodash.reverse": "npm:lodash.reverse@4.0.1",
+    "lodash.slice": "npm:lodash.slice@4.0.5",
+    "lodash.sortby": "npm:lodash.sortby@4.4.2",
+    "bower:animate.css@3.5.1": {
+      "css": "github:systemjs/plugin-css@0.1.21"
+    },
     "github:angular-ui/ui-router@0.2.18": {
-      "angular": "github:angular/bower-angular@1.5.3"
+      "angular": "github:angular/bower-angular@1.5.5"
+    },
+    "github:angular/bower-angular-animate@1.5.5": {
+      "angular": "github:angular/bower-angular@1.5.5"
     },
     "github:angular/bower-angular-mocks@1.5.3": {
-      "angular": "github:angular/bower-angular@1.5.3"
+      "angular": "github:angular/bower-angular@1.5.5"
     },
     "github:firebase/angularfire@1.2.0": {
-      "angular": "github:angular/bower-angular@1.5.3",
+      "angular": "github:angular/bower-angular@1.5.5",
       "firebase": "github:firebase/firebase-bower@2.4.2"
     },
     "github:jspm/nodelibs-assert@0.1.0": {
@@ -132,6 +146,13 @@ System.config({
     "npm:lodash._baseiteratee@4.5.2": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
+    "npm:lodash._baseiteratee@4.6.1": {
+      "lodash._stringtopath": "npm:lodash._stringtopath@4.7.1",
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:lodash._stringtopath@4.7.1": {
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
     "npm:lodash.find@4.2.0": {
       "lodash._baseeach": "npm:lodash._baseeach@4.1.1",
       "lodash._basefind": "npm:lodash._basefind@3.0.0",
@@ -145,6 +166,26 @@ System.config({
     "npm:lodash.has@4.2.1": {
       "lodash._baseslice": "npm:lodash._baseslice@4.0.0",
       "lodash.tostring": "npm:lodash.tostring@4.1.2"
+    },
+    "npm:lodash.omitby@4.3.0": {
+      "lodash._baseiteratee": "npm:lodash._baseiteratee@4.6.1",
+      "lodash.keysin": "npm:lodash.keysin@4.1.3"
+    },
+    "npm:lodash.range@3.1.4": {
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:lodash.rest@4.0.2": {
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:lodash.slice@4.0.5": {
+      "lodash._baseslice": "npm:lodash._baseslice@4.0.0",
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:lodash.sortby@4.4.2": {
+      "lodash._baseeach": "npm:lodash._baseeach@4.1.2",
+      "lodash._baseflatten": "npm:lodash._baseflatten@4.2.0",
+      "lodash._baseiteratee": "npm:lodash._baseiteratee@4.6.1",
+      "lodash.rest": "npm:lodash.rest@4.0.2"
     },
     "npm:lodash.tostring@4.1.2": {
       "process": "github:jspm/nodelibs-process@0.1.2"

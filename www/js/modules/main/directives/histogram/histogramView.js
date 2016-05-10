@@ -261,10 +261,11 @@ export default class HistogramView {
     }
 
     resizeBarText() {
+        let model = this.model;
         selectAll('.bar-text')
             .each(function(d) { 
                             let barTextWidth = getElementWidth(this);
-                            select(this).attr('x', this.model.scaleBand(d.leadtime) + (this.model.scaleBand.bandwidth()/2) - (barTextWidth/2));
+                            select(this).attr('x', model.scaleBand(d.leadtime) + (model.scaleBand.bandwidth()/2) - (barTextWidth/2));
                           });
     }
 

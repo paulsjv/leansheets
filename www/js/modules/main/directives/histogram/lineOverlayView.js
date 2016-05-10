@@ -85,18 +85,16 @@ export default class LineOverlayView {
 
     drawLine(data) {
         this.svg = getSvgElement(this.svg, this.model.svgId);
-        // draw line 
         this.lineOverlay = renderLine(data, this.svg, this.lineProperties, this.model);
     }
 
     drawAxisRight() {
         this.svg = getSvgElement(this.svg, this.model.svgId);
-        // draw right y-axis
         renderAxisRight(this.svg, this.axisRightProperties, this.model);
     }
 
     resizeAxisRight() {
-        yAxisRight.tickSize(-this.model.barContainerWidth);
+        this.model.axisRight.tickSize(-this.model.barContainerWidth);
         select('.axis-right')
             .attr('transform', 'translate(' + [this.model.margin.left + this.model.barContainerWidth, this.model.margin.top] + ')')
             .call(this.model.axisRight);

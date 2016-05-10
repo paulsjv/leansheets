@@ -20,6 +20,7 @@ import authService from './services/authService';
 import histogramContainer from './components/histogram-container';
 import filterContainer from './components/filter-container';
 import histogramChart from './directives/histogram/histogramChart';
+import histogramController from './directives/histogram/histogramController';
 
 export default angular.module('main', ['app.templates', 'domain', 'google', 'ui.router'])
     .config(routes)
@@ -37,5 +38,6 @@ export default angular.module('main', ['app.templates', 'domain', 'google', 'ui.
     .component('histogramContainer', histogramContainer)
     .component('filterContainer', filterContainer)
     .directive('histogramChart', histogramChart)
+    .controller('HistogramController', histogramController)
   
     .run(onEvents);

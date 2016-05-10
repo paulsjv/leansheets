@@ -158,12 +158,12 @@ export default class HistogramController {
     }
 
     resize() {
-        log.debug('HistogramController.resize', this.histogramModel);
-        // updat both models
+        log.debug('HistogramController.resize');
+        // update both models
         // computed properties
         this.histogramModel.svgWidth             = computeSvgWidth(this.histogramModel.rootElement);
         this.histogramModel.barContainerWidth    = computeBarContainerWidth(this.histogramModel.svgWidth, this.histogramModel.margin);
-        this.lineOverlayModel.barContainterWidth = this.histogramModel.barContainerWidth;
+        this.lineOverlayModel.barContainerWidth = this.histogramModel.barContainerWidth;
 
         // resize x-axis scale band histogram range
         this.histogramModel.scaleBand.rangeRound([0, this.histogramModel.barContainerWidth]);
@@ -183,7 +183,7 @@ export default class HistogramController {
         // resize bar text
         this.histogramView.resizeBarText();
         // resize x-axis
-        this.histogramModel.resizeAxisBottom();
+        this.histogramView.resizeAxisBottom();
         // resize right y-axis
         this.lineOverlayView.resizeAxisRight();
         // resize line

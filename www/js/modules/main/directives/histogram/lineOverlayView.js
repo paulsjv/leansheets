@@ -31,7 +31,7 @@ let renderLine = (data, svg, properties, model) => {
     select('#lineoverlay').remove();
 
     // Line function that is passed to the "p" element
-    let overlayLine = line().curve(curveCardinal)
+    let lineOverlay = line().curve(curveCardinal)
                     .x((d) => { return model.scaleBand(d.leadtime); })
                     .y((d) => { return model.scaleLinear(d.percentage); });
 
@@ -41,7 +41,9 @@ let renderLine = (data, svg, properties, model) => {
         .append('path')
             .attr('class','overlay')
             .datum(data)
-            .attr('d', overlayLine);
+            .attr('d', lineOverlay);
+    
+    return lineOverlay;
 };
 
 let renderAxisRight = (svg, properties, model) => {
@@ -72,6 +74,7 @@ export default class LineOverlayView {
         log = $log;
         this.model                  = null;
         this.svg                    = null;
+        this.lineOverlay            = null;
         this.lineProperties         = {};
         this.axisRightProperties    = {};
     }
@@ -83,13 +86,25 @@ export default class LineOverlayView {
     drawLine(data) {
         this.svg = getSvgElement(this.svg, this.model.svgId);
         // draw line 
-        renderLine(data, this.svg, this.lineProperties, this.model);
+        this.lineOverlay = renderLine(data, this.svg, this.lineProperties, this.model);
     }
 
     drawAxisRight() {
         this.svg = getSvgElement(this.svg, this.model.svgId);
         // draw right y-axis
         renderAxisRight(this.svg, this.axisRightProperties, this.model);
+    }
+
+    resizeAxisRight() {
+        yAxisRight.tickSize(-this.model.barContainerWidth);
+        select('.axis-right')
+            .attr('transform', 'translate(' + [this.model.margin.left + this.model.barContainerWidth, this.model.margin.top] + ')')
+            .call(this.model.axisRight);
+    }
+
+    resizeLine() {
+        select('.overlay')
+            .attr('d', this.lineOverlay);
     }
 
     remove() {

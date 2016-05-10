@@ -249,6 +249,33 @@ export default class HistogramView {
     drawBarText(data) {
         renderBarText(data, this.svg, this.model); 
     }
+
+    resizeSvg() {
+        this.svg.style('width', this.model.svgWidth);
+    }
+
+    resizeBars() {
+        selectAll('rect.bar')
+           .attr('width', this.model.scaleBand.bandwidth())
+           .attr('x', (d) => { return this.model.scaleBand(d.leadtime); });
+    }
+
+    resizeBarText() {
+        selectAll('.bar-text')
+            .each(function(d) { 
+                            let barTextWidth = getElementWidth(this);
+                            select(this).attr('x', this.model.scaleBand(d.leadtime) + (this.model.scaleBand.bandwidth()/2) - (barTextWidth/2));
+                          });
+    }
+
+    resizeAxisBottom() {
+        select('.axis--x').call(this.model.axisBottom);
+        let leadtimeGroupWidth = getElementWidth('.axis--x');
+        let leadtimeTextWidth = getElementWidth('.axis--x text.axis-text');
+     
+        select('.axis--x text.axis-text')
+            .attr('transform', 'translate(' + ((leadtimeGroupWidth/2) - (leadtimeTextWidth/2)) + ', 35)');
+    }
     
     remove() {
         this.barProperties.tooltip.remove();

@@ -17,7 +17,7 @@ import sort from './filters/sort';
 
 import $scaffold from './provider/$scaffold';
 
-export default angular.module('domain', ['ui.router', 'firebase', 'inflect'])
+export default angular.module('ls.domain', ['ls.inflect', 'ui.router', 'firebase'])
     .constant('FIREBASE_URL', 'https://flickering-torch-9908.firebaseio.com')
     .component('clearableInput', clearableInput)
     .factory('DomainUtils', DomainUtils)

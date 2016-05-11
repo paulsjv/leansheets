@@ -9,7 +9,7 @@ import gUserFactory from './factories/gUserFactory';
 import authService from './services/gAuthService';
 import scriptService from './services/gScriptService';
 
-export default angular.module('google', [])
+export default angular.module('ls.google', [])
     .constant('gClientId', '138745799930-6liem3jdh7f9n2e7dnrdbenfu7en1q31.apps.googleusercontent.com')
     .constant('gModules', [
         'client'

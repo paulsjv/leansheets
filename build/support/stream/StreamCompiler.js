@@ -19,7 +19,7 @@ import ngAnnotate from 'gulp-ng-annotate';
 import StreamReplacer from './StreamReplacer';
 import SourceMapUtil from '../util/SourceMapUtil';
 
-import {paths, APP_NAME, entryPoint} from '../../project.conf.js';
+import {paths, APP_NAME, TEMPLATES_MODULE_NAME, entryPoint} from '../../project.conf.js';
 
 let revAll = new RevAll({
         dontRenameFile: [/^\/index\.html$/, /^\/sink\.html$/, /^\/favicon.ico$/],
@@ -128,7 +128,7 @@ export default class StreamCompiler {
                                         .pipe(angularTemplateCache({
                                             moduleSystem: 'ES6',
                                             filename: path.relative(paths.src(), paths.src.js('modules/templates/templates.js')),
-                                            module: 'app.templates',
+                                            module: TEMPLATES_MODULE_NAME,
                                             standalone: true
                                         }));
 

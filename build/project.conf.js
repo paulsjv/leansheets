@@ -14,6 +14,7 @@ export const EXPRESS_PORT = 3000;
 export const LIVERELOAD_PORT = 35729;
 
 export const APP_NAME = pkg.name;
+export const TEMPLATES_MODULE_NAME = 'ls.templates';
 
 export const entryPoint = { // bundle entry point filenames.
     js: 'modules/main/main.js',

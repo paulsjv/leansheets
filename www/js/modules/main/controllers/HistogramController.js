@@ -1,5 +1,5 @@
-import HistogramView                from './histogramView';
-import LineOverlayView              from './lineOverlayView';
+import HistogramView                from '../directives/histogram/histogramView';
+import LineOverlayView              from '../directives/histogram/lineOverlayView';
 import { select, max, scaleBand,
          format, precisionFixed,
          scaleLinear, axisBottom,

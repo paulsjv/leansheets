@@ -11,7 +11,7 @@
     "url": "https://github.com/paulsjv/leansheets.git"
   },
   "scripts": {
-    "postinstall": "jspm install",
+    "postinstall": "jspm config registries.bower.handler jspm-bower-endpoint && jspm install",
     "test": "gulp test"
   },
   "bugs": {

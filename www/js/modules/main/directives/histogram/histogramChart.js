@@ -1,5 +1,3 @@
-//import { select } from 'www/js/modules/utils/d3';
-//import HistogramController from './histogramController';
 import angular from 'angular';
 
 var log; 

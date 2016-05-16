@@ -2,7 +2,7 @@ import upath from 'upath';
 import through2 from 'through2';
 
 import {paths} from '../../project.conf.js';
-import regExcape from '../util/regExcape';
+import RegexUtil from '../util/RegexUtil';
 
 export default class StreamReplacer {
 
@@ -31,8 +31,8 @@ export default class StreamReplacer {
                 name = upath.basename(file.path, ext);
 
             that.replacements[transformFn(file)] =
-                new RegExp(regExcape(upath.join(dir, name + ext)).replace(/ /g, '(?: |%20)'), 'g');
-
+                new RegExp(RegexUtil.escape(upath.join(dir, name + ext)).replace(/ /g, '(?: |%20)'), 'g');
+            
             this.push(file);
 
             flush();

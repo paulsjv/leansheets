@@ -10,20 +10,21 @@ System.config({
   },
   paths: {
     "github:*": "jspm_packages/github/*",
-    "npm:*": "jspm_packages/npm/*"
+    "npm:*": "jspm_packages/npm/*",
+    "bower:*": "jspm_packages/bower/*"
   },
 
   map: {
-    "angular": "github:angular/bower-angular@1.5.2",
-    "angular-mocks": "github:angular/bower-angular-mocks@1.5.2",
+    "angular": "github:angular/bower-angular@1.5.5",
+    "angular-mocks": "github:angular/bower-angular-mocks@1.5.5",
     "babel": "npm:babel-core@5.8.38",
     "babel-runtime": "npm:babel-runtime@5.8.38",
     "bootstrap": "github:twbs/bootstrap@3.3.6",
     "bootstrap-sass": "github:twbs/bootstrap-sass@3.3.6",
     "core-js": "npm:core-js@1.2.6",
     "font-awesome": "npm:font-awesome@4.5.0",
-    "github:angular/bower-angular-mocks@1.5.2": {
-      "angular": "github:angular/bower-angular@1.5.2"
+    "github:angular/bower-angular-mocks@1.5.5": {
+      "angular": "github:angular/bower-angular@1.5.5"
     },
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.3.0"

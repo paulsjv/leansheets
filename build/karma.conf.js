@@ -12,7 +12,7 @@ export default (karma) => {
         logLevel: karma.LOG_ERROR, // possible values: karma.LOG_DISABLE || karma.LOG_ERROR || karma.LOG_WARN || karma.LOG_INFO || karma.LOG_DEBUG
 
         files: [
-            paths.nodeModules('karma-babel-preprocessor/node_modules/babel-core/browser-polyfill.js')
+            paths.nodeModules('babel-core/browser-polyfill.js')
         ],
 
         jspm: {

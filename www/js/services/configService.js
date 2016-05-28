@@ -1,10 +1,10 @@
 export default class ConfigService {
 
-	constructor($log, config) {
+	constructor($log, CONFIG) {
         'ngInject';
 
         this.log = $log;
-        this.config = config;
+        this.config = CONFIG;
     }
 
     getDataSources() {

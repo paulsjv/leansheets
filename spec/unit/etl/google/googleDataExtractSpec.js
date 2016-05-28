@@ -35,13 +35,14 @@ describe('The GoogleDataExtract', () => {
     });
 
     it('expected to return a promise successfully with the value of JSON', (done) => {
+        let json = "{\"id\":\"JSON\"}";
         let dataTable = jasmine.createSpyObj(dataTable, ['toJSON']);
-        dataTable.toJSON.and.returnValue('JSON');
+        dataTable.toJSON.and.returnValue(json);
         spyOn(response,'isError').and.returnValue(false);
         spyOn(response,'getDataTable').and.returnValue(dataTable);
 
         service.getData('2015-12-31','2016-01-15').then((success) => {
-                        expect(success).toEqual('JSON');
+                        expect(success).toEqual(JSON.parse(json));
                         done();
                     });
         expect(response.isError).toHaveBeenCalled();
@@ -94,14 +95,15 @@ describe('The GoogleDataExtract', () => {
     });
 
     it('expect to get promise back when no dates are passed to getData', (done) => {
+        let json = "{\"id\":\"JSON\"}";
         let dataTable = jasmine.createSpyObj(dataTable, ['toJSON']);
-        dataTable.toJSON.and.returnValue('JSON');
+        dataTable.toJSON.and.returnValue(json);
         spyOn(response,'isError').and.returnValue(false);
         spyOn(response,'getDataTable').and.returnValue(dataTable);
 
         service.getData()
                 .then((success) => {
-                    expect(success).toEqual('JSON');
+                    expect(success).toEqual(JSON.parse(json));
                     done();
                 });
     });

@@ -22,19 +22,21 @@ export default class DataService {
     getData() {
         this.log.debug('dataService.js - in getData()'); 
         let extractService = this.dataFactory.getExtractService("Sheet: Demo Team");
-        let data = null;
-        extractService.getData().then(
+        let transformService = this.dataFactory.getTransformService("Sheet: Demo Team");
+        let promise = new Promise((resolve, reject) => {
+         extractService.getData().then(
             (success) => {
                 this.log.debug('dataService.js - success getting data');
                 this.log.debug(success);
-                data = success;
+                let transformed = transformService.transformData(success);
+                this.log.debug('dataService.js - transformed data: ', transformed);
+                resolve(transformed);
             }).catch((error) => {
                 this.log.error('dataService.js - error getting data');
                 this.log.debug(error);
+                reject(error);
             });
-
-        let transformService = this.dataFactory.getTransformService("Sheet: Demo Team");
-        transformService.transformData(data);
-        return {};
+        });
+       return promise;
     }
 }

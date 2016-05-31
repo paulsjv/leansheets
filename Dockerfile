@@ -12,6 +12,8 @@ RUN npm install -g grunt && \
     npm install && \
     bower install --allow-root
 
+EXPOSE 8081
+
 CMD ["run"]
 
 ENTRYPOINT ["grunt"]

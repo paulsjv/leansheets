@@ -35,6 +35,12 @@ You have three options to run LeanSheets:
                 "defaultHistoricalNumberOfDays": 60
             }
 
+    * On Mac or Windows, use the [Docker Toolbox](https://www.docker.com/products/docker-toolbox) for docker support.
+    * The above command-line also has the `-p 8081:8081` option, which exposes port 8081 from the container. 
+        * If you are on Mac or Windows and use docker-machine to host the docker daemon, then use the following command to expose port 8081 with the virtualbox driver and a docker-machine with named `default`.
+        
+                vboxmanage controlvm default natpf1 "tcp-port8081,tcp,127.0.0.1,8081,,8081"
+        
     * **NOTE** If you choose this option, you can skip the need to download source code altogether.
 
 2. Download either the [.zip](https://github.com/paulsjv/leansheets/zipball/master) or the [tar.gz](https://github.com/paulsjv/leansheets/tarball/master)

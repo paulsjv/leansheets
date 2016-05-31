@@ -11,11 +11,35 @@ Life Cycle
 
 Installing & Running
 -------------------------
-You have two options to run LeanSheets:
+You have three options to run LeanSheets:
 
-1. Download either the [.zip](https://github.com/paulsjv/leansheets/zipball/master) or the [tar.gz](https://github.com/paulsjv/leansheets/tarball/master)
+1. Use the docker image.<br>
+
+        docker run -v /path/to/local/config.json:/usr/src/app/src/config.json -p 8081:8081 satvidh/leansheets
+
+    * The above command-line refers to /path/to/local/config.json. This relies on a config.json file. The format of this file should match
+
+            {
+                "sheets": {
+                    "Sheet: Demo Team": {
+                        "configUrl": "https://docs.google.com/spreadsheets/d/12cvMUMnWEKynGTsyXQywvJ9drpjYAyyo0-2cnTUJSFw/edit?gid=44020743",
+                        "dataUrl": "https://docs.google.com/spreadsheets/d/12cvMUMnWEKynGTsyXQywvJ9drpjYAyyo0-2cnTUJSFw/edit?gid=497466409"
+                    }
+                },
+                "debugEnabled": true,
+                "showAllWork": true,
+                "cacheTtl": 300,
+                "datePickerFormat": "mm/dd/yyyy",
+                "datePickerMomentFormat": "MM/DD/YYYY",
+                "queryDateMomentFormat": "YYYY-MM-DD",
+                "defaultHistoricalNumberOfDays": 60
+            }
+
+    * **NOTE** If you choose this option, you can skip the need to download source code altogether.
+
+2. Download either the [.zip](https://github.com/paulsjv/leansheets/zipball/master) or the [tar.gz](https://github.com/paulsjv/leansheets/tarball/master)
     * If you choose this option you can skip the steps of installing Git and running "git clone" in the below instructions.
-2. Clone the Git repo.
+3. Clone the Git repo.
     * If you choose this step follow all the below instructions.
 
 Installation instructions:

@@ -37,7 +37,7 @@ You have three options to run LeanSheets:
 
     * On Mac or Windows, use the [Docker Toolbox](https://www.docker.com/products/docker-toolbox) for docker support.
     * The above command-line also has the `-p 8081:8081` option, which exposes port 8081 from the container. 
-        * If you are on Mac or Windows and use docker-machine to host the docker daemon, then use the following command to expose port 8081 with the virtualbox driver and a docker-machine with named `default`.
+        * If you are on Mac or Windows and use docker-machine to host the docker daemon, then use the following command to expose port 8081 with the virtualbox driver and a docker-machine named `default`.
         
                 vboxmanage controlvm default natpf1 "tcp-port8081,tcp,127.0.0.1,8081,,8081"
         

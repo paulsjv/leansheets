@@ -5,6 +5,8 @@ WORKDIR /usr/src/app
 
 ADD . /usr/src/app
 
+RUN apk add --update git
+
 RUN npm install -g grunt && \
     npm install -g bower && \
     npm install && \

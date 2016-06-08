@@ -1,0 +1,53 @@
+.layout-main {
+
+    height: 100%;
+
+    padding-top: $navbar-height;
+
+    header nav {
+
+        .navbar-right {
+            margin-right: $padding-base-horizontal;
+        }
+
+    }
+
+    main {
+
+        min-height: 100%;
+        margin-bottom: $footer-height * -1;
+
+        &:after {
+            content: "";
+            display: block;
+            height: $footer-height;
+        }
+
+        > .v-align {
+            position: static;
+        }
+
+    }
+
+    footer {
+
+        height: $footer-height;
+
+        background-color: #f5f5f5;
+
+        > .container {
+            padding-right: 15px;
+            padding-left: 15px;
+
+            .text-muted {
+                margin: 20px 0;
+            }
+        }
+
+    }
+
+}
+
+.btn-login > div {
+    margin: 10px auto;
+}

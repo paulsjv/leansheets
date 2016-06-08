@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import path from 'path';
+import upath from 'upath';
 import through2 from 'through2';
 import stream from 'readable-stream';
 
@@ -7,19 +8,20 @@ import manifold from 'gulp-manifold';
 import webp from 'gulp-webp';
 import jspm from 'gulp-jspm';
 import sass from 'gulp-sass';
+import htmlmin from 'gulp-htmlmin';
 import rename from 'gulp-rename';
 import RevAll from 'gulp-rev-all';
 import uglify from 'gulp-uglify';
+import sourceMaps from 'gulp-sourcemaps';
 import angularTemplateCache from 'gulp-angular-templatecache';
 import ngAnnotate from 'gulp-ng-annotate';
 
 import StreamReplacer from './StreamReplacer';
+import SourceMapUtil from '../util/SourceMapUtil';
 
 import {paths, APP_NAME, entryPoint} from '../../project.conf.js';
 
-let posix = path.posix,
-
-    revAll = new RevAll({
+let revAll = new RevAll({
         dontRenameFile: [/^\/index\.html$/, /^\/sink\.html$/, /^\/favicon.ico$/],
         replacer: (fragment, replaceRegExp, newReference) => {
             fragment.contents = fragment.contents.replace(replaceRegExp, '$1' + encodeURI((newReference)) + '$3$4');
@@ -48,28 +50,49 @@ export default class StreamCompiler {
 
                 filter: [
                     paths.jspm.fontAwesome('fonts/*'),
-                    paths.jspm.twitterBootstrap('fonts/*')
+                    paths.jspm.twitterBootstrap('fonts/*'),
+                    paths.src.fonts('**/*')
                 ],
 
-                // through2.obj NOT arrow. (lexical this)
-                handler: (opts) => (stream) => stream.pipe(through2.obj(function (file, enc, flush) {
+                handler: (opts) => (stream) => stream.pipe(manifold([
 
-                    file.base = path.join(file.cwd, paths.src());
-                    file.path = path.join(file.cwd, paths.src.fonts(), path.basename(file.path));
+                    manifold.duct(
 
-                    this.push(file);
+                        [
+                            paths.jspm.fontAwesome('fonts/*'),
+                            paths.jspm.twitterBootstrap('fonts/*')
+                        ],
 
-                    flush();
+                        // through2.obj NOT arrow. (lexical this)
+                        (stream) => stream.pipe(through2.obj(function (file, enc, flush) {
 
-                }))
+                            file.base = upath.join(file.cwd, paths.src());
+                            file.path = upath.join(file.cwd, paths.src.fonts(), upath.basename(file.path));
+
+                            this.push(file);
+
+                            flush();
+
+                        }))
+
+                    )
+
+                ]))
 
             },
 
             images: {
 
-                filter: paths.src.img('**/*.{png,jpeg,jpg,tiff,webp}'),
+                filter: paths.src.img('**/*'),
 
-                handler: (opts) => (stream) => stream.pipe(webp())
+                handler: (opts) => (stream) => stream.pipe(manifold([
+
+                    manifold.duct(
+                        paths.src.img('**/*.{png,jpeg,jpg,tiff}'),
+                        (stream) => stream.pipe(webp())
+                    )
+
+                ]))
 
             },
 
@@ -95,18 +118,47 @@ export default class StreamCompiler {
 
                                 paths.src.templates('**/*.html'),
 
-                                (stream) => stream.pipe(angularTemplateCache({
-                                    moduleSystem: 'ES6',
-                                    filename: path.relative(paths.src(), paths.src.js('modules/templates/templates.js')),
-                                    module: 'app.templates',
-                                    standalone: true
-                                }))
+                                (stream) => {
+
+                                    return stream
+                                        .pipe(htmlmin({
+                                            removeComments: true,
+                                            collapseWhitespace: true
+                                        }))
+                                        .pipe(angularTemplateCache({
+                                            moduleSystem: 'ES6',
+                                            filename: path.relative(paths.src(), paths.src.js('modules/templates/templates.js')),
+                                            module: 'app.templates',
+                                            standalone: true
+                                        }));
+
+                                }
 
                             )
 
                         ]))
-                        .pipe(jspm.buildStatic(paths.src.js(entryPoint.js), `js/${APP_NAME}.js`, jspmOpts))
-                        .pipe(ngAnnotate());
+                        .pipe(jspm.buildStatic(paths.src.js(entryPoint.js), `js/${APP_NAME}.js`, jspmOpts));
+
+                    if (opts.sourceMaps) {
+
+                        resultStream = resultStream
+                            .pipe(sourceMaps.init({ loadMaps: true }))
+                            .pipe(ngAnnotate())
+                            // remove the bundle from the sourcemap (improves browser debugger)
+                            .pipe(SourceMapUtil.streamRemoveSource(new RegExp(APP_NAME)))
+                            .pipe(sourceMaps.write('.', {
+                                mapSources: (sourcePath) => {
+                                    if (!new RegExp(paths.jspm()).test(sourcePath)) {
+                                        return upath.relative(paths.src.js(), sourcePath);
+                                    } else {
+                                        return upath.relative(paths.src(), sourcePath);
+                                    }
+                                }
+                            }));
+
+                    } else {
+                        resultStream = resultStream.pipe(ngAnnotate());
+                    }
 
                     if (opts.minify) {
                         resultStream = resultStream.pipe(uglify());
@@ -124,24 +176,20 @@ export default class StreamCompiler {
 
                 handler: (opts) => (stream) => {
 
-                    let resultStream = stream;
+                    let sassOpts = {
+                        precision: 10 // for bootstrap
+                    };
 
                     if (opts.minify) {
-
-                        resultStream = resultStream.pipe(sass({
-                            outputStyle: 'compressed'
-                        }).on('error', sass.logError));
-
-                    } else {
-                        resultStream = resultStream.pipe(sass().on('error', sass.logError));
+                        sassOpts.outputStyle = 'compressed';
                     }
 
-                    resultStream = resultStream.pipe(rename((filePath) => {
-                        filePath.dirname = 'css';
-                        filePath.basename = APP_NAME;
-                    }));
-
-                    return resultStream;
+                    return stream
+                        .pipe(sass(sassOpts).on('error', sass.logError))
+                        .pipe(rename((filePath) => {
+                            filePath.dirname = 'css';
+                            filePath.basename = APP_NAME;
+                        }));
 
                 }
 
@@ -155,7 +203,15 @@ export default class StreamCompiler {
                     `!${paths.src.templates('**')}` // excludes templates dir contents
                 ],
 
-                handler: (opts) => (stream) => stream
+                handler: (opts) => (stream) => {
+
+                    return stream
+                        .pipe(htmlmin({
+                            removeComments: true,
+                            collapseWhitespace: true
+                        }));
+
+                }
 
             },
 
@@ -165,13 +221,7 @@ export default class StreamCompiler {
 
                 handler: (opts) => (stream) => stream
 
-            },
-			
-			json: {
-				filter: paths.src.json('**/*.json'),
-
-				handler: (opts) => (stream) => stream
-			}
+            }
 
         });
 
@@ -196,10 +246,10 @@ export default class StreamCompiler {
 
                                 return stream.pipe(replacer.push((file) => {
 
-                                    let dir = posix.dirname(posix.relative(paths.src(), file.path)).split(path.sep)[0],
-                                        ext = posix.extname(file.path);
+                                    let dir = upath.dirname(upath.relative(paths.src(), file.path)).split('/')[0],
+                                        ext = upath.extname(file.path);
 
-                                    return posix.join((dir == 'sass' ? 'css' : dir), APP_NAME + (ext === '.scss' ? '.css' : `${ext}`));
+                                    return upath.join((dir == 'sass' ? 'css' : dir), APP_NAME + (ext === '.scss' ? '.css' : `${ext}`));
 
                                 }));
 
@@ -214,12 +264,12 @@ export default class StreamCompiler {
 
                             (stream) => stream.pipe(replacer.push((file) => {
 
-                                let dir = posix.dirname(posix.relative(paths.src(), file.path)),
-                                    ext = posix.extname(file.path),
-                                    name = posix.basename(file.path, ext);
+                                let dir = upath.dirname(upath.relative(paths.src(), file.path)),
+                                    ext = upath.extname(file.path),
+                                    name = upath.basename(file.path, ext);
 
                                 // replace references to current file with $dir/$name.webp
-                                return posix.join(dir, name + '.webp')
+                                return upath.join(dir, name + '.webp')
 
                             }))
 

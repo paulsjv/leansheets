@@ -2,7 +2,7 @@ import DataService from 'www/js/services/dataService';
 import Log from 'spec/mocks/log';
 import { CONFIG } from 'spec/mocks/config';
 
-describe('The DataService', () => {
+xdescribe('The DataService', () => {
 
     let service;
 

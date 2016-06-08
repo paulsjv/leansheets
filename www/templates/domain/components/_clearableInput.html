@@ -1,0 +1,14 @@
+<div class="form-group has-feedback">
+
+    <input id="test" type="text" class="form-control" placeholder="{{ $ctrl.placeholder }}" data-ng-model="$ctrl.model">
+
+    <span class="text-primary form-control-feedback fade"
+          data-ng-style="{ cursor: !!$ctrl.model ? 'pointer' : 'default', 'pointer-events': !!$ctrl.model ? 'auto' : 'none' }"
+          data-ng-class="{ in: !!$ctrl.model }"
+          data-ng-click="$ctrl.model = ''">
+
+        <i class="fa fa-close"></i>
+
+    </span>
+
+</div>

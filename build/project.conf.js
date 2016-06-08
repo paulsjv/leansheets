@@ -1,13 +1,22 @@
+import os from 'os';
 import PathCalculator from './support/path/PathCalculator';
-import readJSON from './support/util/readJSON';
+import FileUtil from './support/util/FileUtil';
+
+let pkg = FileUtil.readJSON('package.json');
+
+export const BROWSER = os.platform() === 'linux' ? 'google-chrome' : (
+    os.platform() === 'darwin' ? 'google chrome' : (
+        os.platform() === 'win32' ? 'chrome' : 'firefox'
+    )
+);
 
 export const EXPRESS_PORT = 3000;
 export const LIVERELOAD_PORT = 35729;
 
-export const APP_NAME = readJSON('package.json').name;
+export const APP_NAME = pkg.name;
 
 export const entryPoint = { // bundle entry point filenames.
-    js: 'main.js',
+    js: 'modules/main/main.js',
     sass: 'main.scss'
 };
 
@@ -42,6 +51,7 @@ export const paths = new PathCalculator({
             img: 'img/',
             fonts: 'fonts/',
             json: ''
+
         }
 
     },
@@ -53,7 +63,7 @@ export const paths = new PathCalculator({
 
             unit: 'unit/',
             functional: 'functional/',
-			mocks: 'mocks/'
+            mocks: 'mocks/'
 
         }
 
@@ -67,9 +77,8 @@ export const paths = new PathCalculator({
 
         root: 'jspm_packages/',
         folders: {
-
-            fontAwesome: 'npm/font-awesome@4.4.0/',
-            twitterBootstrap: 'github/twbs/bootstrap@3.3.5/'
+            fontAwesome: pkg.jspm.dependencies['font-awesome'].replace(/:/, '/') + '/',
+            twitterBootstrap: pkg.jspm.dependencies.bootstrap.replace(/:/, '/') + '/'
         }
 
     },

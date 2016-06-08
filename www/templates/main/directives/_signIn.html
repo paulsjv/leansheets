@@ -1,0 +1,25 @@
+<div class="sign-in">
+
+    <div class="btn-group btn-g-blue navbar-btn" data-ng-if="!authentication">
+
+        <div class="btn btn-g-icon">
+            <i class="icon-g" data-ng-class="{ 'fa-spin': !authentication }"></i>
+        </div>
+
+    </div>
+
+    <div class="btn-group btn-g-blue navbar-btn" data-ng-if="authentication && !$ctrl.isSignedIn()" data-ng-click="$ctrl.signIn()">
+
+        <div class="btn btn-g-icon">
+            <i class="icon icon-g"></i>
+        </div>
+
+        <div class="btn btn-g-text">
+            Sign in with Google
+        </div>
+
+    </div>
+
+    <div data-ng-transclude data-ng-if="authentication && $ctrl.isSignedIn()"></div>
+
+</div>

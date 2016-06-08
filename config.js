@@ -10,23 +10,22 @@ System.config({
   },
   paths: {
     "github:*": "jspm_packages/github/*",
-    "npm:*": "jspm_packages/npm/*"
-  },
-
-  packages: {
-    "https://www.google.com/": {
-      "defaultExtension": false
-    }
+    "npm:*": "jspm_packages/npm/*",
+    "bower:*": "jspm_packages/bower/*"
   },
 
   map: {
-    "angular": "github:angular/bower-angular@1.4.9",
-    "angular-mocks": "github:angular/bower-angular-mocks@1.4.9",
-    "babel": "npm:babel-core@5.8.25",
-    "babel-runtime": "npm:babel-runtime@5.8.24",
-    "bootstrap": "github:twbs/bootstrap@3.3.5",
-    "bootstrap-sass": "github:twbs/bootstrap-sass@3.3.5",
-    "core-js": "npm:core-js@1.1.4",
+    "angular": "github:angular/bower-angular@1.5.5",
+    "angular-animate": "github:angular/bower-angular-animate@1.5.5",
+    "angular-mocks": "github:angular/bower-angular-mocks@1.5.3",
+    "angular-ui-router": "github:angular-ui/ui-router@0.2.18",
+    "angularfire": "github:firebase/angularfire@1.2.0",
+    "animate.css": "bower:animate.css@3.5.1",
+    "babel": "npm:babel-core@5.8.38",
+    "babel-runtime": "npm:babel-runtime@5.8.38",
+    "bootstrap": "github:twbs/bootstrap@3.3.6",
+    "bootstrap-sass": "github:twbs/bootstrap-sass@3.3.6",
+    "core-js": "npm:core-js@1.2.6",
     "d3-array": "npm:d3-array@0.7.1",
     "d3-axis": "npm:d3-axis@0.3.0",
     "d3-collection": "npm:d3-collection@0.1.2",
@@ -36,21 +35,42 @@ System.config({
     "d3-shape": "npm:d3-shape@0.5.1",
     "d3-svg": "npm:d3-svg@0.2.0",
     "d3-time": "npm:d3-time@0.2.5",
-    "font-awesome": "npm:font-awesome@4.4.0",
-    "lodash.find": "npm:lodash.find@4.0.1",
-    "lodash.findindex": "npm:lodash.findindex@4.0.1",
-    "lodash.has": "npm:lodash.has@4.0.1",
+    "d3-transition": "npm:d3-transition@0.2.8",
+    "firebase": "github:firebase/firebase-bower@2.4.2",
+    "font-awesome": "npm:font-awesome@4.5.0",
+    "inflect": "npm:inflect@0.3.0",
+    "lodash.find": "npm:lodash.find@4.2.0",
+    "lodash.findindex": "npm:lodash.findindex@4.2.0",
+    "lodash.has": "npm:lodash.has@4.2.1",
     "lodash.isarray": "npm:lodash.isarray@4.0.0",
-    "lodash.isempty": "npm:lodash.isempty@4.0.0",
-    "lodash.isstring": "npm:lodash.isstring@4.0.0",
-    "github:angular/bower-angular-mocks@1.4.9": {
-      "angular": "github:angular/bower-angular@1.4.9"
+    "lodash.isempty": "npm:lodash.isempty@4.1.3",
+    "lodash.isstring": "npm:lodash.isstring@4.0.1",
+    "lodash.omitby": "npm:lodash.omitby@4.3.0",
+    "lodash.range": "npm:lodash.range@3.1.4",
+    "lodash.reverse": "npm:lodash.reverse@4.0.1",
+    "lodash.slice": "npm:lodash.slice@4.0.5",
+    "lodash.sortby": "npm:lodash.sortby@4.4.2",
+    "bower:animate.css@3.5.1": {
+      "css": "github:systemjs/plugin-css@0.1.21"
+    },
+    "github:angular-ui/ui-router@0.2.18": {
+      "angular": "github:angular/bower-angular@1.5.5"
+    },
+    "github:angular/bower-angular-animate@1.5.5": {
+      "angular": "github:angular/bower-angular@1.5.5"
+    },
+    "github:angular/bower-angular-mocks@1.5.3": {
+      "angular": "github:angular/bower-angular@1.5.5"
+    },
+    "github:firebase/angularfire@1.2.0": {
+      "angular": "github:angular/bower-angular@1.5.5",
+      "firebase": "github:firebase/firebase-bower@2.4.2"
     },
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.3.0"
     },
-    "github:jspm/nodelibs-process@0.1.1": {
-      "process": "npm:process@0.10.1"
+    "github:jspm/nodelibs-path@0.1.0": {
+      "path-browserify": "npm:path-browserify@0.0.0"
     },
     "github:jspm/nodelibs-process@0.1.2": {
       "process": "npm:process@0.11.2"
@@ -58,18 +78,22 @@ System.config({
     "github:jspm/nodelibs-util@0.1.0": {
       "util": "npm:util@0.10.3"
     },
-    "github:twbs/bootstrap@3.3.5": {
-      "jquery": "github:components/jquery@2.1.4"
+    "github:jspm/nodelibs-vm@0.1.0": {
+      "vm-browserify": "npm:vm-browserify@0.0.4"
+    },
+    "github:twbs/bootstrap@3.3.6": {
+      "jquery": "github:components/jquery@2.2.1"
     },
     "npm:assert@1.3.0": {
       "util": "npm:util@0.10.3"
     },
-    "npm:babel-runtime@5.8.24": {
-      "process": "github:jspm/nodelibs-process@0.1.1"
+    "npm:babel-runtime@5.8.38": {
+      "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:core-js@1.1.4": {
+    "npm:core-js@1.2.6": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",
-      "process": "github:jspm/nodelibs-process@0.1.1",
+      "path": "github:jspm/nodelibs-path@0.1.0",
+      "process": "github:jspm/nodelibs-process@0.1.2",
       "systemjs-json": "github:systemjs/plugin-json@0.1.0"
     },
     "npm:d3-axis@0.3.0": {
@@ -106,69 +130,68 @@ System.config({
       "d3-selection": "npm:d3-selection@0.7.0",
       "d3-timer": "npm:d3-timer@0.4.1"
     },
-    "npm:font-awesome@4.4.0": {
-      "css": "github:systemjs/plugin-css@0.1.18"
+    "npm:font-awesome@4.5.0": {
+      "css": "github:systemjs/plugin-css@0.1.20"
+    },
+    "npm:inflect@0.3.0": {
+      "fs": "github:jspm/nodelibs-fs@0.1.2",
+      "module": "github:jspm/nodelibs-module@0.1.0",
+      "path": "github:jspm/nodelibs-path@0.1.0",
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "vm": "github:jspm/nodelibs-vm@0.1.0"
     },
     "npm:inherits@2.0.1": {
       "util": "github:jspm/nodelibs-util@0.1.0"
     },
-    "npm:lodash._baseeach@4.0.0": {
-      "lodash.keys": "npm:lodash.keys@4.0.0"
+    "npm:lodash._baseiteratee@4.5.2": {
+      "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:lodash._baseisequal@4.0.2": {
-      "lodash._stack": "npm:lodash._stack@4.0.1",
-      "lodash.keys": "npm:lodash.keys@4.0.0"
+    "npm:lodash._baseiteratee@4.6.1": {
+      "lodash._stringtopath": "npm:lodash._stringtopath@4.7.1",
+      "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:lodash._baseismatch@4.0.2": {
-      "lodash._baseisequal": "npm:lodash._baseisequal@4.0.2",
-      "lodash._stack": "npm:lodash._stack@4.0.1"
+    "npm:lodash._stringtopath@4.7.1": {
+      "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:lodash._stack@4.0.1": {
-      "lodash._mapcache": "npm:lodash._mapcache@4.0.0"
-    },
-    "npm:lodash.find@4.0.1": {
-      "lodash._baseeach": "npm:lodash._baseeach@4.0.0",
+    "npm:lodash.find@4.2.0": {
+      "lodash._baseeach": "npm:lodash._baseeach@4.1.1",
       "lodash._basefind": "npm:lodash._basefind@3.0.0",
       "lodash._basefindindex": "npm:lodash._basefindindex@3.6.0",
-      "lodash._baseisequal": "npm:lodash._baseisequal@4.0.2",
-      "lodash._baseismatch": "npm:lodash._baseismatch@4.0.2",
-      "lodash.get": "npm:lodash.get@4.0.1",
-      "lodash.hasin": "npm:lodash.hasin@4.0.1",
-      "lodash.topairs": "npm:lodash.topairs@4.0.0",
-      "process": "github:jspm/nodelibs-process@0.1.2"
+      "lodash._baseiteratee": "npm:lodash._baseiteratee@4.5.2"
     },
-    "npm:lodash.findindex@4.0.1": {
+    "npm:lodash.findindex@4.2.0": {
       "lodash._basefindindex": "npm:lodash._basefindindex@3.6.0",
-      "lodash._baseisequal": "npm:lodash._baseisequal@4.0.2",
-      "lodash._baseismatch": "npm:lodash._baseismatch@4.0.2",
-      "lodash.get": "npm:lodash.get@4.0.1",
-      "lodash.hasin": "npm:lodash.hasin@4.0.1",
-      "lodash.topairs": "npm:lodash.topairs@4.0.0",
-      "process": "github:jspm/nodelibs-process@0.1.2"
+      "lodash._baseiteratee": "npm:lodash._baseiteratee@4.5.2"
     },
-    "npm:lodash.get@4.0.1": {
-      "process": "github:jspm/nodelibs-process@0.1.2"
-    },
-    "npm:lodash.has@4.0.1": {
+    "npm:lodash.has@4.2.1": {
       "lodash._baseslice": "npm:lodash._baseslice@4.0.0",
-      "lodash.get": "npm:lodash.get@4.0.1",
+      "lodash.tostring": "npm:lodash.tostring@4.1.2"
+    },
+    "npm:lodash.omitby@4.3.0": {
+      "lodash._baseiteratee": "npm:lodash._baseiteratee@4.6.1",
+      "lodash.keysin": "npm:lodash.keysin@4.1.3"
+    },
+    "npm:lodash.range@3.1.4": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:lodash.hasin@4.0.1": {
+    "npm:lodash.rest@4.0.2": {
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:lodash.slice@4.0.5": {
       "lodash._baseslice": "npm:lodash._baseslice@4.0.0",
-      "lodash.get": "npm:lodash.get@4.0.1",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:lodash.isempty@4.0.0": {
-      "lodash.keys": "npm:lodash.keys@4.0.0",
-      "lodash.size": "npm:lodash.size@4.0.1"
+    "npm:lodash.sortby@4.4.2": {
+      "lodash._baseeach": "npm:lodash._baseeach@4.1.2",
+      "lodash._baseflatten": "npm:lodash._baseflatten@4.2.0",
+      "lodash._baseiteratee": "npm:lodash._baseiteratee@4.6.1",
+      "lodash.rest": "npm:lodash.rest@4.0.2"
     },
-    "npm:lodash.size@4.0.1": {
-      "lodash.keys": "npm:lodash.keys@4.0.0"
+    "npm:lodash.tostring@4.1.2": {
+      "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:lodash.topairs@4.0.0": {
-      "lodash._arraymap": "npm:lodash._arraymap@3.0.0",
-      "lodash.keys": "npm:lodash.keys@4.0.0"
+    "npm:path-browserify@0.0.0": {
+      "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:process@0.11.2": {
       "assert": "github:jspm/nodelibs-assert@0.1.0"
@@ -176,6 +199,9 @@ System.config({
     "npm:util@0.10.3": {
       "inherits": "npm:inherits@2.0.1",
       "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:vm-browserify@0.0.4": {
+      "indexof": "npm:indexof@0.0.1"
     }
   }
 });

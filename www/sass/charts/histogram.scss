@@ -1,17 +1,82 @@
 histogram-chart {
   font: 10px sans-serif;
-  text-align: left;
+  text-align: right;
   padding: 3px;
   margin: 1px;
   color: white;
   display: block;
 }
 
-histogram-chart rect {
-  fill: steelblue;
-  stroke: white;
+rect.bar {
+    fill: rgb(47, 126, 216);
 }
 
-histogram-chart text {
-    fill: white;
+rect.bar:hover {
+    fill: rgb(72, 151, 241);
 }
+
+.float-box {
+    fill: rgb(255, 255, 255);
+    stroke: rgb(192, 208, 224);
+    stroke-width: 1;
+}
+
+.float-box-text {
+    fill-opacity:0.1
+}
+
+.tooltip {
+    position: absolute;
+    color: #222;
+    background: #fff;
+    padding: .5em;
+    text-shadow: #f5f5f5 0 1px 0;
+    border-radius: 2px;
+    box-shadow: 0px 0px 2px 0px #a6a6a6;
+    opacity: 0.9;
+    font-family: sans-serif;
+    font-size: 9px;
+    z-index: 10;
+}
+
+histogram-chart svg,
+.axis-text {
+    font-family:"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+}
+
+.axis,
+.bar-text {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: rgb(192, 208, 224);
+  shape-rendering: crispEdges;
+}
+
+.axis text,
+.bar-text {
+  fill: #666;
+}
+
+text.axis-text {
+    fill: #4d759e;
+}
+
+.axis--x path {
+  stroke: #C0D0E0;
+}
+
+path.domain {
+    stroke-width: 0;
+}
+
+path.overlay {
+  fill: none;
+  stroke: black;
+  stroke-width: 2px;
+}
+

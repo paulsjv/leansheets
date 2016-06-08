@@ -2,7 +2,7 @@ import * as d3 from '../support/d3';
 
 export default class HistogramChartController {
 
-    constructor() {
+    constructor($log) {
         'ngInject';
 
         this.$svg = null;
@@ -15,10 +15,13 @@ export default class HistogramChartController {
         this.$yAxisRightLabel = null;
         this.$xAxisBottom = null;
         this.$xAxisBottomLabel = null;
+		this.$tooltip = null;
 
         // { leadtime: 10, frequency: 5 }
         this.xAxisDataProperty = 'leadtime';
         this.yAxisDataProperty = 'frequency';
+
+		this.$log = $log;
 
     }
 
@@ -157,7 +160,7 @@ export default class HistogramChartController {
 
         if (!this.$tooltip) {
 
-            this.$tooltip = this.histogramChartModel.$parent
+            this.$tooltip = d3.select('html') //this.histogramChartModel.$parent
                 .append('div')
                 .attr('class', 'tooltip');
 

@@ -1,10 +1,6 @@
 histogram-chart {
-  font: 10px sans-serif;
-  text-align: right;
-  padding: 3px;
-  margin: 1px;
-  color: white;
-  display: block;
+    display: block;
+    height: 400px;
 }
 
 rect.bar {
@@ -66,7 +62,7 @@ text.axis-text {
     fill: #4d759e;
 }
 
-.axis--x path {
+.axis-x path {
   stroke: #C0D0E0;
 }
 

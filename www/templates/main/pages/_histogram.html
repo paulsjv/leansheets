@@ -7,7 +7,9 @@
                 Histogram
             </h1>
 
-            <histogram-container></histogram-container>
+            <button ng-click="$ctrl.changeData()">Change Data</button>
+
+            <histogram-chart dataset="$ctrl.data"></histogram-chart>
 
         </div>
 

@@ -4,9 +4,11 @@ import filterContainer from './components/filterContainer';
 import histogramContainer from './components/histogramContainer';
 import tooltip from './components/tooltip';
 
-import HistogramController from './controllers/HistogramController';
+import HistogramChartController from './controllers/HistogramChartController';
 
-import histogramChart from './directives/histogramChart';
+import histogramChart from './directives/histogramChart2';
+
+import HistogramChartModelFactory from './factories/HistogramChartModelFactory';
 
 import broadcastResize from './run/broadcastResize';
 
@@ -16,8 +18,8 @@ angular.module('ls.charts', [])
     .component('histogramContainer', histogramContainer)
     .component('tooltip', tooltip)
     
-    .controller('HistogramController', HistogramController)
-    
+    .controller('HistogramChartController', HistogramChartController)
     .directive('histogramChart', histogramChart)
+    .factory('HistogramChartModelFactory', HistogramChartModelFactory)
     
     .run(broadcastResize);

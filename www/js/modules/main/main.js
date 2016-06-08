@@ -17,10 +17,9 @@ import firebaseData from './directives/firebaseData';
 import signIn from './directives/signIn';
 
 import authenticationFactory from './factories/authenticationFactory';
-
 import onEvents from './run/onEvents';
-
 import authService from './services/authService';
+//  import userFactory from './factories/userFactory';
 
 export default angular.module('ls.main', ['ls.templates', 'ls.charts', 'ls.domain', 'ls.google', 'ls.inflect', 'ui.router', 'ngAnimate'])
 
@@ -36,7 +35,7 @@ export default angular.module('ls.main', ['ls.templates', 'ls.charts', 'ls.domai
     .directive('signIn', signIn)
 
     .factory('authenticationFactory', authenticationFactory)
+//     .factory('userFactory', userFactory)
+    .service('authService', authService)
     
-    .run(onEvents)
-
-    .service('authService', authService);
+    .run(onEvents);

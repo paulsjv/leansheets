@@ -1,4 +1,6 @@
-var log;
+import angular from 'angular';
+
+var log; 
 
 export default ($log, $window) => {
     'ngInject';

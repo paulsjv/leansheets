@@ -2,7 +2,7 @@ import * as d3 from '../support/d3';
 
 export default class HistogramChartController {
 
-    constructor() {
+    constructor($log) {
         'ngInject';
 
         this.$svg = null;
@@ -15,10 +15,13 @@ export default class HistogramChartController {
         this.$yAxisRightLabel = null;
         this.$xAxisBottom = null;
         this.$xAxisBottomLabel = null;
+		this.$tooltip = null;
 
         // { leadtime: 10, frequency: 5 }
         this.xAxisDataProperty = 'leadtime';
         this.yAxisDataProperty = 'frequency';
+
+		this.$log = $log;
 
     }
 
@@ -111,8 +114,8 @@ export default class HistogramChartController {
         let axisHeight = this.$yAxisLeft.node().getBBox().height,
             labelWidth = this.$yAxisLeftLabel.node().getBBox().width;
 
-        console.log(`axisLeft.axisHeight: ${axisHeight}`);
-        console.log(`axisLeft.labelWidth: ${labelWidth}`);
+//        console.log(`axisLeft.axisHeight: ${axisHeight}`);
+//        console.log(`axisLeft.labelWidth: ${labelWidth}`);
 
         this.$yAxisLeftLabel
             .attr('transform', `translate(-50, ${(axisHeight - labelWidth) / 2}) rotate(-90)`)
@@ -157,7 +160,7 @@ export default class HistogramChartController {
 
         if (!this.$tooltip) {
 
-            this.$tooltip = this.histogramChartModel.$parent
+            this.$tooltip = d3.select('html') //this.histogramChartModel.$parent
                 .append('div')
                 .attr('class', 'tooltip');
 
@@ -199,19 +202,25 @@ export default class HistogramChartController {
 
         let that = this;
 
+		// must remove histogram to update histogram
+	    d3.select('#myHistogram123').remove();
+		this.$histogram = null;
         if (!this.$histogram) {
 
             this.$histogram = this.$svg
                 .append('g')
-                .attr('class', 'histogram');
+                .attr('class', 'histogram')
+				.attr('id', 'myHistogram123');
 
         }
 
-        this.$histogram
-            .attr('transform', `translate(${this.histogramChartModel.svgPaddingX}, ${this.histogramChartModel.svgPaddingY})`)
+		let bars = this.$histogram
+            .attr('transform', 'translate(' + [this.histogramChartModel.svgPaddingX, this.histogramChartModel.svgPaddingY] + ')')
             .selectAll('rect')
-            .data(this.histogramChartModel.data)
-            .enter()
+            .data(this.histogramChartModel.data);
+
+		// have to separate out the enter() so that the update can happen otherwise it won't work correctly.
+        bars.enter()
             .append('rect')
             .attr('class', 'bar')
             .attr('rx', 0)
@@ -265,8 +274,8 @@ export default class HistogramChartController {
         let axisHeight = this.$yAxisRight.node().getBBox().height,
             labelWidth = this.$yAxisRightLabel.node().getBBox().width;
 
-        console.log(`axisRight.axisHeight: ${axisHeight}`);
-        console.log(`axisRight.labelWidth: ${labelWidth}`);
+//        console.log(`axisRight.axisHeight: ${axisHeight}`);
+//        console.log(`axisRight.labelWidth: ${labelWidth}`);
 
         this.$yAxisRightLabel
             .attr('transform', `translate(50, ${(axisHeight - labelWidth) / 2}) rotate(90)`)

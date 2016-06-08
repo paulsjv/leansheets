@@ -23,7 +23,7 @@ export default ($log, $window, HistogramChartModelFactory) => {
             $scope.$watch('$ctrl.dataset', (newDataset, oldDataset) => {
                 
                 if (newDataset !== oldDataset) {
-                    $log.debug('$watchCollection called');
+                    $log.debug('$watchCollection called', newDataset);
                     ctrl.update(newDataset);
                 }
                 

@@ -18,16 +18,17 @@ export default ($log, User) => {
                 user = new User({
                     $id: `google:${gUser.getId()}`,
                     displayName: gBasicProfile.getGivenName(),
-                    imageUrl: gBasicProfile.getImageUrl()
+                    imageUrl: gBasicProfile.getImageUrl()		// if return undefind will error must be null if undefind
                 });
 
-            user.setProfile({
+			// was user.setProfile({});
+            user.profile = {
                 email: gBasicProfile.getEmail(),
                 fullName: gBasicProfile.getName(),
                 firstName: gBasicProfile.getGivenName(),
                 lastName: gBasicProfile.getFamilyName()
-            });
-
+            };
+			$log.debug('user', user);
             user.$save();
 
             return user;

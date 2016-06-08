@@ -5,7 +5,6 @@ export default class HistogramChartModel {
 
     constructor($elem, data) {
 
-        debugger;
         this.$parent = d3.select($elem[0]);
 
         this.yAxisTicks = 5;

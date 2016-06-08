@@ -15,6 +15,7 @@ export default class authService {
         this.firebaseAuth = $firebaseAuth(firebaseRef);
 
         this.User = User;
+//		this.userFactory = userFactory;
 
     }
 
@@ -89,7 +90,7 @@ export default class authService {
                 .then((gAuth) => {
 
                     let accessToken = gAuth.getCurrentUser().getAuthResponse().getAccessToken();
-
+					// this.userFactory.fromGoogle(gAuth.getCurrentUser());	// make sure to inject the userFactory
                     return this.firebaseAuth.$authWithOAuthToken('google', accessToken);
 
                 })

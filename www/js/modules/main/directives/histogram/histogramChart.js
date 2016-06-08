@@ -16,15 +16,17 @@ export default ($log, $window) => {
         scope: {},
         restrict: 'E',
         link: (scope, elm, attrs, ctrl) => {
+
             log.debug('HistogramDirective - histogramChart.js - in link!');
 
             // Resizing window logic
-            angular.element($window).on('resize', () => { ctrl.resize(); });
+            scope.$on('$resize', () => { ctrl.resize(); });
+
             let svgHeight               = 400,                              // TODO: hardcoded
                 barContainerHeight      = Math.round(svgHeight * 0.7),      // TODO: hardcoded to 70% of the svgHeight
-                margin                  = { top: ((svgHeight - barContainerHeight)/2), 
+                margin                  = { top: ((svgHeight - barContainerHeight)/2),
                                             right: 60,                      // TODO: hardcoded
-                                            bottom: ((svgHeight - barContainerHeight)/2), 
+                                            bottom: ((svgHeight - barContainerHeight)/2),
                                             left: 60 },                     // TODO: hardcoded
                 padding                 = 0.62,                             // TODO: hardcoded
                 ticks                   = 5,                                // TODO: hardcoded

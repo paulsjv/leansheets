@@ -1,6 +1,5 @@
-import ToolTip            from 'www/js/modules/main/components/tooltip';
-import {    select, selectAll, 
-            mouse }       from 'www/js/modules/utils/d3';
+import ToolTip from '../components/tooltip';
+import * as d3 from '../support/d3';
 
 var log;
 
@@ -11,7 +10,7 @@ var log;
 * @returns integer - width in pixels
 */
 let getElementWidth = (element) => {
-    return parseInt(select(element).node().getBBox().width, 10);
+    return parseInt(d3.select(element).node().getBBox().width, 10);
 };
 
 /**
@@ -21,7 +20,7 @@ let getElementWidth = (element) => {
 * @returns integer - height in pixels
 */
 let getElementHeight = (elm) => {
-    return parseInt(select(elm).node().getBBox().height, 10);
+    return parseInt(d3.select(elm).node().getBBox().height, 10);
 };
 
 /**
@@ -30,7 +29,7 @@ let getElementHeight = (elm) => {
 * @param xAxis - object - d3 axisBottom object
 */
 let renderAxisBottom = (svg, properties, model) => {
-    select('#x-axis').remove();
+    d3.select('#x-axis').remove();
 
     svg.append('g')
             .attr('id', 'x-axis')
@@ -45,7 +44,7 @@ let renderAxisBottom = (svg, properties, model) => {
     let leadtimeGroupWidth = getElementWidth('.axis--x');
     let leadtimeTextWidth = getElementWidth('.axis--x text.axis-text');
 
-    select('.axis--x text.axis-text')
+    d3.select('.axis--x text.axis-text')
             .attr('transform', 'translate(' + ((leadtimeGroupWidth/2) - (leadtimeTextWidth/2)) + ', 35)')
             .attr('visibility', 'visible');
 };
@@ -54,7 +53,7 @@ let renderAxisBottom = (svg, properties, model) => {
 *
 */
 let renderAxisLeft = (svg, properites, model) => {
-    select('#left-axis').remove();
+    d3.select('#left-axis').remove();
 
     svg.append('g')
             .attr('id', 'left-axis')
@@ -72,7 +71,7 @@ let renderAxisLeft = (svg, properites, model) => {
     let frequencyGroupHeight = getElementHeight('.axis-left');
     let frequencyTextHeight = getElementWidth('.axis-left text.axis-text');
 
-    select('.axis-left text.axis-text')
+    d3.select('.axis-left text.axis-text')
             .attr('transform', 'translate(-50, ' + ((frequencyGroupHeight/2) - (frequencyTextHeight/2)) + ') rotate(-90)')
             .attr('visibility', 'visible');
 };
@@ -93,7 +92,7 @@ let renderBars = (data, svg, properties, model) => {
     //      https://github.com/d3/d3-selection#modifying-elements
     //  As long as the element is not saved in a variable gc will destroy it.
     //      https://developer.mozilla.org/en-US/docs/Web/API/Node/removeChild
-    select('#' + properties.barContainerId).remove();
+    d3.select('#' + properties.barContainerId).remove();
 
     // Add the barcontainer back to the DOM with the new data
     // Each bar in the histogram defined here
@@ -115,7 +114,7 @@ let renderBars = (data, svg, properties, model) => {
         .attr('y', (d) => { return model.barContainerHeight - (d.frequency * model.barHeight) - 0.5; })
       .on('mousemove', 
           function(d, i) {
-                    properties.tooltip.show((mouse(select('html').node())[1] + 10) + 'px', (mouse(select('html').node())[0] + 10) + 'px', 
+                    properties.tooltip.show((d3.mouse(d3.select('html').node())[1] + 10) + 'px', (d3.mouse(d3.select('html').node())[0] + 10) + 'px', 
                               '<b>Frequency: </b>' + d.frequency + '<br/><b>Percentage: </b>' + d.percentage + '%');
           })
       .on('mouseout', 
@@ -139,7 +138,7 @@ let renderBarText = (data, svg, model) => {
     //      https://github.com/d3/d3-selection#modifying-elements
     //  As long as the element is not saved in a variable gc will destroy it.
     //      https://developer.mozilla.org/en-US/docs/Web/API/Node/removeChild
-    select('#barcontainer-text').remove();
+    d3.select('#barcontainer-text').remove();
 
     // text on top of bars
     let barTextGroup = svg.append('g')
@@ -155,10 +154,10 @@ let renderBarText = (data, svg, model) => {
             .attr('y', (d) => { return model.barContainerHeight - (d.frequency * model.barHeight) - 3; })
             .text((d) => { return d.frequency; });
 
-    selectAll('text.bar-text')
+    d3.selectAll('text.bar-text')
         .each(function(d) { 
                 let barTextWidth = getElementWidth(this);
-                select(this).attr('x', model.scaleBand(d.leadtime) + (model.scaleBand.bandwidth()/2) - (barTextWidth/2));
+                d3.select(this).attr('x', model.scaleBand(d.leadtime) + (model.scaleBand.bandwidth()/2) - (barTextWidth/2));
               });
  
 };
@@ -173,10 +172,10 @@ let renderBarText = (data, svg, model) => {
 * @return object - a d3 selection object
 */
 let attachSvgElementToDom = (model) => {
-    let svg = select('#' + model.svgId);
+    let svg = d3.select('#' + model.svgId);
     if (!svg.empty()) { return svg; }
 
-    return select(model.rootElement)
+    return d3.select(model.rootElement)
             .append('svg')
                 .attr('id', model.svgId)
                 .attr('version', '1.1')
@@ -255,26 +254,26 @@ export default class HistogramView {
     }
 
     resizeBars() {
-        selectAll('rect.bar')
+        d3.selectAll('rect.bar')
            .attr('width', this.model.scaleBand.bandwidth())
            .attr('x', (d) => { return this.model.scaleBand(d.leadtime); });
     }
 
     resizeBarText() {
         let model = this.model;
-        selectAll('.bar-text')
+        d3.selectAll('.bar-text')
             .each(function(d) { 
                             let barTextWidth = getElementWidth(this);
-                            select(this).attr('x', model.scaleBand(d.leadtime) + (model.scaleBand.bandwidth()/2) - (barTextWidth/2));
+                            d3.select(this).attr('x', model.scaleBand(d.leadtime) + (model.scaleBand.bandwidth()/2) - (barTextWidth/2));
                           });
     }
 
     resizeAxisBottom() {
-        select('.axis--x').call(this.model.axisBottom);
+        d3.select('.axis--x').call(this.model.axisBottom);
         let leadtimeGroupWidth = getElementWidth('.axis--x');
         let leadtimeTextWidth = getElementWidth('.axis--x text.axis-text');
      
-        select('.axis--x text.axis-text')
+        d3.select('.axis--x text.axis-text')
             .attr('transform', 'translate(' + ((leadtimeGroupWidth/2) - (leadtimeTextWidth/2)) + ', 35)');
     }
     

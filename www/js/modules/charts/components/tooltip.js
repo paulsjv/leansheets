@@ -1,4 +1,4 @@
-import { select }   from 'www/js/modules/utils/d3';
+import * as d3 from '../support/d3';
 
 export default class ToolTip {
 
@@ -9,7 +9,7 @@ export default class ToolTip {
     }
 
     add() {
-        this.tooltip = select('body').append('div')
+        this.tooltip = d3.select('body').append('div')
                             .attr('class', this.className);
     }
 

@@ -1,10 +1,9 @@
-import { select, curveCardinal,
-         line } from 'www/js/modules/utils/d3';
+import * as d3 from '../support/d3';
 
 var log;
 
 let getSvgElement = (svg, id) => {
-    return !svg ? select('#' + id) : svg; 
+    return !svg ? d3.select('#' + id) : svg; 
 };
 
 /**
@@ -14,7 +13,7 @@ let getSvgElement = (svg, id) => {
 * @returns integer - height in pixels
 */
 let getElementHeight = (elm) => {
-    return parseInt(select(elm).node().getBBox().height, 10);
+    return parseInt(d3.select(elm).node().getBBox().height, 10);
 };
 
 /**
@@ -24,14 +23,14 @@ let getElementHeight = (elm) => {
 * @returns integer - width in pixels
 */
 let getElementWidth = (element) => {
-    return parseInt(select(element).node().getBBox().width, 10);
+    return parseInt(d3.select(element).node().getBBox().width, 10);
 };
 
 let renderLine = (data, svg, properties, model) => {
-    select('#lineoverlay').remove();
+    d3.select('#lineoverlay').remove();
 
     // Line function that is passed to the "p" element
-    let lineOverlay = line().curve(curveCardinal)
+    let lineOverlay = d3.line().curve(d3.curveCardinal)
                     .x((d) => { return model.scaleBand(d.leadtime); })
                     .y((d) => { return model.scaleLinear(d.percentage); });
 
@@ -47,7 +46,7 @@ let renderLine = (data, svg, properties, model) => {
 };
 
 let renderAxisRight = (svg, properties, model) => {
-    select('#right-axis').remove();
+    d3.select('#right-axis').remove();
 
     svg.append('g')
             .attr('id', 'right-axis')
@@ -63,7 +62,7 @@ let renderAxisRight = (svg, properties, model) => {
     let percentGroupHeight = getElementHeight('.axis-right');
     let percentTextHeight = getElementWidth('.axis-right text.axis-text');
 
-    select('.axis-right text.axis-text')
+    d3.select('.axis-right text.axis-text')
             .attr('transform', 'translate(50, ' + ((percentGroupHeight/2) - (percentTextHeight/2)) + ') rotate(90)')
             .attr('visibility', 'visible');
 };
@@ -95,13 +94,13 @@ export default class LineOverlayView {
 
     resizeAxisRight() {
         this.model.axisRight.tickSize(-this.model.barContainerWidth);
-        select('.axis-right')
+        d3.select('.axis-right')
             .attr('transform', 'translate(' + [this.model.margin.left + this.model.barContainerWidth, this.model.margin.top] + ')')
             .call(this.model.axisRight);
     }
 
     resizeLine() {
-        select('.overlay')
+        d3.select('.overlay')
             .attr('d', this.lineOverlay);
     }
 

@@ -11,7 +11,7 @@ import singularize from './filters/singularize';
 import titleize from './filters/titleize';
 import underscore from './filters/underscore';
 
-export default angular.module('inflect', [])
+export default angular.module('ls.inflect', [])
     .filter('camelize', camelize)
     .filter('capitalize', capitalize)
     .filter('dasherize', dasherize)

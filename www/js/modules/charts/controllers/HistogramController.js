@@ -1,10 +1,7 @@
-import HistogramView                from '../directives/histogram/histogramView';
-import LineOverlayView              from '../directives/histogram/lineOverlayView';
-import { select, max, scaleBand,
-         format, precisionFixed,
-         scaleLinear, axisBottom,
-         axisLeft, range,
-         axisRight }   from 'www/js/modules/utils/d3';
+import HistogramView from '../directives/histogramView';
+import LineOverlayView from '../directives/lineOverlayView';
+
+import * as d3 from '../support/d3';
 
 let log;
 /**
@@ -14,7 +11,7 @@ let log;
 * @return integer - width in pixels
 */
 let computeSvgWidth = (element) => {
-    return parseInt(select(element).style('width'), 10);
+    return parseInt(d3.select(element).style('width'), 10);
 };
 
 /**
@@ -40,10 +37,10 @@ let computeBarContainerWidth = (svgWidth, margin) => {
 */
 let computeDomainMax = (data, ticks) => {
     let frequency = data.map((d) => { return d.frequency; }),
-        domainMax = max([max(frequency), ticks]),
+        domainMax = d3.max([d3.max(frequency), ticks]),
         remainder = domainMax % ticks;
 
-    if (remainder > 0 || domainMax === max(frequency)) {
+    if (remainder > 0 || domainMax === d3.max(frequency)) {
         domainMax += (ticks - remainder);
     }
     return domainMax;
@@ -87,12 +84,12 @@ export default class HistogramController {
         this.histogramModel.barContainerWidth    = computeBarContainerWidth(this.histogramModel.svgWidth, this.histogramModel.margin);
 
         // scale band x-axis
-        this.histogramModel.scaleBand = scaleBand()
+        this.histogramModel.scaleBand = d3.scaleBand()
                                         .rangeRound([0, this.histogramModel.barContainerWidth])
                                         .padding(this.histogramModel.padding); 
 
         // scale linear left y-axis
-        this.histogramModel.scaleLinear = scaleLinear()
+        this.histogramModel.scaleLinear = d3.scaleLinear()
                                             .range([this.histogramModel.barContainerHeight, 0]);
 
         // Line Overlay Properties
@@ -101,7 +98,7 @@ export default class HistogramController {
         this.lineOverlayModel.margin                    = this.histogramModel.margin;
         this.lineOverlayModel.barContainerWidth         = this.histogramModel.barContainerWidth;
         // scale linear right y-axis
-        this.lineOverlayModel.scaleLinear               = scaleLinear()
+        this.lineOverlayModel.scaleLinear               = d3.scaleLinear()
                                                             .range([this.histogramModel.barContainerHeight, 0]);
     }
 
@@ -116,28 +113,28 @@ export default class HistogramController {
         // update scale band domain x-axis scale
         this.histogramModel.scaleBand.domain(data.map((d) => { return d.leadtime; }));
         // update x-axis
-        this.histogramModel.axisBottom  = axisBottom(this.histogramModel.scaleBand);
+        this.histogramModel.axisBottom  = d3.axisBottom(this.histogramModel.scaleBand);
 
         // update left y-axis scale
         this.histogramModel.scaleLinear.domain([0, this.histogramModel.domainMax]);
         // update left y-axis
-        this.histogramModel.axisLeft    = axisLeft(this.histogramModel.scaleLinear)
-                            .tickValues(range(0, 
+        this.histogramModel.axisLeft    = d3.axisLeft(this.histogramModel.scaleLinear)
+                            .tickValues(d3.range(0, 
                                               this.histogramModel.domainMax + 1, 
                                               this.histogramModel.domainMax / this.histogramModel.ticks))
-                            .tickFormat((d) => { return format('.' + precisionFixed(1) + 'f')(d); });
+                            .tickFormat((d) => { return d3.format('.' + d3.precisionFixed(1) + 'f')(d); });
 
         // Line Overlay
         // update scale linear line overlay y-axis
-        this.lineOverlayModel.scaleLinear.domain([0, max(data.map((d) => { return d.percentage; }))]);   
+        this.lineOverlayModel.scaleLinear.domain([0, d3.max(data.map((d) => { return d.percentage; }))]);   
         // update scale band line overlay x-axis
         this.lineOverlayModel.scaleBand     = this.histogramModel.scaleBand.copy()
                                                     .range([ this.histogramModel.scaleBand.range()[0] + (this.histogramModel.scaleBand.bandwidth()/2), 
                                                              this.histogramModel.scaleBand.range()[1] + (this.histogramModel.scaleBand.bandwidth()/2) ]);
         // update right y-axis
-        this.lineOverlayModel.axisRight     = axisRight(this.lineOverlayModel.scaleLinear)
+        this.lineOverlayModel.axisRight     = d3.axisRight(this.lineOverlayModel.scaleLinear)
                                                 .tickValues(
-                                                    range(0, this.lineOverlayModel.percentageTickMaxValue + 1, 
+                                                    d3.range(0, this.lineOverlayModel.percentageTickMaxValue + 1, 
                                                              this.lineOverlayModel.percentageTickMaxValue / this.histogramModel.ticks))
                                                 .tickFormat((d) => { return d + '%'; })
                                                 .tickSize(-this.histogramModel.barContainerWidth);
@@ -188,51 +185,7 @@ export default class HistogramController {
         this.lineOverlayView.resizeAxisRight();
         // resize line
         this.lineOverlayView.resizeLine();
-/*
-    // get new width of parent node of svg width
-//    let svgWidth = getSvgWidth(element);
-
-    // update svg with new width
-//    svg.style('width', svgWidth);
-
-    // reset x range
-//    let barContainerWidth = getBarContainerWidth(svgWidth, margin.left + margin.right); //getClipWidth(svgWidth));
-//    x.rangeRound([0, barContainerWidth]);
-
-    // update all bars
-//    selectAll('rect.bar')
-//        .attr('width', x.bandwidth())
-//        .attr('x', (d) => { return x(d.leadtime); });
-
-    // update bar-text
-//    selectAll('.bar-text')
-//        .each(function(d) { 
-//                        let barTextWidth = getElementWidth(this);
-//                        select(this).attr('x', x(d.leadtime) + (x.bandwidth()/2) - (barTextWidth/2));
-//                      });
-
-
-    // update x-axis
-//    select('.axis--x').call(xAxis);
-//    let leadtimeGroupWidth = getElementWidth('.axis--x');
-//    let leadtimeTextWidth = getElementWidth('.axis--x text.axis-text');
- 
-//    select('.axis--x text.axis-text')
-//        .attr('transform', 'translate(' + ((leadtimeGroupWidth/2) - (leadtimeTextWidth/2)) + ', 35)');
-
-    // update xOverlay scaleBand.rangeRound
- //   xOverlay.rangeRound([ x.range()[0] + (x.bandwidth()/2), x.range()[1] + (x.bandwidth()/2) ]);
-
-	// update yAxisRight tick size
-	yAxisRight.tickSize(-barContainerWidth);
-	select('.axis-right')
-		.attr('transform', 'translate(' + [margin.left + barContainerWidth, margin.top] + ')')
-		.call(yAxisRight);
-
-    // update overlay line
-    select('.overlay')
-        .attr('d', overlayLine);
-*/        
        
     }
+    
 }

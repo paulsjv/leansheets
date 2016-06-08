@@ -17,7 +17,7 @@ import signIn from './directives/signIn';
 import authenticationFactory from './factories/authenticationFactory';
 import onEvents from './run/onEvents';
 import authService from './services/authService';
-//import userFactory from './factories/userFactory';
+//  import userFactory from './factories/userFactory';
 
 // Histogram Chart
 import histogramContainer from './components/histogram-container';
@@ -35,7 +35,7 @@ export default angular.module('main', ['app.templates', 'domain', 'google', 'inf
     .directive('firebaseData', firebaseData)
     .directive('signIn', signIn)
     .factory('authenticationFactory', authenticationFactory)
-//    .factory('userFactory', userFactory)
+//     .factory('userFactory', userFactory)
     .service('authService', authService)
 
     // Histogram Chart

@@ -1,6 +1,6 @@
 export default ($compileProvider) => {
     'ngInject';
 
-    $compileProvider.debugInfoEnabled(false);
+    $compileProvider.debugInfoEnabled(true);
     
 }

@@ -15,7 +15,8 @@
   },
   "devDependencies": {
     "babel": "^5.8.23",
-    "babel-core": "^5.8.25",
+    "babel-core": "^5.8.38",
+    "babel-preset-es2015": "^6.9.0",
     "connect-livereload": "^0.5.3",
     "del": "^2.0.2",
     "express": "^4.13.3",

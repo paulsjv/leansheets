@@ -1,17 +1,16 @@
-import gulp from 'gulp';
-import karma from 'karma';
-import isparta from 'isparta';
-import express from 'express';
+let gulp = require('gulp'),
+    karma = require('karma'),
+    isparta = require('isparta'),
+    express = require('express'),
+    childProcess = require('child_process'),
+    spawn = childProcess.spawn,
+    paths = require('../project.conf').paths;
 
-import childProcess from 'child_process';
-
-import {paths} from '../project.conf';
-
-let spawn = childProcess.spawn;
-
-gulp.task('test', ['test:unit']);
+// jshint, reports, test:unit, preview, test:functional
+gulp.task('test', ['test:unit', 'reports']);
 gulp.task('test:debug', ['test:unit:debug']);
 
+// jshint, reports, test:unit
 gulp.task('test:unit', ['jshint'], (done) => {
 
     let preProcessors = {},
@@ -23,7 +22,7 @@ gulp.task('test:unit', ['jshint'], (done) => {
     instrumenter[paths.src.js('**/*.js')] = 'isparta';
     instrumenter[paths.spec.unit('**/*.js')] = 'isparta';
 
-    new karma.Server({
+    let server = new karma.Server({
 
         configFile: paths.build('karma.conf.js'),
 
@@ -59,10 +58,17 @@ gulp.task('test:unit', ['jshint'], (done) => {
 
         }
 
-    }, done).start();
+    }, () => {});
+
+    server.on('run_complete', () => {
+        done();
+    });
+
+    server.start();
 
 });
 
+// jshint, reports, test:debug
 gulp.task('test:unit:debug', ['jshint'], () => {
 
     let preProcessors = {};
@@ -83,6 +89,7 @@ gulp.task('test:unit:debug', ['jshint'], () => {
 
 });
 
+// jshint, reports, test:unit, preview, test:functional
 gulp.task('test:functional', ['dist'], (done) => {
 
     new Promise((resolve) => { // Download/Update webdriver

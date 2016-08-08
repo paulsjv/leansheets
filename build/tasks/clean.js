@@ -1,7 +1,6 @@
-import gulp from 'gulp';
-import del from 'del';
-
-import {paths} from '../project.conf';
+let gulp = require('gulp'),
+    del = require('del'),
+    paths = require('../project.conf').paths;
 
 gulp.task('clean', ['clean:reports', 'clean:dist'], (done) => {
     done();

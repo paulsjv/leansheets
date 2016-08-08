@@ -22,7 +22,12 @@ and re-run it to temporarily reduce the build time.
 
 ## Getting Started
 
-I Recommend that you use npm v3.5+
+***!! Requires node v6.x.x+***
+
+Tested with versions
+
+* node -v `6.3.1`
+* npm -v `3.10.3`
 
 Run once per machine to install `jspm` and `gulp-cli` (if not installed already):
 
@@ -57,8 +62,6 @@ To adjust your ulimit (on Macs):
   images to webp and replaces all references appropriately, serves up a preview from memory with sourcemaps
   and LiveReload enabled at [http://localhost:3000](http://localhost:3000/), and auto-opens Chrome by default.
 
-  This task is an alias for the `preview` task.
-
 - `dist`
 
   Executes unit tests, generates coverage and complexity reports, bundles and minifies Sass and Javascript, converts
@@ -69,6 +72,8 @@ To adjust your ulimit (on Macs):
 
   Serves up a preview from memory with LiveReload enabled at [http://localhost:3000](http://localhost:3000/), and
   auto-opens Chrome by default.
+  
+  Use this task to circumvent jshint/test/reports execution/generation 
 
 - `preview:dist`
 
@@ -76,7 +81,7 @@ To adjust your ulimit (on Macs):
   Chrome by default.
 
 - `test:unit`
-  Executes the unit tests and generates a coverage report.
+  Executes the unit tests and generates the coverage and complexity reports.
 
 - `test:functional`
   Executes the functional tests.

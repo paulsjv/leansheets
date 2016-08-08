@@ -1,6 +1,6 @@
-import gulp from 'gulp';
-import StreamCompiler from '../support/stream/StreamCompiler';
-import {paths} from '../project.conf';
+let gulp = require('gulp'),
+    StreamCompiler = require('../support/stream/StreamCompiler'),
+    paths = require('../project.conf').paths;
 
 gulp.task('dist', ['clean:dist', 'test', 'reports'], () => {
 

@@ -1,25 +1,29 @@
-import _ from 'lodash';
-import path from 'path';
-import upath from 'upath';
-import through2 from 'through2';
-import stream from 'readable-stream';
+let _ = require('lodash'),
+    path = require('path'),
+    upath = require('upath'),
+    through2 = require('through2'),
+    stream = require('readable-stream'),
 
-import manifold from 'gulp-manifold';
-import webp from 'gulp-webp';
-import jspm from 'gulp-jspm';
-import sass from 'gulp-sass';
-import htmlmin from 'gulp-htmlmin';
-import rename from 'gulp-rename';
-import RevAll from 'gulp-rev-all';
-import uglify from 'gulp-uglify';
-import sourceMaps from 'gulp-sourcemaps';
-import angularTemplateCache from 'gulp-angular-templatecache';
-import ngAnnotate from 'gulp-ng-annotate';
+    manifold = require('gulp-manifold'),
+    webp = require('gulp-webp'),
+    jspm = require('gulp-jspm'),
+    sass = require('gulp-sass'),
+    htmlmin = require('gulp-htmlmin'),
+    rename = require('gulp-rename'),
+    RevAll = require('gulp-rev-all'),
+    uglify = require('gulp-uglify'),
+    sourceMaps = require('gulp-sourcemaps'),
+    angularTemplateCache = require('gulp-angular-templatecache'),
+    ngAnnotate = require('gulp-ng-annotate'),
 
-import StreamReplacer from './StreamReplacer';
-import SourceMapUtil from '../util/SourceMapUtil';
+    StreamReplacer = require('./StreamReplacer'),
+    SourceMapUtil = require('../util/SourceMapUtil'),
 
-import {paths, APP_NAME, TEMPLATES_MODULE_NAME, entryPoint} from '../../project.conf.js';
+    project = require('../../project.conf'),
+    paths = project.paths,
+    APP_NAME = project.APP_NAME,
+    TEMPLATES_MODULE_NAME = project.TEMPLATES_MODULE_NAME,
+    entryPoint = project.entryPoint;
 
 let revAll = new RevAll({
         dontRenameFile: [/^\/index\.html$/, /^\/sink\.html$/, /^\/favicon.ico$/],
@@ -28,7 +32,7 @@ let revAll = new RevAll({
         }
     });
 
-export default class StreamCompiler {
+module.exports = class StreamCompiler {
 
     /**
      * Creates a new Stream Compiler with sensible defaults.
@@ -396,4 +400,4 @@ export default class StreamCompiler {
 
     };
 
-}
+};

@@ -1,6 +1,6 @@
-import fs from 'fs';
+let fs = require('fs');
 
-export default class FileUtil {
+module.exports = class FileUtil {
 
     // FileUtil
     // --------

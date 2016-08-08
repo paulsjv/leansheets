@@ -38,11 +38,7 @@ gulp.task('preview', (done) => {
         paths.src('**/*')
     ])
     .pipe(streamCompiler.compile(compilerOpts))
-    .pipe(streamServer.listen(EXPRESS_PORT, LIVERELOAD_PORT)
-        .on('StreamServer.listening', () => {
-            done();
-        })
-    )
+    .pipe(streamServer.listen(EXPRESS_PORT, LIVERELOAD_PORT))
     .pipe(open({
         uri: `http://localhost:${EXPRESS_PORT}`,
         app: BROWSER
@@ -71,11 +67,7 @@ gulp.task('preview:dist', ['dist'], (done) => {
     gulp.src([
         paths.dist('**/*')
     ])
-    .pipe(streamServer.listen(EXPRESS_PORT)
-        .on('StreamServer.listening', () => {
-            done();
-        })
-    )
+    .pipe(streamServer.listen(EXPRESS_PORT))
     .pipe(open({
         uri: `http://localhost:${EXPRESS_PORT}`,
         app: BROWSER

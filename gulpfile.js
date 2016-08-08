@@ -3,4 +3,4 @@ let gulp = require('gulp'),
 
 requireDir('build/tasks');
 
-gulp.task('default', ['test:unit', 'preview']);
+gulp.task('default', ['test:unit', 'reports', 'preview']);

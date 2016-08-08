@@ -7,7 +7,7 @@ let gulp = require('gulp'),
     paths = require('../project.conf').paths;
 
 // jshint, reports, test:unit, preview, test:functional
-gulp.task('test', ['test:unit']);
+gulp.task('test', ['test:unit', 'reports']);
 gulp.task('test:debug', ['test:unit:debug']);
 
 // jshint, reports, test:unit
@@ -22,7 +22,7 @@ gulp.task('test:unit', ['jshint'], (done) => {
     instrumenter[paths.src.js('**/*.js')] = 'isparta';
     instrumenter[paths.spec.unit('**/*.js')] = 'isparta';
 
-    new karma.Server({
+    let server = new karma.Server({
 
         configFile: paths.build('karma.conf.js'),
 
@@ -58,7 +58,13 @@ gulp.task('test:unit', ['jshint'], (done) => {
 
         }
 
-    }, done).start();
+    }, () => {});
+
+    server.on('run_complete', () => {
+        done();
+    });
+
+    server.start();
 
 });
 

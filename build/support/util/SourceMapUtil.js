@@ -1,9 +1,11 @@
-import upath from 'upath';
-import through2 from 'through2';
+let upath = require('upath'),
+    through2 = require('through2'),
 
-import { SourceMapConsumer, SourceMapGenerator } from 'source-map';
+    sourceMap = require('source-map'),
+    SourceMapConsumer = sourceMap.SourceMapConsumer,
+    SourceMapGenerator = sourceMap.SourceMapGenerator;
 
-export default class SourceMapUtil {
+module.exports = class SourceMapUtil {
 
     static removeSource(inMap, sourceToRemove) {
 
@@ -103,4 +105,4 @@ export default class SourceMapUtil {
 
     }
 
-}
+};

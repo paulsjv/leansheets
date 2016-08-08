@@ -1,7 +1,6 @@
-import gulp from 'gulp';
-import jshint from 'gulp-jshint';
-
-import {paths} from '../project.conf';
+let gulp = require('gulp'),
+    jshint = require('gulp-jshint'),
+    paths = require('../project.conf').paths;
 
 gulp.task('jshint', () => {
 

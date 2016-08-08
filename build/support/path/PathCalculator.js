@@ -1,10 +1,8 @@
-import _ from 'lodash';
-import PathDescriptor from './PathDescriptor';
+let _ = require('lodash'),
+    PathDescriptor = require('./PathDescriptor');
 
-// PathCalculator
-// -------------
 // Helper class to provide a handy api for calculating folder paths.
-export default class PathCalculator {
+module.exports = class PathCalculator {
 
     constructor (config = {}) {
 
@@ -56,4 +54,4 @@ export default class PathCalculator {
 
     }
 
-}
+};

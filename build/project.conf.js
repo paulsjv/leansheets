@@ -5,7 +5,7 @@ let os = require('os'),
     pkg = FileUtil.readJSON('package.json');
 
 exports.BROWSER = os.platform() === 'linux' ? 'google-chrome' : (
-    os.platform() === 'darwin' ? 'google chrome' : (
+    os.platform() === 'darwin' ? '/Applications/Google\ Chrome.app' : (
         os.platform() === 'win32' ? 'chrome' : 'firefox'
     )
 );

@@ -1,6 +1,6 @@
-import {paths} from './project.conf';
+let paths = require('./project.conf').paths;
 
-export default (karma) => {
+module.exports = (karma) => {
 
     karma.set({
 

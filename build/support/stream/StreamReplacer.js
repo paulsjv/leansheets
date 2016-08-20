@@ -1,10 +1,10 @@
-import upath from 'upath';
-import through2 from 'through2';
+let upath = require('upath'),
+    through2 = require('through2'),
 
-import {paths} from '../../project.conf.js';
-import RegexUtil from '../util/RegexUtil';
+    paths = require('../../project.conf.js').paths,
+    RegexUtil = require('../util/RegexUtil');
 
-export default class StreamReplacer {
+module.exports = class StreamReplacer {
 
     constructor(replacements = {}) {
         this.replacements = replacements;
@@ -32,7 +32,7 @@ export default class StreamReplacer {
 
             that.replacements[transformFn(file)] =
                 new RegExp(RegexUtil.escape(upath.join(dir, name + ext)).replace(/ /g, '(?: |%20)'), 'g');
-            
+
             this.push(file);
 
             flush();
@@ -63,4 +63,4 @@ export default class StreamReplacer {
 
     }
 
-}
+};

@@ -1,8 +1,4 @@
-require('babel/register');
-
-var project = require('./project.conf'),
-    paths = project.paths,
-    EXPRESS_PORT = project.EXPRESS_PORT;
+let project = require('./project.conf');
 
 exports.config = {
 
@@ -17,7 +13,7 @@ exports.config = {
 
     // A base URL for your application under test. Calls to protractor.get()
     // with relative paths will be prepended with this.
-    baseUrl: 'http://localhost:' + EXPRESS_PORT,
+    baseUrl: 'http://localhost:' + project.EXPRESS_PORT,
 
     // Capabilities to be passed to the webdriver instance.
     capabilities: {
@@ -32,7 +28,7 @@ exports.config = {
     // Spec patterns are relative to the configuration file location passed
     // to proractor (in this example conf.js).
     // They may include glob patterns.
-    specs: ['../' + paths.spec.functional('**/*.js')],
+    specs: ['../' + project.paths.spec.functional('**/*.js')],
 
     // Options to be passed to Jasmine-node.
     jasmineNodeOpts: {

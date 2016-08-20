@@ -1,11 +1,10 @@
-import upath from 'upath';
-import through2 from 'through2';
-import express from 'express';
-import livereloadMiddleware from 'connect-livereload';
+let upath = require('upath'),
+    through2 = require('through2'),
+    express = require('express'),
+    livereloadMiddleware = require('connect-livereload'),
+    mime = require('mime-types');
 
-import mime from 'mime-types';
-
-export default class StreamServer {
+module.exports = class StreamServer {
 
     constructor() {
         this.cache = {};
@@ -71,4 +70,4 @@ export default class StreamServer {
 
     }
 
-}
+};

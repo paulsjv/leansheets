@@ -1,27 +1,27 @@
-import os from 'os';
-import PathCalculator from './support/path/PathCalculator';
-import FileUtil from './support/util/FileUtil';
+let os = require('os'),
+    PathCalculator = require('./support/path/PathCalculator'),
+    FileUtil = require('./support/util/FileUtil'),
 
-let pkg = FileUtil.readJSON('package.json');
+    pkg = FileUtil.readJSON('package.json');
 
-export const BROWSER = os.platform() === 'linux' ? 'google-chrome' : (
+exports.BROWSER = os.platform() === 'linux' ? 'google-chrome' : (
     os.platform() === 'darwin' ? 'google chrome' : (
         os.platform() === 'win32' ? 'chrome' : 'firefox'
     )
 );
 
-export const EXPRESS_PORT = 3000;
-export const LIVERELOAD_PORT = 35729;
+exports.EXPRESS_PORT = 3000;
+exports.LIVERELOAD_PORT = 35729;
 
-export const APP_NAME = pkg.name;
-export const TEMPLATES_MODULE_NAME = 'ls.templates';
+exports.APP_NAME = pkg.name;
+exports.TEMPLATES_MODULE_NAME = 'ls.templates';
 
-export const entryPoint = { // bundle entry point filenames.
+exports.entryPoint = { // bundle entry point filenames.
     js: 'modules/main/main.js',
     sass: 'main.scss'
 };
 
-export const paths = new PathCalculator({
+exports.paths = new PathCalculator({
 
     src: { // source root (relative to project root)
 

@@ -1,12 +1,13 @@
-import _ from 'lodash';
+let _ = require('lodash'),
 
-// NAME for API Debugging
-const NAME = Symbol();
+    // NAME for API Debugging
+    NAME = Symbol();
 
 function createPathAPI (descriptor) {
 
-        // concats a folder root with a subdir path, ignoring falsey subdir path values entirely.
-    let concat = (root, path) => (path ? (root + path) : root),
+
+    let // concats a folder root with a subdir path, ignoring falsey subdir path values entirely.
+        concat = (root, path) => (path ? (root + path) : root),
 
         // concats root with given path.
         rootFn = (path, debug) => {
@@ -51,10 +52,8 @@ function createPathAPI (descriptor) {
 
 }
 
-// PathDescriptor
-// --------------
 // Describes a path configuration for PathCalculator. Has a name, root, and folders.
-export default class PathDescriptor {
+module.exports = class PathDescriptor {
 
     constructor (name, descriptor = {}) {
 
@@ -87,4 +86,4 @@ export default class PathDescriptor {
 
     }
 
-}
+};

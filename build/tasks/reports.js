@@ -1,8 +1,8 @@
-import gulp from 'gulp';
-import plato from 'plato';
+let gulp = require('gulp'),
+    plato = require('plato'),
 
-import FileUtil from '../support/util/FileUtil';
-import {paths} from '../project.conf';
+    FileUtil = require('../support/util/FileUtil'),
+    paths = require('../project.conf').paths;
 
 gulp.task('reports', ['test:unit', 'reports:complexity']);
 

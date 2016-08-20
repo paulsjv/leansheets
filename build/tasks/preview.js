@@ -1,13 +1,17 @@
-import gulp from 'gulp';
-import livereload from 'gulp-livereload';
-import open from 'gulp-open';
+let gulp = require('gulp'),
+    livereload = require('gulp-livereload'),
+    open = require('gulp-open'),
 
-import {APP_NAME, paths, EXPRESS_PORT, LIVERELOAD_PORT, BROWSER} from '../project.conf';
+    project = require('../project.conf'),
+    paths = project.paths,
+    EXPRESS_PORT = project.EXPRESS_PORT,
+    LIVERELOAD_PORT = project.LIVERELOAD_PORT,
+    BROWSER = project.BROWSER,
 
-import StreamCompiler from '../support/stream/StreamCompiler';
-import StreamServer from '../support/stream/StreamServer';
+    StreamCompiler = require('../support/stream/StreamCompiler'),
+    StreamServer = require('../support/stream/StreamServer'),
 
-let streamCompiler = new StreamCompiler(),
+    streamCompiler = new StreamCompiler(),
     streamServer = new StreamServer(),
     
     compilerOpts = {
@@ -67,11 +71,7 @@ gulp.task('preview:dist', ['dist'], (done) => {
     gulp.src([
         paths.dist('**/*')
     ])
-    .pipe(streamServer.listen(EXPRESS_PORT)
-        .on('StreamServer.listening', () => {
-            done();
-        })
-    )
+    .pipe(streamServer.listen(EXPRESS_PORT))
     .pipe(open({
         uri: `http://localhost:${EXPRESS_PORT}`,
         app: BROWSER

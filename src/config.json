@@ -1,9 +1,23 @@
 {
     "sheets": {
-        "Sheet: Demo Team": {
+        "Sheet: HP Services": {
+            "configUrl": "https://docs.google.com/spreadsheets/d/1i83MOUxr_U6RuLjc2kdyqNDpW7LdeKXEcK5qCx47toA/edit?gid=1885709782&headers=0",
+            "dataUrl": "https://docs.google.com/spreadsheets/d/1i83MOUxr_U6RuLjc2kdyqNDpW7LdeKXEcK5qCx47toA/edit?gid=1197538188"
+        },
+ 
+        "Sheet: HP Projects": {
+            "configUrl": "https://docs.google.com/spreadsheets/d/1180i55C2pJ_wHHjkXEewTDqUtmNfgF6qS8weo7a_nUE/edit?gid=1885709782&headers=0",
+            "dataUrl": "https://docs.google.com/spreadsheets/d/1180i55C2pJ_wHHjkXEewTDqUtmNfgF6qS8weo7a_nUE/edit?gid=1197538188"
+        },
+        "Sheet: HP SAM": {
             "configUrl": "https://docs.google.com/spreadsheets/d/1npEBjXvgw9CV8kwMmnNtKg2zpiRpvQhRhzbgijKVlFQ/edit?gid=1885709782&headers=0",
             "dataUrl": "https://docs.google.com/spreadsheets/d/1npEBjXvgw9CV8kwMmnNtKg2zpiRpvQhRhzbgijKVlFQ/edit?gid=1197538188"
+        },
+       "Sheet: Care.com": {
+            "configUrl": "https://docs.google.com/spreadsheets/d/1DJ1NlqwWEIAmhEjC0Fcwm546JZ0Pnu9zGG76Fj3l8GU/edit?gid=1885709782&headers=0",
+            "dataUrl": "https://docs.google.com/spreadsheets/d/1DJ1NlqwWEIAmhEjC0Fcwm546JZ0Pnu9zGG76Fj3l8GU/edit?gid=1197538188"
         }
+ 
     },
     "debugEnabled": true,
     "showAllWork": true,
@@ -11,5 +25,5 @@
     "datePickerFormat": "mm/dd/yyyy",
     "datePickerMomentFormat": "MM/DD/YYYY",
     "queryDateMomentFormat": "YYYY-MM-DD",
-    "defaultHistoricalNumberOfDays": 60
+    "defaultHistoricalNumberOfDays": 10
 }

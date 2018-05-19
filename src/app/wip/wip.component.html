@@ -1,0 +1,12 @@
+<h1>Issues</h1>
+<p>issue size = {{ issues.length }}</p>
+
+
+<p>data = {{ data }}</p>
+<p>size = {{ size }}</p>
+<ul>
+  <li *ngFor="let status of statuses; let i = index">
+      {{ i + 1 }} - {{ status.dateTime }}, {{ status.fromStatus }}, {{ status.toStatus }}
+  </li>
+</ul>
+

@@ -1,0 +1,25 @@
+<section fxLayout="column" fxLayoutAlign="center center" class="date-picker">
+    <h2>Wip Report</h2>
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Start Date"
+        [matDatepicker]="startDatePicker"
+        ngModel name="startDate">
+      <mat-datepicker-toggle
+        matSuffix
+        [for]="startDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #startDatePicker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="End Date"
+        [matDatepicker]="endDatePicker"
+        ngModel name="endDate">
+      <mat-datepicker-toggle
+        matSuffix
+        [for]="endDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #endDatePicker></mat-datepicker>
+  </mat-form-field>
+</section>

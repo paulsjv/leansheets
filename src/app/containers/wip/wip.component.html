@@ -1,0 +1,7 @@
+<button (click)="getIssue()">Get Issue</button>
+
+<div *ngFor="let status of statuses">
+	Moved To: {{status.movedTo}}
+	Moved From: {{status.movedFrom}}
+	Cycle Time: {{status.cycleTime}} 
+</div>

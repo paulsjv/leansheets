@@ -13,6 +13,8 @@ import { DateService } from '../../shared/date/date.service';
 })
 export class WipComponent {
 
+	//workItem = { key: string, description: string }
+	workItem = {key: "", description: ""};
 	statuses = [];
 	//status = { movedTo: string, toString: string, movedFrom: string, fromString: string };
 
@@ -32,8 +34,10 @@ export class WipComponent {
                 let created = new Date(data.fields.created);
                 console.log(created);
                 let histories = data.changelog.histories;
+		let prevItemCreatedDate = data.fields.created;
+
+		this.workItem = { key: data.key, description: data.fields.summary };
                 for (let history of histories) {
-                        let prevItemCreatedDate = data.fields.created;
                         for (let item of history.items) {
                                 if (item.field === "status") {
                                         console.log(prevItemCreatedDate);

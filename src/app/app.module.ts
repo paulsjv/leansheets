@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { MaterialModule } from './material/material.module';
 import { DateModule } from './shared/date/date.module';
+import { AppRoutingModule } from './app.routing.module';
 import { WipComponent } from './containers/wip/wip.component';
 
 @NgModule({
@@ -18,7 +19,8 @@ import { WipComponent } from './containers/wip/wip.component';
     BrowserAnimationsModule,
     MaterialModule,
     HttpClientModule,
-    DateModule
+    DateModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

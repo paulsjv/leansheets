@@ -1,6 +1,15 @@
-<wip-home></wip-home>
+<div>
+	<ul>
+		<li><a [routerLink]="['/']">Home</a>
+		<li><a [routerLink]="['/wip']">WIP</a>
+	</ul>
+</div>
+
+<router-outlet></router-outlet>
 
 <!--
+<wip-home></wip-home>
+
 <button (click)="getIssue()">Get Issue</button>
 
 <div>{{ issue | json }}</div>

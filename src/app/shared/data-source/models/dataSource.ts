@@ -1,3 +1,7 @@
+/**
+* A data source should be simply the information to be able to connect
+* to a data source.
+*/
 export interface DataSource {
 	/**
 	* @name getWorkItem
@@ -12,4 +16,10 @@ export interface DataSource {
 
 	
 //	getWorkItems(): WorkItem[];
+
+	getProtocol(): string;
+	getUrl(): string;
+	getUsername(): string;
+	getPassword(): string;
+	getToken(): string;
 }

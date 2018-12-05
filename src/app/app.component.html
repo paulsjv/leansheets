@@ -1,16 +1,30 @@
-<div>
-	<ul>
-		<li><a [routerLink]="['/']">Home</a>
-		<li><a [routerLink]="['/wip']">WIP</a>
-	</ul>
-</div>
-
-<router-outlet></router-outlet>
-
-<!--
-<wip-home></wip-home>
-
-<button (click)="getIssue()">Get Issue</button>
-
-<div>{{ issue | json }}</div>
--->
+<mat-sidenav-container>
+  <mat-sidenav #sidenav role="navigation">
+    <mat-nav-list>
+      <a mat-list-item routerLink="/signup" (click)="sidenav.close()">Signup</a>
+      <a mat-list-item (click)="sidenav.close()">Logout</a>
+      <a mat-list-item routerLink="/login" (click)="sidenav.close()">Login</a>
+      <a mat-list-item [routerLink]="['/wip']" (click)="sidenav.close()">WIP</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+      <mat-toolbar>
+         <div>
+	   <button mat-icon-button (click)="sidenav.toggle()">
+	     <mat-icon>menu</mat-icon>
+	   </button>
+	 </div>
+	 <div><a routerLink="/" class="logo">Leansheets</a></div>
+	 <div fxFlex fxLayout fxLayoutAlign="flex-end">
+	   <ul fxLayout fxLayoutGap="10px" class="navigation-items">
+	     <li><a routerLink="/signup">Signup</a></li>
+	     <li><a routerLink="/logout">Logout</a></li>
+	     <li><a [routerLink]="['/wip']">WIP</a></li>
+	   </ul>
+	 </div>
+      </mat-toolbar>
+      <main>
+	<router-outlet></router-outlet>
+      </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>

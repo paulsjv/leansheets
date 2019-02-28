@@ -11,6 +11,7 @@
 	      <li *ngIf="!isAuth"><a routerLink="/login">Login</a></li>
 	     <li *ngIf="isAuth" style="cursor: pointer" (click)="onLogout()"><a>Logout</a></li>
 	     <li *ngIf="isAuth"><a [routerLink]="['/wip']">WIP</a></li>
+	     <li *ngIf="isAuth"><a [routerLink]="['/datasource']">Data Source</a></li>
 	   </ul>
 	 </div>
       </mat-toolbar>

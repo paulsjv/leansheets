@@ -8,7 +8,7 @@ import { AuthData } from './auth-data.model';
 @Injectable()
 export class AuthService {
 	authChange = new Subject<boolean>();
-	private user: User;
+	private user: User = null;
 
 	constructor(private router: Router) {};
 
@@ -18,7 +18,7 @@ export class AuthService {
 			userId: Math.round(Math.random() * 10000).toString()
 		};
 		this.authChange.next(true);
-		this.router.navigate(['/wip']);
+		this.router.navigate(['/']);
 	}
 
 	login(authData: AuthData) {
@@ -27,7 +27,7 @@ export class AuthService {
 			userId: Math.round(Math.random() * 10000).toString()
 		};
 		this.authChange.next(true);
-		this.router.navigate(['/wip']);
+		this.router.navigate(['/']);
 	}
 
 	logout() {

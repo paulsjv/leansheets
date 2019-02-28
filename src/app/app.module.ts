@@ -16,6 +16,7 @@ import { DashboardComponent } from './containers/dashboard/dashboard.component';
 import { HeaderComponent } from './navigation/header/header.component';
 import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
 import { AuthService } from './auth/auth.service';
+import { DataSourceComponent } from './data-source/data-source.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { AuthService } from './auth/auth.service';
     LoginComponent,
     DashboardComponent,
     HeaderComponent,
-    SidenavListComponent
+    SidenavListComponent,
+    DataSourceComponent
   ],
   imports: [
     BrowserModule,

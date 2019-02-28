@@ -1,0 +1,6 @@
+<div *ngFor="let dataSource of dataSources | async">
+  <p>{{dataSource.protocol}}://{{dataSource.connection}}</p>
+  <p>{{dataSource.type}}</p>
+  <p>{{dataSource.username}}</p>
+  <p>{{dataSource.password}}</p>
+</div>

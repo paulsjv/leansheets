@@ -5,7 +5,7 @@ import { WipComponent } from './containers/wip/wip.component';
 import { DashboardComponent } from './containers/dashboard/dashboard.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { LoginComponent } from './auth/login/login.component';
-import { DataSourceComponent } from './data-source/data-source.component';
+import { DataSourceComponent } from './containers/data-source/data-source.component';
 import { AuthGuard } from './auth/auth.guard';
 
 const appRoutes: Routes = [ 

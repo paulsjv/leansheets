@@ -4,6 +4,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AngularFireModule } from '@angular/fire';
+// https://github.com/angular/angularfire2/issues/1993 - post 1/22/2019 
+import { AngularFirestoreModule, FirestoreSettingsToken } from '@angular/fire/firestore';
 
 import { AppComponent } from './app.component';
 import { MaterialModule } from './material/material.module';
@@ -16,7 +19,8 @@ import { DashboardComponent } from './containers/dashboard/dashboard.component';
 import { HeaderComponent } from './navigation/header/header.component';
 import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
 import { AuthService } from './auth/auth.service';
-import { DataSourceComponent } from './data-source/data-source.component';
+import { DataSourceComponent } from './containers/data-source/data-source.component';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -38,9 +42,11 @@ import { DataSourceComponent } from './data-source/data-source.component';
     AppRoutingModule,
     FlexLayoutModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule
   ],
-  providers: [AuthService],
+  providers: [AuthService, { provide: FirestoreSettingsToken, useValue: {} }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

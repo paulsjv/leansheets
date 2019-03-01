@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
+import { AngularFireAuth } from '@angular/fire/auth'; 
 
 import { User } from './user.model';
 import { AuthData } from './auth-data.model';
@@ -10,7 +11,7 @@ export class AuthService {
 	authChange = new Subject<boolean>();
 	private user: User = null;
 
-	constructor(private router: Router) {};
+	constructor(private router: Router, auth: AngularFireAuth) {};
 
 	registerUser(authData: AuthData) {
 		this.user = {

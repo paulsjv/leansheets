@@ -7,11 +7,27 @@
 	 <div><a routerLink="/" class="logo">Leansheets</a></div>
 	 <div fxFlex fxLayout fxLayoutAlign="flex-end">
 	   <ul fxLayout fxLayoutGap="10px" class="navigation-items">
-	     <li *ngIf="!isAuth"><a routerLink="/signup">Signup</a></li>
-	      <li *ngIf="!isAuth"><a routerLink="/login">Login</a></li>
-	     <li *ngIf="isAuth" style="cursor: pointer" (click)="onLogout()"><a>Logout</a></li>
-	     <li *ngIf="isAuth"><a [routerLink]="['/wip']">WIP</a></li>
-	     <li *ngIf="isAuth"><a [routerLink]="['/datasource']">Data Source</a></li>
+	      <li *ngIf="!(auth.user$ | async) as user"><a routerLink="/login">Sign up / Sign in</a></li>
+	     <!-- <li *ngIf="auth.user$ | async"><a [routerLink]="['/wip']">WIP</a></li> -->
+	     <li *ngIf="(auth.user$ | async) as user"><a [routerLink]="['/datasource']">Data Sources</a></li>
+	     <li *ngIf="(auth.user$ | async) as user">
+	       <button mat-icon-button [matMenuTriggerFor]="menu">
+	       <svg height="30" width="30"
+		     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+		     <defs>
+		       <pattern id="user-photo" patternUnits="userSpaceOnUse" width="32" height="32">
+		       <image [attr.xlink:href]="user.photoURL" x="0" y="0" width="30" height="30"/>
+		       </pattern>
+		     </defs>
+		     <circle cx="15" cy="15" r="15" fill="url(#user-photo)"/> 
+	       </svg>
+	       </button>
+	       <mat-menu #menu="matMenu" class="profile-menu">
+	         <button mat-menu-item>
+			 <span (click)="auth.signOut()">Sign out</span>
+		 </button>
+	       </mat-menu>
+	     </li>
 	   </ul>
 	 </div>
       </mat-toolbar>

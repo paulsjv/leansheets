@@ -1,6 +1,6 @@
 <mat-nav-list>
-	<a *ngIf="!isAuth" mat-list-item routerLink="/signup" (click)="onClose()">Signup</a>
-	<a *ngIf="isAuth" mat-list-item style="cursor: pointer" (click)="onLogout()">Logout</a>
-	<a *ngIf="!isAuth" mat-list-item routerLink="/login" (click)="onClose()">Login</a>
-	<a *ngIf="isAuth" mat-list-item [routerLink]="['/wip']" (click)="onClose()">WIP</a>
+	<a *ngIf="!(auth.user$ | async) as user" mat-list-item routerLink="/signup" (click)="onClose()">Signup</a>
+	<a *ngIf="(auth.user$ | async) as user" mat-list-item style="cursor: pointer" (click)="onLogout()">Logout</a>
+	<a *ngIf="!(auth.user$ | async) as user" mat-list-item routerLink="/login" (click)="onClose()">Login</a>
+	<!--	<a *ngIf="auth.user$ | async" mat-list-item [routerLink]="['/wip']" (click)="onClose()">WIP</a> -->
 </mat-nav-list>

@@ -11,10 +11,10 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 
 import { AppComponent } from './app.component';
 import { MaterialModule } from './material/material.module';
+import { MatMenuModule } from '@angular/material/menu';
 import { DateModule } from './shared/date/date.module';
 import { AppRoutingModule } from './app-routing.module';
 import { WipComponent } from './containers/wip/wip.component';
-import { SignupComponent } from './auth/signup/signup.component';
 import { LoginComponent } from './auth/login/login.component';
 import { DashboardComponent } from './containers/dashboard/dashboard.component';
 import { HeaderComponent } from './navigation/header/header.component';
@@ -27,7 +27,6 @@ import { environment } from '../environments/environment';
   declarations: [
     AppComponent,
     WipComponent,
-    SignupComponent,
     LoginComponent,
     DashboardComponent,
     HeaderComponent,
@@ -38,6 +37,7 @@ import { environment } from '../environments/environment';
     BrowserModule,
     BrowserAnimationsModule,
     MaterialModule,
+    MatMenuModule,
     HttpClientModule,
     DateModule,
     AppRoutingModule,

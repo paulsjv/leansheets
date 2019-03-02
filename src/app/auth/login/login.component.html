@@ -1,4 +1,33 @@
 <section>
+<div
+  fxLayout="column"
+  fxLayoutAlign="center center"
+  fxLayoutGap="10px"
+  style="margin: 10px 0px;">
+	<div *ngIf="auth.user$ | async as user; else login">
+	</div>
+	<ng-template #login>
+	  <div class="social-login-container">
+	  <button class="social-btn social-btn-raised google-btn"
+		  (click)="auth.googleSignIn()">
+	    	  <span class="social-btn-text google-btn-text">
+	      	    SIGN UP WITH GOOGLE
+		  </span>
+	  </button>
+	  <hr class="hr-text" data-content="or">
+	  <button class="social-btn social-btn-raised google-btn"
+		  (click)="auth.googleSignIn()">
+	    	  <span class="social-btn-text google-btn-text">
+	      	    SIGN IN WITH GOOGLE
+		  </span>
+	  </button>
+	</div>
+	</ng-template> 
+</div>
+</section>
+<!--
+Leaving for the future in case email and password signup is needed
+
   <form
     fxLayout="column"
     fxLayoutAlign="center center"
@@ -25,4 +54,4 @@
      </mat-form-field>
      <button type="submit" mat-raised-button color="primary" [disabled]="loginForm.invalid">Submit</button>
    </form>
-</section>
+-->

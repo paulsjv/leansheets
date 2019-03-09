@@ -12,6 +12,9 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AppComponent } from './app.component';
 import { MaterialModule } from './material/material.module';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
 import { DateModule } from './shared/date/date.module';
 import { AppRoutingModule } from './app-routing.module';
 import { WipComponent } from './containers/wip/wip.component';
@@ -38,6 +41,9 @@ import { environment } from '../environments/environment';
     BrowserAnimationsModule,
     MaterialModule,
     MatMenuModule,
+    MatExpansionModule,
+    MatButtonModule,
+    MatSelectModule,
     HttpClientModule,
     DateModule,
     AppRoutingModule,

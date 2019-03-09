@@ -8,8 +8,6 @@
 	 <div fxFlex fxLayout fxLayoutAlign="flex-end">
 	   <ul fxLayout fxLayoutGap="10px" class="navigation-items">
 	      <li *ngIf="!(auth.user$ | async) as user"><a routerLink="/login">Sign up / Sign in</a></li>
-	     <!-- <li *ngIf="auth.user$ | async"><a [routerLink]="['/wip']">WIP</a></li> -->
-	     <li *ngIf="(auth.user$ | async) as user"><a [routerLink]="['/datasource']">Data Sources</a></li>
 	     <li *ngIf="(auth.user$ | async) as user">
 	       <button mat-icon-button [matMenuTriggerFor]="menu">
 	       <svg height="30" width="30"
@@ -23,6 +21,9 @@
 	       </svg>
 	       </button>
 	       <mat-menu #menu="matMenu" class="profile-menu">
+		 <button mat-menu-item>
+			 <span [routerLink]="['/datasource']">Data Sources</span>
+		 </button>
 	         <button mat-menu-item>
 			 <span (click)="auth.signOut()">Sign out</span>
 		 </button>

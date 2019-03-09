@@ -26,6 +26,8 @@ export class AuthService {
     this.user$ = this.afAuth.authState.pipe(
       switchMap(user => {
         if (user) {
+	  // build the datastore from the db use ngrx
+	  // make creation of teh datastore only gets called once per session
 	  console.log('authenicated');
 	  const appUser: User = { 
 		  uid: user.uid, 
@@ -35,6 +37,7 @@ export class AuthService {
 	  }; 
           return of(appUser);
 	} else {
+	  // remove the datastore 
 	  console.log('not authenicated');
 	  return of(null);
 	}

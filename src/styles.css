@@ -1,5 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+/* @import '~@angular/material/prebuilt-themes/deeppurple-amber.css'; */
 
 html, body {
   font-family: 'Roboto', sans-serif;
@@ -15,6 +15,7 @@ body {
   margin: 40px auto;
 }
 
+/* https://codepen.io/scottzirkel/pen/yNxNME */
 .hr-text {
   line-height: 1em;
   position: relative;

@@ -23,8 +23,11 @@
               "src/assets"
             ],
             "styles": [
+	      {
+	        "input":"src/assets/styles/leansheets-app-theme.scss"
+	      },
               "src/styles.css"
-            ],
+	    ],
             "scripts": []
           },
           "configurations": {

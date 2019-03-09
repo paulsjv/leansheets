@@ -13,9 +13,15 @@ import { DataSource } from '../../shared/data-source/models/dataSource';
 export class DataSourceComponent implements OnInit {
   
   private dataSources: Observable<DataSource[]>; 
+  dataSourceTypes;
 
   constructor(private db:AngularFirestore) { }
-
+  
+  // should use the datasources ngrx store to get a list of all the
+  // datasources to display for the user
+  // build the datastore in ngrx after the user is authenicated
+  // should create a datastore service for this component that 
+  // gets all the drop down values etc for each form when adding a datasource
   ngOnInit() {
 	this.dataSources = this.db.collection<DataSource>('dataSources')
 	  .snapshotChanges()

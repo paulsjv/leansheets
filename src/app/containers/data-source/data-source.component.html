@@ -1,3 +1,94 @@
+<div
+  fxLayout="column"
+  fxLayoutAlign="center center"
+  fxLayoutGap="10px"
+  style="margin: 10px 0px;">
+<button mat-raised-button color="primary">
+  <mat-icon>add_circle_outline</mat-icon>
+  Add Data Source
+</button>
+<mat-accordion style="width: 95%">
+  <div *ngFor="let ds of dataSources | async">
+  <mat-expansion-panel>
+      <mat-expansion-panel-header>
+          <mat-panel-title>
+		  <span style="padding: 1px 10px 0 0"><mat-icon [inline]="true">delete</mat-icon></span>
+            Care.com JIRA
+          </mat-panel-title>
+        <mat-panel-description>
+          v6.4 
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      	      <div>
+	      <mat-form-field>
+		<input matInput placeholder="Name" required>
+	      </mat-form-field>
+	      <mat-form-field>
+		<mat-select placeholder="Data Source Type" required>
+		  <mat-option>Please Select</mat-option>
+		  <mat-option>JIRA</mat-option>
+		</mat-select>
+	      </mat-form-field>
+	      <mat-form-field>
+		<mat-select placeholder="Version" required>
+		  <mat-option>Please Select</mat-option>
+		  <mat-option>6.4</mat-option>
+		</mat-select>
+	      </mat-form-field>
+	      <!--
+	      <mat-form-field>
+		 <mat-select placeholder="Data Source Type" [formControl]="dsType" required>
+		   <mat-option></mat-option>
+		   <mat-option *ngFor="let type of types" [value]="type">
+		    {{type.name}}
+		   </mat-option>
+		 </mat-select>
+		 <mat-error *ngIf="dsType.hasError('required')">Please choose a data source type </mat-error>
+	      </mat-form-field>
+		      -->
+	      </div>
+	      <div>
+		      <mat-form-field>
+			<mat-select placeholder="Authenication" required>
+			  <mat-option>None</mat-option>
+			  <mat-option>Basic Auth</mat-option>
+			</mat-select> 
+		      </mat-form-field>
+		      <mat-form-field>
+			      <input matInput placeholder="Username">
+		      </mat-form-field>
+		      <mat-form-field>
+			      <input matInput placeholder="Password">
+		      </mat-form-field>
+	      </div>
+	      <div>
+		      <mat-form-field>
+			      <input matInput placeholder="Protocol" value="{{ds.protocol}}">
+		      </mat-form-field>://
+		      <mat-form-field>
+			      <input matInput placeholder="Base URL" value="{{ds.connection}}">
+		      </mat-form-field>
+	      </div>
+	      <div>
+		      <button mat-stroked-button>Test Connection</button>
+	      </div>
+	
+   </mat-expansion-panel>
+   </div> 
+   <mat-expansion-panel (opened)="panelOpenState = true"
+                        (closed)="panelOpenState = false">
+<!--     <mat-expansion-panel-header>
+         <mat-panel-title>
+            Self aware panel
+         </mat-panel-title>
+         <mat-panel-description>
+	        Currently I am {{panelOpenState ? 'open' : 'closed'}}
+         </mat-panel-description>
+     </mat-expansion-panel-header>
+-->
+   </mat-expansion-panel>
+</mat-accordion>
+</div>
 <div *ngFor="let dataSource of dataSources | async">
   <p>{{dataSource.protocol}}://{{dataSource.connection}}</p>
   <p>{{dataSource.type}}</p>

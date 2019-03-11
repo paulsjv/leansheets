@@ -5,7 +5,7 @@
   "projects": {
     "leansheets": {
       "root": "",
-      "sourceRoot": "src",
+      "sourceRoot": "apps/leansheets/src",
       "projectType": "application",
       "prefix": "app",
       "schematics": {},
@@ -13,20 +13,20 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/leansheets",
-            "index": "src/index.html",
-            "main": "src/main.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.app.json",
+            "outputPath": "apps/leansheets/dist/leansheets",
+            "index": "apps/leansheets/src/index.html",
+            "main": "apps/leansheets/src/main.ts",
+            "polyfills": "apps/leansheets/src/polyfills.ts",
+            "tsConfig": "apps/leansheets/tsconfig.app.json",
             "assets": [
-              "src/favicon.ico",
-              "src/assets"
+              "apps/leansheets/src/favicon.ico",
+              "apps/leansheets/src/assets"
             ],
             "styles": [
 	      {
-	        "input":"src/assets/styles/leansheets-app-theme.scss"
+	        "input":"apps/leansheets/src/assets/styles/leansheets-app-theme.scss"
 	      },
-              "src/styles.css"
+              "apps/leansheets/src/styles.css"
 	    ],
             "scripts": []
           },
@@ -34,8 +34,8 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
+                  "replace": "apps/leansheets/src/environments/environment.ts",
+                  "with": "apps/leansheets/src/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -70,17 +70,17 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "src/test.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.spec.json",
-            "karmaConfig": "src/karma.conf.js",
+            "main": "apps/leansheets/src/test.ts",
+            "polyfills": "apps/leansheets/src/polyfills.ts",
+            "tsConfig": "apps/leansheets/src/tsconfig.spec.json",
+            "karmaConfig": "spp/leansheets/rc/karma.conf.js",
             "styles": [
-              "src/styles.css"
+              "apps/leansheets/src/styles.css"
             ],
             "scripts": [],
             "assets": [
-              "src/favicon.ico",
-              "src/assets"
+              "apps/leansheets/src/favicon.ico",
+              "apps/leansheets/src/assets"
             ]
           }
         },
@@ -88,8 +88,8 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "src/tsconfig.app.json",
-              "src/tsconfig.spec.json"
+              "apps/leansheets/src/tsconfig.app.json",
+              "apps/leansheets/src/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"

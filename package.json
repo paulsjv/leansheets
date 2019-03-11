@@ -27,6 +27,7 @@
     "@angular/router": "^7.2.8",
     "@ngrx/store": "^7.3.0",
     "@ngrx/store-devtools": "^7.3.0",
+    "@nrwl/schematics": "^7.6.2",
     "core-js": "^2.6.5",
     "date-fns": "^2.0.0-alpha.23",
     "firebase": "^5.8.6",

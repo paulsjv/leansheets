@@ -4,7 +4,7 @@
   "newProjectRoot": "projects",
   "projects": {
     "leansheets": {
-      "root": "",
+      "root": "apps/leansheets/",
       "sourceRoot": "apps/leansheets/src",
       "projectType": "application",
       "prefix": "app",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "apps/leansheets/dist/leansheets",
+            "outputPath": "dist/apps/leansheets",
             "index": "apps/leansheets/src/index.html",
             "main": "apps/leansheets/src/main.ts",
             "polyfills": "apps/leansheets/src/polyfills.ts",
@@ -72,7 +72,7 @@
           "options": {
             "main": "apps/leansheets/src/test.ts",
             "polyfills": "apps/leansheets/src/polyfills.ts",
-            "tsConfig": "apps/leansheets/src/tsconfig.spec.json",
+            "tsConfig": "apps/leansheets/tsconfig.spec.json",
             "karmaConfig": "spp/leansheets/rc/karma.conf.js",
             "styles": [
               "apps/leansheets/src/styles.css"
@@ -88,8 +88,8 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "apps/leansheets/src/tsconfig.app.json",
-              "apps/leansheets/src/tsconfig.spec.json"
+              "apps/leansheets/tsconfig.app.json",
+              "apps/leansheets/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -99,13 +99,13 @@
       }
     },
     "leansheets-e2e": {
-      "root": "e2e/",
+      "root": "apps/leansheets-e2e/",
       "projectType": "application",
       "architect": {
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
-            "protractorConfig": "e2e/protractor.conf.js",
+            "protractorConfig": "apps/leansheets-e2e/protractor.conf.js",
             "devServerTarget": "leansheets:serve"
           },
           "configurations": {
@@ -117,7 +117,7 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": "e2e/tsconfig.e2e.json",
+            "tsConfig": "apps/leansheets-e2e/tsconfig.e2e.json",
             "exclude": [
               "**/node_modules/**"
             ]

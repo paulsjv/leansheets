@@ -1,6 +1,11 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    /* see https://github.com/angular/angular-cli/issues/13954 */
+    "paths": {
+      "core-js/es7/reflect": ["node_modules/core-js/proposals/reflect-metadata"],
+      "core-js/es6/*": ["node_modules/core-js/es/*"]
+    },
     "outDir": "../../dist/out-tsc/apps/leansheets",
     "types": []
   },

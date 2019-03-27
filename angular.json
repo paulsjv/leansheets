@@ -23,11 +23,11 @@
               "apps/leansheets/src/assets"
             ],
             "styles": [
-	      {
-	        "input":"apps/leansheets/src/assets/styles/leansheets-app-theme.scss"
-	      },
+              {
+                "input": "apps/leansheets/src/assets/styles/leansheets-app-theme.scss"
+              },
               "apps/leansheets/src/styles.css"
-	    ],
+            ],
             "scripts": []
           },
           "configurations": {
@@ -74,9 +74,7 @@
             "polyfills": "apps/leansheets/src/polyfills.ts",
             "tsConfig": "apps/leansheets/tsconfig.spec.json",
             "karmaConfig": "spp/leansheets/rc/karma.conf.js",
-            "styles": [
-              "apps/leansheets/src/styles.css"
-            ],
+            "styles": ["apps/leansheets/src/styles.css"],
             "scripts": [],
             "assets": [
               "apps/leansheets/src/favicon.ico",
@@ -91,9 +89,7 @@
               "apps/leansheets/tsconfig.app.json",
               "apps/leansheets/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -118,13 +114,16 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": "apps/leansheets-e2e/tsconfig.e2e.json",
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
     }
   },
-  "defaultProject": "leansheets"
+  "defaultProject": "leansheets",
+  "schematics": {
+    "@nrwl/schematics:library": {
+      "framework": "angular"
+    }
+  }
 }

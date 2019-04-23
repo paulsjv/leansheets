@@ -41,9 +41,22 @@ define(['angular'], function (ng) {
             if (cachedData === undefined) {
                 $log.debug('ls-googleService: there was no cached config', configQuery);
                 $log.debug('*************** Calling Google Over the Wire ***************');
-                query = new $google.visualization.Query(configService.getConfigUrl(sheetKey));
-                query.setQuery(configQuery);
-                query.send(handleResponse);
+                // query = new $google.visualization.Query(configService.getConfigUrl(sheetKey));
+                // query.setQuery(configQuery);
+                // query.send(handleResponse);
+                var configUrl = configService.getDataUrl(sheetKey);
+                var encodedParam = encodeURIComponent(configUrl.split('?url=')[1]);
+                console.log(encodedParam);
+                $http({
+                    url: configUrl, 
+                    method: 'GET',
+                    params: { encodedUrl: encodedParam }
+                }).success(function() {
+                    $log.debug('Success in calling for Config');
+                })
+                .error(function(){
+                    $log.debug('Error in calling for Config');
+                });
             } else {
                 $log.debug('ls-googleService: resolving with cached data', cachedData);
                 deferred.resolve(cachedData);
@@ -69,9 +82,9 @@ define(['angular'], function (ng) {
             if (cachedData === undefined) {
                 $log.debug('ls-googleService: there was no cached data', dataQuery);
                 $log.debug('*************** Calling Google Over the Wire ***************');
-                query = new $google.visualization.Query(configService.getDataUrl(sheetKey)),
-                query.setQuery(dataQuery);
-	            query.send(handleResponse);
+                // query = new $google.visualization.Query(configService.getDataUrl(sheetKey)),
+                // query.setQuery(dataQuery);
+	            // query.send(handleResponse);
             } else {
                 $log.debug('ls-googleService: resolving with cached data', dataQuery);
                 deferred.resolve(cachedData);
@@ -95,9 +108,9 @@ define(['angular'], function (ng) {
             if (cachedData === undefined) {
                 $log.debug('ls-googleService: there was no cached data', dataQuery);
                 $log.debug('*************** Calling Google Over the Wire ***************');
-                query = new google.visualization.Query(configService.getDataUrl(sheetKey))
-			    query.setQuery(dataQuery);
-			    query.send(handleResponse);
+                // query = new google.visualization.Query(configService.getDataUrl(sheetKey))
+			    // query.setQuery(dataQuery);
+			    // query.send(handleResponse);
             } else {
                 $log.debug('ls-googleService: resolving with cached data', dataQuery);
                 deferred.resolve(cachedData);
@@ -122,9 +135,9 @@ define(['angular'], function (ng) {
             if (cachedData === undefined) {
                 $log.debug('ls-googleService: there was no cached data', dataQuery);
                 $log.debug('*************** Calling Google Over the Wire ***************');
-                query = new google.visualization.Query(configService.getDataUrl(sheetKey)),
-    			query.setQuery(dataQuery);
-    			query.send(handleResponse);
+                // query = new google.visualization.Query(configService.getDataUrl(sheetKey)),
+    			// query.setQuery(dataQuery);
+    			// query.send(handleResponse);
             } else {
                 $log.debug('ls-googleService: resolving with cached data', dataQuery);
                 deferred.resolve(cachedData);

@@ -51,6 +51,13 @@ define(['angular'], function (ng) {
             return promise;
         };
 
+        /**
+         * 1. Get all items by end date (resolved some might not use resolved date)
+         *      1.1 Get all subtasks of issue type = Story
+         * 2. Get all sprints from done date
+         * 3. Adjust start date of issue by what sprint issue was a part of
+         * 4. Done date could be sprint end or resolve date of issue
+         */
 		this.getData = function(types) {
             $log.debug('ls-jiraService: getData');
 			var deferred = $q.defer(),

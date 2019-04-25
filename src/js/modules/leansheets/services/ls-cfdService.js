@@ -13,7 +13,13 @@ define(['angular'], function (ng) {
     'use strict';
 
     return ['$log','$q','$window','ls-googleService', function ($log, $q, $window, googleService) {
-        this.getChart = function (workTypes) {
+		var sheet = null;
+		
+		this.setDataSource = function(sheetKey) {
+			sheet = sheetKey;
+		}
+		
+		this.getChart = function (workTypes) {
            var startDatePromise = googleService.getCfdStartData(workTypes),
                 endDatePromise = googleService.getCfdEndData(workTypes),
                 deferred = $q.defer(),

@@ -13,6 +13,10 @@ define(['angular'], function (ng) {
     'use strict';
 
     return ['$log','CONFIG', function ($log, config) {
+        this.getDataSourceType = function(key) {
+            return config.sheets[key].dataSource;
+        };
+
         this.getSheets = function() {
             return config.sheets;
         };

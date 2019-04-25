@@ -1,6 +1,7 @@
 {
     "sheets": {
         "Ice Dragons": {
+            "dataSource": "jira",
             "configUrl": "https://docs.google.com/spreadsheets/d/1i83MOUxr_U6RuLjc2kdyqNDpW7LdeKXEcK5qCx47toA/edit?gid=1885709782&headers=0",
             "dataUrl": "http://localhost:5000/api/?url=https://www.google.com&expand=changelog&feilds='changelog,created'"
         } 

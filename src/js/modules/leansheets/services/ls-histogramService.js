@@ -14,6 +14,12 @@ define(['angular'], function (ng) {
 
     return ['$log','$q','$window','ls-googleService', function ($log, $q, $window, googleService) {
 
+		var sheet = null;
+		
+		this.setDataSource = function(sheetKey) {
+			sheet = sheetKey;
+		}
+
         this.getChart = function (workTypes) {
             var deferred = $q.defer(),
                 promise = deferred.promise,

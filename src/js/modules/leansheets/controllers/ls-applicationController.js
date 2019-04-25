@@ -59,6 +59,8 @@ define(['angular'], function (ng) {
             $scope.updateChart = function(obj, chart, chartName) {
 
                 $log.debug('updateChart: ls-applicationController');
+                chart.setDataSource($scope.sheet);
+                
                 if (areWorkTypesValid(obj.workTypes) &&
                         areDatesValid(obj.startDate, obj.endDate)) {
                     chart.getChart(obj).then(

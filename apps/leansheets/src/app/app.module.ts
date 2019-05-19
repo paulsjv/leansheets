@@ -17,20 +17,17 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { DateModule } from './shared/date/date.module';
 import { AppRoutingModule } from './app-routing.module';
-import { WipComponent } from './containers/wip/wip.component';
-import { LoginComponent } from './auth/login/login.component';
 import { DashboardComponent } from './containers/dashboard/dashboard.component';
 import { HeaderComponent } from './navigation/header/header.component';
 import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
 import { AuthService } from './auth/auth.service';
 import { DataSourceComponent } from './containers/data-source/data-source.component';
 import { environment } from '../environments/environment';
+import { AuthModule } from './auth/auth.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    WipComponent,
-    LoginComponent,
     DashboardComponent,
     HeaderComponent,
     SidenavListComponent,
@@ -52,7 +49,8 @@ import { environment } from '../environments/environment';
     ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    AuthModule
   ],
   providers: [AuthService, { provide: FirestoreSettingsToken, useValue: {} }],
   bootstrap: [AppComponent]

@@ -26,21 +26,21 @@ export class AuthService {
     this.user$ = this.afAuth.authState.pipe(
       switchMap(user => {
         if (user) {
-	  // build the datastore from the db use ngrx
-	  // make creation of teh datastore only gets called once per session
-	  console.log('authenicated');
-	  const appUser: User = { 
-		  uid: user.uid, 
-		  email: user.email, 
-		  displayName: user.displayName, 
-		  photoURL: user.photoURL 
-	  }; 
+	        // build the datastore from the db use ngrx
+	        // make creation of teh datastore only gets called once per session
+	        console.log('authenicated');
+          const appUser: User = { 
+            uid: user.uid, 
+            email: user.email, 
+            displayName: user.displayName, 
+            photoURL: user.photoURL 
+          }; 
           return of(appUser);
-	} else {
-	  // remove the datastore 
-	  console.log('not authenicated');
-	  return of(null);
-	}
+	        } else {
+            // remove the datastore 
+            console.log('not authenicated');
+            return of(null);
+          }
       })
     )
   };
@@ -48,13 +48,14 @@ export class AuthService {
   async googleSignIn() {
     const provider = new auth.GoogleAuthProvider();
     const credential = await this.afAuth.auth.signInWithPopup(provider);
-    console.log("googleSignIn");
-    return this.updateUserData(credential.user);
+    console.log("googleSignIn - navigating to /");
+    this.updateUserData(credential.user);
+    return this.router.navigate(['/']);
   }
 
   async signOut() {
     await this.afAuth.auth.signOut();
-    console.log("signOut");
+    console.log("signOut - navigating to /login");
     return this.router.navigate(['/login']);
   }
  

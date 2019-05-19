@@ -47,4 +47,7 @@ export class DataSourceComponent implements OnInit {
 //	  .subscribe(docArray => console.log(docArray));
   }
 
+	addDataSource() {
+		console.log("add data source");
+	}
 }

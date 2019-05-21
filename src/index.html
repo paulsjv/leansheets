@@ -39,6 +39,38 @@
                     </ul>
                 </div>
             </div>
+            <!-- Query options 
+            <div class="btn-group" role="date-picker" aira-label="Date Picker">
+                <div class="datepicker-box">
+                    <div data-date-picker-directive data-date-range-start-date="startDate" data-date-range-end-date="endDate"></div>
+                </div>
+            </div>
+
+            <div class="btn-group" role="group" aria-label="Query Buttons">
+                <button ng-model="workTypes" ng-click="addDropdown()"
+                        type="button" class="btn btn-default">
+                        <span class="glyphicon glyphicon-plus-sign" style="padding-right: 5px"></span>Add</button>
+                <button ng-click="query()"
+                        type="button" class="btn btn-default">
+                        <span class="glyphicon glyphicon-search" style="padding-right: 5px"></span>Query</button>
+            </div>
+
+            <div class="btn-group" role="work" aria-label="Work Selections" style="padding-right:5px"
+                 ng-repeat="(key, value) in dropdowns track by $index">
+                    <button ng-click="removeDropdown(key)" type="button" class="btn btn-danger">
+                        <span class="glyphicon glyphicon-remove-sign"></span>
+                    </button>
+                    <button type="button" class="btn btn-default">{{dropdowns[key].name}}</button>
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu scrollable-menu" role="menu">
+                        <li ng-class="{'dropdown-header disabled' : workType.column == ''}"
+                            ng-model="value" ng-click="changeType(workType, key)" ng-repeat="workType in workTypes"><a>{{workType.name}}</a></li>
+                    </ul>
+            </div>
+        -->
             <!-- /Sheets Drop Down -->
             <a id="nav-histogram"></a>
             <div id="histogramChart" data-ng-controller="ls-histogramController">
@@ -77,6 +109,14 @@
                     <div class="alert alert-warning" role="alert" data-ng-if="!dataStatus.histogram">
                         <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
                         <strong>Your query returned no results</strong>
+                    </div>
+                    <div class="alert alert-info" role="alert" data-ng-if="dataLoading.histogram">
+                        <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                        <strong>Loading Data...</strong>
+                    </div>
+                    <div class="alert alert-error" role="alert" data-ng-if="dataLoadingError.histogram">
+                        <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                        <strong>Loading Data Error!</strong>
                     </div>
                     <highchart id="histogramHighChart" config="config"></highchart>
                 </div>
@@ -119,11 +159,19 @@
                         <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
                         <strong>Your query returned no results</strong>
                     </div>
+                    <div class="alert alert-info" role="alert" data-ng-if="dataLoading.control">
+                        <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                        <strong>Loading Data...</strong>
+                    </div>
+                    <div class="alert alert-error" role="alert" data-ng-if="dataLoadingError.control">
+                        <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                        <strong>Loading Data Error!</strong>
+                    </div>
                     <highchart id="controlHighChart" config="config"></highchart>
                 </div>
             </div>
 
-            <a id="nav-cfd"></a>
+            <!-- <a id="nav-cfd"></a>
             <div id="cfdChart" data-ng-controller="ls-cfdController">
                 <div class="btn-group" role="date-picker" aira-label="Date Picker">
                     <div class="datepicker-box">
@@ -160,7 +208,7 @@
                         <strong>Your query returned no results</strong>
                     </div>
                     <highchart id="cfdHighChart" config="config"></highchart>
-                </div>
+                </div> -->
 
 
             </div>

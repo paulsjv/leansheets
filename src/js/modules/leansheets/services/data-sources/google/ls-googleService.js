@@ -24,6 +24,10 @@ define(['angular'], function (ng) {
          */
         var sheetKey;
 
+        this.constructService = function(sheet) {
+            sheetKey = sheet;
+        };
+
         this.getConfig = function(sheet) {
             sheetKey = sheet;
             var deferred = $q.defer(),

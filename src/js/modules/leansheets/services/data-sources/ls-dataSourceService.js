@@ -12,16 +12,21 @@
 define(['angular'], function (ng) {
     'use strict';
 
-    return ['$log','$google','ls-jiraService', 'ls-configService',
-    function ($log, $google, jira, configService) {
+    return ['$log','ls-googleService','ls-jiraService', 'ls-configService',
+    function ($log, googleService, jira, configService) {
+        $log.debug('ls-dataSourceService - getting data source');
         this.getDataSourceService = function(sheet) {
             switch (configService.getDataSourceType(sheet)) {
                 case 'jira':
+                    $log.debug('JIRA datasource');
+                    jira.constructService(sheet, configService.getDataSourceConfig(sheet), configService.getDatePickerMomentFormat());
                     return jira
                 break;
                 case 'google':
                 default:
-                    return $google;
+                    $log.debug('Google Sheets data source');
+                    googleService.constructService(sheet);
+                    return googleService;
 
             }
         }

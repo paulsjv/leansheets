@@ -12,7 +12,8 @@
 define(['angular'], function (ng) {
     'use strict';
 
-    return ['$log','$http','$q','ls-configService',function ($log, $http, $q, configService) {
+    return ['$log','$http','$q','ls-issueService','ls-sprintIssuesService','ls-sprintBoundariesService','$unionBy', 'ls-cacheService',
+            function ($log, $http, $q, issueService, sprintIssuesService, sprintBoundariesService, $unionBy, cacheService) {
 
 /**
          * sheetKey is passed in via the getConfig method.  The getConfig method is called
@@ -21,7 +22,16 @@ define(['angular'], function (ng) {
          * class can use it to pass as part of the cache key and to get the sheet URL.
          * @member {string}
          */
-        var sheetKey;
+        var sheetKey,
+            dsConfig;
+
+        this.constructService = function(sheet, config, datePickerFormat) {
+            sheetKey = sheet;
+            dsConfig = config.dataUrl;
+            issueService.constructService(config, datePickerFormat);
+            sprintIssuesService.constructService(config, config.dataUrl.sprints.config.issues, datePickerFormat);
+            sprintBoundariesService.constructService(config, config.dataUrl.sprints.config.boundaries, datePickerFormat);
+        };
 
         this.getConfig = function(sheet) {
             sheetKey = sheet;
@@ -63,7 +73,7 @@ define(['angular'], function (ng) {
 			var deferred = $q.defer(),
 			    promise = deferred.promise,
                 // dataQuery = queryService.getDataQuery(types),
-                // cachedData = cacheService.get(dataQuery + sheetKey),
+                // cachedData = cacheService.get(types.startDate + types.endDate + sheetKey),
     			handleResponse = function(response) {
 	    			var data = setDataOnPromise(response, deferred);
                     // cacheService.put(dataQuery + sheetKey, data);
@@ -72,25 +82,78 @@ define(['angular'], function (ng) {
 
             $log.debug('Query for Run Chart & Histogram');
             // $log.debug(dataQuery);
+            var cachedData;
             if (cachedData === undefined) {
                 // $log.debug('ls-jiraService: there was no cached data', dataQuery);
                 $log.debug('*************** Calling JIRA Over the Wire ***************');
-                // query = new $google.visualization.Query(configService.getDataUrl(sheetKey)),
-                // query.setQuery(dataQuery);
-                // query.send(handleResponse);
-                var configUrl = configService.getDataUrl(sheetKey);
-                var encodedParam = encodeURIComponent(configUrl.split('?url=')[1]);
-                console.log(encodedParam);
-                $http({
-                    url: configUrl, 
-                    method: 'GET',
-                    params: { encodedUrl: encodedParam }
-                }).success(function() {
-                    $log.debug('Success in calling for Config');
-                })
-                .error(function(){
-                    $log.debug('Error in calling for Config');
-                });
+                // 1. is sprint model being used?
+                // 2. get all sprints from start date
+                // 3. get all items from start date
+                // 4. get all subtasks if issue is a story
+                // 5. if using sprint model adjust item start dates to align with sprint start dates
+                // 6. items that are started outside a sprint use issues start date instead of sprint start date
+
+                // If the user is using sprints then need to check if they are also wanting to use the
+                // sprint start date or sprint end date to change the issues that come back and each of their 
+                // start / end dates to align with the sprint for Lead Time.  If sprints are used and neither 
+                // sprint start date or end date is being used then issues can be retreived without changing 
+                // their start date or end date.
+                var csvIssuses, issuesPromise, sprintPromise;
+                if (sprintBoundariesService.isSprint()) {
+                    // get all sprints from start date from sprintService
+                    $log.debug('Using Sprints');
+                    // returns a promise need to also call to get all the issues
+                    // once both have returned then go through and change the 
+                    // start dates of the all the items to their corrosponding sprint
+                    // start date.  Make sure to return a CSV of the results
+                    // key,summary,startdate,enddate,leadtime,issuetype,points,parent,linked1:linked2:linked3,label1:label2:label3
+                    sprintBoundariesService.getAllSprints(types.startDate, types.endDate)
+                        .then(function(success) {
+                            $log.debug('ls-jiraService: getAllSprints Success:', success);
+                            getSprintIssues(success);
+                        },function(error) {
+                            $log.debug('ls-jiraService: getAllSprints Error:', error);
+                            deferred.reject(error);
+                        });
+
+                    var sprintIssuesPromises = [];
+                    var getSprintIssues = function(sprints) {
+                        sprints.forEach(function(sprint) {
+                            sprintIssuesPromises.push(sprintIssuesService.getSprintIssues(sprint));
+                        });
+
+                        $q.all(sprintIssuesPromises)
+                            .then(function(success){
+                                $log.debug('ls-jiraService: getSprintIssues Success:', success);
+                                // if an issue is started in a sprint and carried then need to save that
+                                // sprint start date - maybe this is how it works with the issue.commitDate?
+                                // maybe use the issue.key when issues are retruned from the server to make sure
+                                // to get the correct sprint start date when the issue first appears in a sprint?
+                                // Issue may have been started before added to a sprint.  Need to check the dates
+                                // in the changelog.histories array in what is returned
+                                // Also, could use the changelog.histories to place issues into the correct sprint
+                                var issues = $unionBy(success.flat(), 'key');
+                                // set cache
+                                issues = sprintIssuesService.getSprintIssuesAsCsv(issues);
+                                deferred.resolve(issues);
+                            },function(error){
+                                $log.debug('ls-jiraService: getSprintIssues Error:', error);
+                                deferred.reject(error);
+                            });
+                    };
+
+                } else {
+                    // not using sprints and just get the issues to return
+                    issuePromise = issueService.getAllIssues(types.startDate, types.endDate)
+                        .then(function(success) {
+                            $log.debug('ls-jiraService: getAllIssues Success:', success);
+                            csvIssuses = issueService.getIssuesAsCsv(success);
+                            deferred.resolve(csvIssuses);
+                        },function(error) {
+                            $log.debug('ls-jiraService: getAllIssues Error:', error);
+                            deferred.reject(error);
+                        });
+                }           
             } else {
                 // $log.debug('ls-jiraService: resolving with cached data', cachedData);
                 // deferred.resolve(cachedData);
@@ -150,7 +213,7 @@ define(['angular'], function (ng) {
         //         deferred.resolve(cachedData);
         //     }
 		// 	return promise;
-		// };
+        // };
 
 		var isResponseError = function (response) {
 	       	if (response.isError()) {

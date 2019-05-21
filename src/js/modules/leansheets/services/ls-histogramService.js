@@ -12,7 +12,7 @@
 define(['angular'], function (ng) {
     'use strict';
 
-    return ['$log','$q','$window','ls-googleService', function ($log, $q, $window, googleService) {
+    return ['$log','$q','$window','ls-dataSourceService', function ($log, $q, $window, dataSourceService) {
 
 		var sheet = null;
 		
@@ -23,7 +23,7 @@ define(['angular'], function (ng) {
         this.getChart = function (workTypes) {
             var deferred = $q.defer(),
                 promise = deferred.promise,
-                directivePromise = googleService.getData(workTypes);
+                directivePromise = dataSourceService.getDataSourceService(sheet).getData(workTypes);
 
             directivePromise.then(
                 function (success){

@@ -26,19 +26,27 @@ define([
     './services/data-sources/ls-dataSourceService',
     './services/data-sources/jira/ls-issueService',
     './services/data-sources/jira/ls-jiraService',
-    './services/data-sources/jira/ls-sprintService',
+    './services/data-sources/jira/sprints/ls-sprintBoundariesService',
+    './services/data-sources/jira/sprints/ls-sprintIssuesService',
+    './services/data-sources/jira/ls-jiraQueryService',
     './directives/datePickerDirective'
 ], function (ng,
         applicationController, histogramController, controlController, cfdController,
         configService, googleService, typeService, controlService, histogramService, cfdService, queryService, cacheService,
-        dataSourceService, issueService, jiraService, sprintService,
+        dataSourceService, issueService, jiraService, sprintBoundariesService, sprintIssuesService, jiraQueryService,
         datePickerDirective) {
     'use strict';
 
     // Define a new angular module. The given name should ALWAYS match the filename.
-    var applicationModule = ng.module('ls-leansheetsApplication', ['config','google','moment','highcharts-ng','jssha']);
-    applicationModule.config(['$logProvider','CONFIG', function($logProvider, config) {
+    var applicationModule = ng.module('ls-leansheetsApplication', ['config','google','moment','highcharts-ng','jssha','unionBy']);
+    applicationModule.config(['$logProvider','CONFIG','$moment', function($logProvider, config, $moment) {
             $logProvider.debugEnabled(config.debugEnabled);
+            $moment.updateLocale('us',
+                { 
+                    workingWeekdays: config.weekdays,
+                    holidays: config.holidays,
+                    holidayFormat: config.holidaysFormat
+                });
         }]);
 
     // Add controllers to the module. The given name should ALWAYS match the filename.
@@ -58,7 +66,9 @@ define([
     applicationModule.service('ls-cacheService', cacheService);
     applicationModule.service('ls-issueService', issueService);
     applicationModule.service('ls-jiraService', jiraService);
-    applicationModule.service('ls-sprintService', sprintService);
+    applicationModule.service('ls-sprintIssuesService', sprintIssuesService);
+    applicationModule.service('ls-sprintBoundariesService', sprintBoundariesService);
+    applicationModule.service('ls-jiraQueryService', jiraQueryService);
     applicationModule.service('ls-dataSourceService', dataSourceService);
 
     // Add directives to the module. The given name should ALWAYS match the filename.

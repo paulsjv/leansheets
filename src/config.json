@@ -8,9 +8,9 @@
             "timeformat": "YYYY-MM-DDTHH:mm:zz.SSS+-HHmm",
             "dataUrl": {
                 "localUrl": "http://localhost:5000/api",
-                "dataSourceUri": "https://jira.schwab.com",
+                "dataSourceUri": "",
                 "headers": {
-                    "Authorization": "Basic ***REMOVED***"
+                    "Authorization": ""
                 },
                 "sprints": {
                     "includedIssueTypes": ["Story","Bug"],
@@ -72,9 +72,9 @@
             "timeformat": "YYYY-MM-DDTHH:mm:zz.SSS+-HHmm",
             "dataUrl": {
                 "localUrl": "http://localhost:5000/api",
-                "dataSourceUri": "https://jira.schwab.com",
+                "dataSourceUri": "",
                 "headers": {
-                    "Authorization": "Basic ***REMOVED***"
+                    "Authorization": ""
                 },
                 "sprints": {
                     "includedIssueTypes": ["Story","Bug"],
@@ -136,9 +136,9 @@
             "timeformat": "YYYY-MM-DDTHH:mm:zz.SSS+-HHmm",
             "dataUrl": {
                 "localUrl": "http://localhost:5000/api",
-                "dataSourceUri": "https://jira.schwab.com",
+                "dataSourceUri": "",
                 "headers": {
-                    "Authorization": "Basic ***REMOVED***"
+                    "Authorization": ""
                 },
                 "sprints": {
                     "includedIssueTypes": ["Story","Bug"],
@@ -200,9 +200,9 @@
             "timeformat": "YYYY-MM-DDTHH:mm:zz.SSS+-HHmm",
             "dataUrl": {
                 "localUrl": "http://localhost:5000/api",
-                "dataSourceUri": "https://jira.schwab.com",
+                "dataSourceUri": "",
                 "headers": {
-                    "Authorization": "Basic ***REMOVED***"
+                    "Authorization": ""
                 },
                 "sprints": {
                     "includedIssueTypes": ["Story","Bug"],

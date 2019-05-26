@@ -1,7 +1,0 @@
-node_modules
-jspm_packages
-build
-test
-src/config.json
-.git
-.idea

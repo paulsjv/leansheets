@@ -9,10 +9,12 @@ require.config({
         bootstrap: '../bower_components/bootstrap/dist/js/bootstrap',
         jquery: '../bower_components/jquery/dist/jquery',
         moment: '../bower_components/moment/moment',
+        'moment-business-days': '../bower_components/moment-business-days/index',
         highcharts: '../bower_components/highcharts/highcharts',
         highchartsng: '../bower_components/highcharts-ng/dist/highcharts-ng',
         jssha: '../bower_components/jssha/src/sha256',
-        'bootstrap-datepicker': '../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker'
+        'bootstrap-datepicker': '../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker',
+        'lodash.unionby': '../bower_components/lodash.unionby/index'
     },
 
     shim: {
@@ -48,8 +50,15 @@ require.config({
         moment: {
             exports: 'moment'
         },
+        'moment-business-days': {
+            exports: 'moment',
+            deps: ['moment']
+        },
         jssha: {
             exports: 'jssha'
+        },
+        'lodash.unionby': {
+            exports: 'unionBy'
         }
 
     }

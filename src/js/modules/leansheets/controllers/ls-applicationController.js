@@ -26,7 +26,9 @@ define(['angular'], function (ng) {
 			// this is the data status for each chart.  It is set in the parent controller
 			// as an empty array but, each controller initilizes it to false upon startup.
 			// it turns to ture in this controller when there is no data returned.
-			$scope.dataStatus = [];
+            $scope.dataStatus = [];
+            $scope.dataLoading = [];
+            $scope.dataLoadingError = [];
 
             $scope.sheetsKeys = Object.keys(configService.getSheets());
             $scope.sheet = $scope.sheetsKeys[0];
@@ -35,6 +37,10 @@ define(['angular'], function (ng) {
             $scope.changeSheet = function(sheet) {
                 $log.debug("ls-applicationController: Changing sheet");
                 $scope.sheet = sheet;
+                Object.keys($scope.dataLoading).forEach(function(key, index) {
+                    $log.debug("ls-applicationController: setting data loading:", key);
+                    $scope.dataLoading[key] = !$scope.dataLoading[key];
+                });
                 getWorkTypes(sheet);
             };
 
@@ -60,7 +66,7 @@ define(['angular'], function (ng) {
 
                 $log.debug('updateChart: ls-applicationController');
                 chart.setDataSource($scope.sheet);
-                
+
                 if (areWorkTypesValid(obj.workTypes) &&
                         areDatesValid(obj.startDate, obj.endDate)) {
                     chart.getChart(obj).then(
@@ -68,10 +74,15 @@ define(['angular'], function (ng) {
                             // hide the error message message for the chart
                             $log.debug('Firing "chart:' + chartName + '" event: ls-applicationController!');
                             $scope.$broadcast('chart:' + chartName, success);
-                            $scope.dataStatus[chartName] = true;
+                            (success.series[0].data.length > 0) ?
+                                $scope.dataStatus[chartName] = true :
+                                $scope.dataStatus[chartName] = false;
+                            $scope.dataLoadingError[chartName] = false;
                         }, function(error) {
                             // show error message for the chart
                             $scope.dataStatus[chartName] = false;
+                            $scope.dataLoading[chartName] = false;
+                            $scope.dataLoadingError[chartName] = true;
                             $log.debug('Error getting data from Google Sheets!', error);
                         });
                 }

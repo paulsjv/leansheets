@@ -35,7 +35,10 @@ define(['angular'], function (ng) {
             $scope.startDate;
             $scope.endDate;
 
-			$scope.dataStatus[chartName] = false;
+            $scope.dataStatus[chartName] = true;
+            $scope.dataLoading[chartName] = true;
+            $scope.dataLoadingError[chartName] = false;
+            
 
             $scope.addDropdown = function() {
                 $log.debug('ls-histogramController: adding dropdown');
@@ -58,6 +61,7 @@ define(['angular'], function (ng) {
             $scope.query = function() {
                 $log.debug('ls-histogramController: Calling parent controller to update histogram!');
                 $log.debug('ls-histogramController: work types sending to query', $scope.dropdowns);
+                $scope.dataLoading[chartName] = true;
                 updateChart();
             };
 
@@ -86,6 +90,7 @@ define(['angular'], function (ng) {
                     $log.debug('ls-histogramController: Caught "chart:' + chartName + '" event!');
                     $log.debug('ls-histogramController: config:', config);
                     $scope.config = config;
+                    $scope.dataLoading[chartName] = false;
                 });
 
             $scope.changeType = function(workType, key) {

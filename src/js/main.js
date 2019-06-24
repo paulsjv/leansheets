@@ -4,15 +4,17 @@
 define([
     'jquery',
     'angular',
-    'moment',
+    // 'moment',
     'jssha',
+    'moment-business-days',
+    'lodash.unionby',
     'goog!visualization,1',
     'bootstrap',
     'bootstrap-datepicker',
     'modules/leansheets/ls-leansheetsApplication',
     'highcharts',
     'highchartsng'
-], function($, ng, moment, jssha ) {
+], function($, ng, jssha, momentBusinessDays, unionBy) {
     'use strict';
 
     var initInjector = ng.injector(['ng']),
@@ -44,7 +46,9 @@ define([
     function bootstrapApplication() {
         $log.debug('Bootstraping Application');
         ng.module('google',[]).constant('$google', google);
-        ng.module('moment',[]).constant('$moment', moment);
+        ng.module('moment',[]).constant('$moment', momentBusinessDays);
+        // make sure to copy node_modules/lodash.unionby directory to src/bower_components
+        ng.module('unionBy',[]).constant('$unionBy', unionBy);
         ng.module('jssha',[]).constant('$jssha', jssha);
         ng.bootstrap(document, ['ls-leansheetsApplication']);
     }

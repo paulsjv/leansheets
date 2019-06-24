@@ -20,7 +20,7 @@ define(['angular'], function (ng) {
             $log.debug('ls-typeService: getWorkTypes');
             var deferred = $q.defer(),
                 promise = deferred.promise;
-
+/*
             if (isConfigAndSheetSet(sheet)) {
                 googleService.getConfig(sheet).then(function(success) {
                     if (isConfigAndSheetSet(sheet)) {
@@ -35,7 +35,15 @@ define(['angular'], function (ng) {
             } else {
                 deferred.resolve(config);
             }
-
+*/
+            if (isConfigAndSheetSet(sheet)) {
+                bootstrap('Work1,U,Work2,T\nWork3,B');
+                deferred.resolve(config);
+            } else {
+                deferred.resolve(config);
+            }
+            
+            
             return promise;
     	};
 

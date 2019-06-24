@@ -21,6 +21,13 @@ define(['angular'], function (ng) {
             return config.sheets;
         };
 
+        this.getDataSourceConfig = function(key) {
+            if (config.sheets.hasOwnProperty(key)) {
+                return config.sheets[key];
+            }
+            return null;
+        };
+
         this.getDataUrl = function(key) {
             if (config.sheets.hasOwnProperty(key)) {
                 return config.sheets[key].dataUrl;

@@ -1,7 +1,8 @@
 
 const logger = {
     debug: str => {},
-    error: str => {}
+    error: str => {},
+    trace: str => {}
 }
 
 function log() {

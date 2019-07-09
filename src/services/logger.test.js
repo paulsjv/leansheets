@@ -19,13 +19,13 @@ afterEach(() => {
 })
 
 it('expects log to be an empty instance', () => {
-    const expected = { default: { debug: () => {}, error: () => {} } }
+    const expected = { debug: expect.any(Function), error: expect.any(Function), trace: expect.any(Function) }
     log = require('./logger')
-    expect(String(log)).toEqual(String(expected))
+    expect(log.default).toEqual(expected)
 })
 
 it('expects log to be an instance of console', () => {
     process.env.REACT_APP_DEBUG_ENABLED = 'true'
     log = require('./logger')
-    expect(String(log)).toEqual(String(console))
+    expect(log.default).toEqual(console)
 })

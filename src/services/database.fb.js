@@ -2,6 +2,10 @@ import firebase from "firebase/app"
 import "firebase/firestore"
 import "firebase/auth"
 
+// Maybe use firebase hooks but doesn't look too active
+// also seems to not have great support
+// https://github.com/CSFrequency/react-firebase-hooks
+
 const config = {
     apiKey: "AIzaSyBvGmTBk9Krv1B_SNJ0fSFiaQAvlbt5u0k",
     authDomain: "leansheets-bdd35.firebaseapp.com",

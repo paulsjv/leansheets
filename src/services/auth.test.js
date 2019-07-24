@@ -11,23 +11,23 @@ it('calls the mock of getAuth', () => {
 })
 
 it('calls the mock of the auth.signOut', async () => {
-    const authMock = { signOut: jest.fn() }
-    jest.spyOn(authMock, 'signOut')
+    const signOutMock = { signOut: jest.fn() } 
+    const authMock = () => signOutMock
     jest.spyOn(facade, 'getAuth').mockImplementation(() => authMock)
     Auth.logout()
     expect(facade.getAuth).toHaveBeenCalled()
-    expect(authMock.signOut).toHaveBeenCalled()
+    expect(signOutMock.signOut).toHaveBeenCalled()
 })
 
 it('calls the mock of auth.onAuthStateChanged(callback)', () => {
     const cb = jest.fn()
-    const authMock = { onAuthStateChanged: func => {} }
-    jest.spyOn(authMock, 'onAuthStateChanged')
+    const onAuthStateChangedMock = jest.fn()
+    const authMock = () => { return { onAuthStateChanged: onAuthStateChangedMock } }
     jest.spyOn(facade, 'getAuth').mockImplementation(() => authMock)
     Auth.onAuthStateChanged(cb)
     expect(facade.getAuth).toHaveBeenCalled()
-    expect(authMock.onAuthStateChanged).toHaveBeenCalled()
-    expect(authMock.onAuthStateChanged).toBeCalledWith(cb)
+    expect(onAuthStateChangedMock).toHaveBeenCalled()
+    expect(onAuthStateChangedMock).toBeCalledWith(cb)
 })
 
 it('calls the mock of auth.signInWithPopup(provider)', async () => {

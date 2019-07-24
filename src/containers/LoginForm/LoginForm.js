@@ -13,7 +13,9 @@ export default function LoginForm() {
         setLoading(true)
         try {
             await googleSignIn();
-            setLoading(false)
+            // do not set state because component 
+            // unmounts and there will be an error.
+            // setLoading(false)
         } catch (error) {
             setLoading(false)
             setError(error)

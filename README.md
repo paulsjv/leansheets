@@ -2,6 +2,15 @@
 
 A tool to pull data from eletronic tracking from datasources, such as JIRA, to analyize team performace, track projects, manage risks, and project completion times.
 
+## Dependencies
+Date-fns package is v2 is in alpha but has the number of business days between dates where as v1.x does not have this functionality.  v2 is also a modular design so only the functions used get included into your build.  
+
+https://date-fns.org/ 
+
+v1 version changelog https://git.io/fxCWb 
+
+v2 version changelog https://gist.github.com/kossnocorp/a307a464760b405bb78ef5020a4ab136
+
 ## Supported Browsers
 Use [Browserl.ist](https://browserl.ist/) to run the filter from the `package.json`.
 

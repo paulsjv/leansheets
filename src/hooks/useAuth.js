@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { onAuthStateChanged } from '../services/auth'
+import { onAuthStateChanged } from '../services/auth/auth'
 import { useAppState } from '../appState'
 import log from '../services/logger'
 import * as Actions from '../redux/actions/appActions'
@@ -15,7 +15,7 @@ export default function useAuth() {
     log.debug('useEffect() when dispatched is called it redarws the react dom')
     log.debug('Setting callback for firebase auth signin/out onAuthStateChanged()')
     // this returns a firebase.auth.Unsubscribe as the cleanup function
-    const unsubscribe =  onAuthStateChanged(auth => {
+    const unsubscribes = onAuthStateChanged(auth => {
       log.debug('8. useAuth.js - useEffect() callback')
       if (auth) {
         const { displayName, photoURL, uid } = auth
@@ -30,7 +30,7 @@ export default function useAuth() {
       }
     })
 
-    return () => unsubscribe()
+    return () => unsubscribes.forEach(unsubscribe => unsubscribe())
   }, [dispatch])
 
   return { authAttempted, auth }

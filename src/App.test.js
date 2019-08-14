@@ -8,11 +8,12 @@ import App from './App';
 // https://github.com/facebook/react/issues/5465#issuecomment-157888325 Cancel Promise
 // https://medium.com/trabe/avoid-updates-on-unmounted-react-components-2fbadab17ad2 more on Cancel Promise
 
-it('renders without crashing', () => {
-  // const div = document.createElement('div');
+// Ignoring for now so that I get a cleaner debug run and not so noisy.
+test.skip('renders without crashing', () => {
+  const div = document.createElement('div');
   act(() => {
     const {getByLabelText, getByText, findByRole} = render(<App />)
   })
-  // ReactDOM.render(<App />, div);
-  // ReactDOM.unmountComponentAtNode(div);
+  ReactDOM.render(<App />, div);
+  ReactDOM.unmountComponentAtNode(div);
 })

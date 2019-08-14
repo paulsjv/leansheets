@@ -7,7 +7,7 @@ import { AppStateProvider } from './appState'
 import appReducer, { initialState } from './redux/reducers/appReducer'
 import useAuth from './hooks/useAuth'
 import log from './services/logger'
-import { logout } from './services/auth'
+import { logout } from './services/auth/auth'
 
 function SignOut() {
   const handleLogout = () => {

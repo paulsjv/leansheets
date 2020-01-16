@@ -20,7 +20,7 @@ define([
     var initInjector = ng.injector(['ng']),
         $http = initInjector.get('$http'),
         $log = initInjector.get('$log'),
-        configFile = '/config.json';
+        configFile = '/config';
 
     try {
         if (!window.jasmine) {

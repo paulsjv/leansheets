@@ -29,8 +29,13 @@ define(['angular'], function (ng) {
             sheetKey = sheet;
             dsConfig = config.dataUrl;
             issueService.constructService(config, datePickerFormat);
-            sprintIssuesService.constructService(config, config.dataUrl.sprints.config.issues, datePickerFormat);
-            sprintBoundariesService.constructService(config, config.dataUrl.sprints.config.boundaries, datePickerFormat);
+            if (config.dataUrl.sprints !== null) {
+                sprintIssuesService.constructService(config, config.dataUrl.sprints.config.issues, datePickerFormat);
+                sprintBoundariesService.constructService(config, config.dataUrl.sprints.config.boundaries, datePickerFormat);
+                sprintBoundariesService.setIsSprint(true);
+            } else {
+                sprintBoundariesService.setIsSprint(false);
+            }
         };
 
         this.getConfig = function(sheet) {
@@ -98,7 +103,7 @@ define(['angular'], function (ng) {
                 // start / end dates to align with the sprint for Lead Time.  If sprints are used and neither 
                 // sprint start date or end date is being used then issues can be retreived without changing 
                 // their start date or end date.
-                var csvIssuses, issuesPromise, sprintPromise;
+                var csvIssuses, issuePromise, sprintPromise;
                 if (sprintBoundariesService.isSprint()) {
                     // get all sprints from start date from sprintService
                     $log.debug('Using Sprints');
@@ -110,16 +115,16 @@ define(['angular'], function (ng) {
                     sprintBoundariesService.getAllSprints(types.startDate, types.endDate)
                         .then(function(success) {
                             $log.debug('ls-jiraService: getAllSprints Success:', success);
-                            getSprintIssues(success);
+                            getSprintIssues(success, types.startDate, types.endDate);
                         },function(error) {
                             $log.debug('ls-jiraService: getAllSprints Error:', error);
                             deferred.reject(error);
                         });
 
                     var sprintIssuesPromises = [];
-                    var getSprintIssues = function(sprints) {
+                    var getSprintIssues = function(sprints, startDate, endDate) {
                         sprints.forEach(function(sprint) {
-                            sprintIssuesPromises.push(sprintIssuesService.getSprintIssues(sprint));
+                            sprintIssuesPromises.push(sprintIssuesService.getSprintIssues(sprint, startDate, endDate));
                         });
 
                         $q.all(sprintIssuesPromises)
@@ -134,7 +139,7 @@ define(['angular'], function (ng) {
                                 // Also, could use the changelog.histories to place issues into the correct sprint
                                 var issues = $unionBy(success.flat(), 'key');
                                 // set cache
-                                issues = sprintIssuesService.getSprintIssuesAsCsv(issues);
+                                issues = sprintIssuesService.getSprintIssuesAsCsv(issues, types.startDate);
                                 deferred.resolve(issues);
                             },function(error){
                                 $log.debug('ls-jiraService: getSprintIssues Error:', error);

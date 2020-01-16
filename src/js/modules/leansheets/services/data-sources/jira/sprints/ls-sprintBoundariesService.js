@@ -15,7 +15,7 @@ define(['angular'], function (ng) {
     return ['$log','$q','$moment','ls-jiraQueryService', function ($log, $q, $moment, jiraQueryService) {
         
         var localUrl, dataSourceUri, sprints, headers, method, jiraDateTimeFormat,
-            datePickerMomentFormat, timeout;
+            datePickerMomentFormat, timeout, isSprintBool;
 
         this.constructService = function(config, boundariesConfig, datePickerFormat) {
             $log.debug('Constructing JIRA SprintService');
@@ -31,8 +31,19 @@ define(['angular'], function (ng) {
 
         // https://stackoverflow.com/questions/8511281/check-if-a-value-is-an-object-in-javascript
         this.isSprint = function() {
-            return sprints instanceof Object && sprints.constructor === Object;
+            // return sprints instanceof Object && sprints.constructor === Object;
+            return this.isSprintBool;
         };
+
+        this.setIsSprint = function(bool) {
+            this.isSprintBool = bool;
+        }
+
+        var compareBoardId = function(value) {
+            if (sprints.boardId === value.originBoardId) {
+                return value;
+            }
+        }
 
         /**
          * If user is not using sprints then this code and methods
@@ -46,17 +57,19 @@ define(['angular'], function (ng) {
                 params = getSprintParams(),
                 foundSprints = [],
                 handleResponse = function(response){
-                    $log.debug('ls-sprintService: handleResponse():', response);
+                    $log.debug('ls-sprintBoundariesService: handleResponse():', response);
                     if (!jiraQueryService.isError(response, localUrl)) {
                         // return only the sprints for the date range passed
                         // the dates are still the ones that were passed into 
                         // the function!
+
+                        // put logic in to make sure that the response... originBoardId === the boardid in the configuration
                         if (!response.isLast) {
-                            foundSprints.push(response.values);
+                            foundSprints.push(response.values.filter(value => compareBoardId(value)));
                             params = getSprintParams(response.startAt + response.maxResults);
                             jiraQueryService.query(method, headers, restUrl, params, handleResponse, timeout);
                         } else {
-                            foundSprints.push(response.values);
+                            foundSprints.push(response.values.filter(value => compareBoardId(value)));
                             deferred.resolve(sprintsAfterStartEndDate(foundSprints.flat(), startDate, endDate));
                         }
                     } else {
@@ -101,11 +114,17 @@ define(['angular'], function (ng) {
 
         var isDateBetweenSprintDates = function(date, sprintStartDate, sprintEndDate) {
             // Example: isStartDateBetween = $moment().isBetween(momentA, momentB);
-            let startDate = $moment(sprintStartDate, jiraDateTimeFormat); // jira sprint start date
-            let endDate = $moment(sprintEndDate, jiraDateTimeFormat); // jira sprint end date
+            let startDate = $moment(sprintStartDate, jiraDateTimeFormat).format(datePickerMomentFormat); // jira sprint start date
+            let endDate = $moment(sprintEndDate, jiraDateTimeFormat).format(datePickerMomentFormat); // jira sprint end date
+            // let startDate = $moment(sprintStartDate, jiraDateTimeFormat); // jira sprint start date
+            // let endDate = $moment(sprintEndDate, jiraDateTimeFormat); // jira sprint end date
             let thisDate = $moment(date, datePickerMomentFormat); // date picker start/end date
             // https://momentjs.com/docs/#/query/is-between/
-            return thisDate.isBetween(startDate, endDate, null, '[]');
+            // All the dates passed to "isBetween" have to be moment dates or there is an error thrown
+            // Also, all the dates have to be the same format in order to do the comparison in this line
+            //  wanted to remove all the timestamp and only compare on MM/DD/YYYY and none of the THH:MM:SS.SSSS
+            return thisDate.isBetween($moment(startDate, datePickerMomentFormat), $moment(endDate, datePickerMomentFormat), null, '[]');
+            // return thisDate.isBetween(startDate, endDate, null, '[]');
         };
 
         var getSprintsUrl = function() {

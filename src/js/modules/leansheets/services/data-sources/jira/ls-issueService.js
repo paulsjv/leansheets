@@ -32,27 +32,27 @@ define(['angular'], function (ng) {
             leadTimeStopStatuses = config.leadTimeEndStatuses;
         };
 
-        this.getAllIssues = function() {
-            $log.debug('ls-sprintService: getAllIssues');
+        this.getAllIssues = function(startDate, endDate) {
+            $log.debug('ls-issueService: getAllIssues');
             var deferred = $q.defer(),
                 promise = deferred.promise,
                 restUrl = getIssueRestUri(),
-                params = getIssueParams(),
+                params = getIssueParams(startDate, endDate),
                 foundIssues = [],
                 handleResponse = function(response){
-                    $log.debug('ls-sprintService: handleResponse():', response);
+                    $log.debug('ls-issueService: handleResponse():', response);
                     if (!jiraQueryService.isError(response, localUrl)) {
                         $log.debug('ls-issuesService: success:', response);
 
                         if (response.total > response.maxResults) {
                             // save found issues and loop through to 
                             // get the rest of the issues
-                            foundIssues.push(parseFoundIssues(response.issues));
-                            getOutstandingIssues(response, deferred, foundIssues);
+                            foundIssues.push(that.parseFoundIssues(response.issues));
+                            getOutstandingIssues(response, deferred, foundIssues, startDate, endDate);
                         } else {
                             // resolve promise with found issues
                             $log.debug('ls-issuesService: success:', response);
-                            deferred.resolve(parseFoundIssues(response.issues));
+                            deferred.resolve(that.parseFoundIssues(response.issues));
                         }
                     } else {
                         $log.debug('ls-issuesService: Error:', response);
@@ -82,7 +82,7 @@ define(['angular'], function (ng) {
             issues.forEach(function(issue){
                 var leadTimeStart = that.getLeadTimeDate(leadTimeStart, issue.transitions, leadTimeStartStatuses),
                     leadTimeStop = that.getLeadTimeDate(leadTimeStop, issue.transitions, leadTimeStopStatuses);
-                csv += getCsv(leadtimeStop, leadTimeStart, issue.key, issue.summary);
+                csv += that.getCsv(leadTimeStop, leadTimeStart, issue.key, issue.summary);
             });
             return csv;
         };
@@ -91,8 +91,8 @@ define(['angular'], function (ng) {
             return formatDate(leadTimeStop) + ',' + calculateLeadTime(leadTimeStart, leadTimeStop) + ',' + key + ',' + removeCommas(summary) + ',' + formatDate(leadTimeStart) + "\n";
         };
 
-        var formatDate = function(date) {
-            return $moment(date, jiraDateTimeFormat).format('M-D-YYYY');
+        var formatDate = function(date, formatFrom = jiraDateTimeFormat, formatTo = 'M-D-YYYY') {
+            return $moment(date, formatFrom).format(formatTo);
         };
 
         var removeCommas = function(string) {
@@ -125,20 +125,32 @@ define(['angular'], function (ng) {
             return leadTime;
         };
 
-        this.getOlderDate = function(date1, date2, timeFormat) {
+        this.getOlderDate = function(date1, date2, timeFormat = 'YYYY-MM-DD') {
             if ($moment(date1, timeFormat).isSameOrBefore($moment(date2,timeFormat))) {
                 return date1;
             }
             return date2;
         };
 
-        var getOutstandingIssues = function(response, deferred, foundIssues) {
+        this.areDatesEqual = function(date1, date2, timeFormat = 'YYYY-MM-DD') {
+            return $moment(date1, timeFormat).isSame($moment(date2, timeFormat))
+        }
+
+        this.isDateBetween = function(date, start, end, timeFormat = 'YYYY-MM-DD') {
+            if (date === null) { return false; }
+            var mdate = $moment(date, jiraDateTimeFormat).format(timeFormat);
+            var sdate = $moment(start, datePickerMomentFormat).format(timeFormat);
+            var edate = $moment(end, datePickerMomentFormat).format(timeFormat);
+            return $moment(mdate).isBetween(sdate, edate, null, '[]');
+        }
+
+        var getOutstandingIssues = function(response, deferred, foundIssues, startDate, endDate) {
             var promises = [], params;
             for (var totalResults = response.startAt + response.maxResults; 
                      totalResults <= response.total;
                      totalResults = response.maxResults + totalResults) {
                 $log.debug('totalResults:', totalResults);
-                params = getIssueParams(totalResults);
+                params = getIssueParams(startDate, endDate, totalResults);
                 promises.push(jiraQueryService.query(method, headers, getIssueRestUri(), params, null, timeout));
             }
             
@@ -146,7 +158,7 @@ define(['angular'], function (ng) {
                 $log.debug('ls-issueService: Success:', success);
 
                 foundIssues.push(success.map(function(issues){
-                    return parseFoundIssues(issues.data.issues);
+                    return that.parseFoundIssues(issues.data.issues);
                 }));
 
                 //foundIssues = parseFoundIssues(success);
@@ -219,15 +231,30 @@ define(['angular'], function (ng) {
             return issues.config.url;
         };
 
-        var getIssueParams = function(startAt = 0) {
+        var getStartAndEndDateUrl = function(jql, startDate, endDate) {
+            let str = jql.replace('{startDate}', formatDate(startDate, datePickerMomentFormat, jiraDateTimeFormat.split('T')[0]).toString());
+            str = str.replace('{endDate}', formatDate(endDate, datePickerMomentFormat, jiraDateTimeFormat.split('T')[0]).toString());
+            return str;
+
+        }
+
+        var jqlEmptyOrNull = function(jql) {
+            return (jql === null || jql === '');
+        }
+
+        var jqlHasDates = function(jql) {
+            return jql.indexOf('{startDate}') || jql.indexOf('{endDate}');
+        }
+
+        var getIssueParams = function(startDate, endDate, startAt = 0) {
             let params = {
-                    jql: issues.config.jql,
+                    jql: (!jqlEmptyOrNull(issues.config.jql) && jqlHasDates(issues.config.jql)) ? getStartAndEndDateUrl(issues.config.jql, startDate, endDate) : '',
                     expand: issues.config.expand,
                     fields: issues.config.fields,
                     startAt: (startAt > 0) ? startAt : issues.config.startAt,
                     maxResults: issues.config.maxResults
             };
-
+            $log.debug('ls-issueService: params', params);
             if (localUrl) {
                 return { 
                             url: dataSourceUri + getIssuesUrl() + 

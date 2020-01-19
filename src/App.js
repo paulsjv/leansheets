@@ -3,20 +3,11 @@ import React from 'react'
 import './App.css'
 import Layout from './components/Layout/Layout'
 import LoginForm from './containers/LoginForm/LoginForm'
+import LoggedIn from './containers/LoggedIn/LoggedIn'
 import { AppStateProvider } from './appState'
 import appReducer, { initialState } from './redux/reducers/appReducer'
 import useAuth from './hooks/useAuth'
 import log from './services/logger'
-import { logout } from './services/auth/auth'
-
-function SignOut() {
-  const handleLogout = () => {
-    logout()
-  }
-  return (
-    <button onClick={handleLogout}>LogOut</button>
-  )
-}
 
 function App() {
   log.debug('3. App.js - useAuth()')
@@ -27,7 +18,7 @@ function App() {
     <div>
       <Layout>
         LeanSheets
-        { auth ? <SignOut /> : <LoginForm /> }
+        { auth ? <LoggedIn /> : <LoginForm /> }
       </Layout>
     </div>
   )

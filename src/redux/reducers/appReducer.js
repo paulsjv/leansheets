@@ -12,6 +12,7 @@ const appStateReducer = (state, action) => {
       return { ...state, auth: action.auth, authAttempted: true }
     }
     case Actions.LOAD_USER: {
+      log.debug('11. appReducer.js = appStateReducer() - LOAD_USER')
       log.debug('appReducer - action.type', action.type)
       log.debug('appReducer - action.user', action.user)
       return { ...state, user: action.user }

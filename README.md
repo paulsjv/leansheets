@@ -11,6 +11,33 @@ v1 version changelog https://git.io/fxCWb
 
 v2 version changelog https://gist.github.com/kossnocorp/a307a464760b405bb78ef5020a4ab136
 
+## Material-UI
+Installed Material-UI for React https://www.npmjs.com/package/@material-ui/icons
+
+Search for icons: https://material-ui.com/components/material-icons/
+
+There is an issue with bundle size when using icons in the following format (see the link below for details)
+
+Option 1
+```javascript
+import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
+import ThreeDRotation from '@material-ui/icons/ThreeDRotation';
+```
+
+Option 2
+```javascript
+import { AccessAlarm, ThreeDRotation } from '@material-ui/icons';
+```
+Avoide using Option 2 until [minimizing bundle size](https://material-ui.com/guides/minimizing-bundle-size/#option-2) has been followed.  
+
+Option 1 is the preferred option for this project.
+
+**Note**
+This application used RCA (React Create App) therefore to minize the bundle size might need to be ejected, which causes issues with build etc.  Think twice and save work before exploring optimizing the build by ejecting.
+
+
+https://material-ui.com/components/icons/
+
 ## Supported Browsers
 Use [Browserl.ist](https://browserl.ist/) to run the filter from the `package.json`.
 

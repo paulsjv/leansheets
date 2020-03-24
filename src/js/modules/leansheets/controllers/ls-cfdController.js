@@ -67,7 +67,7 @@ define(['angular'], function (ng) {
             $scope.query = function() {
                 $log.debug('ls-cfdController: Calling parent controller to update control chart!');
                 $log.debug('ls-cfdController: work types sending to query', $scope.dropdowns);
-                updateChart();
+                // updateChart(); // turning off since the chart is hidden on the page there's no reason to call this.
             };
 
             $scope.$on('types:loaded',

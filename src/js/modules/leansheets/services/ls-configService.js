@@ -13,46 +13,46 @@ define(['angular'], function (ng) {
     'use strict';
 
     return ['$log','CONFIG', function ($log, config) {
-        this.getDataSourceType = function(key) {
-            return config.sheets[key].dataSource;
-        };
+        // this.getDataSourceType = function(key) {
+        //     return config.sheets[key].dataSource;
+        // };
 
-        this.getSheets = function() {
-            return config.sheets;
-        };
+        // this.getSheets = function() {
+        //     return config.sheets;
+        // };
 
-        this.getDataSourceConfig = function(key) {
-            if (config.sheets.hasOwnProperty(key)) {
-                return config.sheets[key];
-            }
-            return null;
-        };
+        // this.getDataSourceConfig = function(key) {
+        //     if (config.sheets.hasOwnProperty(key)) {
+        //         return config.sheets[key];
+        //     }
+        //     return null;
+        // };
 
-        this.getDataUrl = function(key) {
-            if (config.sheets.hasOwnProperty(key)) {
-                return config.sheets[key].dataUrl;
-            }
-            return null;
-        };
+        // this.getDataUrl = function(key) {
+        //     if (config.sheets.hasOwnProperty(key)) {
+        //         return config.sheets[key].dataUrl;
+        //     }
+        //     return null;
+        // };
 
-        this.getConfigUrl = function(key) {
-            if (config.sheets.hasOwnProperty(key)){
-                return config.sheets[key].configUrl;
-            }
-            return null;
-        };
+        // this.getConfigUrl = function(key) {
+        //     if (config.sheets.hasOwnProperty(key)){
+        //         return config.sheets[key].configUrl;
+        //     }
+        //     return null;
+        // };
 
-        this.getShowAllWork = function() {
-            return config.showAllWork;
-        };
+        // this.getShowAllWork = function() {
+        //     return config.showAllWork;
+        // };
 
         this.getCacheTtl = function() {
             return config.cacheTtl;
         };
 
-        this.getDatePickerFormat = function() {
-            return config.datePickerFormat;
-        };
+        // this.getDatePickerFormat = function() {
+        //     return config.datePickerFormat;
+        // };
 
         this.getQueryDateMomentFormat = function() {
             return config.queryDateMomentFormat;
@@ -65,5 +65,22 @@ define(['angular'], function (ng) {
         this.getDatePickerMomentFormat = function() {
             return config.datePickerMomentFormat;
         };
+
+        // config.dataSources.jira etc
+        this.getDataSourcesConfigs = function() {
+            return config.dataSources;
+        };
+
+        this.getInstancesConfigs = function() {
+            return config.instances;
+        };
+
+        // this.getInstancesConfigKeys = function() {
+        //     return Object.keys(config.instances);
+        // };
+
+        // this.getInstancesConfig = function(key) {
+        //     return config.instances[key];
+        // };
     }];
 });

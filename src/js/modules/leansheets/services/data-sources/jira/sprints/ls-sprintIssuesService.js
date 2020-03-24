@@ -33,7 +33,7 @@ define(['angular'], function (ng) {
             includedIssueTypes = config.dataUrl.sprints.includedIssueTypes;
         };
 
-        this.getSprintIssues = function(sprint) {
+        this.getSprintIssues = function(sprint, startDate, endDate) {
             $log.debug('ls-sprintIssuesService: getSprintIssues');
             var deferred = $q.defer(),
                 promise = deferred.promise,
@@ -48,12 +48,16 @@ define(['angular'], function (ng) {
                         if (response.total > response.maxResults) {
                             // save found issues and loop through to 
                             // get the rest of the issues
-                            foundIssues.push(issueService.parseFoundIssues(response.issues, sprint.startDate));
-                            getOutstandingIssues(response, deferred, foundIssues, sprint.id, sprint.startDate);
+                            foundIssues.push(issueService.parseFoundIssues(response.issues, sprint.startDate)
+                                            .filter(issue => isIssueBetweenDates(issue, startDate, endDate)));  
+                            // pass the start/end date from UI to filter out issues not in date range chosen
+                            getOutstandingIssues(response, deferred, foundIssues, sprint.id, sprint.startDate, startDate, endDate);
                         } else {
                             // resolve promise with found issues
                             $log.debug('ls-sprintIssuesService: success:', response);
-                            deferred.resolve(issueService.parseFoundIssues(response.issues, sprint.startDate));
+                            deferred.resolve(issueService.parseFoundIssues(response.issues, sprint.startDate)
+                                            .filter(issue => isIssueBetweenDates(issue, startDate, endDate)));
+                                            //.filter(getIssuesBetweenDates(issue, startDate, endDate)));
                         }
                     } else {
                         $log.debug('ls-sprintIssuesService: Error:', response);
@@ -76,10 +80,11 @@ define(['angular'], function (ng) {
          * added a new field to the issue object, commitDate (e.g. issue.commitDate) with the 
          * date of the sprint start.
          * @param {} issues 
+         * @param startDate - the start date choosen from the UI for a data set
          */
-        this.getSprintIssuesAsCsv = function(issues) {
+        this.getSprintIssuesAsCsv = function(issues, startDate) {
             // End Date, Lead Time, Key, Summary, Start Date \n
-            var csv = '';
+            var csv = '', count = 0;
             issues.forEach(function(issue){
                 // only add certain statuses
 
@@ -87,16 +92,26 @@ define(['angular'], function (ng) {
                 // only allow issues that have a lead time as some might not be "Done" yet.
                 var leadTimeStop;
                 if (isIssueTypeIncluded(issue.issueType) && 
-                    (leadTimeStop = isIssueDone(leadTimeStop, issue.transitions, leadTimeStopStatuses))) {
+                    (leadTimeStop = isIssueDone(leadTimeStop, issue.transitions, leadTimeStopStatuses))) { // &&
+                    // isEndDateOlderThanIssueDoneDate(leadTimeStop, startDate))) {
                         // have to get the "In Progress" start date because the issue may have been started 
                         // before the sprint start time.
                         var issueTimeStart = issueService.getLeadTimeDate(leadTimeStart, issue.transitions, leadTimeStartStatuses);
                         var leadTimeStart = issueService.getOlderDate(issueTimeStart, issue.commitDate, jiraDateTimeFormat);
                         csv += issueService.getCsv(leadTimeStop, leadTimeStart, issue.key, issue.summary);
+                        count++;
                 }
             });
             return csv;
         };
+
+        var isEndDateOlderThanIssueDoneDate = function(issueDoneDate, startDate) {
+            if (issueService.areDatesEqual(issueDoneDate, startDate)) {
+                return true;
+            }
+            var date = issueService.getOlderDate(startDate, issueDoneDate);
+            return issueService.areDatesEqual(date, issueDoneDate) ? false : true;
+        }
 
         var isIssueTypeIncluded = function(issueType) {
             var included = false;
@@ -110,7 +125,7 @@ define(['angular'], function (ng) {
             return issueService.getLeadTimeDate(leadTime, transitions, statuses);
         };
 
-        var getOutstandingIssues = function(response, deferred, foundIssues, sprintId, sprintStartDate) {
+        var getOutstandingIssues = function(response, deferred, foundIssues, sprintId, sprintStartDate, startDate, endDate) {
             var promises = [], params;
             for (var totalResults = response.startAt + response.maxResults; 
                      totalResults <= response.total;
@@ -124,14 +139,23 @@ define(['angular'], function (ng) {
                 $log.debug('ls-sprintIssuesService: Success:', success);
 
                 foundIssues.push(success.map(function(issues){
-                    return issueService.parseFoundIssues(issues.data.issues, sprintStartDate);
+                    return issueService.parseFoundIssues(issues.data.issues, sprintStartDate)
+                                            .filter(issue => isIssueBetweenDates(issue, startDate, endDate));
                 }));
-
+                var flat1 = foundIssues.flat();
+                var flat2 = flat1.flat();
+                $log.debug(flat2);
                 deferred.resolve(foundIssues.flat().flat());
             },function(error) {
                 $log.debug('ls-sprintIssuesService: Error:', error);
                 deferred.reject(error);
             });
+        };
+
+        var isIssueBetweenDates = function(issue, startDate, endDate) {
+            if (issueService.isDateBetween(issue.resolutiondate, startDate, endDate)) {
+                return issue;
+            }
         };
 
         var getIssuesUrl = function(sprintId) {

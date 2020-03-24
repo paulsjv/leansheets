@@ -1,22 +1,88 @@
 {
-    "sheets": {
-        "Ice Dragons": {
+    "dataSources": {
+        "jira": {
+            "issues": {
+                "config": {
+                    "startAt": "0",
+                    "maxResults": "25",
+                    "method": "GET",
+                    "getSubtasks": false,
+                    "url": "/rest/api/2/search",
+                    "expand": "changelog",
+                    "fields": "summary,issuetype,resolutiondate,created,project,labels",
+                    "timeout": 180000
+                }
+            },
+            "statuses": {
+                "config": {
+                    "method": "GET",
+                    "url": "/rest/api/2/project/{projectIdOrKey}/statuses",
+                    "timeout": 180000
+                }
+            },
+            "projects": {
+                "config": {
+                    "method": "GET",
+                    "url": "/rest/api/2/project/",
+                    "timeout": 180000
+                }
+            }
+        }
+    },
+    "instances": {
+        "Data Source": {
             "dataSource": "jira",
-            "configUrl": "https://docs.google.com/spreadsheets/d/1i83MOUxr_U6RuLjc2kdyqNDpW7LdeKXEcK5qCx47toA/edit?gid=1885709782&headers=0",
+            "timeformat": "YYYY-MM-DDTHH:mm:zz.SSS+-HHmm",
+            "leadTimeStartStatuses": ["In Progress"],
+            "leadTimeEndStatuses": ["Done"],
+            "dataUrl": {
+                "localUrl": "http://localhost:5000/api",
+                "dataSourceUri": "https://jira.<host>.com",
+                "headers": {
+                    "Authorization": "Basic <base64 username:password>"
+                }
+            },
+            "queries": [
+                { 
+                    "key": "Ice Dragons", 
+                    "value": "'Team' = 'Dragons' and createddate >= 2019-01-01",
+                    "leadTimeStartStatuses": ["In Progress"],
+                    "leadTimeStopStatuses": ["Done"] 
+                }
+            ]
+        }
+    },
+    "sheets": {
+        "Team - Dragons": {
+            "dataSource": "jira",
             "leadTimeStartStatuses": ["In Progress"],
             "leadTimeEndStatuses": ["Done"],
             "timeformat": "YYYY-MM-DDTHH:mm:zz.SSS+-HHmm",
             "dataUrl": {
                 "localUrl": "http://localhost:5000/api",
-                "dataSourceUri": "<jira url>",
+                "dataSourceUri": "https://jira.<host>.com",
                 "headers": {
-                    "Authorization": "Basic <base64 password>"
+                    "Authorization": "Basic <base64 username:password>"
+                },
+                "download": {
+                    "config": {
+                        "createdDate": "createddate",
+                        "startAt": "0",
+                        "maxResults": "25",
+                        "method": "GET",
+                        "getSubtasks": true,
+                        "url": "/rest/api/2/search",
+                        "jql": "'Team' = 'Dragons'",
+                        "expand": "changelog",
+                        "fields": "summary,issuetype,resolutiondate,created,project,labels",
+                        "timeout": 180000
+                    }
                 },
                 "sprints": {
                     "includedIssueTypes": ["Story","Bug"],
                     "config": {
                         "boundaries": {
-                            "boardId": "5519",
+                            "boardId": 5519,
                             "startAt": "0",
                             "maxResults": "50",
                             "method": "GET",
@@ -46,7 +112,118 @@
                         "method": "GET",
                         "getSubtasks": true,
                         "url": "/rest/api/2/search",
-                        "jql": "'Team (Schwab)' = 'Ice Dragons' and resolved >='2019-04-01' and issuetype = Story",
+                        "jql": "'Team' = 'Dragons' and resolved >='2019-04-01' and issuetype = Story",
+                        "expand": "changelog",
+                        "fields": "summary,issuetype,resolutiondate,created,project,labels",
+                        "timeout": 180000
+                    }
+                },
+                "issue": {
+                    "config": {
+                        "url": "/rest/api/2/issue/{key}",
+                        "expand": "changelog",
+                        "fields": "summary,issuetype,resolutiondate,created,project,labels",
+                        "subtasks": {
+                            "url": "/subtask"
+                        }
+                    }
+                }
+            }
+        },
+        "Team - Unicorns (Kanban)": {
+            "dataSource": "jira",
+            "leadTimeStartStatuses": ["In Progress"],
+            "leadTimeEndStatuses": ["Done"],
+            "timeformat": "YYYY-MM-DDTHH:mm:zz.SSS+-HHmm",
+            "dataUrl": {
+                "localUrl": "http://localhost:5000/api",
+                "dataSourceUri": "https://jira.<host>.com",
+                "headers": {
+                    "Authorization": "Basic <base64 username:password>"
+                },
+                "sprints": null,
+                "issues": {
+                    "config": {
+                        "startAt": "0",
+                        "maxResults": "25",
+                        "method": "GET",
+                        "getSubtasks": true,
+                        "url": "/rest/api/2/search",
+                        "jql": "\"Team\" = Unicorns and (resolved >= '{startDate}' and resolved <= '{endDate}') and issuetype in (Story, Bug) and status not in (Obsolete, Cancelled)",
+                        "expand": "changelog",
+                        "fields": "summary,issuetype,resolutiondate,created,project,labels",
+                        "timeout": 180000
+                    }
+                },
+                "issue": {
+                    "config": {
+                        "url": "/rest/api/2/issue/{key}",
+                        "expand": "changelog",
+                        "fields": "summary,issuetype,resolutiondate,created,project,labels",
+                        "subtasks": {
+                            "url": "/subtask"
+                        }
+                    }
+                }
+            }
+        },
+		"IC - Employee": {
+            "dataSource": "jira",
+            "leadTimeStartStatuses": ["In Progress","Dev Complete","In Testing","Ready for Demo"],
+            "leadTimeEndStatuses": ["Done"],
+            "timeformat": "YYYY-MM-DDTHH:mm:zz.SSS+-HHmm",
+            "dataUrl": {
+                "localUrl": "http://localhost:5000/api",
+                "dataSourceUri": "https://jira.<host>.com",
+                "headers": {
+                    "Authorization": "Basic <base64 username:password>"
+                },
+                "sprints": null,
+                "issues": {
+                    "config": {
+                        "startAt": "0",
+                        "maxResults": "25",
+                        "method": "GET",
+                        "getSubtasks": true,
+                        "url": "/rest/api/2/search",
+                        "jql": "assignee = siddhartha.guli and issuetype = Story and (resolved >= '{startDate}' and resolved <= '{endDate}')",
+                        "expand": "changelog",
+                        "fields": "summary,issuetype,resolutiondate,created,project,labels",
+                        "timeout": 180000
+                    }
+                },
+                "issue": {
+                    "config": {
+                        "url": "/rest/api/2/issue/{key}",
+                        "expand": "changelog",
+                        "fields": "summary,issuetype,resolutiondate,created,project,labels",
+                        "subtasks": {
+                            "url": "/subtask"
+                        }
+                    }
+                }
+            }
+        },
+        "Project - Starfall": {
+            "dataSource": "jira",
+            "leadTimeStartStatuses": ["In Progress","Dev Complete","In Testing","Ready for Demo"],
+            "leadTimeEndStatuses": ["Done"],
+            "timeformat": "YYYY-MM-DDTHH:mm:zz.SSS+-HHmm",
+            "dataUrl": {
+                "localUrl": "http://localhost:5000/api",
+                "dataSourceUri": "https://jira.<host>.com",
+                "headers": {
+                    "Authorization": "Basic <base64 username:password>"
+                },
+                "sprints": null,
+                "issues": {
+                    "config": {
+                        "startAt": "0",
+                        "maxResults": "25",
+                        "method": "GET",
+                        "getSubtasks": false,
+                        "url": "/rest/api/2/search",
+                        "jql": "component in (\"project\") AND issuetype not in (Epic, Initiative) and status in (Done) and (resolved >= '{startDate}' and resolved <= '{endDate}')",
                         "expand": "changelog",
                         "fields": "summary,issuetype,resolutiondate,created,project,labels",
                         "timeout": 180000
@@ -64,7 +241,7 @@
                 }
             }
         }
-    },
+	},
     "debugEnabled": true,
     "showAllWork": true,
     "cacheTtl": 300,

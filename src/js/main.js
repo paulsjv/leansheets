@@ -8,7 +8,7 @@ define([
     'jssha',
     'moment-business-days',
     'lodash.unionby',
-    'goog!visualization,1',
+    // 'goog!visualization,1',
     'bootstrap',
     'bootstrap-datepicker',
     'modules/leansheets/ls-leansheetsApplication',
@@ -45,7 +45,7 @@ define([
 
     function bootstrapApplication() {
         $log.debug('Bootstraping Application');
-        ng.module('google',[]).constant('$google', google);
+        //ng.module('google',[]).constant('$google', google);
         ng.module('moment',[]).constant('$moment', momentBusinessDays);
         // make sure to copy node_modules/lodash.unionby directory to src/bower_components
         ng.module('unionBy',[]).constant('$unionBy', unionBy);

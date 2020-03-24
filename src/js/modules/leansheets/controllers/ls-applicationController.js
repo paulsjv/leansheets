@@ -19,8 +19,8 @@ define(['angular'], function (ng) {
      * Parameter options include all standard angular services, plus any provided by
      * module-level dependencies.
      */
-    return ['$log','$scope','ls-typeService','ls-configService','$moment',
-        function ($log, $scope, typeService, configService, $moment) {
+    return ['$log','$scope',/*'ls-typeService',*/'ls-configService','$moment',
+        function ($log, $scope, /*typeService,*/ configService, $moment) {
             $scope.workType;
             $scope.workTypes;
 			// this is the data status for each chart.  It is set in the parent controller
@@ -28,42 +28,48 @@ define(['angular'], function (ng) {
 			// it turns to ture in this controller when there is no data returned.
             $scope.dataStatus = [];
             $scope.dataLoading = [];
+            $scope.dataLoaded = [];
             $scope.dataLoadingError = [];
 
-            $scope.sheetsKeys = Object.keys(configService.getSheets());
-            $scope.sheet = $scope.sheetsKeys[0];
-            $scope.sheets = configService.getSheets();
+            // $scope.sheetsKeys = Object.keys(configService.getSheets());
+            // $scope.sheet = $scope.sheetsKeys[0];
+            // $scope.sheets = configService.getSheets();
 
-            $scope.changeSheet = function(sheet) {
-                $log.debug("ls-applicationController: Changing sheet");
-                $scope.sheet = sheet;
-                Object.keys($scope.dataLoading).forEach(function(key, index) {
-                    $log.debug("ls-applicationController: setting data loading:", key);
-                    $scope.dataLoading[key] = !$scope.dataLoading[key];
-                });
-                getWorkTypes(sheet);
+            // $scope.changeSheet = function(sheet) {
+            //     $log.debug("ls-applicationController: Changing sheet");
+            //     $scope.sheet = sheet;
+            //     Object.keys($scope.dataLoading).forEach(function(key, index) {
+            //         $log.debug("ls-applicationController: setting data loading:", key);
+            //         $scope.dataLoading[key] = !$scope.dataLoading[key];
+            //     });
+            //     getWorkTypes(sheet);
+            // };
+
+            // var getWorkTypes = function(sheet) {
+            //     typeService.getWorkTypes(sheet).then(
+            //         function(success) {
+            //             $log.log('Got work types: ls-applicationController', success);
+            //             $scope.workTypes = success;
+            //             $scope.workType = $scope.workTypes[0].column != "" ? $scope.workTypes[0] : $scope.workTypes[1];
+
+            //             // broadcast event to all child contorllers so they will draw their charts
+            //             $log.debug('Firing "types:loaded" event: ls-applicationController');
+            //             $scope.$broadcast('types:loaded', $scope.workType);
+            //         }, function(error) {
+            //             $log.log('Error getting work types: ls-applicationController!', error);
+            //             alert('Error getting work types! ' + error);
+            //         });
+            // };
+
+            // getWorkTypes($scope.sheet);
+
+            var isUpdateSuccessful = function(success) {
+                if (success.hasOwnProperty('series') && success.series[0].data.length) { return true; }
+                else if (success.hasOwnProperty('length')) { return true; }
+                else { return false; }
             };
-
-            var getWorkTypes = function(sheet) {
-                typeService.getWorkTypes(sheet).then(
-                    function(success) {
-                        $log.log('Got work types: ls-applicationController', success);
-                        $scope.workTypes = success;
-                        $scope.workType = $scope.workTypes[0].column != "" ? $scope.workTypes[0] : $scope.workTypes[1];
-
-                        // broadcast event to all child contorllers so they will draw their charts
-                        $log.debug('Firing "types:loaded" event: ls-applicationController');
-                        $scope.$broadcast('types:loaded', $scope.workType);
-                    }, function(error) {
-                        $log.log('Error getting work types: ls-applicationController!', error);
-                        alert('Error getting work types! ' + error);
-                    });
-            };
-
-            getWorkTypes($scope.sheet);
 
             $scope.updateChart = function(obj, chart, chartName) {
-
                 $log.debug('updateChart: ls-applicationController');
                 chart.setDataSource($scope.sheet);
 
@@ -74,7 +80,7 @@ define(['angular'], function (ng) {
                             // hide the error message message for the chart
                             $log.debug('Firing "chart:' + chartName + '" event: ls-applicationController!');
                             $scope.$broadcast('chart:' + chartName, success);
-                            (success.series[0].data.length > 0) ?
+                            (isUpdateSuccessful(success)) ?
                                 $scope.dataStatus[chartName] = true :
                                 $scope.dataStatus[chartName] = false;
                             $scope.dataLoadingError[chartName] = false;
@@ -153,6 +159,15 @@ define(['angular'], function (ng) {
                 }
                 return valid;
             };
+
+            // changes to instancesConfigs and instancesConfigKeys here and in html
+            $scope.dataSourcesConfigs = configService.getDataSourcesConfigs();
+            $scope.instancesConfigs = configService.getInstancesConfigs();
+            var configDownloadComponent = function() {
+                $log.debug('ls-applicationController: broadcasting downloads:config');
+                $scope.$broadcast('downloads:config');
+            };
+            configDownloadComponent();
 
     }];
 });

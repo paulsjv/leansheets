@@ -27,7 +27,7 @@
         <div class="container-fluid di-flex-box" style="display: none;" data-ng-style="{display: 'block'}">
            <a id="nav-sheets"></a>
             <!-- Sheets Drop Down -->
-            <div id="sheets-dropdown">
+            <!-- <div id="sheets-dropdown">
                 <div class="btn-group" role="sheets" aria-label="Sheet Selections" style="padding-right:5px">
                     <button type="button" class="btn btn-default">{{sheet}}</button>
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -38,7 +38,8 @@
                         <li ng-model="value" ng-click="changeSheet(key)" ng-repeat="(key, value) in sheets"><a>{{key}}</a></li>
                     </ul>
                 </div>
-            </div>
+            </div> -->
+            <hr/>
             <!-- Query options 
             <div class="btn-group" role="date-picker" aira-label="Date Picker">
                 <div class="datepicker-box">
@@ -72,23 +73,131 @@
             </div>
         -->
             <!-- /Sheets Drop Down -->
+
+            <a id="nav-download"></a>
+            <div id="download" data-ng-controller="ls-downloadController">
+                <div>
+                    <div class="loading-container">
+                        <div class="alert alert-warning" role="alert" data-ng-if="status.total == 0 && status.loadingStatus == 100">
+                            <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                            <strong>Your query returned no results</strong>
+                        </div>
+                        <div class="alert alert-info" role="alert" data-ng-if="status.loading">
+                            <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                            <strong>Loading Data...</strong>
+                        </div>
+                        <div class="alert alert-error" role="alert" data-ng-if="status.error">
+                            <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                            <strong>Loading Data Error!</strong>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-btn" role="group" aria-label="Data Source and Query"
+                            ng-repeat="(key, value) in instancesConfigs track by $index">
+                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{{ data.instanceKey }}
+                                <span class="caret"></span></button>
+                            <ul class="dropdown-menu scrollable-menu" role="menu">
+                                <li ng-class="dropdown-header" ng-click="getQueries(key)"><a>{{key}}</a></li>
+                            </ul>
+                        </div>
+                        <div class="input-group-btn" role="group" aria-label="Queries"
+                            ng-repeat="query in queries track by $index">
+                            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">{{ data.saved.query }}
+                                <span class="caret"></span></button>
+                            <ul class="dropdown-menu scrollable-menu" role="menu">
+                                <li ng-class="dropdown-header" ng-click="populateInput(query)"><a>{{query.key}}</a></li>
+                            </ul>
+                        </div>
+                        <input ng-model="query" type="text" class="form-control" id="query" width="75%" readonly>
+
+                        <div class="input-group-btn">
+                            <button ng-click="load(query)"
+                                type="button" class="btn btn-default" ng-disabled="!data.instanceKey">
+                                <span class="glyphicon glyphicon-refresh" style="padding-right: 5px"></span>Run Query</button>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <p>Current number of work items: {{workItems.length}}</p>
+                    <p>Total items loaded: {{status.count}}</p>
+                    <p>Total items to load: {{status.total}}</p>
+                    <p>Loading Status: {{status.loadingStatus}}%</p>
+                    <div class="input-group">
+                        <button ng-click="totalItemsToLoad(query)"
+                        type="button" class="btn btn-default" ng-disabled="!data.instanceKey">
+                        <span class="glyphicon glyphicon-refresh" style="padding-right: 5px"></span>Number of Work Items to Load?</button>
+                
+                        <button ng-click="clearAllItems()"
+                        type="button" class="btn btn-default" ng-disabled="!data.instanceKey">
+                        <span class="glyphicon glyphicon-refresh" style="padding-right: 5px"></span>Clear All Items</button>
+                    </div>
+                </div>
+                <hr/>
+                
+                <!--
+                <div class="row">
+                    <div class="col-md-6">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">Projects/Statuses</div>
+                                <div class="panel-body">
+                                    <form>
+                                        <div class="form-group">
+                                            <div class="dropdown">
+                                                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Choose Project
+                                                <span class="caret"></span></button>
+                                                <ul class="dropdown-menu scrollable-menu">
+                                                    <input class="form-control" id="myInput" type="text" placeholder="Search..">
+                                                    <li><a href="#">HTML</a></li>
+                                                    <li><a href="#">CSS</a></li>
+                                                    <li><a href="#">JavaScript</a></li>
+                                                    <li><a href="#">jQuery</a></li>
+                                                    <li><a href="#">Bootstrap</a></li>
+                                                    <li><a href="#">Angular</a></li>
+                                                </ul>
+                                            </div>
+                                        
+                                            <label for="sel2">Choose Statuses</label>
+                                            <select multiple class="form-control" id="sel2">
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                                <option>5</option>
+                                            </select>
+                                            <div class="input-group-btn">
+                                                <button ng-click=""
+                                                    type="button" class="btn btn-primary">
+                                                    <span class="glyphicon glyphicon-plus" style="padding-right: 5px"></span>Add Selected</button>
+                                            </div>
+                                        </div>    
+                                    </form>
+                                </div>
+                            </div>
+                    </div>
+                    <div class="col-md-6">pannel 2</div>
+                </div>
+                -->
+
+            </div>
+            <hr/>
             <a id="nav-histogram"></a>
             <div id="histogramChart" data-ng-controller="ls-histogramController">
-                <div class="btn-group" role="date-picker" aira-label="Date Picker">
+                <!-- <div class="btn-group" role="date-picker" aira-label="Date Picker">
                     <div class="datepicker-box">
                         <div data-date-picker-directive data-date-range-start-date="startDate" data-date-range-end-date="endDate"></div>
                     </div>
-                </div>
+                </div> -->
 
                 <div class="btn-group" role="group" aria-label="Query Buttons">
-                    <button ng-model="workTypes" ng-click="addDropdown()"
+                    <!--<button ng-model="workTypes" ng-click="addDropdown()"
                             type="button" class="btn btn-default">
-                            <span class="glyphicon glyphicon-plus-sign" style="padding-right: 5px"></span>Add</button>
+                            <span class="glyphicon glyphicon-plus-sign" style="padding-right: 5px"></span>Add</button> -->
                     <button ng-click="query()"
                             type="button" class="btn btn-default">
                             <span class="glyphicon glyphicon-search" style="padding-right: 5px"></span>Query</button>
                 </div>
 
+                <!--
                 <div class="btn-group" role="work" aria-label="Work Selections" style="padding-right:5px"
                      ng-repeat="(key, value) in dropdowns track by $index">
                         <button ng-click="removeDropdown(key)" type="button" class="btn btn-danger">
@@ -104,6 +213,7 @@
                                 ng-model="value" ng-click="changeType(workType, key)" ng-repeat="workType in workTypes"><a>{{workType.name}}</a></li>
                         </ul>
                 </div>
+                -->
 
                 <div class="chart-container">
                     <div class="alert alert-warning" role="alert" data-ng-if="!dataStatus.histogram">
@@ -125,20 +235,21 @@
 
             <a id="nav-leadtimerun"></a>
             <div id="controlChart" data-ng-controller="ls-controlController">
-                <div class="btn-group" role="date-picker" aira-label="Date Picker">
+                <!-- <div class="btn-group" role="date-picker" aira-label="Date Picker">
                     <div class="datepicker-box">
                         <div data-date-picker-directive data-date-range-start-date="startDate" data-date-range-end-date="endDate"></div>
                     </div>
-                </div>
+                </div> -->
 
                 <div class="btn-group" role="group" aria-label="Query Buttons">
-                    <button ng-model="workTypes" ng-click="addDropdown()"
+                    <!--<button ng-model="workTypes" ng-click="addDropdown()"
                             type="button" class="btn btn-default">
-                            <span class="glyphicon glyphicon-plus-sign" style="padding-right: 5px"></span>Add</button>
+                            <span class="glyphicon glyphicon-plus-sign" style="padding-right: 5px"></span>Add</button> -->
                     <button ng-click="query()"
                             type="button" class="btn btn-default">
                             <span class="glyphicon glyphicon-search" style="padding-right: 5px"></span>Query</button>
                 </div>
+                <!--
                 <div class="btn-group" role="work" aria-label="Work Selections" style="padding-right:5px"
                      ng-repeat="(key, value) in dropdowns track by $index">
                         <button ng-click="removeDropdown(key)" type="button" class="btn btn-danger">
@@ -154,6 +265,7 @@
                                 ng-model="value" ng-click="changeType(workType, key)" ng-repeat="workType in workTypes"><a>{{workType.name}}</a></li>
                         </ul>
                 </div>
+                -->
                 <div class="chart-container">
                     <div class="alert alert-warning" role="alert" data-ng-if="!dataStatus.control">
                         <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>

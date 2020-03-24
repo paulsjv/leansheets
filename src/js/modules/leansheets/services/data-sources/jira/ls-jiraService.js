@@ -12,54 +12,163 @@
 define(['angular'], function (ng) {
     'use strict';
 
-    return ['$log','$http','$q','ls-issueService','ls-sprintIssuesService','ls-sprintBoundariesService','$unionBy', 'ls-cacheService',
-            function ($log, $http, $q, issueService, sprintIssuesService, sprintBoundariesService, $unionBy, cacheService) {
+    return ['$log','$http','$q','ls-issueService','ls-issuesDownloadService','ls-sprintIssuesService',
+            'ls-sprintBoundariesService','$unionBy', 'ls-cacheService','ls-projectService',
+            function ($log, $http, $q, issueService, issuesDownloadService, sprintIssuesService, 
+                    sprintBoundariesService, $unionBy, cacheService, projectService) {
 
-/**
+        /**
          * sheetKey is passed in via the getConfig method.  The getConfig method is called
          * any time the typeService gets the workTypes from a specific sheet.  The sheetKey
          * member variable is saved when the getConfig is called so that the rest of the
          * class can use it to pass as part of the cache key and to get the sheet URL.
          * @member {string}
          */
-        var sheetKey,
-            dsConfig;
+        // var sheetKey,
+                // dsConfig;
 
-        this.constructService = function(sheet, config, datePickerFormat) {
-            sheetKey = sheet;
-            dsConfig = config.dataUrl;
-            issueService.constructService(config, datePickerFormat);
-            sprintIssuesService.constructService(config, config.dataUrl.sprints.config.issues, datePickerFormat);
-            sprintBoundariesService.constructService(config, config.dataUrl.sprints.config.boundaries, datePickerFormat);
+        this.constructService = function(instance) {
+            // sheetKey = sheet;
+            // dsConfig = config.dataUrl;
+            issueService.constructService(instance);
+            // issuesDownloadService.constructService(instance);
+            // projectService.constructService(config);
+            // if (config.dataUrl.sprints !== null) {
+            //     sprintIssuesService.constructService(config, config.dataUrl.sprints.config.issues, datePickerFormat);
+            //     sprintBoundariesService.constructService(config, config.dataUrl.sprints.config.boundaries, datePickerFormat);
+            //     sprintBoundariesService.setIsSprint(true);
+            // } else {
+            //     sprintBoundariesService.setIsSprint(false);
+            // }
         };
 
-        this.getConfig = function(sheet) {
-            sheetKey = sheet;
-            var deferred = $q.defer(),
-                promise = deferred.promise,
-                // configQuery = queryService.getConfigQuery(),
-                // cachedData = cacheService.get(configQuery + sheetKey),
-                handleResponse = function(response) {
-                    var data = setDataOnPromise(response, deferred);
-                    // cacheService.put(configQuery + sheetKey, data);
-                },
-                query;
-
-            $log.debug('Query for Config');
-            // $log.debug(configQuery);
-            if (cachedData === undefined) {
-                // $log.debug('ls-jiraService: there was no cached config', configQuery);
-                $log.debug('*************** Calling JIRA Over the Wire ***************');
-                // query = new $google.visualization.Query(configService.getConfigUrl(sheetKey));
-                // query.setQuery(configQuery);
-                // query.send(handleResponse);
-            } else {
-                // $log.debug('ls-jiraService: resolving with cached data', cachedData);
-                // deferred.resolve(cachedData);
-            }
-
+        this.getNumberOfItemsToLoad = function(query) {
+            $log.debug('ls-jiraService: getNumberOfItemsToLoad(query)', query);
+			var deferred = $q.defer(),
+			    promise = deferred.promise;
+                
+            issueService.totalItemsToLoad(query)
+                    .then(function(success) {
+                        $log.debug('ls-jiraService: getAllIssues Success:', success);
+                        //csvIssuses = issueService.getIssuesAsCsv(success);
+                        //deferred.resolve(csvIssuses);
+                        deferred.resolve(success);
+                    },function(error) {
+                        $log.debug('ls-jiraService: getAllIssues Error:', error);
+                        deferred.reject(error);
+                    });
+            
             return promise;
         };
+
+        this.getData = function(query, startAt = 0) {
+            $log.debug('ls-jiraService: getData(query, startAt)', query, startAt);
+			var deferred = $q.defer(),
+			    promise = deferred.promise;
+                
+            issueService.getAllIssues(query, startAt = 0)
+                    .then(function(success) {
+                        $log.debug('ls-jiraService: getAllIssues Success:', success);
+                        //csvIssuses = issueService.getIssuesAsCsv(success);
+                        //deferred.resolve(csvIssuses);
+                        deferred.resolve(success);
+                    },function(error) {
+                        $log.debug('ls-jiraService: getAllIssues Error:', error);
+                        deferred.reject(error);
+                    });
+            
+            return promise;
+        };
+
+        // this.getConfig = function(sheet) {
+        //     sheetKey = sheet;
+        //     var deferred = $q.defer(),
+        //         promise = deferred.promise,
+        //         // configQuery = queryService.getConfigQuery(),
+        //         // cachedData = cacheService.get(configQuery + sheetKey),
+        //         handleResponse = function(response) {
+        //             var data = setDataOnPromise(response, deferred);
+        //             // cacheService.put(configQuery + sheetKey, data);
+        //         },
+        //         query;
+
+        //     $log.debug('Query for Config');
+        //     // $log.debug(configQuery);
+        //     if (cachedData === undefined) {
+        //         // $log.debug('ls-jiraService: there was no cached config', configQuery);
+        //         $log.debug('*************** Calling JIRA Over the Wire ***************');
+        //         // query = new $google.visualization.Query(configService.getConfigUrl(sheetKey));
+        //         // query.setQuery(configQuery);
+        //         // query.send(handleResponse);
+        //     } else {
+        //         // $log.debug('ls-jiraService: resolving with cached data', cachedData);
+        //         // deferred.resolve(cachedData);
+        //     }
+
+        //     return promise;
+        // };
+
+        // this.getAllProjects = function() {
+        //     // make sure to put object into domain model
+        //     $log.debug('ls-jiraService: getAllProjects');
+        //     var deferred = $q.defer(),
+        //         promise = deferred.promise;
+
+        //     $log.debug('Getting All Projects');
+        //     $log.debug('*************** Calling JIRA Over the Wire ***************');
+        //     projectService.getStatuses(project)
+        //     .then(function(success) {
+        //         $log.debug('ls-jiraService: getAllProjects Success:', success);
+        //         deferred.resolve(success);
+        //     }, function(error) {
+        //         $log.debug('ls-jiraService: getAllProjects Error:', error);
+        //         deferred.reject(error);
+        //     });
+
+        //     return promise;
+        // };
+
+        // this.getProjectStatuses = function(project) {
+        //     // make sure to put object into domain model
+        //     $log.debug('ls-jiraService: getProjectStatuses');
+        //     var deferred = $q.defer(),
+        //         promise = deferred.promise;
+
+        //     $log.debug('Getting Project Statuses');
+        //     $log.debug('*************** Calling JIRA Over the Wire ***************');
+        //     projectService.getStatuses(project)
+        //     .then(function(success) {
+        //         $log.debug('ls-jiraService: getProjectStatuses Success:', success);
+        //         deferred.resolve(success);
+        //     }, function(error) {
+        //         $log.debug('ls-jiraService: getProjectStatuses Error:', error);
+        //         deferred.reject(error);
+        //     });
+
+        //     return promise;
+        // };
+
+        // this.getDataForDownload = function(workTypes) {
+        //     $log.debug('ls-jiraService: getDateForDownload');
+        //     var deferred = $q.defer(),
+        //         promise = deferred.promise;
+
+        //         $log.debug('Query for Download');
+        //         $log.debug('*************** Calling JIRA Over the Wire ***************');
+        //         // not using sprints and just get the issues to return
+        //         var csvIssuses;
+        //         issuesDownloadService.getAllIssuesForDownload(workTypes.startDate, workTypes.endDate)
+        //         .then(function(success) {
+        //             $log.debug('ls-jiraService: getDataForDownload Success:', success);
+        //             csvIssuses = issuesDownloadService.getIssuesAsCsvForDownload(success);
+        //             deferred.resolve(csvIssuses);
+        //         },function(error) {
+        //             $log.debug('ls-jiraService: getDataForDownload Error:', error);
+        //             deferred.reject(error);
+        //         });
+                
+        //         return promise;
+        // };
 
         /**
          * 1. Get all items by end date (resolved some might not use resolved date)
@@ -68,7 +177,7 @@ define(['angular'], function (ng) {
          * 3. Adjust start date of issue by what sprint issue was a part of
          * 4. Done date could be sprint end or resolve date of issue
          */
-		this.getData = function(types) {
+		this.getDataOld = function(types) {
             $log.debug('ls-jiraService: getData');
 			var deferred = $q.defer(),
 			    promise = deferred.promise,
@@ -98,7 +207,7 @@ define(['angular'], function (ng) {
                 // start / end dates to align with the sprint for Lead Time.  If sprints are used and neither 
                 // sprint start date or end date is being used then issues can be retreived without changing 
                 // their start date or end date.
-                var csvIssuses, issuesPromise, sprintPromise;
+                var csvIssuses, issuePromise, sprintPromise;
                 if (sprintBoundariesService.isSprint()) {
                     // get all sprints from start date from sprintService
                     $log.debug('Using Sprints');
@@ -110,16 +219,16 @@ define(['angular'], function (ng) {
                     sprintBoundariesService.getAllSprints(types.startDate, types.endDate)
                         .then(function(success) {
                             $log.debug('ls-jiraService: getAllSprints Success:', success);
-                            getSprintIssues(success);
+                            getSprintIssues(success, types.startDate, types.endDate);
                         },function(error) {
                             $log.debug('ls-jiraService: getAllSprints Error:', error);
                             deferred.reject(error);
                         });
 
                     var sprintIssuesPromises = [];
-                    var getSprintIssues = function(sprints) {
+                    var getSprintIssues = function(sprints, startDate, endDate) {
                         sprints.forEach(function(sprint) {
-                            sprintIssuesPromises.push(sprintIssuesService.getSprintIssues(sprint));
+                            sprintIssuesPromises.push(sprintIssuesService.getSprintIssues(sprint, startDate, endDate));
                         });
 
                         $q.all(sprintIssuesPromises)
@@ -134,7 +243,7 @@ define(['angular'], function (ng) {
                                 // Also, could use the changelog.histories to place issues into the correct sprint
                                 var issues = $unionBy(success.flat(), 'key');
                                 // set cache
-                                issues = sprintIssuesService.getSprintIssuesAsCsv(issues);
+                                issues = sprintIssuesService.getSprintIssuesAsCsv(issues, types.startDate);
                                 deferred.resolve(issues);
                             },function(error){
                                 $log.debug('ls-jiraService: getSprintIssues Error:', error);

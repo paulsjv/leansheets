@@ -3,5 +3,4 @@ nodejs/server.js
 .DS_Store
 bower_components/
 .idea/
-.bowerrc
 src/config.json

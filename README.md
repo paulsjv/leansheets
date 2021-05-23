@@ -113,6 +113,12 @@ https://docs.google.com/spreadsheets/d/[key]/edit?gid=[gid]
 }
   ```
 
-Running Tests
--------------------------
-Coming Soon
+Upgrade Node Packages to Eliminate Vulnerabilities
+----------------------------------------------------
+
+        npm audit fix --force
+
+Upgrade Bower Packages
+------------------------
+
+While documentations suggests the use of `bower-check-updates`, that mechanism did not seem to work. Given the small number of dependencies listed in bower.json, used `bower install --save --allow-root` with each dependency listed in bower.json.

@@ -113,6 +113,14 @@ https://docs.google.com/spreadsheets/d/[key]/edit?gid=[gid]
 }
   ```
 
-Running Tests
--------------------------
-Coming Soon
+Upgrade Node Packages to Eliminate Vulnerabilities
+----------------------------------------------------
+
+        npm audit fix --force
+
+Upgrade Bower Packages
+------------------------
+
+        npm install -g bower-check-updates
+        bower-check-updates -u
+        bower install
